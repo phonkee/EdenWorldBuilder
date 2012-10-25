@@ -1,0 +1,33 @@
+if [ $# == 0 ]; then
+    echo "No arguments"
+    exit 0
+fi
+if [ "$1" == "start" ]; then
+   echo "Starting server..."
+   cd jetty
+   java -server -Xms1024m -Xmx1500m -jar start.jar &
+   JETTY_PID=$$
+   echo "JETTY_PID=$JETTY_PID"
+   echo "Server started."
+fi
+
+if [ "$1"  == "stop" ]; then
+   echo "Ending server=$$"
+   kill -9 $(pidof java)
+   echo "Server ended"
+fi
+
+if [ "$1" == "restart" ]; then
+   echo "Restarting server.."
+   "$0 stop"
+   echo "Finished shutdown, beginning restart."
+   "$0 start"
+   echo "Finished restart."
+fi
+
+
+if [ $# == 0 ]; then
+    echo "No arguments"
+    exit 0
+fi
+

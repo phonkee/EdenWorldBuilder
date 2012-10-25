@@ -1,0 +1,19 @@
+32 32
+~glass.png
+~glass.png
+~glass.png
+~glass.png
+~glass.png
+~glass.png
+~glass.png
+~glass.png
+weave.png
+weave.png
+weave.png
+weave.png
+weave.png
+weave.png
+weave.png
+weave.png
+8water.png
+8lava_bw.png

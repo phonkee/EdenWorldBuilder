@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="WorkbenchPreferenceDialogSettings">
+		<item value="0" key="DIALOG_Y_ORIGIN"/>
+		<item value="190" key="DIALOG_X_ORIGIN"/>
+	</section>
+	<section name="ShowViewDialog">
+		<item value="308" key="DIALOG_WIDTH"/>
+		<item value="net.fornwall.eclipsecoder.views.ProblemStatementView" key="ShowViewDialog.STORE_SELECTED_VIEW_ID"/>
+		<item value="63" key="DIALOG_Y_ORIGIN"/>
+		<item value="417" key="DIALOG_HEIGHT"/>
+		<item value="358" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
+		<list key="ShowViewDialog.STORE_EXPANDED_CATEGORIES_ID">
+			<item value="net.fornwall.eclipsecoder.views"/>
+		</list>
+	</section>
+	<section name="ImportExportAction">
+	</section>
+</section>

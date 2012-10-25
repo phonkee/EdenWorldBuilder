@@ -1,0 +1,27 @@
+26 32
+~grass1.png
+!grass_side.png
+dirt.png
+sand.png
+greystone.png
+bedrock.png
+tree_exterior.png
+tree_interior.png
+wood.png
+!tnt.png
+!tnttop.png
+~grass2.png
+dark_stone.png
+leaves_yellow.png
+!grass2.png
+!brick_red.png
+cobblestone.png
+crystal_white.png
+cloth.png
+ladder_side.png
+cloud.png
+~vine.png
+shingle.png
+gradient.png
+ice.png
+~trampoline.png

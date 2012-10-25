@@ -1,0 +1,100 @@
+Eden - World Builder for iOS change log.  
+Check facebook.com/edenworldbuilder for the latest news and updates.
+Last updated January 11th, 2012
+
+---Version 1.7---
+-Five creatures to play with and put in your creations.
+--In addition to being adorable they are game objects, they interact with all the special blocks(like ice slides/water/etc.) and tools.
+-Lots of new sound effects and music.
+
+-Various minor bug fixes and tweaks, partially listed below
+--TNT now launches you away from explosions
+--Fixed freeze downloading maps for partially connected or weak internet connections
+--Fixed some rendering glitches and rare crashes.
+--Glass texture changed
+--Changed how water current works slightly
+
+
+---Version 1.6---
+-Retina support and graphics update
+-Flowing liquids
+--Easy to build with and remove so you don't permanently flood your world
+-Better explosions and improved fire
+-Much faster loading 
+
+-Various interface improvements
+--Build Icon shows current block, you can now paint the current block and then build with that block
+--Ice slides will automatically adjust camera when you turn
+--Autojumps when moving forward,  autojumps when placing a block under you
+
+-New option: Toggle autojump when moving forward
+-New option: Graphics quality toggle: Fast/Best  
+Currently just disables in-game retina on fast, has no effect on non-retina devices but will in future updates.
+
+-Removed option: Invert Camera.  It doesn't make sense with touch/swipe controls
+-Removed option: Caves.  Due to rendering engine limitations they have a high performance cost. 
+To play a world with caves you can download an old one from the shared worlds.
+
+-Adjusted lighting on angled walls and clouds
+-New title music
+-Translated app description to 9 languages.  Full app localization planned.
+
+---Version 1.5.2----
+-Added choice between flat and normal terrain generation for new worlds
+-Added choice to set a new 'home' location
+-Made auto-view distance reduction less aggressive
+-Fixed bug where music wouldn't play when turned back on in options
+-Fixed memory leak with screenshots
+
+
+
+---Version 1.5.1----
+-Fixed memory leak in shared menu
+
+---Version 1.5----
+
+-Eden is now a universal app(works on iPod touches,iPads,and iPhones)
+-HD graphics designed for the iPad
+
+-New painting mechanic, color any block with a touch
+
+-New blocks:
+--Water, has animated texture and you can swim in it
+--Lava, has animated texture and gives you a little bounce
+	Note: Lava and water are regular blocks and don't flow (yet).
+--Trampoline, gives a real bounce
+--Translucent glass
+--Fence you can see through
+--Ice, slippery block with very little friction
+--Ramps(ice,wood,stone,shingles), you can walk up and down them without jumping
+--Angled walls(ice,wood,stone,shingles)
+--Ladders and Vines, blocks you can climb on
+--Cloud, normal block
+--Gradient normal block
+
+-Use the ice blocks, ramps and angled walls together to make ICE SLIDES!
+-Shadows
+-Clouds
+-Searching by name for shared worlds
+-Preview screenshots for shared worlds
+-Cloud hosting for maps for faster downloads
+
+-Caves are now an option(off by default)
+-Completely flat/empty world available for download
+-Touching the pickaxe or the burn icon when already in that mode changes to a 'nothing' mode(useful if you accidentally build or burn stuff)
+
+-Automatic view distance reduction for complex scenes
+-For best performance start a new world without caves or for the very best performance use Super Flatland
+-Major rendering engine improvements
+
+-Collision system reworked to support non-cube things like ramps
+
+-Added a gradient to the sky
+-A couple of menu animations
+-Various bug fixes
+-New sounds and art
+
+Known issues:
+-Translucencies and water/lava don't always render perfectly
+-No way to build a painted block with one touch  *Fixed 1.6*
+-Cloth/Wool block removed for space reasons
