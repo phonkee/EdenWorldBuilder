@@ -17,6 +17,8 @@
 - (void)generateColumn:(int)x:(int)z:(BOOL)bgthread;
 - (void)generateCloud;
 - (void)placeTree:(int)x :(int)z :(int)y;
+float noise3(float vec[3]);
+
 
 @property(nonatomic,assign) int LEVEL_SEED;
 @property(nonatomic,assign) bool genCaves;

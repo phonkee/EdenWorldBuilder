@@ -9,6 +9,8 @@
 #import "TerrainGenerator.h"
 #import "Terrain.h"
 #import "Util.h"
+#import "TerrainGen2.h"
+
 @implementation TerrainGenerator
 @synthesize LEVEL_SEED,genCaves;
 float noise3(float vec[3]);
@@ -27,6 +29,7 @@ block8 tcolors[(CHUNKS_PER_COLUMN*CHUNK_SIZE*2)*(CHUNK_SIZE*2)*(CHUNK_SIZE*2)];
 	ter=parent;
 	LEVEL_SEED=0;
     genCaves=FALSE;
+    tg2_init();
 	return self;
 	
 }
@@ -106,7 +109,40 @@ extern int g_offcx,g_offcz;
         }else*/
 		//[ter addChunk:chunk:ocx:cy:ocz:TRUE];		
 	}
-		
+    extern block8 blockz[BLOCKZ_SIZE];
+    extern color8 colorz[BLOCKZ_SIZE];
+	if(LEVEL_SEED!=0){
+        
+        for(int x=0;x<CHUNK_SIZE;x++){
+            for(int z=0;z<CHUNK_SIZE;z++){
+               
+                for(int y=0;y<T_HEIGHT;y++){
+                    setLandt(x,z,y,BLOCK(((x+boundx+g_offcx)%T_SIZE),((g_offcz+z+boundz)%T_SIZE),y));
+                    setColort(x,z,y,COLOR(((x+boundx+g_offcx)%T_SIZE),((g_offcz+z+boundz)%T_SIZE),y));
+                }
+              
+                
+            }
+        }
+        
+        for(int x=0;x<CHUNK_SIZE;x++){
+            for(int z=0;z<CHUNK_SIZE;z++){
+                for(int y=0;y<T_HEIGHT;y++){
+                    blockarray[((x+boundx+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((g_offcz+z+boundz)%T_SIZE)*T_HEIGHT+y]=column[(int)y/CHUNK_SIZE].pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
+                    
+                    
+                }
+            }
+        }
+        
+        for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
+            
+            
+            [ter addChunk:column[cy]:ocx:cy:ocz:TRUE];
+        }
+        return;
+        
+    }else
     if(LEVEL_SEED==0){
        for(int x=0;x<CHUNK_SIZE;x++){
             for(int z=0;z<CHUNK_SIZE;z++){

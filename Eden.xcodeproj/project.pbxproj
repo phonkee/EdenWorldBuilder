@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1967D00A1639F26100C03DF0 /* Charger.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D0091639F26100C03DF0 /* Charger.pod */; };
+		1967D0101639F3A900C03DF0 /* Batty.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00B1639F3A900C03DF0 /* Batty.pod */; };
+		1967D0111639F3A900C03DF0 /* Charger_Default.pvr in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00C1639F3A900C03DF0 /* Charger_Default.pvr */; };
+		1967D0121639F3A900C03DF0 /* Moof.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00D1639F3A900C03DF0 /* Moof.pod */; };
+		1967D0131639F3A900C03DF0 /* Nergle.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00E1639F3A900C03DF0 /* Nergle.pod */; };
+		1967D0141639F3A900C03DF0 /* Stumpy.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00F1639F3A900C03DF0 /* Stumpy.pod */; };
+		1967D0161639F80000C03DF0 /* TerrainGen2.m in Sources */ = {isa = PBXBuildFile; fileRef = 1967D0151639F80000C03DF0 /* TerrainGen2.m */; };
 		19E6AC9D1635EBC400772AB3 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 19E6AC9C1635EBC400772AB3 /* Default-568h@2x.png */; };
 		1D13502E15C4AE2A0038CE4C /* uisave.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13502D15C4AE2A0038CE4C /* uisave.png */; };
 		1D13503615C58F000038CE4C /* uiexit.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13503315C58F000038CE4C /* uiexit.png */; };
@@ -493,10 +500,6 @@
 		1DA0EDB915D9AB0B007A9E9B /* digits.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DA0EDB815D9AB0B007A9E9B /* digits.png */; };
 		1DA9791915E614AB00B050C0 /* goldcube_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DA9791815E614AB00B050C0 /* goldcube_icon.png */; };
 		1DAB2EE2149E910B00E95288 /* Green.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1DAB2ECE149E910B00E95288 /* Green.pod */; };
-		1DAB2EE6149E910B00E95288 /* Nergle.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1DAB2ED2149E910B00E95288 /* Nergle.pod */; };
-		1DAB2EF2149E910B00E95288 /* Batty.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1DAB2EDE149E910B00E95288 /* Batty.pod */; };
-		1DAB2EF3149E910B00E95288 /* Stumpy.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1DAB2EDF149E910B00E95288 /* Stumpy.pod */; };
-		1DAB2EF4149E910B00E95288 /* Moof.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1DAB2EE0149E910B00E95288 /* Moof.pod */; };
 		1DB44E8C147E863B004282D5 /* menu_creatures.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB44E8A147E863B004282D5 /* menu_creatures.png */; };
 		1DB44E8D147E863B004282D5 /* ipad~menu_creatures.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DB44E8B147E863B004282D5 /* ipad~menu_creatures.png */; };
 		1DC2A9DC15144E6700DD3B1F /* sky_box_bw.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DC2A9DB15144E6700DD3B1F /* sky_box_bw.png */; };
@@ -707,6 +710,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1967D0091639F26100C03DF0 /* Charger.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Charger.pod; path = models/Charger.pod; sourceTree = "<group>"; };
+		1967D00B1639F3A900C03DF0 /* Batty.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Batty.pod; path = models/Batty.pod; sourceTree = "<group>"; };
+		1967D00C1639F3A900C03DF0 /* Charger_Default.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = Charger_Default.pvr; path = models/Charger_Default.pvr; sourceTree = "<group>"; };
+		1967D00D1639F3A900C03DF0 /* Moof.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Moof.pod; path = models/Moof.pod; sourceTree = "<group>"; };
+		1967D00E1639F3A900C03DF0 /* Nergle.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Nergle.pod; path = models/Nergle.pod; sourceTree = "<group>"; };
+		1967D00F1639F3A900C03DF0 /* Stumpy.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Stumpy.pod; path = models/Stumpy.pod; sourceTree = "<group>"; };
+		1967D0151639F80000C03DF0 /* TerrainGen2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TerrainGen2.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		1967D0171639F81800C03DF0 /* TerrainGen2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TerrainGen2.h; sourceTree = "<group>"; };
 		19E6AC9C1635EBC400772AB3 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		1D13502D15C4AE2A0038CE4C /* uisave.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uisave.png; path = uitext/uisave.png; sourceTree = "<group>"; };
 		1D13503315C58F000038CE4C /* uiexit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uiexit.png; path = uitext/uiexit.png; sourceTree = "<group>"; };
@@ -1196,10 +1207,6 @@
 		1DA0EDB815D9AB0B007A9E9B /* digits.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = digits.png; sourceTree = "<group>"; };
 		1DA9791815E614AB00B050C0 /* goldcube_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goldcube_icon.png; sourceTree = "<group>"; };
 		1DAB2ECE149E910B00E95288 /* Green.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Green.pod; path = models/Green.pod; sourceTree = "<group>"; };
-		1DAB2ED2149E910B00E95288 /* Nergle.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Nergle.pod; path = models/Nergle.pod; sourceTree = "<group>"; };
-		1DAB2EDE149E910B00E95288 /* Batty.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Batty.pod; path = models/Batty.pod; sourceTree = "<group>"; };
-		1DAB2EDF149E910B00E95288 /* Stumpy.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Stumpy.pod; path = models/Stumpy.pod; sourceTree = "<group>"; };
-		1DAB2EE0149E910B00E95288 /* Moof.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Moof.pod; path = models/Moof.pod; sourceTree = "<group>"; };
 		1DB44E8A147E863B004282D5 /* menu_creatures.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_creatures.png; sourceTree = "<group>"; };
 		1DB44E8B147E863B004282D5 /* ipad~menu_creatures.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~menu_creatures.png"; sourceTree = "<group>"; };
 		1DC2A9DB15144E6700DD3B1F /* sky_box_bw.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sky_box_bw.png; sourceTree = "<group>"; };
@@ -1572,6 +1579,8 @@
 				C6F311B21263A2F800890361 /* Terrain.m */,
 				C6BB0586126C9DB9003A490A /* TerrainChunk.h */,
 				C6BB0587126C9DB9003A490A /* TerrainChunk.m */,
+				1967D0151639F80000C03DF0 /* TerrainGen2.m */,
+				1967D0171639F81800C03DF0 /* TerrainGen2.h */,
 				C6F66CF4127328AC0067ECD9 /* TerrainGenerator.h */,
 				C6F66CF5127328AC0067ECD9 /* TerrainGenerator.m */,
 				C64A25A3141BDF0C00FED97A /* Toolbar.h */,
@@ -2159,6 +2168,12 @@
 		C661FF681447F937000B8258 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				1967D00B1639F3A900C03DF0 /* Batty.pod */,
+				1967D00C1639F3A900C03DF0 /* Charger_Default.pvr */,
+				1967D00D1639F3A900C03DF0 /* Moof.pod */,
+				1967D00E1639F3A900C03DF0 /* Nergle.pod */,
+				1967D00F1639F3A900C03DF0 /* Stumpy.pod */,
+				1967D0091639F26100C03DF0 /* Charger.pod */,
 				1D8CECC214B4A23900A1861D /* Green_Rage.png */,
 				1D8CECC314B4A23900A1861D /* Green_Blink.png */,
 				1D8CECC414B4A23900A1861D /* Green_Default.png */,
@@ -2175,10 +2190,6 @@
 				1D8CECCF14B4A23900A1861D /* Moof_Blink.png */,
 				1D8CECD014B4A23900A1861D /* Moof_Default.png */,
 				1DAB2ECE149E910B00E95288 /* Green.pod */,
-				1DAB2ED2149E910B00E95288 /* Nergle.pod */,
-				1DAB2EDE149E910B00E95288 /* Batty.pod */,
-				1DAB2EDF149E910B00E95288 /* Stumpy.pod */,
-				1DAB2EE0149E910B00E95288 /* Moof.pod */,
 			);
 			name = models;
 			sourceTree = "<group>";
@@ -2744,10 +2755,6 @@
 				1DED59E814815003007F3F2F /* moof_icon.png in Resources */,
 				1DED59E914815003007F3F2F /* ipad~moof_icon.png in Resources */,
 				1DAB2EE2149E910B00E95288 /* Green.pod in Resources */,
-				1DAB2EE6149E910B00E95288 /* Nergle.pod in Resources */,
-				1DAB2EF2149E910B00E95288 /* Batty.pod in Resources */,
-				1DAB2EF3149E910B00E95288 /* Stumpy.pod in Resources */,
-				1DAB2EF4149E910B00E95288 /* Moof.pod in Resources */,
 				1DDBBAB014A43B5700CDD0BB /* shadow.png in Resources */,
 				1D8CE93514AC81EB00A1861D /* ambience_underwater.wav in Resources */,
 				1D8CE93614AC81EB00A1861D /* ambience_skyhigh.wav in Resources */,
@@ -3214,6 +3221,12 @@
 				1D7A376415E8170C0090768B /* door_icon2.png in Resources */,
 				1D7A376715E8171C0090768B /* portal_icon2.png in Resources */,
 				19E6AC9D1635EBC400772AB3 /* Default-568h@2x.png in Resources */,
+				1967D00A1639F26100C03DF0 /* Charger.pod in Resources */,
+				1967D0101639F3A900C03DF0 /* Batty.pod in Resources */,
+				1967D0111639F3A900C03DF0 /* Charger_Default.pvr in Resources */,
+				1967D0121639F3A900C03DF0 /* Moof.pod in Resources */,
+				1967D0131639F3A900C03DF0 /* Nergle.pod in Resources */,
+				1967D0141639F3A900C03DF0 /* Stumpy.pod in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3314,6 +3327,7 @@
 				1D9D039F15485B4600E975AC /* Geometry.c in Sources */,
 				1DC93AE81564244A0015616C /* Portal.m in Sources */,
 				1DC93AF3156C29B30015616C /* Firework.m in Sources */,
+				1967D0161639F80000C03DF0 /* TerrainGen2.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

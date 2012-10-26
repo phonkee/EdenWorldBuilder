@@ -762,6 +762,14 @@ float randf(float max){
 	
 }
 
+int randi(int max){
+	int a=arc4random()%max;
+	
+    
+	return a;
+	
+}
+
 int O(int r,int c){
 	return c*4+r;
 }
