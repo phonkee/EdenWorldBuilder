@@ -692,6 +692,22 @@ static const int usage_id=7;
 	glEnable(GL_TEXTURE_2D);
 	[sbar render];
 	[fnbar render];
+    if(loading==0){
+        WorldNode* new_world;
+        new_world=malloc(sizeof(WorldNode));
+        memset(new_world,0,sizeof(WorldNode));
+        new_world->display_name=[settings getNewWorldName];
+        new_world->file_name=[NSString stringWithFormat:@"%@.eden",genhash()];
+        [new_world->file_name retain];
+        [new_world->display_name retain];
+        [self addWorld:new_world];
+        selected_world=new_world;
+        [sbar setStatus:[NSString stringWithFormat:@"%@ created",new_world->display_name]
+                       :2];
+        [fnbar setStatus:selected_world->display_name :9999];
+        
+        loading=4;
+    }
 	if(loading){
 		if(loading==2){
 			if(selected_world!=NULL){

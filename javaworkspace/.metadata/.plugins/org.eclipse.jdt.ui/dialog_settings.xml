@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-	<item value="/Users/argonide/Documents/Eden/edenweb/newwebserver/webroot/WEB-INF/lib" key="org.eclipse.jdt.ui.lastextjar"/>
-	<item value="/Users/argonide/Documents/Eden/edenweb/src" key="org.eclipse.jdt.ui.last.external.project"/>
+	<item value="/Users/arironen/Documents/Eden/edenweb/newwebserver/jetty/lib" key="org.eclipse.jdt.ui.lastextjar"/>
 	<item value="JavaSE-1.6" key="org.eclipse.jdt.ui.last.selected.execution.enviroment"/>
+	<item value="/Users/argonide/Documents/Eden/edenweb/src" key="org.eclipse.jdt.ui.last.external.project"/>
 	<section name="OptionalMessageDialog.hide.">
 		<item value="true" key="org.eclipse.jdt.ui.typecomment.deprecated"/>
 	</section>
@@ -24,12 +24,12 @@
 		<item value="400" key="height"/>
 		<item value="600" key="width"/>
 	</section>
-	<section name="quick_assist_proposal_size">
-	</section>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
 		<item value="1" key="updateSimilarElementsMatchStrategy"/>
 		<item value="false" key="updateTextualMatches"/>
 		<item value="false" key="updateSimilarElements"/>
+	</section>
+	<section name="quick_assist_proposal_size">
 	</section>
 	<section name="ProblemSeveritiesConfigurationBlock">
 		<item value="true" key="expanded4"/>

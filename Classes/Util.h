@@ -95,6 +95,7 @@ float absf(float f);
 BOOL inbox(float x,float y,CGRect rect);
 BOOL inbox2(float x,float y,Button* rect);
 BOOL inbox3(float x,float y,Button* rect);
+BOOL interpolatev(Vector* vec,Vector final_vec,float speed,float etime);
 Button ButtonMake(float x,float y,float width,float height);
 CGRect RectFromButton(Button b);
 Button ButtonFromRect(CGRect b);

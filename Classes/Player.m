@@ -331,11 +331,10 @@ extern bool hitCustom;
                             printf("painting sky lol");
                             extern Vector colorTable[256];
                             [[Resources getResources] playSound:S_PAINT_BLOCK];	
-                            [World getWorld].terrain.skycolor=
-                             colorTable[[World getWorld].hud.paintColor]; 
-                            Vector v=colorTable[[World getWorld].hud.paintColor]; 
-                            float clr[4]={v.x-.2f, v.y-.2f, v.z-.2f, 1.0f};
-                            glFogfv(GL_FOG_COLOR,clr);
+                            [World getWorld].terrain.final_skycolor=
+                             colorTable[[World getWorld].hud.paintColor];
+                            printf("sky %f,%f,%f\n",  [World getWorld].terrain.skycolor.x,  [World getWorld].terrain.skycolor.y,  [World getWorld].terrain.skycolor.z);
+                            
 
                         }
                         
@@ -465,6 +464,7 @@ extern bool hitCustom;
                                [[World getWorld].terrain destroyCustom:point.x:point.z:point.y]; 
                             }else
                             {
+                                printf("removing block: %d %d %d %d\n",point.x,point.z,point.y,type);
                                 [[World getWorld].terrain destroyBlock:point.x:point.z:point.y];
                             }
 							

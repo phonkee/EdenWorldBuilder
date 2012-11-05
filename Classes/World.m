@@ -11,6 +11,7 @@
 #import "Model.h"
 #import "EAGLView.h"
 #import "Globals.h"
+#import "TerrainGen2.h"
 
 static	World* singleton;
 @implementation World
@@ -42,7 +43,9 @@ extern EAGLView* G_EAGL_VIEW;
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 	[[UIApplication sharedApplication] setStatusBarHidden:YES];
 	[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
-
+    
+    
+    tg2_init();
 	/*int crapsize=1;//(16777216);
 	int* crap=malloc(sizeof(int)*crapsize);
 	for(int i=0;i<crapsize;i++){

@@ -12,7 +12,7 @@
 #import "Model.h"
 #import "VectorUtil.h"
 @implementation Terrain
-@synthesize home,loaded,world_name,level_seed,tgen,counter,skycolor,chunkTable,portals,fireworks;
+@synthesize home,loaded,world_name,level_seed,tgen,counter,skycolor,final_skycolor,chunkTable,portals,fireworks;
 
 #define BEDROCK_LEVEL 3;
 int vertices_rendered=0;
@@ -276,9 +276,9 @@ int extraGeneration(any_t passedIn,any_t chunkToGen){
    
     [World getWorld].hud.goldencubes=10;
 	counter=0;
-	skycolor=MakeVector(-1,-1,-1);
+	//skycolor=MakeVector(-1,-1,-1);
     
-    Vector v=[World getWorld].terrain.skycolor=MakeVector(0.8,0.8,0.8);
+    Vector v=[World getWorld].terrain.skycolor=MakeVector(1.0,1.0,1.0);
     
     float clr2[4]={v.x-.2f, v.y-.2f, v.z-.2f, 1.0f};
     glFogfv(GL_FOG_COLOR,clr2);
@@ -396,7 +396,7 @@ static int sanity_test=0;
             for(int i=0;i<num;i++){
             TerrainChunk* chunk=NULL;
                 if(list[i]<0||list[i]>576){
-                    printf("list[%d]=%d  num: %d idxrl: %d\n",i,list[i],num,idxrl);
+                   // printf("list[%d]=%d  num: %d idxrl: %d\n",i,list[i],num,idxrl);
                 }
                 chunk=chunkTable[list[i]];
            
@@ -1287,6 +1287,13 @@ float last_etime;
 	}
     [liquids update:etime];
     [fireworks update:etime];
+    if(interpolatev(&skycolor,final_skycolor,1.0,etime)){
+         
+        Vector v=[World getWorld].terrain.skycolor;
+        float clr[4]={v.x-.2f, v.y-.2f, v.z-.2f, 1.0f};
+        glFogfv(GL_FOG_COLOR,clr);
+       // printf("TRUE\n");
+    }
    if(do_reload==3){
        [[World getWorld].hud.sb clear];
         do_reload=0;
@@ -1391,7 +1398,7 @@ float last_etime;
         double end_time=-[start timeIntervalSinceNow];
         float etime=end_time-start_time;
         etime+=.0001f;
-    NSLog(@"chunk updates: %d  etime: %f  etime/count: %f\n",count,etime,etime/count);
+  //  NSLog(@"chunk updates: %d  etime: %f  etime/count: %f\n",count,etime,etime/count);
 	
     }
    
@@ -2175,8 +2182,9 @@ int lolc=0;
 	glPushMatrix();
     glLoadIdentity();	
 	
-    skycolor.x=-1;
-    if(skycolor.x==-1){
+    //skycolor.x=0;
+    
+    if(skycolor.x==1.0&&skycolor.y==1.0&&skycolor.z==1.0){
     glColor4f(1.0, 1.0, 1.0, 1.0);
     
     [[[Resources getResources] getTex:ICO_SKY_BOX] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
@@ -2199,8 +2207,8 @@ int lolc=0;
    
     
     firstframe=FALSE;
-	if(frame_counter==60){
-	printf("chunks: %d, faces: %d, vertices: %d\n",chunks_rendered,faces_rendered,vertices_rendered);
+	if(frame_counter==120){
+	//printf("chunks: %d, faces: %d, vertices: %d\n",chunks_rendered,faces_rendered,vertices_rendered);
 		frame_counter=0;
 	}
 	[Graphics endTerrain];	

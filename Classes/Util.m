@@ -89,6 +89,38 @@ const static float cubeFaceNormals[] = {
 	0,1,0, //top face	
 	
 };
+BOOL interpolatev(Vector* vec,Vector final_vec,float speed,float etime){
+    if(vec->x==final_vec.x&&vec->y==final_vec.y&&vec->z==final_vec.z)return FALSE;
+    
+    
+    if(vec->x<final_vec.x){
+        vec->x+=speed*etime;
+        if(vec->x>final_vec.x)vec->x=final_vec.x;
+    }
+    if(vec->x>final_vec.x){
+        vec->x-=speed*etime;
+        if(vec->x<final_vec.x)vec->x=final_vec.x;
+    }
+    if(vec->y<final_vec.y){
+        vec->y+=speed*etime;
+        if(vec->y>final_vec.y)vec->y=final_vec.y;
+    }
+    if(vec->y>final_vec.y){
+        vec->y-=speed*etime;
+        if(vec->y<final_vec.y)vec->y=final_vec.y;
+    }
+    
+    if(vec->z<final_vec.z){
+        vec->z+=speed*etime;
+        if(vec->z>final_vec.z)vec->z=final_vec.z;
+    }
+    if(vec->z>final_vec.z){
+        vec->z-=speed*etime;
+        if(vec->z<final_vec.z)vec->z=final_vec.z;
+    }
+    
+    return TRUE;
+}
 Polyhedra makeSide(float left,float right,float back,float front,float bot,float top,int type){
     Polyhedra box;
     

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="31" version="2.0">
+<workbench progressCount="30" version="2.0">
 <workbenchAdvisor/>
 <window height="715" maximized="true" width="1024" x="-12" y="22">
 <fastViewData fastViewLocation="1024"/>
@@ -39,13 +39,13 @@
 </folder>
 </info>
 </editorArea>
-<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="List2.java" partName="List2.java" path="/Users/argonide/Documents/Eden/javaworkspace/eden2/src/List2.java" title="List2.java" tooltip="eden2/src/List2.java" workbook="DefaultEditorWorkbook">
+<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="List2.java" partName="List2.java" path="/Users/arironen/Documents/Eden/javaworkspace/eden2/src/List2.java" title="List2.java" tooltip="eden2/src/List2.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/eden2/src/List2.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="8" selectionOffset="4299" selectionTopPixel="1637"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2856" selectionTopPixel="1267"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UploadMap2.java" partName="UploadMap2.java" path="/Users/argonide/Documents/Eden/javaworkspace/eden2/src/UploadMap2.java" title="UploadMap2.java" tooltip="eden2/src/UploadMap2.java" workbook="DefaultEditorWorkbook">
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UploadMap2.java" partName="UploadMap2.java" path="/Users/arironen/Documents/Eden/javaworkspace/eden2/src/UploadMap2.java" title="UploadMap2.java" tooltip="eden2/src/UploadMap2.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/eden2/src/UploadMap2.java"/>
-<editorState selectionHorizontalPixel="132" selectionLength="0" selectionOffset="4893" selectionTopPixel="2197"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AtlasTool.java" partName="AtlasTool.java" path="/Users/argonide/Documents/Eden/javaworkspace/AtlasTool/src/AtlasTool.java" title="AtlasTool.java" tooltip="AtlasTool/src/AtlasTool.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/AtlasTool/src/AtlasTool.java"/>
@@ -240,40 +240,8 @@
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/List2.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/AtlasTool/src/AtlasTool.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/List2.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/UploadMap2.java"/>
 </editors>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="3007" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="3002" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="2981" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="3002" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="3002" y="0"/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="1734" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="3002" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="4597" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position/>
-</item>
 <item historyLabel="List2.java" index="2">
 <position/>
 </item>
@@ -388,8 +356,41 @@
 <item historyLabel="AtlasTool.java" index="5">
 <position info="not_deleted" x="4023" y="0"/>
 </item>
-<item active="true" historyLabel="List2.java" index="6">
+<item historyLabel="List2.java" index="6">
 <position info="not_deleted" x="8390" y="0"/>
+</item>
+<item historyLabel="List2.java" index="6">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="UploadMap2.java" index="7">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="UploadMap2.java" index="7">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="List2.java" index="6">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="List2.java" index="6">
+<position info="not_deleted" x="1312" y="0"/>
+</item>
+<item historyLabel="List2.java" index="6">
+<position info="not_deleted" x="5864" y="0"/>
+</item>
+<item historyLabel="List2.java" index="6">
+<position info="not_deleted" x="5765" y="0"/>
+</item>
+<item historyLabel="List2.java" index="6">
+<position info="not_deleted" x="5766" y="0"/>
+</item>
+<item historyLabel="List2.java" index="6">
+<position info="not_deleted" x="5797" y="0"/>
+</item>
+<item historyLabel="List2.java" index="6">
+<position info="not_deleted" x="5802" y="0"/>
+</item>
+<item active="true" historyLabel="List2.java" index="6">
+<position info="not_deleted" x="5805" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>

@@ -34,7 +34,7 @@
 	Vector home;
 	int level_seed;
 	int nburn;
-    Vector skycolor;
+    Vector skycolor,final_skycolor;
     TerrainChunk **chunkTable;
 
 	NSString* world_name;
@@ -89,7 +89,7 @@ int getRampType(int x,int z,int y, int t);
 int getCustomc(int x,int z,int y);
 
 @property(nonatomic, assign) NSString* world_name;
-@property(nonatomic, assign) Vector home,skycolor;
+@property(nonatomic, assign) Vector home,skycolor,final_skycolor;
 @property(nonatomic, assign) BOOL loaded;
 @property(nonatomic, assign) int level_seed,counter;
 

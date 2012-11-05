@@ -40,6 +40,7 @@ public class List2 extends HttpServlet
     	
         
         for(int sort=0;sort<3;sort++){
+        	if(sort==2)continue;
         	StringBuilder buff = new StringBuilder();
         	Collection<String> list=null;
         	Object sync=null;
@@ -206,6 +207,15 @@ public class List2 extends HttpServlet
 			sc.close();
 			
 			
+			StringBuilder buff = new StringBuilder();
+			sc=new Scanner(new File(path+"popularlist.txt"));
+			while(sc.hasNextLine()){
+				buff.append(sc.nextLine()+"\n");
+			}
+			sc.close();
+			listBuffers[2]=buff.toString();
+			
+			
 			System.out.println("Finished loading "+searchTable.size());
 			
 		}catch(IOException ex){
@@ -300,7 +310,7 @@ public class List2 extends HttpServlet
         	 
         	 return;
         }
-        if(sort>=0&&sort<=3) 
+        if(sort>=0&&sort<3) 
             outp.write(listBuffers[sort]);
         else
         	outp.write("");

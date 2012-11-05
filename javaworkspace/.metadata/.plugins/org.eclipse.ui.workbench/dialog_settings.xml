@@ -8,8 +8,8 @@
 		<item value="308" key="DIALOG_WIDTH"/>
 		<item value="net.fornwall.eclipsecoder.views.ProblemStatementView" key="ShowViewDialog.STORE_SELECTED_VIEW_ID"/>
 		<item value="63" key="DIALOG_Y_ORIGIN"/>
-		<item value="417" key="DIALOG_HEIGHT"/>
 		<item value="358" key="DIALOG_X_ORIGIN"/>
+		<item value="417" key="DIALOG_HEIGHT"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 		<list key="ShowViewDialog.STORE_EXPANDED_CATEGORIES_ID">
 			<item value="net.fornwall.eclipsecoder.views"/>

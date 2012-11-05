@@ -29,7 +29,7 @@ block8 tcolors[(CHUNKS_PER_COLUMN*CHUNK_SIZE*2)*(CHUNK_SIZE*2)*(CHUNK_SIZE*2)];
 	ter=parent;
 	LEVEL_SEED=0;
     genCaves=FALSE;
-    tg2_init();
+    
 	return self;
 	
 }
