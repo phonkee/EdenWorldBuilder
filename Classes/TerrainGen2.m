@@ -40,7 +40,9 @@ int colorCycle3(int idx,int c){
     color=c;
     int hue=idx%8;
     if(hue>=4)hue=7-hue;
+    hue+=3;
     
+    if(hue==6)return 0;
     
     int r=(hue*9+color+1);
     r%=NUM_COLORS;
@@ -597,7 +599,7 @@ void makePonyWorld(){
 void makeMountains(){
     float var=3;  //how much variance in heightmap?
     //LEVEL_SEED=0;
-	
+	[World getWorld].terrain.skycolor=[World getWorld].terrain.final_skycolor=colorTable[15];
 	
 	const int offsety=T_HEIGHT/2;
     for(int x=0;x<T_SIZE;x++){ //Heightmap
@@ -605,9 +607,9 @@ void makeMountains(){
             int h;
             
             float n=offsety;
-            float FREQ=2.0f;
+            float FREQ=1.0f;
             //float FREQ3=4.0f;
-            float AMPLITUDE=4.0f;
+            float AMPLITUDE=8.0f;
             for(int i=0;i<10;i++){
                 float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT
                     ,(float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
@@ -636,7 +638,7 @@ void makeMountains(){
                         
 					}else{
                         BLOCK(x,z,y)=TYPE_DIRT;
-                        COLOR(x,z,y)=colorCycle2(h,2);
+                        COLOR(x,z,y)=colorCycle3(h,1);
 					}
                             
 				
@@ -647,23 +649,16 @@ void makeMountains(){
 		
 	}
     
-    /*for(int x=0;x<T_SIZE;x++){
+    for(int x=0;x<T_SIZE;x++){
 		for(int z=0;z<T_SIZE;z++){
             BLOCK(x ,z ,0)=TYPE_SAND;
 			
 			for(int y=0;y<T_HEIGHT;y++){
 				if(BLOCK(x ,z ,y)==TYPE_NONE){
 					if(BLOCK(x ,z ,y-1)==TYPE_DIRT){
-                        if(arc4random()%2==0&&(x+x%10)%20<4&&(z+z%10)%20<4){
-							BLOCK(x ,z ,y)=TYPE_FLOWER;
+                        
 							BLOCK(x ,z ,y-1 )=TYPE_GRASS;
-						}else if(arc4random()%2==0){
-							BLOCK(x ,z ,y-1 )=TYPE_GRASS;
-						}else{
-							BLOCK(x ,z ,y-1 )=TYPE_GRASS2;
-						}
-                        //setColort(x ,z ,y-1 ,22+18);
-                        //setLandt(x ,z ,y-1 ,TYPE_GRASS);
+                        COLOR(x ,z ,y-1 )=colorCycle3(y-1,3);
 					}
 				}else{
 					
@@ -675,7 +670,27 @@ void makeMountains(){
 			
 		}
 	}
-    
+    for(int x=0;x<T_SIZE;x++){
+		for(int z=0;z<T_SIZE;z++){
+            //BLOCK(x ,z ,0)=TYPE_SAND;
+			
+			for(int y=6;y<23;y++){
+				if(BLOCK(x ,z ,y)==TYPE_NONE){
+                    for(int iy=1;iy<6;iy++){
+                    BLOCK(x,z,y-iy)=TYPE_WATER;
+                    COLOR(x,z,y-iy)=0;
+                    }
+                }else{
+					
+					
+					
+				}
+				
+			}
+			
+		}
+	}
+    /*
     for(int x=2;x<CHUNK_SIZE-2;x++){ //Trees
 		for(int z=2;z<CHUNK_SIZE-2;z++){
 			for(int y=1;y<T_HEIGHT-1;y++){
