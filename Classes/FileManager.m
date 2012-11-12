@@ -11,6 +11,7 @@
 #import "Util.h"
 #import "Terrain.h"
 #import "Model.h"
+#import "TerrainGen2.h"
 //#import "TestFlight.h"
 #define FILE_VERSION 3
 
@@ -764,6 +765,29 @@ extern float P_ZFAR;
         imgHash=NULL;
     }
 	if(![[World getWorld].fm worldExists:name]){
+        
+        extern int g_terrain_type;
+        
+        printf("loading sup2: %d\n",g_terrain_type);
+        
+        clear();
+        
+        if(g_terrain_type==0){
+            makeDirt();
+        }else if(g_terrain_type==1){
+            makeMars();
+        }else if(g_terrain_type==2){
+            makeRiverTrees();
+        }else if(g_terrain_type==3){
+            makeMountains();
+        }else if(g_terrain_type==4){
+            makeDesert();
+        }else if(g_terrain_type==5){
+            makePonies();
+        }else if(g_terrain_type==6){
+            makeBeach();
+        }
+        
 		[self clearDirectory];
         if(genflat)ter.tgen.LEVEL_SEED= 0;
         else
@@ -809,7 +833,9 @@ extern float P_ZFAR;
 		[[World getWorld].fm saveWorld];
 		//[ter unloadTerrain:FALSE];
 		//[self loadWorld:name];
-	}else{		
+	}else{
+        
+        
 		NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];	
         [[World getWorld].sf_lock lock];
 		saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];		

@@ -461,7 +461,7 @@ extern int g_offcz;
                 int isvisible=face_visibility[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];
                 
                 
-                color8 c1=colors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];
+            //UNCOMMENT FOR FACE MERGING    color8 c1=colors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];
                 
                 int d;
                 
@@ -474,7 +474,7 @@ extern int g_offcz;
                             d=5;
                         }
                         
-                        int size=1;
+                        int size=1;/* //UNCOMMENT FOR FACE MERGING
                         if(!(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_SIDE4)&&type!=TYPE_CUSTOM&&!(IS_LIQUID&blockinfo[type])&&!(IS_FLAMMABLE&blockinfo[type]&&isOnFire(x+bounds[0],z+bounds[2],y+bounds[1])))
                             while(1){
                                 int nx=x+size*dx[d];
@@ -496,7 +496,7 @@ extern int g_offcz;
                                 
                                 size++;
                                 if(size>32)break;
-                            }
+                            }*/
                         face_size[x*(CHUNK_SIZE*CHUNK_SIZE*6)+z*(CHUNK_SIZE*6)+y*6+f]=size;
                     }
                 }

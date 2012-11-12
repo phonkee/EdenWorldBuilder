@@ -111,7 +111,7 @@ extern int g_offcx,g_offcz;
 	}
     extern block8 blockz[BLOCKZ_SIZE];
     extern color8 colorz[BLOCKZ_SIZE];
-	if(LEVEL_SEED!=0){
+   	if(LEVEL_SEED!=0){
         
         for(int x=0;x<CHUNK_SIZE;x++){
             for(int z=0;z<CHUNK_SIZE;z++){

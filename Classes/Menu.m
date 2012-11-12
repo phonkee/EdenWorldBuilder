@@ -19,6 +19,7 @@
 extern float SCREEN_WIDTH; 
 extern float SCREEN_HEIGHT;
 extern float P_ASPECT_RATIO;
+#define AUTO_LOAD false
 
 UIAlertView *alertDeleteConfirm;
 UIAlertView *alertWorldType;
@@ -140,7 +141,86 @@ UIAlertView *alertWorldType;
 	
 	shared_list=[[SharedList alloc] init];
 	
-	return self;	  
+    
+    WorldNode* new_world;
+    new_world=malloc(sizeof(WorldNode));
+    memset(new_world,0,sizeof(WorldNode));
+    new_world->display_name=@"Mountains";
+    new_world->file_name=[NSString stringWithFormat:@"%@.eden",genhash()];
+    [new_world->file_name retain];
+    [new_world->display_name retain];
+    [self addWorld:new_world];
+    selected_world=new_world;
+    [sbar setStatus:[NSString stringWithFormat:@"%@ created",new_world->display_name]
+                   :2];
+    [fnbar setStatus:selected_world->display_name :9999];
+    
+    
+  // WorldNode* new_world;
+    new_world=malloc(sizeof(WorldNode));
+    memset(new_world,0,sizeof(WorldNode));
+    new_world->display_name=@"Red planet";
+    new_world->file_name=[NSString stringWithFormat:@"%@.eden",genhash()];
+    [new_world->file_name retain];
+    [new_world->display_name retain];
+    [self addWorld:new_world];
+    selected_world=new_world;
+    [sbar setStatus:[NSString stringWithFormat:@"%@ created",new_world->display_name]
+                   :2];
+    [fnbar setStatus:selected_world->display_name :9999];
+    
+    new_world=malloc(sizeof(WorldNode));
+    memset(new_world,0,sizeof(WorldNode));
+    new_world->display_name=@"River Trees";
+    new_world->file_name=[NSString stringWithFormat:@"%@.eden",genhash()];
+    [new_world->file_name retain];
+    [new_world->display_name retain];
+    [self addWorld:new_world];
+    selected_world=new_world;
+    [sbar setStatus:[NSString stringWithFormat:@"%@ created",new_world->display_name]
+                   :2];
+    [fnbar setStatus:selected_world->display_name :9999];
+    
+    
+    new_world=malloc(sizeof(WorldNode));
+    memset(new_world,0,sizeof(WorldNode));
+    new_world->display_name=@"Ice slides";
+    new_world->file_name=[NSString stringWithFormat:@"%@.eden",genhash()];
+    [new_world->file_name retain];
+    [new_world->display_name retain];
+    [self addWorld:new_world];
+    selected_world=new_world;
+    [sbar setStatus:[NSString stringWithFormat:@"%@ created",new_world->display_name]
+                   :2];
+    [fnbar setStatus:selected_world->display_name :9999];
+    
+    new_world=malloc(sizeof(WorldNode));
+    memset(new_world,0,sizeof(WorldNode));
+    new_world->display_name=@"Ponies";
+    new_world->file_name=[NSString stringWithFormat:@"%@.eden",genhash()];
+    [new_world->file_name retain];
+    [new_world->display_name retain];
+    [self addWorld:new_world];
+    selected_world=new_world;
+    [sbar setStatus:[NSString stringWithFormat:@"%@ created",new_world->display_name]
+                   :2];
+    [fnbar setStatus:selected_world->display_name :9999];
+    
+    
+    /*
+     if(g_terrain_type==0){
+     makeDirt();
+     }else if(g_terrain_type==1){
+     makeMars();
+     }else if(g_terrain_type==2){
+     makePonyWorld();
+     }else if(g_terrain_type==3){
+     makeMountains();
+     }else if(g_terrain_type==4){
+     makeDesert();
+     }*/
+    
+	return self;
 }
 -(void)activate{
 	[sbar setStatus:@"Choose world to load" :99999];
@@ -692,21 +772,10 @@ static const int usage_id=7;
 	glEnable(GL_TEXTURE_2D);
 	[sbar render];
 	[fnbar render];
-    if(loading==0){
-        WorldNode* new_world;
-        new_world=malloc(sizeof(WorldNode));
-        memset(new_world,0,sizeof(WorldNode));
-        new_world->display_name=[settings getNewWorldName];
-        new_world->file_name=[NSString stringWithFormat:@"%@.eden",genhash()];
-        [new_world->file_name retain];
-        [new_world->display_name retain];
-        [self addWorld:new_world];
-        selected_world=new_world;
-        [sbar setStatus:[NSString stringWithFormat:@"%@ created",new_world->display_name]
-                       :2];
-        [fnbar setStatus:selected_world->display_name :9999];
+    if(AUTO_LOAD&&loading==0){
+       
         
-        loading=4;
+        loading=2;
     }
 	if(loading){
 		if(loading==2){
@@ -718,6 +787,26 @@ static const int usage_id=7;
                     loading=4;
                 }
                 else{
+                    extern int g_terrain_type;
+                    
+                    g_terrain_type=0;
+                    if([selected_world->display_name isEqualToString:@"Mountains"]){
+                        g_terrain_type=3;
+                    }else if([selected_world->display_name isEqualToString:@"Red planet"]){
+                        g_terrain_type=1;
+                    }else if([selected_world->display_name isEqualToString:@"River Trees"]){
+                        g_terrain_type=2;
+                    }else if([selected_world->display_name isEqualToString:@"Desert"]){
+                        g_terrain_type=4;
+                    }else if([selected_world->display_name isEqualToString:@"Ponies"]){
+                        g_terrain_type=5;
+                    }else if([selected_world->display_name isEqualToString:@"Normal"]){
+                        g_terrain_type=0;
+                    }
+                    g_terrain_type=6;
+                    printf("loading sup:%d\n",g_terrain_type);
+                    loading=4;
+                    /*new world prompt
                     if(![World getWorld].FLIPPED){
                         [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
                     }
@@ -726,7 +815,7 @@ static const int usage_id=7;
                         
                     }
                     [alertWorldType show];
-                    loading++;
+                    loading++;*/
                 }
 				
 				//[sbar clear];

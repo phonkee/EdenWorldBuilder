@@ -12,8 +12,8 @@
 #import "Model.h"
 #define MOVE_SPEED 120.0f
 #define CLIMB_SPEED 3.0f
-#define SPEED_M 4.5f
-//#define SPEED_M 35.0f
+//#define SPEED_M 4.5f
+#define SPEED_M 15.0f
 
 #define YAW_SPEED .4f
 #define PITCH_SPEED .4f
