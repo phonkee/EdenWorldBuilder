@@ -50,6 +50,32 @@ int colorCycle4(int idx,int c){
     return r;
     
 }
+int colorCycle6(int idx,int c){
+    // idx%=6*8;
+    // int h=idx%12;
+    // if(h>=6)h-=6;
+    
+    int color=(idx/12)%(8);
+    //  if(type==1){
+    //     color=8;
+    //}
+    color=c;
+    int hue=idx%8;
+    if(hue>=4)hue=7-hue;
+    //hue-=2;
+    
+    if(hue==6)return 0;
+    
+    int r=(hue*9+color+1);
+    r%=NUM_COLORS;
+    if(r>=NUM_COLORS){
+        printf("r:%d hue:%d color: %d\n",r,hue,color);
+    }
+    
+    
+    return r;
+    
+}
 int colorCycle5(int idx,int c){
     // idx%=6*8;
     // int h=idx%12;
@@ -734,7 +760,7 @@ void makeBeach(){
     [World getWorld].terrain.final_skycolor=colorTable[17];
     //LEVEL_SEED=0;
 	
-	int sealevel=34;
+	int sealevel=33;
     int slideh;
 	const int offsety=T_HEIGHT/2;
     for(int x=0;x<T_SIZE;x++){ //Heightmap
@@ -744,13 +770,17 @@ void makeBeach(){
             float n=offsety;
             float FREQ=1.0f;
             //float FREQ3=4.0f;
-            float AMPLITUDE=2.0f;
+            float AMPLITUDE=18.0f;
             for(int i=0;i<10;i++){
                 float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT
                     ,(float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
                 n+=noise2(vec)*(AMPLITUDE)*var;
+                
                 FREQ*=2;
                 AMPLITUDE/=2;
+            }
+            if(n-offsety>0){
+                n=(n-offsety)/9+offsety;
             }
             h=(int)roundf(n);
             if(h-1>=T_HEIGHT){
@@ -763,14 +793,20 @@ void makeBeach(){
             //
             FORMATION_HEIGHT=T_HEIGHT-1;
             if(h<sealevel){
-                h-=(sealevel-h)*(sealevel-h)/2;
+               // if(h<=31)
+                //    h-=2;
             }
 			for(int y=0;y<h;y++){
 				
                 
-                
+                if(h>=sealevel+2){
+                    BLOCK(x,z,y)=TYPE_GRASS;
+                    COLOR(x,z,y)=0;//colorCycle2(h,2);
+                }else{
                 BLOCK(x,z,y)=TYPE_SAND;
-                COLOR(x,z,y)=2;//colorCycle2(h,2);
+                    
+                COLOR(x,z,y)=colorCycle6(h-1,1);
+                }
                 
                 
                 
@@ -814,7 +850,7 @@ void makeBeach(){
     for(int x=4;x<T_SIZE-4;x++){ //Trees
         for(int z=4;z<T_SIZE-4;z++){
             for(int y=sealevel;y<T_HEIGHT-10;y++){
-                if(BLOCK(x ,z ,y)==TYPE_SAND&&BLOCK(x ,z ,y+1)==TYPE_NONE){
+                if((BLOCK(x ,z ,y)==TYPE_GRASS)&&BLOCK(x ,z ,y+1)==TYPE_NONE){
                     if(randi(90)==0){
                         // printf("making a tree\n");
                         makePalmTree(x,z,y,4);
