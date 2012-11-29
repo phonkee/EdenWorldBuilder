@@ -786,6 +786,8 @@ extern float P_ZFAR;
             makePonies();
         }else if(g_terrain_type==6){
             makeBeach();
+        }else if(g_terrain_type==7){
+            makeMix();
         }
         
 		[self clearDirectory];

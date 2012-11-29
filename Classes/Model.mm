@@ -488,6 +488,7 @@ void LoadModels2(){
                 totalactive++;
                  guys[gc].update=TRUE;
             }else {
+               
                 guys[gc].update=FALSE;
             }
             
@@ -1892,9 +1893,14 @@ bool RenderModels()
     glDisableClientState(GL_COLOR_ARRAY);
     float bounds[6];
     int renderidx=0;
-    printf("rendering model: (%f,%f,%f)\n",guys[0].pos.x,guys[0].pos.y,guys[0].pos.z);
+   
     for(int i=0;i<nguys;i++){
-        if(!guys[i].alive||!guys[i].update)continue;
+        if(!guys[i].alive)continue;
+        if(!guys[i].update){
+            printf("idle model[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
+            continue;
+        }
+         printf("rendering model: (%f,%f,%f)\n",guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
        // while(guys[i].frame > models[guys[i].model_type].nNumFrame-1)
        //    guys[i].frame -= models[guys[i].model_type].nNumFrame-1;
         Vector AA=min[guys[i].model_type];

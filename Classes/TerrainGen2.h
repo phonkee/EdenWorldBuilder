@@ -25,6 +25,9 @@ void makeMountains();
 void makeDesert();
 void makeBeach();
 void makePonies();
+void makeMix();
+void makeVolcano();
+void makeGreenHills(int height);
 void clear();
 void makeCave(int xs,int zs,int ys,int sizex,int sizez,int sizey,int colorScheme);
 

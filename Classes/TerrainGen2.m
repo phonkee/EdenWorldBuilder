@@ -19,6 +19,7 @@
 #import "Globals.h"
 
 #define LEVEL_SEED 400
+#define LEVEL_SEED2 123
 block8 blockz[BLOCKZ_SIZE];
 color8 colorz[BLOCKZ_SIZE];
 extern Vector colorTable[256];
@@ -76,6 +77,32 @@ int colorCycle6(int idx,int c){
     return r;
     
 }
+int colorCycle7(int idx,int c){
+    // idx%=6*8;
+    // int h=idx%12;
+    // if(h>=6)h-=6;
+    idx/=5;
+    int color=(idx/12)%(8);
+    //  if(type==1){
+    //     color=8;
+    //}
+    color=c;
+    int hue=idx%8;
+    if(hue>=5)hue=8-hue;
+    //hue-=2;
+    
+    if(hue==6)return 0;
+    
+    int r=(hue*9+color+1);
+    r%=NUM_COLORS;
+    if(r>=NUM_COLORS){
+        printf("r:%d hue:%d color: %d\n",r,hue,color);
+    }
+    
+    
+    return r;
+    
+}
 int colorCycle5(int idx,int c){
     // idx%=6*8;
     // int h=idx%12;
@@ -117,7 +144,7 @@ int colorCycle3(int idx,int c){
     if(hue>=4)hue=7-hue;
     hue+=3;
     
-    if(hue==6)return 0;
+    if(hue==6)hue=5;
     
     int r=(hue*9+color+1);
     r%=NUM_COLORS;
@@ -175,6 +202,87 @@ int colorCycle(int idx,int type){
     
     
     return r;
+    
+}
+void makeVolcano(int x,int z,int y,int start_radius){
+    
+    
+    int h=1;
+    for(int radius=start_radius;radius>2;radius--){
+        h++;
+        
+        int waves=5;
+        int radius2=radius+waves;
+    for(int i=-radius2;i<=radius2;i++){
+        for(int j=-radius2;j<=radius2;j++){
+            float radius_here=radius2;
+            float angle=atan2f(i,j);
+            radius_here+=3*sinf(12*angle);
+            if(radius_here<0)radius_here=0;
+            if(i*i+j*j<radius_here*radius_here){
+                BLOCK(x+i,z+j,y+h)=TYPE_STONE;
+                COLOR(x+i,z+j,y+h)=36;
+            }
+        }
+    }
+    }
+    
+    for(int iy=0;iy<h/2;iy++){
+        
+        int radius=iy+1;
+        for(int i=-radius;i<=radius;i++){
+            for(int j=-radius;j<=radius;j++){
+                if(i*i+j*j<radius*radius+randi(8)){
+                    BLOCK(x+i,z+j,y+h-iy)=TYPE_LAVA;
+                    COLOR(x+i,z+j,y+h-iy)=0;
+                }
+            }
+        }
+    }
+    
+    Vector pos=MakeVector(x,y+h+1,z);
+    int look;
+    for(int i=0;i<405;i++){
+        BLOCK(pos.x,pos.z,pos.y)=TYPE_LAVA;
+        COLOR(pos.x,pos.z,pos.y)=0;
+        
+        if(BLOCK(pos.x,pos.z,pos.y-1)==TYPE_STONE&&
+         (BLOCK(pos.x,pos.z,pos.y)==TYPE_NONE||BLOCK(pos.x,pos.z,pos.y)==TYPE_LAVA)){
+            pos.y--;
+            continue;
+        }
+        
+        Vector new_pos=pos;
+
+        if(arc4random()%2==0){
+            if(arc4random()%2==0){
+                new_pos.x+=1;
+            }else{
+                new_pos.x-=1;
+        
+            }
+        }else{
+            if(arc4random()%2==0){
+                new_pos.z+=1;
+            }else{
+                new_pos.z-=1;
+                
+            }
+        }
+        if(BLOCK(new_pos.x,new_pos.z,new_pos.y)==TYPE_NONE){
+            pos=new_pos;
+            look=0;
+            continue;
+        }
+            
+        
+        
+        look++;
+
+    }
+
+
+    
     
 }
 void makeTree(int x,int z,int y){
@@ -719,6 +827,7 @@ void makeMars(){
         }while(pos.x==-1);
         
     }
+    makeVolcano(T_SIZE/2,T_SIZE/2,1,30);
    /* for(int zz=0;zz<3;zz++){
     int x=randi(T_SIZE-10)+5;
     int z=randi(T_SIZE-10)+5;
@@ -753,6 +862,125 @@ void makeMars(){
     [World getWorld].terrain.final_skycolor=  colorTable[10];
     printf("sky %f,%f,%f\n",  [World getWorld].terrain.final_skycolor.x,  [World getWorld].terrain.final_skycolor.y,  [World getWorld].terrain.final_skycolor.z);
 	
+}
+void makeMix(){
+    makeGreenHills(T_HEIGHT/3);
+    
+    float var=3;  //how much variance in heightmap?
+    //LEVEL_SEED=0;
+	[World getWorld].terrain.final_skycolor=colorTable[6];
+	
+	const int offsety=T_HEIGHT/2-10;
+    for(int x=0;x<T_SIZE;x++){ //Heightmap
+		for(int z=0;z<T_SIZE;z++){
+            int h;
+            
+            float n=offsety;
+            float FREQ=1.0f;
+            //float FREQ3=4.0f;
+            float AMPLITUDE=20.0f;
+            for(int i=0;i<10;i++){
+                float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT
+                    ,(float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
+                n+=noise2(vec)*(AMPLITUDE)*var;
+                FREQ*=2;
+                AMPLITUDE/=2;
+            }
+            h=(int)roundf(n);
+            if(h-1>=T_HEIGHT){
+                NSLog(@"NONONO");
+            }
+            
+			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply
+            //The deeper the 3D noise and the more variance in heightmap,
+            //The more intense the terrain is
+            //
+            FORMATION_HEIGHT=T_HEIGHT-1;
+			
+			for(int y=0;y<h;y++){
+				
+                // if(y>(h%2+1)&&y<FORMATION_HEIGHT-16){
+                
+                BLOCK(x,z,y)=TYPE_STONE;
+                COLOR(x,z,y)=colorCycle7(y+10,8);//colorCycle3(y+30,8);
+                //COLOR(x,z,y)=colorCycle3(y+30,1);
+                
+                
+                
+                
+				
+			}
+			
+            
+		}
+		
+	}
+    
+    /*for(int x=0;x<T_SIZE;x++){
+		for(int z=0;z<T_SIZE;z++){
+            //   BLOCK(x ,z ,0)=TYPE_SAND;
+			int snowlevel=34;
+			for(int y=snowlevel;y<T_HEIGHT;y++){
+                if(y==34||y==35)if(arc4random()%2==0)continue;
+                
+                if(y==36||y==37)if(arc4random()%2==0)continue;
+                
+                if(y==38||y==39)if(arc4random()%2==0&&arc4random()%2==0)continue;
+                
+				if(BLOCK(x ,z ,y)==TYPE_NONE){
+					if(BLOCK(x ,z ,y-1)==TYPE_STONE){
+                        
+                        BLOCK(x ,z ,y-1 )=TYPE_CLOUD;
+                        COLOR(x ,z ,y-1 )=9;
+                        if(BLOCK(x,z,y-2)==TYPE_STONE){
+                            BLOCK(x,z,y-2)=TYPE_CLOUD;
+                            COLOR(x,z,y-2)=9;
+                        }
+					}
+				}else{
+					
+					
+					
+				}
+				
+			}
+			
+		}
+	}*/
+    //  int sea_level=-14;
+    for(int x=0;x<T_SIZE;x++){
+		for(int z=0;z<T_SIZE;z++){
+            //BLOCK(x ,z ,0)=TYPE_SAND;
+			
+			for(int y=3;y<6;y++){
+				if(BLOCK(x ,z ,y)==TYPE_NONE){
+                    for(int iy=1;iy<3;iy++){
+                        BLOCK(x,z,y-iy)=TYPE_WATER;
+                        COLOR(x,z,y-iy)=0;
+                    }
+                }else{
+					
+					
+					
+				}
+				
+			}
+			
+		}
+	}
+    for(int x=4;x<T_SIZE-4;x++){ //Trees
+        for(int z=4;z<T_SIZE-4;z++){
+            for(int y=4;y<T_HEIGHT-10;y++){
+                if(BLOCK(x ,z ,y)==TYPE_GRASS&&BLOCK(x ,z ,y+1)==TYPE_NONE){
+                    if(randi(300)==0){
+                        // printf("making a tree\n");
+                        makeTree2(x,z,y,12);
+                    }
+                }
+            }
+        }
+    }
+    
 }
 void makeBeach(){
     float var=3;  //how much variance in heightmap?
@@ -1073,12 +1301,12 @@ void makePonies(){
     makeCave(0,0,2,T_SIZE,T_SIZE,T_HEIGHT/2,1);
         [World getWorld].terrain.final_skycolor=colorTable[17];
 }
-void makeGreenHills(){
+void makeGreenHills(int height){
     float var=3;  //how much variance in heightmap?
     //LEVEL_SEED=0;
 	[World getWorld].terrain.final_skycolor=colorTable[15];
 	
-	const int offsety=T_HEIGHT/2;
+	const int offsety=height;;
     for(int x=0;x<T_SIZE;x++){ //Heightmap
 		for(int z=0;z<T_SIZE;z++){
             int h;
@@ -1088,8 +1316,8 @@ void makeGreenHills(){
             //float FREQ3=4.0f;
             float AMPLITUDE=8.0f;
             for(int i=0;i<10;i++){
-                float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT
-                    ,(float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
+                float vec[2]={(float)FREQ*(x+LEVEL_SEED2)/NOISE_CONSTANT
+                    ,(float)FREQ*(z+LEVEL_SEED2)/NOISE_CONSTANT};
                 n+=noise2(vec)*(AMPLITUDE)*var;
                 FREQ*=2;
                 AMPLITUDE/=2;
@@ -1135,7 +1363,7 @@ void makeGreenHills(){
 					if(BLOCK(x ,z ,y-1)==TYPE_DIRT){
                         
 							BLOCK(x ,z ,y-1 )=TYPE_GRASS;
-                        COLOR(x ,z ,y-1 )=colorCycle3(y-1,3);
+                        COLOR(x ,z ,y-1 )=colorCycle3(y+30,3);
 					}
 				}else{
 					
@@ -1147,7 +1375,7 @@ void makeGreenHills(){
 			
 		}
 	}
-    int sea_level=7;
+    int sea_level=-3;
     for(int x=0;x<T_SIZE;x++){
 		for(int z=0;z<T_SIZE;z++){
             //BLOCK(x ,z ,0)=TYPE_SAND;
@@ -1453,7 +1681,7 @@ void makeMountains(){
  COLOR(x,z,y)=colorCycle3(y+30,8);
  //  COLOR(x,z,y)=colorCycle3(h+30,1);
  */
-int g_terrain_type=0;
+int g_terrain_type=7;
 void clear(){
     [World getWorld].terrain.final_skycolor=colorTable[9];
     

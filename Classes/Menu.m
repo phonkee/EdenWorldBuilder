@@ -803,8 +803,8 @@ static const int usage_id=7;
                     }else if([selected_world->display_name isEqualToString:@"Normal"]){
                         g_terrain_type=0;
                     }
-                    g_terrain_type=6;
-                    printf("loading sup:%d\n",g_terrain_type);
+                    g_terrain_type=1;
+                   
                     loading=4;
                     /*new world prompt
                     if(![World getWorld].FLIPPED){

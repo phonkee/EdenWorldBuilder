@@ -1736,6 +1736,17 @@ static int icesound=0;
             Vector2 ret=[[World getWorld].terrain.portals enterPortal:pos.x 
                                              :pos.y+boxbase/2 
                                                                      :pos.z:vel];
+            
+            [World getWorld].hud.flash=1;
+            int color=[[World getWorld].terrain getColor:pos.x
+                                             :pos.z
+                                             :pos.y+boxbase/2];
+            
+            if(color==0){
+                [World getWorld].hud.flashcolor=MakeVector(1.0,1.0,1.0);
+            }else
+            [World getWorld].hud.flashcolor=colorTable[color];
+            
             pos.x=ret.x;
             pos.y=ret.y;
             pos.z=ret.z;
