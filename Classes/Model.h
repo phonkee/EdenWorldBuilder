@@ -18,5 +18,6 @@ void ExplodeModels(Vector pos);
 void SaveModels();
 void LoadModels2();
 void setViewNow();
-
+float wrapx(float x);
+float wrapz(float z);
 void CalcEnvMap(vertexObject* vert);

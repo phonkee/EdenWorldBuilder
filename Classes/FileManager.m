@@ -432,14 +432,15 @@ extern int g_offcz;
 */
 		[rcfile seekToFileOffset:colIndex->chunk_offset];
         TerrainChunk* columns[CHUNKS_PER_COLUMN];
-        for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
+         for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
             int bounds[6];
+            
             bounds[0]=cx*CHUNK_SIZE;
             bounds[1]=cy*CHUNK_SIZE;
             bounds[2]=cz*CHUNK_SIZE;
             bounds[3]=(cx+1)*CHUNK_SIZE;
             bounds[4]=(cy+1)*CHUNK_SIZE;
-            bounds[5]=(cz+1)*CHUNK_SIZE;		
+            bounds[5]=(cz+1)*CHUNK_SIZE;
             
             TerrainChunk* chunk;
             
@@ -788,6 +789,8 @@ extern float P_ZFAR;
             makeBeach();
         }else if(g_terrain_type==7){
             makeMix();
+        }else if(g_terrain_type==8){
+            genflat=TRUE;
         }
         
 		[self clearDirectory];

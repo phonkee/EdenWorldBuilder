@@ -275,6 +275,7 @@ extern bool hitCustom;
 			if(mode==MODE_MINE||mode==MODE_BUILD||mode==MODE_BURN||mode==MODE_PAINT){
 				if(touches[i].placeBlock){
 					Point3D point;
+                    if(fwc_result!=-1)printf("hit model: %d\n",fwc_result);
 					if(mode==MODE_BUILD){
 						point=findWorldCoords(touches[i].my,touches[i].mx,FC_PLACE);
                         

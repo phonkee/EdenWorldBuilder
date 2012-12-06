@@ -210,6 +210,9 @@ static Polyhedra mpolys[NUM_CREATURES];
 
 CPVRTModelPOD		models[NUM_CREATURES];
 
+extern int g_offcx;
+extern int g_offcz;
+
 	// View and Projection Matrices
 	PVRTMat4			m_mView;
 
@@ -484,7 +487,7 @@ void LoadModels2(){
             else 
                 guys[gc].touched=FALSE;
             guys[gc].life=START_LIFE;
-            if(creatureData[i].pos.x>0&&creatureData[i].pos.z>0&&creatureData[i].pos.x<T_SIZE  &&creatureData[i].pos.z<T_SIZE ){
+            if(creatureData[i].pos.x>0&&creatureData[i].pos.z>0&&creatureData[i].pos.x<T_SIZE&&creatureData[i].pos.z<T_SIZE ){
                 totalactive++;
                  guys[gc].update=TRUE;
             }else {
@@ -504,12 +507,13 @@ void LoadModels2(){
         
     }
 
-    Vector player_pos=[World getWorld].player.pos;
+   // Vector player_pos=[World getWorld].player.pos;
     while(totalactive<40&&gc<nguys){
         ResetModel(gc);
         guys[gc].targetangle=randf(3.14f*2);
         //guys[gc].pos=PVRTVec3(arc4random()%25+90,arc4random()%5+32,T_HEIGHT);
-        guys[gc].pos=PVRTVec3(arc4random()%T_SIZE+player_pos.x,T_HEIGHT,arc4random()%T_SIZE+player_pos.z);
+        guys[gc].pos=PVRTVec3(arc4random()%T_SIZE,T_HEIGHT-15,arc4random()%T_SIZE);
+     //   printf("player_pos: %f,%f\n",player_pos.x,player_pos.z);
         int breakout=50;
         while(!SimpleCollision(&guys[gc])&&guys[gc].pos.y>=0&&breakout>0){
             guys[gc].pos.y-=1;
@@ -517,20 +521,21 @@ void LoadModels2(){
         }
         int ltype=0,type=0;;
         breakout=50;
-        while(guys[gc].pos.y<=100&&breakout>0){
+        while(guys[gc].pos.y<=T_HEIGHT-15&&breakout>0){
             ltype=type;
             breakout--;
             type=SimpleCollision(&guys[gc]);
             if(type==0)break;
             guys[gc].pos.y+=1;
         }
-        if(ltype!=TYPE_GRASS&&ltype!=TYPE_GRASS2&&ltype!=TYPE_GRASS3&&ltype!=TYPE_DIRT){
+      /*  if(ltype!=TYPE_GRASS&&ltype!=TYPE_GRASS2&&ltype!=TYPE_GRASS3&&ltype!=TYPE_DIRT){
             totalactive++;
             guys[gc].alive=FALSE;
             //printf("type:%d\n",ltype);
             
             continue;
-        }
+        }*/
+         printf("creating creature:%d pos:(%f,%f,%f)\n",gc,guys[gc].pos.x,guys[gc].pos.y,guys[gc].pos.z);
         guys[gc].model_type=arc4random()%(NUM_CREATURES);
         guys[gc].state=0;   
         guys[gc].touched=FALSE;
@@ -543,6 +548,7 @@ void LoadModels2(){
 
         gc++;
     }
+   
     while(gc<nguys){
         ResetModel(gc);
         guys[gc].alive=false;
@@ -560,20 +566,36 @@ void setState(int idx,int state){
     }
     
 }
-
+float wrapx(float x){
+    int ggx=((int)x+g_offcx)%T_SIZE;
+    return (x-(int)x)+ggx;
+}
+float wrapz(float z){
+    int ggz=((int)z+g_offcz)%T_SIZE;
+    return (z-(int)z)+ggz;
+}
 int PointTestModels(float x,float y,float z){
     for(int i=0;i<nguys;i++){
         if(!guys[i].alive||!guys[i].update)continue;
         Entity* e=&guys[i];
-       
-        float ax=e->pos.x-x;
-        float az=e->pos.z-z;
+        
+     /*   int ggx=((int)x+g_offcx)%T_SIZE;
+        int ggz=((int)z+g_offcz)%T_SIZE;
+        
+        float xx=(x-(int)x)+ggx;
+        float zz=(z-(int)z)+ggz;*/
+        float ax=e->pos.x-wrapx(x);
+        float az=e->pos.z-wrapz(z);
         
         float bot=e->pos.y+dmin[e->model_type].y;
         float top=e->pos.y+dmax[e->model_type].y;
         
         if(ax*ax+az*az<=mradius[e->model_type]*mradius[e->model_type]&&y>=bot&&y<=top){
             return i;
+        }else{
+           // if(ax*ax+az*az<=mradius[e->model_type]*mradius[e->model_type])
+           //     printf("missed y?\n");
+           // printf("distance from hit: %f,%f, 2(%f,%f)\n",ax,az,e->pos.x,x);
         }
 
     }
@@ -607,8 +629,12 @@ void ExplodeModels(Vector p){
         
     }
     Player* e=[World getWorld].player;
+    PVRTVec3 player_pos=MakePVR([World getWorld].player.pos);
+    player_pos.x=wrapx(player_pos.x);
+    player_pos.z=wrapz(player_pos.z);
     PVRTVec3 pos=PVRTVec3(p);
-    PVRTVec3 ppos=PVRTVec3(e.pos);
+    PVRTVec3 ppos=player_pos;
+    
     
     pos=ppos-p;
     if(pos.lenSqr()<EXPLOSION_RADIUS*EXPLOSION_RADIUS){    
@@ -648,8 +674,11 @@ bool CheckCollision(Entity* e){
             e->ragetimer=0;
         
             Player* ep=[World getWorld].player;
+            PVRTVec3 player_pos=MakePVR([World getWorld].player.pos);
+            player_pos.x=wrapx(player_pos.x);
+            player_pos.z=wrapz(player_pos.z);
             PVRTVec3 pos=PVRTVec3(e->pos);
-            PVRTVec3 ppos=PVRTVec3(ep.pos);
+            PVRTVec3 ppos=player_pos;
             pos=ppos-e->pos;
             
                 float hit_force=(EXPLOSION_RADIUS*EXPLOSION_RADIUS)/6;
@@ -699,7 +728,12 @@ bool CheckCollision(Entity* e){
                     pbox2=makeBox(bleft,bright,bback,bfront,bbot,btop);
                 
                 
-                if(collidePolyhedra(e->box,pbox2)){                    
+                
+                int ggx=(x+g_offcx)%T_SIZE;
+                int ggz=(z+g_offcz)%T_SIZE;
+                
+                
+                if(collidePolyhedra(e->box,pbox2)){
                     if(blockinfo[type]&IS_WATER){
                         if(!e->lastInLiquid&&minTranDist.y>0&&e->vel.y<-6){
                             e->lastInLiquid=TRUE;
@@ -713,8 +747,14 @@ bool CheckCollision(Entity* e){
                         if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){                            
                           
                         }
-                        
-                        
+                       
+                        for(int yy=0;yy<T_HEIGHT;yy++){
+                            if(getLandc(ggx,ggz,yy)==TYPE_CLOUD&&[[World getWorld].terrain getColor:ggx:ggz:yy]!=e->idx){
+                                //    printf("setting color: %d,%d,%d local:(%d,%d)\n",ggx,ggz,y,x,z);
+                                [[World getWorld].terrain paintBlock:ggx:ggz:yy:e->idx];
+                            }
+                            
+                        }
                         collided=type;
                         minminTranDist=minTranDist;
                     }            
@@ -1029,8 +1069,8 @@ void UpdateModels(float etime){
            
            
         }else {
-          
-            guys[i].update=FALSE;
+         // printf("")
+         //   guys[i].update=FALSE;
         }
         if(guys[i].model_type<0||guys[i].model_type>NUM_CREATURES)guys[i].alive=FALSE;
     }
@@ -1114,8 +1154,12 @@ void UpdateModels(float etime){
         if(guys[i].onground&&(guys[i].justhit||guys[i].runaway>0||guys[i].ragetimer>0)&&guys[i].state!=DEFAULT_WALK){
             endCycle=TRUE;
         }
+        PVRTVec3 player_pos=MakePVR([World getWorld].player.pos);
+        player_pos.x=wrapx(player_pos.x);
+        player_pos.z=wrapz(player_pos.z);
         if((guys[i].onground||guys[i].inLiquid)&&endCycle&&!guys[i].onIce){
-            float distance=(MakePVR([World getWorld].player.pos)-guys[i].pos).lenSqr();
+            
+            float distance=(player_pos-guys[i].pos).lenSqr();
             float distance_fade=4.0f;
             if(distance<distance_fade*distance_fade&&guys[i].insideView&&guys[i].ragetimer<=0){
                 if(!guys[i].greeted){
@@ -1128,8 +1172,8 @@ void UpdateModels(float etime){
                           
                     Vector dir;
                     
-                    dir.x=guys[i].pos.x-[World getWorld].player.pos.x;
-                    dir.z=guys[i].pos.z-[World getWorld].player.pos.z;
+                    dir.x=guys[i].pos.x-player_pos.x;
+                    dir.z=guys[i].pos.z-player_pos.z;
                     
                     
                     guys[i].targetangle=(atan2(dir.z,dir.x)-atan2(0,1))+M_PI_2;
@@ -1162,8 +1206,8 @@ void UpdateModels(float etime){
                     dir.x=guys[i].pos.x-guys[i].dest.x;
                     dir.z=guys[i].pos.z-guys[i].dest.z;
                 }else{
-                dir.x=guys[i].pos.x-[World getWorld].player.pos.x;
-                dir.z=guys[i].pos.z-[World getWorld].player.pos.z;
+                dir.x=guys[i].pos.x-player_pos.x;
+                dir.z=guys[i].pos.z-player_pos.z;
                 }
                 if(guys[i].ragetimer>0||guys[i].gotoDest>0){
                     guys[i].targetangle=(atan2(dir.z,dir.x)-atan2(0,1))+M_PI_2;
@@ -1334,8 +1378,7 @@ bool LoadModels(const char* pszReadPath)
              cmin[i].z=-.19f;
              cmax[i].z=.19f;
              
-             cmin[i].z+=.28f;
-             cmax[i].z+=.28f;
+            
              
          }
         if(i==M_STUMPY){
@@ -1498,8 +1541,9 @@ void HitModel(int idx,Vector hitpoint){
     if(idx>=0&&idx<nguys){
         guys[idx].touched=TRUE;
         Vector dir;
-        dir.x=guys[idx].pos.x-hitpoint.x;
-        dir.z=guys[idx].pos.z-hitpoint.z;
+       // printf("hitpoint (%f,%f)\n",guys[idx].pos.x,hitpoint.x);
+        dir.x=guys[idx].pos.x-wrapx(hitpoint.x);
+        dir.z=guys[idx].pos.z-wrapz(hitpoint.z);
         dir.y=0;
         NormalizeVector(&dir);
         guys[idx].state=0;
@@ -1721,7 +1765,8 @@ void DrawShadows(){
         }else{
             if(!guys[i].alive||!guys[i].update||!guys[i].insideView)continue;
        	}
-        Vector vpos=MakeVector(guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
+        Vector vpos=MakeVector(guys[i].pos.x-16,guys[i].pos.y,guys[i].pos.z-16);
+        //if(guys[i].model_type==M_GREEN)vpos.x-=.5f;
         float x=vpos.x;
         float z=vpos.z;       
         float y=(int)(min[guys[i].model_type].y*scale+vpos.y+.01)+.01f;
@@ -1788,7 +1833,12 @@ int compare_creatures (const void *a, const void *b)
     
     int first=*((int*)(a));
     int second=*((int*)(b));
-    Vector cam=[World getWorld].player.pos;
+    
+    Vector player_pos=[World getWorld].player.pos;
+    player_pos.x=wrapx(player_pos.x);
+    player_pos.z=wrapz(player_pos.z);
+    
+    Vector cam=player_pos;
     Vector center=MakeVector(guys[first].pos.x,guys[first].pos.y,guys[first].pos.z);
     
     float dist=(cam.x-center.x)*(cam.x-center.x)+
@@ -1814,7 +1864,11 @@ int compare_creatures2 (const void *a, const void *b)
     
     int first=((Entity*)(a))->idx;
     int second=((Entity*)(b))->idx;
-    Vector cam=[World getWorld].player.pos;
+    
+    Vector player_pos=[World getWorld].player.pos;
+    player_pos.x=wrapx(player_pos.x);
+    player_pos.z=wrapz(player_pos.z);
+    Vector cam=player_pos;
     if(first<0||first>nguys||!guys[first].alive){
         if(second<0||second>nguys||!guys[second].alive)return 0;
         else 
@@ -1897,10 +1951,12 @@ bool RenderModels()
     for(int i=0;i<nguys;i++){
         if(!guys[i].alive)continue;
         if(!guys[i].update){
-            printf("idle model[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
+            printf("model alive but not updating[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
             continue;
+        }else{
+           
         }
-         printf("rendering model: (%f,%f,%f)\n",guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
+       
        // while(guys[i].frame > models[guys[i].model_type].nNumFrame-1)
        //    guys[i].frame -= models[guys[i].model_type].nNumFrame-1;
         Vector AA=min[guys[i].model_type];
@@ -1914,20 +1970,25 @@ bool RenderModels()
         if(!(ViewTestAABB(bounds,VT_INSIDE)&VT_OUTSIDE)){
             guys[i].insideView=TRUE;
             renderlistc[renderidx++]=i;
-           // guys[i].angle=0;
+            //printf("model in view[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
            
         }else{
-             guys[i].insideView=FALSE;
+             guys[i].insideView=TRUE;
+            renderlistc[renderidx++]=i;
+            //printf("model out of view(but active/alive)[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
         }
     }
+   // printf("rendering: %d\n",max_render);
      qsort (renderlistc, renderidx, sizeof (int), compare_creatures);
     max_render=renderidx;
-    int mmax=30;
+    int mmax=50;//30;
     extern bool SUPPORTS_OGL2;
     if(!SUPPORTS_OGL2)mmax=10;
     if(max_render>mmax)max_render=mmax;
     for(int j=0;j<max_render;j++){
+          
         int i=renderlistc[j];
+     //   printf("rendering model: (%f,%f,%f)\n",guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
         if(guys[i].color==0||guys[i].ragetimer>0){
             if(guys[i].flash!=0){
                 glColor4f(1,1-guys[i].flash,1-guys[i].flash,1);
@@ -1960,7 +2021,7 @@ bool RenderModels()
             }
             
             
-            DrawModel(i); 
+            DrawModel(i);
             glColor4f(1,1,1,1);
         }
     
@@ -1976,7 +2037,7 @@ bool RenderModels()
            
             glColor4f(clr.x,clr.y,clr.z,.5f);
         }
-        DrawModel(nguys); 
+        DrawModel(nguys);
        
         glDisable(GL_BLEND);
     }
@@ -1990,13 +2051,15 @@ bool RenderModels()
     glColor4f(1,0,0,1);
     glDisable(GL_TEXTURE_2D);
     glScalef(1/scale,1/scale,1/scale);
-    /*
+    glLineWidth(1.0f);
     glDisable(GL_DEPTH_TEST);
     for(int i=0;i<nguys;i++){
         if(!guys[i].alive)continue;
       //  Vector vpos=MakeVector(guys[i].pos.x*1/scale,guys[i].pos.y*1/scale,guys[i].pos.z*1/scale);
         
        // DrawBox(v_add(min[guys[i].model_type],vpos),v_add(max[guys[i].model_type],vpos));
+        guys[i].pos.x-=16;
+        guys[i].pos.z-=16;
         glColor4f(1,1,1,1);
         DrawBox(centers[guys[i].model_type]+guys[i].pos-mradius[guys[i].model_type],
                 centers[guys[i].model_type]+guys[i].pos+mradius[guys[i].model_type]);
@@ -2008,10 +2071,13 @@ bool RenderModels()
         DrawBox(guys[i].pos-PVRTVec3(.1f,.1f,.1f),
                 guys[i].pos+PVRTVec3(.1f,.1f,.1f));
         glColor4f(1,0,0,1);
+        
+        guys[i].pos.x+=16;
+        guys[i].pos.z+=16;
         //DrawBox(&guys[i].box);
         
     }
-     glEnable(GL_DEPTH_TEST);*/
+     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
     
     
@@ -2036,6 +2102,12 @@ void DrawModel(int mi)
     float frame=guys[mi].frame;
     float angle=guys[mi].angle;
     PVRTVec3 position=guys[mi].pos;
+    if(guys[mi].model_type==M_GREEN){
+        position.x+=.35f;
+    }
+    position.x-=16;
+    position.z-=16;
+    //position.y-=64;
     int modelType=guys[mi].model_type;
 	//Set the frame number
     if(modelType==M_BATTY){

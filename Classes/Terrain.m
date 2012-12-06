@@ -1028,6 +1028,8 @@ int getShadow(int x,int z,int y){
 inline int getLandc2(int x,int z,int y){	
     if(y<0||y>=T_HEIGHT)return -1;
     return blockarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y];
+    
+    
 }
 int getCustomc(int x,int z,int y){
    
