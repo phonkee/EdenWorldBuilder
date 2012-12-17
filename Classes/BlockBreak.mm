@@ -541,7 +541,28 @@ extern const int blockTypeFaces[NUM_BLOCKS+1][6];
         else{
            bf=blockTypeFaces[TYPE_CLOUD][arc4random()%6]; 
         }
-       
+        
+        
+        if(type==TYPE_FIREWORK&&color==0){
+            int ttc=color;
+            if(ttc==0)
+                ttc=arc4random()%53+1;
+            for(int j=0;j<12;j++){
+                
+                Vector clr=colorTable[ttc];
+                pbuffer2[pvbi+j].colors[0]=(int)(clr.x*255)%256;
+                pbuffer2[pvbi+j].colors[1]=(int)(clr.y*255)%256;
+                pbuffer2[pvbi+j].colors[2]=(int)(clr.z*255)%256;
+                if(pbuffer2[pvbi+j].colors[0]<100)pbuffer2[pvbi+j].colors[0]=100;
+                if(pbuffer2[pvbi+j].colors[1]<100)pbuffer2[pvbi+j].colors[1]=100;
+                if(pbuffer2[pvbi+j].colors[2]<100)pbuffer2[pvbi+j].colors[2]=100;
+                
+                
+                pbuffer2[pvbi+j].colors[3]=255;
+            }
+           
+            
+        }else{
         for(int j=0;j<12;j++){
             if(color==0){  
                 if(type<NUM_CREATURES){
@@ -564,6 +585,7 @@ extern const int blockTypeFaces[NUM_BLOCKS+1][6];
             }
             
             pbuffer2[pvbi+j].colors[3]=255;		
+        }
         }
         CGPoint tp;
         

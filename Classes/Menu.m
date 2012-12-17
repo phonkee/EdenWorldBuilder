@@ -803,7 +803,7 @@ static const int usage_id=7;
                     }else if([selected_world->display_name isEqualToString:@"Normal"]){
                         g_terrain_type=0;
                     }
-                    g_terrain_type=4;
+                  //  g_terrain_type=2;
                    
                     loading=4;
                     /*new world prompt

@@ -43,6 +43,9 @@ Be aware that the content of the generated textures will be upside-down!
 	GLfloat						_maxS,
 								_maxT;
 }
+
+CGImageRef ManipulateImagePixelData(CGImageRef inImage,CGImageRef inMask,int color);
+
 - (id) initWithData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
 - (id) initWithData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width 
 		 pixelsHigh:(NSUInteger)height contentSize:(CGSize)size generateMips:(BOOL)genMips;
@@ -99,3 +102,5 @@ Note that the generated textures are of type A8 - use the blending mode (GL_SRC_
 
 + (void) drawTexture:(Texture2D*)texture atPoint:(CGPoint)point depth:(CGFloat)depth;
 @end
+
+

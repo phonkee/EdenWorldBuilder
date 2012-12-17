@@ -83,6 +83,8 @@ Vector colorTable[256];
 @synthesize mode,blocktype,leftymode,use_joystick,paintColor,liquidColor,block_paintcolor,heartbeat,goldencubes,build_size;
 @synthesize m_jump,m_back,m_fwd,m_left,m_right,test_a,m_joy,fps,justLoaded,flash,flashcolor;
 @synthesize sb,hideui,take_screenshot,underLiquid,holding_creature,creature_color,inmenu,var1,var2,var3;
+
+
 - (void)setLeftymode:(int)m{
 	/*leftymode=m;
      if(leftymode){		
@@ -105,8 +107,13 @@ Vector colorTable[256];
 	
 }
 static UIAlertView *alertWarpHome;
-
+static Vector test1;
+static Vector test2;
+static CGRect test1r;
+static CGRect test2r;
+extern BOOL IS_WIDESCREEN;
 - (id)init{
+    
     fps=60;
 	flash=-1;
     build_size=1;
@@ -174,6 +181,11 @@ static UIAlertView *alertWarpHome;
 		marginRight*=1.5;
 		sbrect.size.height*=2;
 	}*/
+    if(IS_WIDESCREEN){
+       // printf("It's widescreen homie!\n");
+        marginLeft2+=57;
+        
+    }
 	for(int i=0;i<NUM_DISPLAY_BLOCKS;i++){
 		
 		blockBounds[i].origin.x=7+BLOCK_ICON_SPACING+marginLeft2+(BLOCK_ICON_SPACING+BLOCK_ICON_SIZE)*c;
@@ -278,7 +290,10 @@ static UIAlertView *alertWarpHome;
     rtCam=ButtonMake(rcam.origin.x+57,rcam.origin.y+5,180/2,56/2);
     rtExit=ButtonMake(rexit.origin.x+57,rexit.origin.y+5,180/2,56/2);
 
-    
+    test1r=CGRectMake(0,0,50,50);
+    test2r=CGRectMake(0,0,100,100);
+    test1=MakeVector(randf(1),randf(1),randf(1));
+    test2=colorTable[lookupColor(test1)];
     
 	return self;
 }
@@ -365,7 +380,8 @@ int flamecount=0;
         heartbeat=TRUE;
 		fps=fpsc;
        // float fpsf=1/[World getWorld].realtime;
-      
+        test1=MakeVector(randf(1),randf(1),randf(1));
+        test2=colorTable[lookupColor(test1)];
        //  [sb setStatus:[NSString stringWithFormat:@"FPS: %d chunks:%d vertices:%d",fpsc,var1,var2] :2];
        //[sb setStatus:[NSString stringWithFormat:@"FPS: %d player:(%.1f,%.1f)",fpsc,[World getWorld].player.pos.x,[World getWorld].player.pos.z] :2];
 		//printf("Fps:%d   vertices:%d   max_vertices:%d chunks:%d.\n",fpsc,vertices_rendered,max_vertices,chunks_rendered);
@@ -652,7 +668,7 @@ int flamecount=0;
                 if(mode==MODE_PICK_COLOR){
                     mode=MODE_PAINT;
                     paintColor=pressed+1;
-                    printf("paint color:%d\n",paintColor);
+                    printf("paint color-1:%d\n",paintColor-1);
                 }
                 pressed=-1;
                 
@@ -1213,6 +1229,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 	glColor4f(1.0, 1.0, 1.0, at2);	
 	CGRect rblocksframe;
 	rblocksframe.origin.x=marginLeft2;
+    
 	rblocksframe.origin.y=marginVert+10;
 	rblocksframe.size.width=402;
 	rblocksframe.size.height=282;
@@ -1684,9 +1701,13 @@ static int lmode=MODE_NONE;
 		glDisable(GL_TEXTURE_2D);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glColor4f(liquidColor.x, liquidColor.y, liquidColor.z, 0.5f);
-        if(IS_IPAD)
-            [Graphics drawRect:0:0:IPAD_WIDTH:IPAD_HEIGHT];
-        else
+        if(IS_IPAD){
+            if(IS_RETINA){
+                [Graphics drawRect:0:0:SCREEN_WIDTH*2:SCREEN_HEIGHT*2];
+            }else
+                [Graphics drawRect:0:0:IPAD_WIDTH:IPAD_HEIGHT];
+           
+        }else
             [Graphics drawRect:0:0:SCREEN_WIDTH:SCREEN_HEIGHT];
 		glEnable(GL_TEXTURE_2D);
 
@@ -1702,15 +1723,29 @@ static int lmode=MODE_NONE;
         }else
          glColor4f(1.0, 0.0, 0.0, [World getWorld].player.flash);
         
-        if(IS_IPAD)
+        if(IS_IPAD){
+            if(IS_RETINA){
+                 [Graphics drawRect:0:0:SCREEN_WIDTH*2:SCREEN_HEIGHT*2];
+            }else
             [Graphics drawRect:0:0:IPAD_WIDTH:IPAD_HEIGHT];
-        else
+        }else
             [Graphics drawRect:0:0:SCREEN_WIDTH:SCREEN_HEIGHT];
 		glEnable(GL_TEXTURE_2D);
         
 		
 	}
+    glDisable(GL_TEXTURE_2D);
+    glColor4f(test2.x,test2.y,test2.z,1.0f);
+    
+    [Graphics drawRect:test2r.origin.x:test2r.origin.y:test2r.size.width:test2r.size.height];
+    glColor4f(test1.x,test1.y,test1.z,1.0f);
    
+     [Graphics drawRect:test1r.origin.x:test1r.origin.y:test1r.size.width:test1r.size.height];
+   
+
+    glColor4f(1.0f,1.0f,1.0f,1.0f);
+  
+    glEnable(GL_TEXTURE_2D);
     
      [Graphics endHud];
 }

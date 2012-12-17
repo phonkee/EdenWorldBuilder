@@ -217,10 +217,205 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 {
 	return [self initWithImagePath:path sizeToFit:sizeToFit pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
 }
+CGContextRef CreateARGBBitmapContext (CGImageRef inImage)
+{
+    CGContextRef    context = NULL;
+    CGColorSpaceRef colorSpace;
+    void *          bitmapData;
+    int             bitmapByteCount;
+    int             bitmapBytesPerRow;
+    
+    // Get image width, height. We'll use the entire image.
+    size_t pixelsWide = CGImageGetWidth(inImage);
+    size_t pixelsHigh = CGImageGetHeight(inImage);
+    
+    // Declare the number of bytes per row. Each pixel in the bitmap in this
+    // example is represented by 4 bytes; 8 bits each of red, green, blue, and
+    // alpha.
+    bitmapBytesPerRow   = (pixelsWide * 4);
+    bitmapByteCount     = (bitmapBytesPerRow * pixelsHigh);
+    
+    // Use the generic RGB color space.
+    colorSpace = CGColorSpaceCreateDeviceRGB();
+    if (colorSpace == NULL)
+    {
+        fprintf(stderr, "Error allocating color space\n");
+        return NULL;
+    }
+    
+    // Allocate memory for image data. This is the destination in memory
+    // where any drawing to the bitmap context will be rendered.
+    bitmapData = malloc( bitmapByteCount );
+    if (bitmapData == NULL)
+    {
+        fprintf (stderr, "Memory not allocated!");
+        CGColorSpaceRelease( colorSpace );
+        return NULL;
+    }
+    
+    // Create the bitmap context. We want pre-multiplied ARGB, 8-bits
+    // per component. Regardless of what the source image format is
+    // (CMYK, Grayscale, and so on) it will be converted over to the format
+    // specified here by CGBitmapContextCreate.
+    context = CGBitmapContextCreate (bitmapData,
+                                     pixelsWide,
+                                     pixelsHigh,
+                                     8,      // bits per component
+                                     bitmapBytesPerRow,
+                                     colorSpace,
+                                     kCGImageAlphaPremultipliedFirst);
+    if (context == NULL)
+    {
+        free (bitmapData);
+        fprintf (stderr, "Context not created!");
+    }
+    
+    // Make sure and release colorspace before returning
+    CGColorSpaceRelease( colorSpace );
+    
+    return context;
+}
 
+CGImageRef ManipulateImagePixelData(CGImageRef inImage,CGImageRef inMask,int tint)
+{
+    // Create the bitmap context
+    CGContextRef cgctx = CreateARGBBitmapContext(inImage);
+    CGContextRef cgctx2 = CreateARGBBitmapContext(inImage);
+    if (cgctx == NULL)
+    {
+        // error creating context
+        printf("error creating context for manipulation\n");
+        return NULL;
+    }
+    
+    // Get image width, height. We'll use the entire image.
+    size_t w = CGImageGetWidth(inImage);
+    size_t h = CGImageGetHeight(inImage);
+    CGRect rect = {{0,0},{w,h}};
+    
+    // Draw the image to the bitmap context. Once we draw, the memory
+    // allocated for the context for rendering will then contain the
+    // raw image data in the specified color space.
+    CGContextDrawImage(cgctx, rect, inImage);
+    CGContextDrawImage(cgctx2, rect, inMask);
+    
+    // Now we can get a pointer to the image data associated with the bitmap
+    // context.
+    int *data = (int*)CGBitmapContextGetData (cgctx);
+    int *data2 = (int*)CGBitmapContextGetData (cgctx2);
+    
+   int cr =  (tint >> 8) & 255;
+    int cg = (tint >> 16) & 255;
+    int cb =   (tint >> 24) & 255;
+    float fr=cr/255.0f;
+    float fg=cg/255.0f;
+    float fb=cb/255.0f;
+    
+    if (data != NULL)
+    {
+        for(int i=0;i<w*h;i++){
+            if(data2[i]==0xFFFFFFFF){
+                //outputRed = (foregroundRed * foregroundAlpha) + (backgroundRed * (1.0 - foregroundAlpha));
+                int rr,gg,bb;
+                int rgba=data[i];
+                rr =  (rgba >> 8) & 255;
+                gg = (rgba >> 16) & 255;
+                bb =   (rgba >> 24) & 255;
+                bb=MAX(MAX(bb,gg),rr);
+                
+               // int color= (()<<24) | (b<<16) | (b<<8)  | 0xFF;
+              // int igrey= (bb<<24) | (bb<<16) | (bb<<8)  | 0xFF;
+                
+                float grey=bb/255.0f;
+                float r=grey*fr;
+                float g=grey*fg;
+                float b=grey*fb;
+             /*   float r=(grey*.5f)+(fr*(1.0-.5f));
+                float g=(grey*.5f)+(fg*(1.0-.5f));
+                float b=(grey*.5f)+(fb*(1.0-.5f));*/
+                rr=r*255;
+                gg=g*255;
+                bb=b*255;
+                data[i]= (bb<<24) | (gg<<16) | (rr<<8)  | 0xFF;
+                
+                
+                               //     data[i]=ret<<8 | 0xFF;
+                //printf("hex(%X,%X)\n",data[i],data[i+1]);
+            }else{
+                
+            }
+            //if(i%2==0)
+            //data[i]=0xFFFFFFFF;
+        }
+        // **** You have a pointer to the image data ****
+        
+        // **** Do stuff with the data here ****
+        
+    }
+    CGImageRef ref=CGBitmapContextCreateImage(cgctx);
+    // When finished, release the context
+    CGContextRelease(cgctx);
+    CGContextRelease(cgctx2);
+    // Free image data memory for the context
+    if (data)
+    {
+        free(data);
+    }
+    if(data2){
+        free(data2);
+    }
+    return ref;
+    
+}
+
+extern UIImage* storedSkins[5][2];
+extern UIImage* storedMasks[5][2];
+int storedMaskCounter=-1;
+int storedSkinCounter=-1;
+int realStoredSkinCounter=0;
+/*
+ temp=[[Texture2D alloc] initWithImagePath:@"Batty_BlinkMASK.png" sizeToFit:FALSE];
+ [textures addObject:temp];
+ temp=[[Texture2D alloc] initWithImagePath:@"Batty_DefaultMASK.png" sizeToFit:FALSE];
+ [textures addObject:temp];
+ temp=[[Texture2D alloc] initWithImagePath:@"Green_BlinkMASK.png" sizeToFit:FALSE];
+ [textures addObject:temp];
+ temp=[[Texture2D alloc] initWithImagePath:@"Green_DefaultMASK.png" sizeToFit:FALSE];
+ [textures addObject:temp];
+ temp=[[Texture2D alloc] initWithImagePath:@"Moof_BlinkMASK.png" sizeToFit:FALSE];
+ [textures addObject:temp];
+ temp=[[Texture2D alloc] initWithImagePath:@"Moof_DefaultMASK.png" sizeToFit:FALSE];
+ [textures addObject:temp];
+ temp=[[Texture2D alloc] initWithImagePath:@"Nergle_BlinkMASK.png" sizeToFit:FALSE];
+ [textures addObject:temp];
+ temp=[[Texture2D alloc] initWithImagePath:@"Nergle_DefaultMASK.png" sizeToFit:FALSE];
+ [textures addObject:temp];
+ temp=[[Texture2D alloc] initWithImagePath:@"Stumpy_BlinkMASK.png" sizeToFit:FALSE];
+ [textures addObject:temp];
+ temp=[[Texture2D alloc] initWithImagePath:@"Stumpy_DefaultMASK.png" sizeToFit:FALSE];
+ [textures addObject:temp];
+ */
 - (id) initWithImagePath:(NSString*)path sizeToFit:(BOOL)sizeToFit pixelFormat:(Texture2DPixelFormat)pixelFormat generateMips:(BOOL)genMips
 {
 	UIImage*				uiImage;
+    BOOL isMask=FALSE;
+    BOOL storeImage=FALSE;
+    if(storedSkinCounter>=0&&storedSkinCounter<15){
+        if(storedSkinCounter%3!=1){
+            
+            storeImage=TRUE;
+        }
+        storedSkinCounter++;
+       
+    }
+    if(storedMaskCounter>=0&&storedMaskCounter<10){
+        
+        isMask=TRUE;
+        storeImage=TRUE;
+        
+    }
+    
+    
     if(IS_IPAD||SUPPORTS_RETINA){
         NSString* oipadPath=[NSString stringWithFormat:@"ipad~%@",path];
         NSString* ipadPath=[[NSBundle mainBundle] pathForResource:oipadPath ofType:nil];
@@ -234,8 +429,24 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	if(![path isAbsolutePath])
 	path = [[NSBundle mainBundle] pathForResource:path ofType:nil];
 	
+    
 	uiImage = [[UIImage alloc] initWithContentsOfFile:path];
-	self = [self initWithCGImage:[uiImage CGImage] orientation:[uiImage imageOrientation] sizeToFit:sizeToFit pixelFormat:pixelFormat generateMips:(BOOL)genMips];
+   
+        self = [self initWithCGImage:[uiImage CGImage] orientation:[uiImage imageOrientation] sizeToFit:sizeToFit pixelFormat:pixelFormat generateMips:(BOOL)genMips];
+    
+    
+	
+    
+    if(storeImage){
+        if(isMask){
+          //  printf("Storing mask in [%d][%d]: %s\n",storedMaskCounter/2,storedMaskCounter%2,[path cStringUsingEncoding:NSUTF8StringEncoding]);
+            storedMasks[storedMaskCounter/2][storedMaskCounter%2]=uiImage;
+            storedMaskCounter++;
+            
+        }else{
+            storedSkins[realStoredSkinCounter/2][realStoredSkinCounter%2]=uiImage;
+            realStoredSkinCounter++;}
+    }else
 	[uiImage release];
 	
 	if(self == nil)

@@ -715,9 +715,9 @@ bool isOnFire(int x ,int z, int y){
 		node->z=z;
 		node->type=type;
 		if(type==TYPE_TNT||type==TYPE_FIREWORK)
-			node->life=3;
+			node->life=4;
 		else
-			node->life=6;
+			node->life=9;
 		node->sid=[[Resources getResources] startedBurn:node->life];
 		node->time=node->life;	
 		
@@ -1114,10 +1114,11 @@ inline int getLandc(int x,int z,int y){
 
 - (void)explode:(int)x :(int)z :(int)y{
 	[[Resources getResources] playSound:S_EXPLODE];
-    Vector v=MakeVector(x+.5f,y+.5f,z+.5f);
-    ExplodeModels(v);
-    [[World getWorld].effects addCreatureVanish:x+.5f:z+.5f:y+.5f:[self getColor:x:z:y]:TYPE_TNT];
     int color=[self getColor:x:z:y];
+    Vector v=MakeVector(x+.5f,y+.5f,z+.5f);
+    ExplodeModels(v,color);
+    [[World getWorld].effects addCreatureVanish:x+.5f:z+.5f:y+.5f:color:TYPE_TNT];
+    
     BOOL painting=false;
     if(color!=0)painting=true;
 	//[self destroyBlock:x :z :y];
@@ -1410,6 +1411,7 @@ float last_etime;
 	glColor4f(r,g,b,1);
 }
 static TerrainChunk* renderList[(T_SIZE/CHUNK_SIZE)*(T_SIZE/CHUNK_SIZE)*(T_HEIGHT/CHUNK_SIZE)];
+static TerrainChunk* renderList2[(T_SIZE/CHUNK_SIZE)*(T_SIZE/CHUNK_SIZE)*(T_HEIGHT/CHUNK_SIZE)];
 void renderTree(TreeNode* node,int state){
 	int istate=ViewTestAABB(node->rbounds,state);
     if(node==&troot){
@@ -1438,7 +1440,7 @@ void renderTree(TreeNode* node,int state){
                         chunk.in_view=TRUE;
                         if(secondPass){
                             if(chunk.rtn_vertices2>0){
-                                renderList[chunks_rendered2]=chunk;
+                                renderList2[chunks_rendered2]=chunk;
                                 //[chunk render2];
                                 chunks_rendered2+=1;
                                 
@@ -1559,8 +1561,30 @@ int compare_back2front (const void *a, const void *b)
     else
         return 0;
 }
-
-extern float SCREEN_WIDTH; 
+int compare_objects_back2front (const void *a, const void *b)
+{
+    StaticObject first=*((StaticObject*)(a));
+    StaticObject second=*((StaticObject*)(b));
+    Vector cam=[World getWorld].player.pos;
+    Vector center=first.pos;
+    
+    float dist=(cam.x-center.x)*(cam.x-center.x)+
+    (cam.y-center.y)*(cam.y-center.y)+
+    (cam.z-center.z)*(cam.z-center.z);
+    
+    center=second.pos;
+    dist-=((cam.x-center.x)*(cam.x-center.x)+
+           (cam.y-center.y)*(cam.y-center.y)+
+           (cam.z-center.z)*(cam.z-center.z));
+    
+    if (dist > 0)
+        return -1;
+    else if (dist < 0)
+        return 1;
+    else
+        return 0;
+}
+extern float SCREEN_WIDTH;
 extern BOOL SUPPORTS_OGL2;
 extern float SCREEN_HEIGHT;
 static int frame_counter=0;
@@ -1993,6 +2017,59 @@ int lolc=0;
     
     glDrawArrays(GL_TRIANGLES, 0,vert);
     
+    
+    
+    
+    ///////////sky
+    glDisable(GL_FOG);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	if([World getWorld].FLIPPED)
+		glRotatef(90,0,0,1);
+	else
+		glRotatef(270,0,0,1);
+	
+    
+    if(IS_IPAD){
+        if(IS_RETINA)
+            glOrthof(0, SCREEN_WIDTH*2, 0, SCREEN_HEIGHT*2, -1, P_ZFAR);
+        else
+            glOrthof(0, IPAD_WIDTH, 0, IPAD_HEIGHT, -1, P_ZFAR);
+	}else
+        glOrthof(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, P_ZFAR);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+    glLoadIdentity();
+	
+    //skycolor.x=0;
+    
+    if(skycolor.x==1.0&&skycolor.y==1.0&&skycolor.z==1.0){
+        glColor4f(1.0, 1.0, 1.0, 1.0);
+        
+        [[[Resources getResources] getTex:ICO_SKY_BOX] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
+    }else{
+        //    extern Vector colorTable[256];
+        Vector v=skycolor;
+        glColor4f(v.x, v.y, v.z, 1.0);
+        
+        [[[Resources getResources] getTex:ICO_SKY_BOX_BW] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
+        glColor4f(1.0, 1.0, 1.0, 1.0);
+    }
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    
+    
+    glMatrixMode(GL_MODELVIEW);
+
+    ////////////////sky
+    
+    glEnableClientState(GL_COLOR_ARRAY);
+    
+    
     vert=0;
     object=0;
     for(int i=0;i<chunksr;i++){
@@ -2078,78 +2155,8 @@ int lolc=0;
 
 
     
-    
-    cubeVertices=cubeShortVertices;
-    cubeTextureCustom=cubeTexture;
-    vert=0;
-    object=0;
-    for(int i=0;i<chunksr;i++){
-        for(int j=0;j<renderList[i].rtnum_objects;j++){
-            if(renderList[i].rtobjects[j].type!=TYPE_FLOWER)continue;
-            for(int k=0;k<6;k++){
-                Vector vc=MakeVector(cubeVertices[k*3]-.5f,cubeVertices[k*3+1],cubeVertices[k*3+2]);
-                Vector dir;
-                dir.y=0;
-                dir.x=renderList[i].rtobjects[j].pos.x+.5f-[World getWorld].player.pos.x;
-                dir.z=renderList[i].rtobjects[j].pos.z+.5f-[World getWorld].player.pos.z;
-            
-            float targetangle=(atan2(dir.z,dir.x)-atan2(0,1))-M_PI_2;
-            
-              //  guys[i].targetangle=(atan2(dir.z,dir.x)-atan2(0,1))-M_PI_2;
-            
-            
-            
-                vc=rotateVertice(MakeVector(0,targetangle,0),vc);
-                vc.x+=.5f;
-               
-               /*
-                Vector vn=MakeVector(cubeNormals[k*3],cubeNormals[k*3+1],cubeNormals[k*3+2]);
-                
-                vn=rotateVertice(gcrot,vn);
-                objVertices[vert].normal[0]=vn.x;
-                objVertices[vert].normal[1]=vn.y;
-                objVertices[vert].normal[2]=vn.z;*/
-                
-                objVertices[vert].position[0]=4*renderList[i].rtobjects[j].pos.x+4*vc.x;
-                objVertices[vert].position[1]=4*renderList[i].rtobjects[j].pos.y+2*vc.y;
-                objVertices[vert].position[2]=4*renderList[i].rtobjects[j].pos.z+4*vc.z+2;
-                
-                
-                objVertices[vert].texs[0]=cubeTextureCustom[k*2+0];
-                objVertices[vert].texs[1]=cubeTextureCustom[k*2+1]*32;
-                
-                extern Vector colorTable[256];
-                Vector color=colorTable[renderList[i].rtobjects[j].color];
-                if(renderList[i].rtobjects[j].color==0){
-                    color.x=color.y=color.z=1;
-                    
-                }
-                objVertices[vert].colors[0]=color.x*255;
-                objVertices[vert].colors[1]=color.y*255;
-                objVertices[vert].colors[2]=color.z*255;
-                objVertices[vert].colors[3]=255;
-                vert++;
-            }
-            object++;
-            if(object==max_render_objects)break;
-        }
-        if(object==max_render_objects)break;
-    }
-    
-    
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
-    glBindBuffer(GL_ARRAY_BUFFER,0);
-    
-    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:ICO_FLOWER].name);
-    glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
-   
-	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
-	glColorPointer(	4, GL_UNSIGNED_BYTE, sizeof(vertexObject), objVertices[0].colors);
-    glEnable(GL_BLEND);
-   glDepthMask(GL_FALSE);
-    glDrawArrays(GL_TRIANGLES, 0,vert);
-    glDepthMask(GL_TRUE);
-    glDisable(GL_BLEND);
+      
+        glDisable(GL_BLEND);
     // glEnable(GL_TEXTURE_2D);
     /*if([World getWorld].hud.fps<55){
         if([World getWorld].hud.mode!=MODE_CAMERA){
@@ -2160,52 +2167,13 @@ int lolc=0;
     }*/
 	glPopMatrix();
     
-    //if(!SUPPORTS_OGL2)
-    glDisable(GL_FOG);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glMatrixMode(GL_PROJECTION);			
-	glPushMatrix();							
-	glLoadIdentity();	
-	if([World getWorld].FLIPPED)
-		glRotatef(90,0,0,1);
-	else
-		glRotatef(270,0,0,1);
-	
-   
-    if(IS_IPAD){
-        if(IS_RETINA)
-            glOrthof(0, SCREEN_WIDTH*2, 0, SCREEN_HEIGHT*2, -1, P_ZFAR);
-        else
-            glOrthof(0, IPAD_WIDTH, 0, IPAD_HEIGHT, -1, P_ZFAR);		
-	}else        
-        glOrthof(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, P_ZFAR);		
-	glMatrixMode(GL_MODELVIEW);		
-	glPushMatrix();
-    glLoadIdentity();	
-	
-    //skycolor.x=0;
-    
-    if(skycolor.x==1.0&&skycolor.y==1.0&&skycolor.z==1.0){
-    glColor4f(1.0, 1.0, 1.0, 1.0);
-    
-    [[[Resources getResources] getTex:ICO_SKY_BOX] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
-    }else{
-    //    extern Vector colorTable[256];
-        Vector v=skycolor;
-        glColor4f(v.x, v.y, v.z, 1.0);
-        
-        [[[Resources getResources] getTex:ICO_SKY_BOX_BW] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
-         glColor4f(1.0, 1.0, 1.0, 1.0);
-    }
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
     glMatrixMode(GL_TEXTURE);
-        glScalef(1,32.0f,1);
+    glScalef(1,32.0f,1);
     
     glMatrixMode(GL_MODELVIEW);
-   	frame_counter++;
+
+    //if(!SUPPORTS_OGL2)
+       	frame_counter++;
    
     
     firstframe=FALSE;
@@ -2215,7 +2183,15 @@ int lolc=0;
 	}
 	[Graphics endTerrain];	
 }
-
+int getFlowerIndex(int color){
+    if(color==0)return 31;
+    color--;
+    int hue=color%9;
+    int sat=color/9;
+    
+    
+    return hue*3+sat/2;
+}
 -(void)render2{
     glEnableClientState(GL_COLOR_ARRAY);
 	
@@ -2227,6 +2203,7 @@ int lolc=0;
     
     glMatrixMode(GL_TEXTURE);
     glScalef(1,1.0f/32.0f,1);
+   
     // glPushMatrix();
     
     glMatrixMode(GL_MODELVIEW);
@@ -2251,17 +2228,129 @@ int lolc=0;
 	//glTranslatef(-pushx, 0, -pushz);
     secondPass=TRUE;
 	renderTree(&troot,0);
-    qsort (renderList, chunks_rendered2, sizeof (TerrainChunk*), compare_back2front);
+    qsort (renderList2, chunks_rendered2, sizeof (TerrainChunk*), compare_back2front);
     
     for(int i=0;i<chunks_rendered2;i++){
-        [renderList[i] render2];
+        [renderList2[i] render2];
     }
     glMatrixMode(GL_TEXTURE);
     glTranslatef(0,-(int)(frame/16),0);
     glScalef(1,32.0f,1);
     
     glMatrixMode(GL_MODELVIEW);
+    
+    vertexObject objVertices[max_render_objects*6*6];
+    extern const GLshort cubeShortVertices[36*3];
+    extern const GLshort cubeTexture[36*2];
+    extern const GLfloat cubeNormals[36*3];
+    const GLshort* cubeVertices=cubeShortVertices;
+    const GLshort* cubeTextureCustom=cubeTexture;
+    int vert=0;
+    int object=0;
+    setViewNow();
+    cubeVertices=cubeShortVertices;
+    cubeTextureCustom=cubeTexture;
+#define MAX_FLOWERS 10000
+    StaticObject flowerList[10000];
+    
+    vert=0;
+    object=0;
+    int flowers=0;
+    for(int i=0;i<chunks_rendered;i++){
+        for(int j=0;j<renderList[i].rtnum_objects;j++){
+            if(renderList[i].rtobjects[j].type!=TYPE_FLOWER)continue;
+            if(flowers>MAX_FLOWERS)break;
+            flowerList[flowers]=renderList[i].rtobjects[j];
+            flowers++;
+        }
+    }
+    
+    qsort (flowerList, flowers, sizeof (StaticObject), compare_objects_back2front);
+    for(int i=0;i<flowers;i++){
+        
+        
+        // printf("rendering flower?\n");
+        for(int k=0;k<6;k++){
+            Vector vc=MakeVector((cubeVertices[k*3]-.5f)*.5f,cubeVertices[k*3+1],cubeVertices[k*3+2]);
+            Vector dir;
+            dir.y=0;
+            dir.x=flowerList[i].pos.x+.5f-[World getWorld].player.pos.x;
+            dir.z=flowerList[i].pos.z+.5f-[World getWorld].player.pos.z;
+            
+            float targetangle=(atan2(dir.z,dir.x)-atan2(0,1))-M_PI_2;
+            
+            
+            
+            
+            vc=rotateVertice(MakeVector(0,targetangle,0),vc);
+            vc.x+=.5f;
+            vc.z+=.5f;
+            /*
+             Vector vn=MakeVector(cubeNormals[k*3],cubeNormals[k*3+1],cubeNormals[k*3+2]);
+             
+             vn=rotateVertice(gcrot,vn);
+             objVertices[vert].normal[0]=vn.x;
+             objVertices[vert].normal[1]=vn.y;
+             objVertices[vert].normal[2]=vn.z;*/
+            
+            objVertices[vert].position[0]=4*(flowerList[i].pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)+4*vc.x;
+            objVertices[vert].position[1]=4*flowerList[i].pos.y+4*vc.y;
+            objVertices[vert].position[2]=4*(flowerList[i].pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)+4*vc.z;
+            
+            
+            int sidx=getFlowerIndex(flowerList[i].color);
+          //  vert_array[vert_c].texs[0]=cubeTextureCustom[st]*size;
+            
+           // printf("picking flower:%d\n",sidx);
+            
+            
+            
+           // vert_array[vert_c].texs[1]=cubeTextureCustom[st+1]*tp.y+tp.x;
+            int row=sidx/8;
+            int col=sidx%8;
+            float width=1/8.0f;
+            float height=1/4.0f;
+            objVertices[vert].texs[0]=cubeTextureCustom[k*2+0]*width+col*width;
+            objVertices[vert].texs[1]=cubeTextureCustom[k*2+1]*height+row*height;
+            
+            extern Vector colorTable[256];
+            Vector color=colorTable[flowerList[i].color];
+            color.x=color.y=color.z=1;
+                
+            
+            objVertices[vert].colors[0]=color.x*255;
+            objVertices[vert].colors[1]=color.y*255;
+            objVertices[vert].colors[2]=color.z*255;
+            objVertices[vert].colors[3]=255;
+            vert++;
+        }
+        
+    }
+    
+    
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+    
+    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:ICO_FLOWER].name);
+    glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
+    
+	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
+	glColorPointer(	4, GL_UNSIGNED_BYTE, sizeof(vertexObject), objVertices[0].colors);
+    glEnable(GL_BLEND);
+    
+    
+    //glDepthMask(GL_FALSE);
+    glDepthMask(GL_TRUE);
+    glDrawArrays(GL_TRIANGLES, 0,vert);
+
+    
+   
     secondPass=FALSE;
+    
+    
+    
+    
+    
 	glPopMatrix();
     [Graphics endTerrain];	
     

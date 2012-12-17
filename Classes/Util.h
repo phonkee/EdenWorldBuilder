@@ -77,6 +77,8 @@ Vector v_div(Vector v,float scalar);
 bool v_equals(Vector vec,Vector v2);
 float rsqrt( float number );
 
+int lookupColor(Vector clr);
+
 Vector MakeVector(float x,float y,float z);
 Polyhedra makeBox(float left,float right,float back,float front,float bot,float top);
 BOOL TestPoint(Polyhedra* A,float x,float y,float z);

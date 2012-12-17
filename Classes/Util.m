@@ -400,6 +400,58 @@ void takeScreenshot(){
     //CFRelease(md5hash);
 
 }
+Vector RGBtoYUV(Vector clr){
+  //  return clr;
+    Vector ret;
+   /* float h,s,v;
+    RGBtoHSV(clr.x,clr.y,clr.z,&h,&s,&v);
+    return MakeVector(h,s,v);*/
+    ret.x = 0.299 * clr.x + 0.587 * clr.y + 0.114 * clr.z;
+    
+    ret.y = -0.1147 * clr.x - 0.289* clr.y + 0.436 * clr.z ;
+    
+    ret.z = 0.615 * clr.x - 0.515 * clr.y - 0.1 * clr.z ;
+   /* ret.x = (1/0.017697)*(0.49 * clr.x + 0.31 * clr.y + 0.2 * clr.z);
+    
+    ret.y = (1/0.017697)*(0.17697 * clr.x + 0.81240* clr.y + 0.01063 * clr.z) ;
+    
+    ret.z = (1/0.017697)*(0.00 * clr.x + 0.01 * clr.y + 0.99 * clr.z) ;
+    */
+    return ret;
+}
+extern Vector colorTable[256];
+int lookupColor(Vector clr){
+    float minDif=10000000;
+    int mini=0;
+    for(int i=1;i<256;i++){
+        Vector yuv1,yuv2;
+       // yuv1=RGBtoYUV(clr);
+       // yuv2=RGBtoYUV(colorTable[i]);
+        
+        RGBtoHSV(clr.x,clr.y,clr.z,&yuv1.x,&yuv1.y,&yuv1.z);
+        RGBtoHSV(colorTable[i].x,colorTable[i].y,colorTable[i].z,&yuv2.x,&yuv2.y,&yuv2.z);
+        
+        
+        
+      //  float mind=MAX(absf(yuv2.x-yuv1.x),absf(yuv2.y-yuv1.y));
+       // mind=MAX(mind,absf(yuv2.z-yuv1.z));
+        float dif=absf(yuv1.x-yuv2.x)+absf(yuv1.y-yuv2.y)/4.0f+absf(yuv1.z-yuv2.z)/4.0f;
+        
+        if(dif<minDif){
+            mini=i;
+            minDif=dif;
+        }
+        if(dif>10000000){
+            printf("wtf dif\n");
+        }
+    }
+    if(mini==0){
+        //printf("err looking up color\n");
+    }
+    return mini;
+    
+    
+}
 // r,g,b values are from 0 to 1
 // h = [0,360], s = [0,1], v = [0,1]
 //		if s == 0, then h = -1 (undefined)

@@ -30,6 +30,7 @@
 - (CGPoint)getBlockTex:(int)type;
 - (Texture2D*)getTex:(int)idx;
 - (Texture2D*)getMenuTex:(int)idx;
+- (int)getSkin:(int)model_type:(int)color:(int)state;
 - (int)playSound:(int)soundid;
 - (int)startedBurn:(float)length;
 - (void)endBurnId:(int) idx;
@@ -168,7 +169,7 @@ enum MENU_TYPES{
 };
 
 enum ICON_TYPES{
-	SKIN_MOOF=0,
+	ICO_MOOF=0,
 	ICO_BUILD=1,
 	ICO_MINE=2,
 	ICO_BURN=3,
@@ -201,21 +202,23 @@ enum ICON_TYPES{
     ICO_BUILD3_ACTIVE=27,
     ICO_BURN_ACTIVE=28,
     ICO_JUMP_ACTIVE=29,
-    ICO_MOOF=30,
+    SKIN_MOOF=30,
     SKIN_MOOFRAGE=31,
     SKIN_MOOFBLINK=32,  
     
-    SKIN_GREEN=33,
-    SKIN_GREENRAGE=34,
-    SKIN_GREENBLINK=35,
+    SKIN_BATTY=33,
+    SKIN_BATTYRAGE=34,
+    SKIN_BATTYBLINK=35,
     
-    SKIN_NERGLE=36,
-    SKIN_NERGLERAGE=37,
-    SKIN_NERGLEBLINK=38,
+    SKIN_GREEN=36,
+    SKIN_GREENRAGE=37,
+    SKIN_GREENBLINK=38,
     
-    SKIN_BATTY=39,
-    SKIN_BATTYRAGE=40,
-    SKIN_BATTYBLINK=41,
+    SKIN_NERGLE=39,
+    SKIN_NERGLERAGE=40,
+    SKIN_NERGLEBLINK=41,
+    
+    
     
     SKIN_STUMPY=42,
     SKIN_STUMPYRAGE=43,
@@ -256,5 +259,17 @@ enum ICON_TYPES{
     ICO_GOLDCUBE=77,
     ICO_PORTAL2=78,
     ICO_DOOR2=79,
+    
+    SKIN_CHARGER=80,
+    SKIN_CHARGERRAGE=81,
+    SKIN_CHARGERBLINK=82,
+    
+    SKIN_STALKER=83,
+    SKIN_STALKERRAGE=84,
+    SKIN_STALKERBLINK=85,
+    SKIN_MOOFMASK=86,
+    SPRITE_FLAME=87,
+    
+    //88-98 reserved skin masks for coloring
     
 };

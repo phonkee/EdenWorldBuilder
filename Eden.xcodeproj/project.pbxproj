@@ -7,13 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		192FD75E167AB593003F02FF /* flower_tex.png in Resources */ = {isa = PBXBuildFile; fileRef = 192FD75D167AB593003F02FF /* flower_tex.png */; };
 		1967D00A1639F26100C03DF0 /* Charger.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D0091639F26100C03DF0 /* Charger.pod */; };
 		1967D0101639F3A900C03DF0 /* Batty.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00B1639F3A900C03DF0 /* Batty.pod */; };
-		1967D0111639F3A900C03DF0 /* Charger_Default.pvr in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00C1639F3A900C03DF0 /* Charger_Default.pvr */; };
 		1967D0121639F3A900C03DF0 /* Moof.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00D1639F3A900C03DF0 /* Moof.pod */; };
 		1967D0131639F3A900C03DF0 /* Nergle.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00E1639F3A900C03DF0 /* Nergle.pod */; };
 		1967D0141639F3A900C03DF0 /* Stumpy.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00F1639F3A900C03DF0 /* Stumpy.pod */; };
 		1967D0161639F80000C03DF0 /* TerrainGen2.m in Sources */ = {isa = PBXBuildFile; fileRef = 1967D0151639F80000C03DF0 /* TerrainGen2.m */; };
+		19C93C8B1672DEE7006ADF33 /* Stalker.pod in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C851672DEE7006ADF33 /* Stalker.pod */; };
+		19C93C8C1672DEE7006ADF33 /* Charger_Blink.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C861672DEE7006ADF33 /* Charger_Blink.png */; };
+		19C93C8D1672DEE7006ADF33 /* Charger_Rage.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C871672DEE7006ADF33 /* Charger_Rage.png */; };
+		19C93C8E1672DEE7006ADF33 /* Charger_Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C881672DEE7006ADF33 /* Charger_Default.png */; };
+		19C93C911672E668006ADF33 /* Stalker_Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C8F1672E668006ADF33 /* Stalker_Default.png */; };
+		19C93C921672E668006ADF33 /* Stalker_Blink.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C901672E668006ADF33 /* Stalker_Blink.png */; };
+		19C93C981679216E006ADF33 /* Flame_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C971679216E006ADF33 /* Flame_1024.png */; };
+		19C93C9A167998B8006ADF33 /* Flameb_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C99167998B8006ADF33 /* Flameb_1024.png */; };
+		19D3339B167B0CE20082ACE7 /* smoke_tex.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D3339A167B0CE20082ACE7 /* smoke_tex.png */; };
+		19D3339D167D34F70082ACE7 /* Flame_1024b.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D3339C167D34F70082ACE7 /* Flame_1024b.png */; };
+		19D333A8167D6E2A0082ACE7 /* Batty_BlinkMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D3339E167D6E2A0082ACE7 /* Batty_BlinkMASK.png */; };
+		19D333A9167D6E2A0082ACE7 /* Batty_DefaultMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D3339F167D6E2A0082ACE7 /* Batty_DefaultMASK.png */; };
+		19D333AA167D6E2A0082ACE7 /* Green_BlinkMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D333A0167D6E2A0082ACE7 /* Green_BlinkMASK.png */; };
+		19D333AB167D6E2A0082ACE7 /* Green_DefaultMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D333A1167D6E2A0082ACE7 /* Green_DefaultMASK.png */; };
+		19D333AC167D6E2A0082ACE7 /* Moof_BlinkMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D333A2167D6E2A0082ACE7 /* Moof_BlinkMASK.png */; };
+		19D333AD167D6E2A0082ACE7 /* Moof_DefaultMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D333A3167D6E2A0082ACE7 /* Moof_DefaultMASK.png */; };
+		19D333AE167D6E2A0082ACE7 /* Nergle_BlinkMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D333A4167D6E2A0082ACE7 /* Nergle_BlinkMASK.png */; };
+		19D333AF167D6E2A0082ACE7 /* Nergle_DefaultMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D333A5167D6E2A0082ACE7 /* Nergle_DefaultMASK.png */; };
+		19D333B0167D6E2A0082ACE7 /* Stumpy_BlinkMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D333A6167D6E2A0082ACE7 /* Stumpy_BlinkMASK.png */; };
+		19D333B1167D6E2A0082ACE7 /* Stumpy_DefaultMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D333A7167D6E2A0082ACE7 /* Stumpy_DefaultMASK.png */; };
 		19E6AC9D1635EBC400772AB3 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 19E6AC9C1635EBC400772AB3 /* Default-568h@2x.png */; };
 		1D13502E15C4AE2A0038CE4C /* uisave.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13502D15C4AE2A0038CE4C /* uisave.png */; };
 		1D13503615C58F000038CE4C /* uiexit.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13503315C58F000038CE4C /* uiexit.png */; };
@@ -710,14 +730,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		192FD75D167AB593003F02FF /* flower_tex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flower_tex.png; sourceTree = "<group>"; };
 		1967D0091639F26100C03DF0 /* Charger.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Charger.pod; path = models/Charger.pod; sourceTree = "<group>"; };
 		1967D00B1639F3A900C03DF0 /* Batty.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Batty.pod; path = models/Batty.pod; sourceTree = "<group>"; };
-		1967D00C1639F3A900C03DF0 /* Charger_Default.pvr */ = {isa = PBXFileReference; lastKnownFileType = file; name = Charger_Default.pvr; path = models/Charger_Default.pvr; sourceTree = "<group>"; };
 		1967D00D1639F3A900C03DF0 /* Moof.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Moof.pod; path = models/Moof.pod; sourceTree = "<group>"; };
 		1967D00E1639F3A900C03DF0 /* Nergle.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Nergle.pod; path = models/Nergle.pod; sourceTree = "<group>"; };
 		1967D00F1639F3A900C03DF0 /* Stumpy.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Stumpy.pod; path = models/Stumpy.pod; sourceTree = "<group>"; };
 		1967D0151639F80000C03DF0 /* TerrainGen2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TerrainGen2.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		1967D0171639F81800C03DF0 /* TerrainGen2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TerrainGen2.h; sourceTree = "<group>"; };
+		19C93C851672DEE7006ADF33 /* Stalker.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Stalker.pod; path = models/Stalker.pod; sourceTree = "<group>"; };
+		19C93C861672DEE7006ADF33 /* Charger_Blink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Charger_Blink.png; path = models/Charger_Blink.png; sourceTree = "<group>"; };
+		19C93C871672DEE7006ADF33 /* Charger_Rage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Charger_Rage.png; path = models/Charger_Rage.png; sourceTree = "<group>"; };
+		19C93C881672DEE7006ADF33 /* Charger_Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Charger_Default.png; path = models/Charger_Default.png; sourceTree = "<group>"; };
+		19C93C8F1672E668006ADF33 /* Stalker_Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Stalker_Default.png; path = models/Stalker_Default.png; sourceTree = "<group>"; };
+		19C93C901672E668006ADF33 /* Stalker_Blink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Stalker_Blink.png; path = models/Stalker_Blink.png; sourceTree = "<group>"; };
+		19C93C971679216E006ADF33 /* Flame_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flame_1024.png; sourceTree = "<group>"; };
+		19C93C99167998B8006ADF33 /* Flameb_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flameb_1024.png; sourceTree = "<group>"; };
+		19D3339A167B0CE20082ACE7 /* smoke_tex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smoke_tex.png; sourceTree = "<group>"; };
+		19D3339C167D34F70082ACE7 /* Flame_1024b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flame_1024b.png; sourceTree = "<group>"; };
+		19D3339E167D6E2A0082ACE7 /* Batty_BlinkMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Batty_BlinkMASK.png; path = models/MASKS/Batty_BlinkMASK.png; sourceTree = "<group>"; };
+		19D3339F167D6E2A0082ACE7 /* Batty_DefaultMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Batty_DefaultMASK.png; path = models/MASKS/Batty_DefaultMASK.png; sourceTree = "<group>"; };
+		19D333A0167D6E2A0082ACE7 /* Green_BlinkMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Green_BlinkMASK.png; path = models/MASKS/Green_BlinkMASK.png; sourceTree = "<group>"; };
+		19D333A1167D6E2A0082ACE7 /* Green_DefaultMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Green_DefaultMASK.png; path = models/MASKS/Green_DefaultMASK.png; sourceTree = "<group>"; };
+		19D333A2167D6E2A0082ACE7 /* Moof_BlinkMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Moof_BlinkMASK.png; path = models/MASKS/Moof_BlinkMASK.png; sourceTree = "<group>"; };
+		19D333A3167D6E2A0082ACE7 /* Moof_DefaultMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Moof_DefaultMASK.png; path = models/MASKS/Moof_DefaultMASK.png; sourceTree = "<group>"; };
+		19D333A4167D6E2A0082ACE7 /* Nergle_BlinkMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nergle_BlinkMASK.png; path = models/MASKS/Nergle_BlinkMASK.png; sourceTree = "<group>"; };
+		19D333A5167D6E2A0082ACE7 /* Nergle_DefaultMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nergle_DefaultMASK.png; path = models/MASKS/Nergle_DefaultMASK.png; sourceTree = "<group>"; };
+		19D333A6167D6E2A0082ACE7 /* Stumpy_BlinkMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Stumpy_BlinkMASK.png; path = models/MASKS/Stumpy_BlinkMASK.png; sourceTree = "<group>"; };
+		19D333A7167D6E2A0082ACE7 /* Stumpy_DefaultMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Stumpy_DefaultMASK.png; path = models/MASKS/Stumpy_DefaultMASK.png; sourceTree = "<group>"; };
 		19E6AC9C1635EBC400772AB3 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		1D13502D15C4AE2A0038CE4C /* uisave.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uisave.png; path = uitext/uisave.png; sourceTree = "<group>"; };
 		1D13503315C58F000038CE4C /* uiexit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uiexit.png; path = uitext/uiexit.png; sourceTree = "<group>"; };
@@ -2114,6 +2154,20 @@
 		C62C95A012713E1900379390 /* media */ = {
 			isa = PBXGroup;
 			children = (
+				19D3339E167D6E2A0082ACE7 /* Batty_BlinkMASK.png */,
+				19D3339F167D6E2A0082ACE7 /* Batty_DefaultMASK.png */,
+				19D333A0167D6E2A0082ACE7 /* Green_BlinkMASK.png */,
+				19D333A1167D6E2A0082ACE7 /* Green_DefaultMASK.png */,
+				19D333A2167D6E2A0082ACE7 /* Moof_BlinkMASK.png */,
+				19D333A3167D6E2A0082ACE7 /* Moof_DefaultMASK.png */,
+				19D333A4167D6E2A0082ACE7 /* Nergle_BlinkMASK.png */,
+				19D333A5167D6E2A0082ACE7 /* Nergle_DefaultMASK.png */,
+				19D333A6167D6E2A0082ACE7 /* Stumpy_BlinkMASK.png */,
+				19D333A7167D6E2A0082ACE7 /* Stumpy_DefaultMASK.png */,
+				19D3339C167D34F70082ACE7 /* Flame_1024b.png */,
+				19D3339A167B0CE20082ACE7 /* smoke_tex.png */,
+				19C93C99167998B8006ADF33 /* Flameb_1024.png */,
+				19C93C971679216E006ADF33 /* Flame_1024.png */,
 				C67F54A512CF94DD00F6DA2B /* ani_menu */,
 				C602CFAE1293124F002A0BE8 /* atlas.png */,
 				C64EB35113FCACEE00E8A475 /* atlas2.png */,
@@ -2168,8 +2222,13 @@
 		C661FF681447F937000B8258 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				19C93C8F1672E668006ADF33 /* Stalker_Default.png */,
+				19C93C901672E668006ADF33 /* Stalker_Blink.png */,
+				19C93C851672DEE7006ADF33 /* Stalker.pod */,
+				19C93C861672DEE7006ADF33 /* Charger_Blink.png */,
+				19C93C871672DEE7006ADF33 /* Charger_Rage.png */,
+				19C93C881672DEE7006ADF33 /* Charger_Default.png */,
 				1967D00B1639F3A900C03DF0 /* Batty.pod */,
-				1967D00C1639F3A900C03DF0 /* Charger_Default.pvr */,
 				1967D00D1639F3A900C03DF0 /* Moof.pod */,
 				1967D00E1639F3A900C03DF0 /* Nergle.pod */,
 				1967D00F1639F3A900C03DF0 /* Stumpy.pod */,
@@ -2478,6 +2537,7 @@
 		C6FD455112905ECC005FC996 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				192FD75D167AB593003F02FF /* flower_tex.png */,
 				1D7A376615E8171C0090768B /* portal_icon2.png */,
 				1D7A376315E8170C0090768B /* door_icon2.png */,
 				1DA9791815E614AB00B050C0 /* goldcube_icon.png */,
@@ -3223,10 +3283,30 @@
 				19E6AC9D1635EBC400772AB3 /* Default-568h@2x.png in Resources */,
 				1967D00A1639F26100C03DF0 /* Charger.pod in Resources */,
 				1967D0101639F3A900C03DF0 /* Batty.pod in Resources */,
-				1967D0111639F3A900C03DF0 /* Charger_Default.pvr in Resources */,
 				1967D0121639F3A900C03DF0 /* Moof.pod in Resources */,
 				1967D0131639F3A900C03DF0 /* Nergle.pod in Resources */,
 				1967D0141639F3A900C03DF0 /* Stumpy.pod in Resources */,
+				19C93C8B1672DEE7006ADF33 /* Stalker.pod in Resources */,
+				19C93C8C1672DEE7006ADF33 /* Charger_Blink.png in Resources */,
+				19C93C8D1672DEE7006ADF33 /* Charger_Rage.png in Resources */,
+				19C93C8E1672DEE7006ADF33 /* Charger_Default.png in Resources */,
+				19C93C911672E668006ADF33 /* Stalker_Default.png in Resources */,
+				19C93C921672E668006ADF33 /* Stalker_Blink.png in Resources */,
+				19C93C981679216E006ADF33 /* Flame_1024.png in Resources */,
+				19C93C9A167998B8006ADF33 /* Flameb_1024.png in Resources */,
+				192FD75E167AB593003F02FF /* flower_tex.png in Resources */,
+				19D3339B167B0CE20082ACE7 /* smoke_tex.png in Resources */,
+				19D3339D167D34F70082ACE7 /* Flame_1024b.png in Resources */,
+				19D333A8167D6E2A0082ACE7 /* Batty_BlinkMASK.png in Resources */,
+				19D333A9167D6E2A0082ACE7 /* Batty_DefaultMASK.png in Resources */,
+				19D333AA167D6E2A0082ACE7 /* Green_BlinkMASK.png in Resources */,
+				19D333AB167D6E2A0082ACE7 /* Green_DefaultMASK.png in Resources */,
+				19D333AC167D6E2A0082ACE7 /* Moof_BlinkMASK.png in Resources */,
+				19D333AD167D6E2A0082ACE7 /* Moof_DefaultMASK.png in Resources */,
+				19D333AE167D6E2A0082ACE7 /* Nergle_BlinkMASK.png in Resources */,
+				19D333AF167D6E2A0082ACE7 /* Nergle_DefaultMASK.png in Resources */,
+				19D333B0167D6E2A0082ACE7 /* Stumpy_BlinkMASK.png in Resources */,
+				19D333B1167D6E2A0082ACE7 /* Stumpy_DefaultMASK.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

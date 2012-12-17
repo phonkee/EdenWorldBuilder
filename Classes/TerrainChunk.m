@@ -226,8 +226,8 @@ extern int g_offcz;
 			for(int z=0;z<CHUNK_SIZE;z++){
 				int type=blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
                 if( type==TYPE_FLOWER){
-                    [self setLand:x:z:y:TYPE_GRASS];
-                    type=TYPE_GRASS;
+                    //[self setLand:x:z:y:TYPE_GRASS];
+                    //type=TYPE_GRASS;
                 }
 				if(type<0||type>NUM_BLOCKS){
 					[self setLand:x:z:y:TYPE_STONE];
@@ -301,7 +301,7 @@ extern int g_offcz;
                     if(type==TYPE_DOOR_TOP||type==TYPE_GOLDEN_CUBE||type==TYPE_FLOWER||type==TYPE_PORTAL_TOP){
                         if(type!=TYPE_DOOR_TOP&&type!=TYPE_GOLDEN_CUBE&&type!=TYPE_PORTAL_TOP){
                             
-                            printf("flowers are unsupported\n");
+                          //  printf("flower in chunk, les do it\n"); flowers supported!
                         }
                         num_objects++;
                     }
@@ -575,7 +575,7 @@ extern int g_offcz;
                             
                             objidx++;
                         }else if(type==TYPE_FLOWER){
-                             printf("got flower\n");
+                            // printf("got flower\n");
                             objects[objidx].color=colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
                             objects[objidx].open=FALSE;
                             objects[objidx].type=TYPE_FLOWER;

@@ -65,7 +65,7 @@ float yawanimation;
     accel=MakeVector(0,0,0);
     walk_force=MakeVector(0,0,0);
     max_walk_speed=0;
-    flash=0;
+    flash=0; 
 	
 }
 extern Vector minTranDist;
@@ -327,14 +327,14 @@ extern bool hitCustom;
                         point.x=-1;
                     }
                     
-					if(point.x==-1){
+					if(point.x==-1&&fwc_result==-1){
                         if(mode==MODE_PAINT){
-                            printf("painting sky lol");
+                            
                             extern Vector colorTable[256];
                             [[Resources getResources] playSound:S_PAINT_BLOCK];	
                             [World getWorld].terrain.final_skycolor=
                              colorTable[[World getWorld].hud.paintColor];
-                            printf("sky %f,%f,%f\n",  [World getWorld].terrain.skycolor.x,  [World getWorld].terrain.skycolor.y,  [World getWorld].terrain.skycolor.z);
+                            printf("painting sky %f,%f,%f\n",  [World getWorld].terrain.skycolor.x,  [World getWorld].terrain.skycolor.y,  [World getWorld].terrain.skycolor.z);
                             
 
                         }

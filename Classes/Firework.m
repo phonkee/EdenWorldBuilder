@@ -78,6 +78,15 @@
                                :frot];
          
          if(fireworks[i].fuse<0){
+             Vector skyc=[World getWorld].terrain.skycolor;
+             skyc.x+=.3f;
+             skyc.y+=.3f;
+             skyc.z+=.3f;
+             if(skyc.x>1)skyc.x=1;
+             if(skyc.y>1)skyc.y=1;
+             if(skyc.z>1)skyc.z=1;
+             [World getWorld].terrain.skycolor=skyc;
+             [[World getWorld].effects addCreatureVanish:fireworks[i].pos.x:fireworks[i].pos.z:fireworks[i].pos.y:fireworks[i].color:TYPE_FIREWORK];
              [[World getWorld].effects addFirework:fireworks[i].pos.x:fireworks[i].pos.z:fireworks[i].pos.y:fireworks[i].color];
              [self removeFirework:i];
              i--;

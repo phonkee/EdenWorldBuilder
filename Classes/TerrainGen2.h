@@ -20,8 +20,9 @@
 
 void makeDirt();
 void makeMars();
-void makeRiverTrees();
-void makeMountains();
+void makeRiverTrees(int sx,int sz,int ex,int ez,int SEED);
+void makeMountains(int sx,int sz,int ex,int ez,int SEED);
+void makeTransition(int sx,int sz,int ex,int ez);
 void makeDesert();
 void makeBeach();
 void makePonies();

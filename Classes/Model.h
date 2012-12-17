@@ -14,10 +14,12 @@ void PlaceModel(int idx,Vector pos);
 void ColorModel(int idx,int color);
 void HitModel(int idx,Vector hitpoint);
 void BurnModel(int idx);
-void ExplodeModels(Vector pos);
+void ExplodeModels(Vector pos,int color);
 void SaveModels();
 void LoadModels2();
 void setViewNow();
+void killCreature(int idx);
 float wrapx(float x);
 float wrapz(float z);
+
 void CalcEnvMap(vertexObject* vert);

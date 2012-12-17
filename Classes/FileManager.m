@@ -529,8 +529,16 @@ extern int g_offcz;
     }
     imgHash=hash;
      [[World getWorld].sf_lock lock];
-    saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];		
+    saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];
+    if(!saveFile){
+        printf("err gettin save file: %s\n",[file_name cStringUsingEncoding:NSUTF8StringEncoding]);
+        return;
+    }
 	WorldFileHeader* fh=(WorldFileHeader*)[[saveFile readDataOfLength:sizeof(WorldFileHeader)] bytes];
+    if(fh==NULL){
+        printf("err reading has from file\n");
+        return;
+    }
 	WorldFileHeader* fh2=malloc(sizeof(WorldFileHeader));
 	memcpy(fh2,fh,sizeof(WorldFileHeader));
 	[hash getCString:fh2->hash
@@ -778,9 +786,11 @@ extern float P_ZFAR;
         }else if(g_terrain_type==1){
             makeMars();
         }else if(g_terrain_type==2){
-            makeRiverTrees();
+            makeRiverTrees(T_SIZE/2,0,T_SIZE,T_SIZE,550);
         }else if(g_terrain_type==3){
-            makeMountains();
+             makeRiverTrees(T_SIZE/2,0,T_SIZE,T_SIZE,550);
+            makeMountains(0,0,T_SIZE/2-16,T_SIZE,400);
+            makeTransition(T_SIZE/2-16,0,T_SIZE/2,T_SIZE);
         }else if(g_terrain_type==4){
             makeDesert();
         }else if(g_terrain_type==5){

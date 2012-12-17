@@ -31,6 +31,7 @@ extern float SCREEN_WIDTH;
 extern float SCREEN_HEIGHT;
 extern float P_ASPECT_RATIO; 
 extern bool IS_IPAD;
+extern bool IS_WIDESCREEN;
 
 bool SUPPORTS_OGL2;
 extern EAGLView* G_EAGL_VIEW;
@@ -117,9 +118,16 @@ extern EAGLView* G_EAGL_VIEW;
 	}
 	else
 	{*/
-		
-		SCREEN_WIDTH=IPHONE_WIDTH;
-		SCREEN_HEIGHT=IPHONE_HEIGHT;
+		//1136
+    IS_WIDESCREEN =( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON );
+   // printf("is widescreen:%d\n",IS_WIDESCREEN);
+    
+    if(IS_WIDESCREEN)
+        SCREEN_WIDTH=IPHONE5_WIDTH;
+    else
+        SCREEN_WIDTH=IPHONE_WIDTH;
+    
+    SCREEN_HEIGHT=IPHONE_HEIGHT;
 	/*}*/
 	
 	G_EAGL_VIEW=self;	

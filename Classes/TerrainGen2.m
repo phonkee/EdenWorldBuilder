@@ -1409,14 +1409,14 @@ void makeGreenHills(int height){
     
     
 }
-void makeRiverTrees(){
+void makeRiverTrees(int sx,int sz,int ex,int ez,int SEED){
     float var=3;  //how much variance in heightmap?
     //LEVEL_SEED=0;
 	[World getWorld].terrain.final_skycolor=colorTable[9];
 	
 	const int offsety=T_HEIGHT/2-10;
-    for(int x=0;x<T_SIZE;x++){ //Heightmap
-		for(int z=0;z<T_SIZE;z++){
+    for(int x=sx;x<ex;x++){
+		for(int z=sz;z<ez;z++){
             int h;
             
             float n=offsety;
@@ -1424,8 +1424,8 @@ void makeRiverTrees(){
             //float FREQ3=4.0f;
             float AMPLITUDE=20.0f;
             for(int i=0;i<10;i++){
-                float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT
-                    ,(float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
+                float vec[2]={(float)FREQ*(x+SEED)/NOISE_CONSTANT
+                    ,(float)FREQ*(z+SEED)/NOISE_CONSTANT};
                 n+=noise2(vec)*(AMPLITUDE)*var;
                 FREQ*=2;
                 AMPLITUDE/=2;
@@ -1462,8 +1462,8 @@ void makeRiverTrees(){
 		
 	}
     
-    for(int x=0;x<T_SIZE;x++){
-		for(int z=0;z<T_SIZE;z++){
+    for(int x=sx;x<ex;x++){
+		for(int z=sz;z<ez;z++){
            // BLOCK(x ,z ,0)=TYPE_SAND;
 			int dirtlevel=25;
 			for(int y=0;y<T_HEIGHT-dirtlevel;y++){
@@ -1484,8 +1484,8 @@ void makeRiverTrees(){
 		}
 	}
     int sea_level=-8;
-    for(int x=0;x<T_SIZE;x++){
-		for(int z=0;z<T_SIZE;z++){
+    for(int x=sx;x<ex;x++){
+		for(int z=sz;z<ez;z++){
             //BLOCK(x ,z ,0)=TYPE_SAND;
 			
 			for(int y=6;y<23+sea_level;y++){
@@ -1518,9 +1518,10 @@ void makeRiverTrees(){
      
      }
      */
+   
     
-     for(int x=4;x<T_SIZE-4;x++){ //Trees
-     for(int z=4;z<T_SIZE-4;z++){
+     for(int x=sx+4;x<ex-4;x++){ //Trees
+     for(int z=sz+4;z<ez-4;z++){
      for(int y=4;y<T_HEIGHT-10;y++){
      if(BLOCK(x ,z ,y)==TYPE_DIRT&&BLOCK(x ,z ,y+1)==TYPE_NONE){
          if(randi(70)==0){
@@ -1534,15 +1535,92 @@ void makeRiverTrees(){
     
     
 }
+void makeTransition(int sx,int sz,int ex,int ez){
+    for(int z=sz;z<ez;z++){
+        int lh=0,rh=0;
+        int ltype,rtype;
+        int lcolor,rcolor;
+        for(int i=T_HEIGHT-1;i>=0;i--){
+            if(BLOCK(sx-1,z,i)!=TYPE_NONE&&BLOCK(sx-1,z,i)!=TYPE_CLOUD){
+                lh=i+1;
+                ltype=BLOCK(sx-1,z,i);
+                lcolor=COLOR(sx-1,z,i);
+                //  printf("found type: %d  height: %d\n",BLOCK(sx-1,z,i),i);
+                break;
+            }
+        }
+        for(int i=T_HEIGHT-1;i>=0;i--){
+            if(BLOCK(ex,z,i)!=TYPE_NONE&&BLOCK(sx-1,z,i)!=TYPE_CLOUD){
+                rh=i+1;
+                rtype=BLOCK(ex,z,i);
+                rcolor=COLOR(ex,z,i);
+                break;
+            }
+        }
+        int deltay=rh-lh;
+        Vector lvcolor=colorTable[lcolor];
+        if(lcolor==0)lvcolor=MakeVector(blockColor[ltype][0]/255.0f,blockColor[ltype][1]/255.0f,blockColor[ltype][2]/255.0f);
+        
+        Vector rvcolor=colorTable[rcolor];
+        if(rcolor==0)rvcolor=MakeVector(blockColor[rtype][0]/255.0f,blockColor[rtype][1]/255.0f,blockColor[rtype][2]/255.0f);
+        
+        Vector deltacolor=MakeVector(rvcolor.x-lvcolor.x,rvcolor.y-lvcolor.y,rvcolor.z-lvcolor.z);
+        
+        
+        
+        for(int x=sx;x<ex;x++){
+            
+            
+            
+            float fx=(float)(x-sx)/(ex-sx);
+           // printf("fx:%f\n",fx);
+            //int h=(lh*fx+rh*(1-fx))/2.0f;
+            int h=deltay*fx+lh;//(lh+rh)/2;
+            Vector mcolor=MakeVector(lvcolor.x+deltacolor.x*fx,lvcolor.y+deltacolor.y*fx,lvcolor.z+deltacolor.z*fx);
+            
+            for(int y=1;y<h;y++){
+                
+                if(getBaseType(ltype)==TYPE_WATER||getBaseType(rtype)==TYPE_WATER){
+                    if(getBaseType(ltype)==getBaseType(rtype)){
+                     BLOCK(x,z,y)=ltype;
+                     COLOR(x,z,y)=lookupColor(mcolor);
+                    }else if(getBaseType(ltype)==TYPE_WATER){
+                        BLOCK(x,z,y)=rtype;
+                        COLOR(x,z,y)=rcolor;
 
-void makeMountains(){
+                    }else if(getBaseType(rtype)==TYPE_WATER){
+                        BLOCK(x,z,y)=ltype;
+                        COLOR(x,z,y)=lcolor;
+                        
+                    }
+                }else if(ltype==rtype){
+                    BLOCK(x,z,y)=ltype;
+                    COLOR(x,z,y)=lookupColor(mcolor);
+                    
+                }else if(fx<.5f){
+                    
+                    BLOCK(x,z,y)=ltype;
+                    COLOR(x,z,y)=lcolor;
+                    
+                    
+                }else if(fx>=.5f){
+                    BLOCK(x,z,y)=rtype;
+                    COLOR(x,z,y)=rcolor;
+                }
+            }
+            
+        
+        }
+    }
+}
+void makeMountains(int sx,int sz,int ex,int ez,int SEED){
     float var=3;  //how much variance in heightmap?
     //LEVEL_SEED=0;
 	[World getWorld].terrain.final_skycolor=colorTable[6];
 	
 	const int offsety=T_HEIGHT/2-10;
-    for(int x=0;x<T_SIZE;x++){ //Heightmap
-		for(int z=0;z<T_SIZE;z++){
+    for(int x=sx;x<ex;x++){
+		for(int z=sz;z<ez;z++){
             int h;
             
             float n=offsety;
@@ -1550,8 +1628,8 @@ void makeMountains(){
             //float FREQ3=4.0f;
             float AMPLITUDE=20.0f;
             for(int i=0;i<10;i++){
-                float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT
-                    ,(float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
+                float vec[2]={(float)FREQ*(x+SEED)/NOISE_CONSTANT
+                    ,(float)FREQ*(z+SEED)/NOISE_CONSTANT};
                 n+=noise2(vec)*(AMPLITUDE)*var;
                 FREQ*=2;
                 AMPLITUDE/=2;
@@ -1586,8 +1664,8 @@ void makeMountains(){
 		
 	}
     
-    for(int x=0;x<T_SIZE;x++){
-		for(int z=0;z<T_SIZE;z++){
+    for(int x=sx;x<ex;x++){ 
+		for(int z=sz;z<ez;z++){
          //   BLOCK(x ,z ,0)=TYPE_SAND;
 			int snowlevel=34;
 			for(int y=snowlevel;y<T_HEIGHT;y++){
@@ -1618,8 +1696,8 @@ void makeMountains(){
 		}
 	}
   //  int sea_level=-14;
-    for(int x=0;x<T_SIZE;x++){
-		for(int z=0;z<T_SIZE;z++){
+    for(int x=sx;x<ex;x++){ 
+		for(int z=sz;z<ez;z++){
             //BLOCK(x ,z ,0)=TYPE_SAND;
 			
 			for(int y=3;y<6;y++){

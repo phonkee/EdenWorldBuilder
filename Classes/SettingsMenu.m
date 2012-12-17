@@ -46,6 +46,7 @@ extern float P_ASPECT_RATIO;
 	for(int i=0;i<NUM_PROP;i++){
 		properties[i].name=pnames[i];
 		properties[i].value=pdefaults[i];
+       
 		properties[i].box.origin.x=37-10+30;
 		
 		properties[i].box.size.height=30;
@@ -76,6 +77,7 @@ extern float P_ASPECT_RATIO;
 			
 		
 	}
+    extern BOOL IS_WIDESCREEN;
 	rect_settings.size.width=246;
 	rect_settings.size.height=45;
     if(IS_IPAD)
@@ -94,6 +96,9 @@ extern float P_ASPECT_RATIO;
         rect_on[j].origin.y=properties[j].box.origin.y-2;
 	rect_on[j].size.width=135/2*1.5f;
 	rect_on[j].size.height=40/2*1.5f;
+         if(IS_WIDESCREEN)
+          rect_on[j].origin.x=300+65;
+        else
 	rect_on[j].origin.x=300+35;
 	//rect_on[j].origin.y=0;
     }

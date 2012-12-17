@@ -25,6 +25,8 @@ const char battyFile[]	= "Batty.pod";
 const char greenFile[]	= "Green.pod";
 const char nergleFile[]	= "Nergle.pod";
 const char stumpyFile[]	= "Stumpy.pod";
+const char chargerFile[]= "Charger.pod";
+const char stalkerFile[]= "Stalker.pod";
 
 const static int n_states[NUM_CREATURES]={
     [M_GREEN]=6,
@@ -32,6 +34,8 @@ const static int n_states[NUM_CREATURES]={
     [M_NERGLE]=6,
     [M_BATTY]=6,
     [M_STUMPY]=6,
+    [M_CHARGER]=6,
+    [M_STALKER]=6,
 };
 const static float shadow_size[NUM_CREATURES]={
     [M_GREEN]=.8f,
@@ -39,6 +43,8 @@ const static float shadow_size[NUM_CREATURES]={
     [M_NERGLE]=.8f,
     [M_BATTY]=.64f,
     [M_STUMPY]=.64f,
+    [M_CHARGER]=.9f,
+    [M_STALKER]=.7f,
     
 };
 
@@ -67,7 +73,24 @@ const static float shadow_size[NUM_CREATURES]={
 #define BATTY_IDLE1 3
 #define BATTY_IDLE2 4
 #define BATTY_DAMAGE 5
+
+#define CHARGER_NONE 0
+#define CHARGER_WALK 1
+#define CHARGER_JUMP 2
+#define CHARGER_IDLE1 3
+#define CHARGER_IDLE2 4
+#define CHARGER_DAMAGE 5
+
+#define STALKER_NONE 0
+#define STALKER_WALK 1
+#define STALKER_JUMP 2
+#define STALKER_IDLE1 3
+#define STALKER_IDLE2 4
+#define STALKER_DAMAGE 5
+
 /*
+ 
+ 
  Stumpy's frames:
  Walk 1-80
  Jump  81-120
@@ -83,7 +106,38 @@ const static float shadow_size[NUM_CREATURES]={
  idle_2 190-285
  Damage  310-340
 
+ Charger frames:
+ Movement:  1-40
+ Jump:  40-80
+ Idle:  81-121
+ Take Damage:  121-141
+ 
+ Stalker frames:
+ Walk Cycle:  1-35
+ Jump:  36-90
+ Idle:  91-151
+ Take Damage:152-182
+ Attack:  183-233
  */
+
+static int stalker_states[6][2]={
+    [STALKER_WALK]={1,35},
+    [STALKER_JUMP]={36,90},
+    [STALKER_IDLE1]={91,151},
+    [STALKER_IDLE2]={183,233},
+    [STALKER_DAMAGE]={152,182},
+    [STALKER_NONE]={91,91},
+};
+
+static int charger_states[6][2]={
+    [CHARGER_WALK]={1,40},
+    [CHARGER_JUMP]={40,80},
+    [CHARGER_IDLE2]={81,218},
+    [CHARGER_IDLE1]={81,218},
+    [CHARGER_DAMAGE]={218,237},
+    [CHARGER_NONE]={121,121},
+};
+
 static int nergle_states[6][2]={
     [GREEN_WALK]={11,90},
     [GREEN_JUMP]={91,140},
@@ -137,6 +191,10 @@ static int getFrame(int type,int state, int idx){
         return nergle_states[state][idx];
     }else if(type==M_STUMPY){
         return stumpy_states[state][idx];
+    }else if(type==M_CHARGER){
+        return charger_states[state][idx];
+    }else if(type==M_STALKER){
+        return stalker_states[state][idx];
     }
     return 0;
 }
@@ -287,6 +345,18 @@ void setViewNow(){
 	envView = PVRTMat4(modelviewf).inverse().transpose();
     
 }
+PVRTVec3 unwrap(PVRTVec3 upos){
+    PVRTVec3 player_pos=MakePVR([World getWorld].player.pos);
+    player_pos.x=wrapx(player_pos.x);
+    player_pos.z=wrapz(player_pos.z);
+    
+    float tempy=upos.y;
+    upos=upos-player_pos;
+    upos=upos+MakePVR([World getWorld].player.pos);
+    upos.y=tempy;
+    return upos;
+}
+
 void CalcEnvMap(vertexObject* vert){
  
     // pV, pN and pTC point to the XYZ, Normal and Texture Coordinate attributes of a single vertex.
@@ -601,43 +671,54 @@ int PointTestModels(float x,float y,float z){
     }
     return -1;
 }
-void ExplodeModels(Vector p){
+void ExplodeModels(Vector p,int color){
     for(int i=0;i<nguys;i++){
         if(!guys[i].alive||!guys[i].update)continue;
         Entity* e=&guys[i];
         PVRTVec3 pos=PVRTVec3(p);
-        pos=(e->pos+centers[e->model_type])-p;
-        if(pos.lenSqr()<EXPLOSION_RADIUS*EXPLOSION_RADIUS){    
-            float hit_force=(EXPLOSION_RADIUS*EXPLOSION_RADIUS)-pos.lenSqr();
-            pos=pos.normalize();
-            e->state=0;
-            setState(e->idx,DEFAULT_DAMAGE);
-           e->life--;
-            if(e->life<=0){        
-               e->alive=FALSE;
-                [[Resources getResources] playSound:S_CREATURE_VANISH];
-                [[World getWorld].effects addCreatureVanish:e->pos.x:e->pos.z:e->pos.y:e->color:e->model_type];
-            }else
-                PlaySound(e->idx,VO_HIT);
+        pos.x=wrapx(pos.x);
+        pos.z=wrapz(pos.z);
+        pos=(e->pos+centers[e->model_type])-pos;
+        if(pos.lenSqr()<EXPLOSION_RADIUS*EXPLOSION_RADIUS){
+            if(color==0){
+                float hit_force=(EXPLOSION_RADIUS*EXPLOSION_RADIUS)-pos.lenSqr();
+                pos=pos.normalize();
+                e->state=0;
+                setState(e->idx,DEFAULT_DAMAGE);
+                e->life--;
+                if(e->life<=0){
+                    killCreature(e->idx);
+                }else
+                    PlaySound(e->idx,VO_HIT);
                 
-            
-            e->vel+=hit_force*pos;
-            
-            e->vel.y+=6;
-            e->flash=1.0f;
+                
+                e->vel+=hit_force*pos;
+                
+                e->vel.y+=6;
+                e->flash=1.0f;
+            }else{
+                ColorModel(e->idx,color);
+            }
+           
         }
         
     }
     Player* e=[World getWorld].player;
     PVRTVec3 player_pos=MakePVR([World getWorld].player.pos);
-    player_pos.x=wrapx(player_pos.x);
-    player_pos.z=wrapz(player_pos.z);
+   // player_pos.x=wrapx(player_pos.x);
+   // player_pos.z=wrapz(player_pos.z);
     PVRTVec3 pos=PVRTVec3(p);
     PVRTVec3 ppos=player_pos;
     
     
     pos=ppos-p;
-    if(pos.lenSqr()<EXPLOSION_RADIUS*EXPLOSION_RADIUS){    
+    extern Vector colorTable[256];
+    if(pos.lenSqr()<EXPLOSION_RADIUS*EXPLOSION_RADIUS){
+        if(color!=0){
+            [World getWorld].hud.flash=.9f;
+             [World getWorld].hud.flashcolor=colorTable[color];
+            
+        }else{
         float hit_force=((EXPLOSION_RADIUS*EXPLOSION_RADIUS)-pos.lenSqr())*.75f;
         pos=pos.normalize();
         
@@ -649,6 +730,7 @@ void ExplodeModels(Vector p){
         e.vel=vel;
          [[Resources getResources] playSound:S_HIT];
         e.flash=0.6f;
+        }
     }
 
     
@@ -670,7 +752,21 @@ bool CheckCollision(Entity* e){
     UpdateBoxes(e);
     
     if(e->ragetimer>0){
-        if(collidePolyhedra(e->box,[World getWorld].player.pbox)){
+        Polyhedra ppbox=[World getWorld].player.pbox;
+        //Face faces[6];
+        //Vector points[8];
+        for(int i=0;i<8;i++){
+            ppbox.points[i].x=wrapx(ppbox.points[i].x);
+            ppbox.points[i].z=wrapz(ppbox.points[i].z);
+        }
+        for(int j=0;j<6;j++){
+            for(int i=0;i<4;i++){
+                ppbox.faces[j].points[i].x=wrapx(ppbox.faces[j].points[i].x);
+                ppbox.faces[j].points[i].z=wrapz(ppbox.faces[j].points[i].z);
+            }
+        }
+        if(collidePolyhedra(e->box,ppbox)){
+            
             e->ragetimer=0;
         
             Player* ep=[World getWorld].player;
@@ -765,7 +861,20 @@ bool CheckCollision(Entity* e){
         }
     }
     if(!collided){
-    if(collidePolyhedra(e->box,[World getWorld].player.pbox)){                    
+        Polyhedra ppbox=[World getWorld].player.pbox;
+        //Face faces[6];
+        //Vector points[8];
+        for(int i=0;i<8;i++){
+            ppbox.points[i].x=wrapx(ppbox.points[i].x);
+            ppbox.points[i].z=wrapz(ppbox.points[i].z);
+        }
+        for(int j=0;j<6;j++){
+            for(int i=0;i<4;i++){
+                ppbox.faces[j].points[i].x=wrapx(ppbox.faces[j].points[i].x);
+                ppbox.faces[j].points[i].z=wrapz(ppbox.faces[j].points[i].z);
+            }
+        }
+    if(collidePolyhedra(e->box,ppbox)){
        
         if(v_length2(minTranDist)>v_length2(minminTranDist)){
            
@@ -801,9 +910,7 @@ bool CheckCollision(Entity* e){
                 setState(e->idx,DEFAULT_DAMAGE);
                 e->life--;
                 if(e->life<=0){        
-                    e->alive=FALSE;
-                    [[Resources getResources] playSound:S_CREATURE_VANISH];
-                    [[World getWorld].effects addCreatureVanish:e->pos.x:e->pos.z:e->pos.y:e->color:e->model_type];
+                    killCreature(e->idx);
                 } else
                      PlaySound(e->idx,VO_HIT);        
             e->flash=1.0f;
@@ -1030,10 +1137,12 @@ void Move(Entity* e,float etime){
     
     
     if(e->onfire){
+        PVRTVec3 upos=unwrap(e->pos);
+        
         Vector sigh;
-        sigh.x=e->pos.x;
-        sigh.y=e->pos.y+centers[e->model_type].y;
-        sigh.z=e->pos.z;
+        sigh.x=upos.x;
+        sigh.y=upos.y+centers[e->model_type].y;
+        sigh.z=upos.z;
         [[World getWorld].effects updateFire:e->fireidx:sigh];
     }
     
@@ -1080,9 +1189,7 @@ void UpdateModels(float etime){
         if(guys[i].onfire){
             guys[i].life-=etime/2;
             if(guys[i].life<=0){
-                guys[i].alive=FALSE;
-                [[World getWorld].effects removeFire:guys[i].fireidx];
-                [[World getWorld].effects addCreatureVanish:guys[i].pos.x:guys[i].pos.z:guys[i].pos.y:guys[i].color:guys[i].model_type];
+                killCreature(guys[i].idx);
             }
         }
         bool endCycle=FALSE;
@@ -1322,6 +1429,8 @@ bool LoadModels(const char* pszReadPath)
         if(i==M_GREEN)file=greenFile;
          if(i==M_NERGLE)file=nergleFile;
         if(i==M_STUMPY)file=stumpyFile;
+        if(i==M_CHARGER)file=chargerFile;
+        if(i==M_STALKER)file=stalkerFile;
         if(models[i].ReadFromFile(file) != PVR_SUCCESS)
         {
           //  printf("failed to load model:%s!!\n",file);
@@ -1385,6 +1494,14 @@ bool LoadModels(const char* pszReadPath)
              cmin[i].x=-.43f;
              cmax[i].x=.43f;
          }
+        if(i==M_CHARGER){
+            cmin[i].x=-.3f;
+            cmax[i].x=.3f;
+        }
+        if(i==M_STALKER){
+            cmin[i].x=-.3f;
+            cmax[i].x=.3f;
+        }
         
         centers[i].x=(cmin[i].x+cmax[i].x)/2.0f;
         centers[i].y=(cmin[i].y+cmax[i].y)/2.0f;
@@ -1476,9 +1593,9 @@ void PlaceModel(int idx,Vector pos){
     guys[idx].model_type=inventory.type;
     guys[idx].alive=TRUE;
     guys[idx].life=START_LIFE;
-    guys[idx].pos.x=fpoint.x;
+    guys[idx].pos.x=wrapx(fpoint.x);
     guys[idx].pos.y=fpoint.y;//+centers[guys[idx].model_type].y;
-    guys[idx].pos.z=fpoint.z;
+    guys[idx].pos.z=wrapz(fpoint.z);
     guys[idx].angle=D2R([World getWorld].player.yaw+90);
     guys[idx].targetangle=guys[idx].angle;
     guys[idx].color=[World getWorld].hud.creature_color;
@@ -1501,7 +1618,8 @@ void BurnModel(int idx){
     guys[idx].touched=TRUE;
     Entity* e=&guys[idx];
     if(e->onfire)return;
-    e->fireidx=[[World getWorld].effects addFire:e->pos.x :e->pos.z :e->pos.y :1 :e->life*2];
+    PVRTVec3 upos=unwrap(e->pos);
+    e->fireidx=[[World getWorld].effects addFire:upos.x :e->pos.z :upos.y :1 :e->life*2];
     e->onfire=TRUE;
     e->runaway= e->life*2;
    if(!e->inLiquid)
@@ -1537,6 +1655,14 @@ void BurnModel(int idx){
     
    
 }
+void killCreature(int idx){
+    guys[idx].alive=FALSE;
+    [[Resources getResources] playSound:S_CREATURE_VANISH];
+    PVRTVec3 upos=unwrap(guys[idx].pos);
+    [[World getWorld].effects addCreatureVanish:upos.x:upos.z:guys[idx].pos.y:guys[idx].color:guys[idx].model_type];
+    
+    
+}
 void HitModel(int idx,Vector hitpoint){
     if(idx>=0&&idx<nguys){
         guys[idx].touched=TRUE;
@@ -1553,9 +1679,10 @@ void HitModel(int idx,Vector hitpoint){
         
         
         if(guys[idx].life<=0){        
-            guys[idx].alive=FALSE;
-            [[Resources getResources] playSound:S_CREATURE_VANISH];
-            [[World getWorld].effects addCreatureVanish:guys[idx].pos.x:guys[idx].pos.z:guys[idx].pos.y:guys[idx].color:guys[idx].model_type];
+            killCreature(idx);
+            
+            //printf("adding particle fx for creature: (%f,%f,%f)\n",guys[idx].pos.x,guys[idx].pos.y,guys[idx].pos.z);
+            //[[World getWorld].effects addCreatureVanish:guys[idx].pos.x:guys[idx].pos.z:guys[idx].pos.y:guys[idx].color:guys[idx].model_type];
         }else
             PlaySound(idx,VO_HIT);
         float hit_force=6;
@@ -2006,6 +2133,7 @@ bool RenderModels()
             Vector clr;
             if(guys[i].color<256&&guys[i].color>0)
             clr= colorTable[guys[i].color];
+            clr=MakeVector(1.0f,1.0f,1.0f);
             if(guys[i].flash!=0){
                 clr.y-=guys[i].flash;
                 clr.z-=guys[i].flash;
@@ -2028,15 +2156,9 @@ bool RenderModels()
     }
     if(guys[nguys].model_type!=-1){
         glEnable(GL_BLEND);
-        if(guys[nguys].color==0)
+        //if(guys[nguys].color==0)
             glColor4f(1.0f,1.0f,1.0f,.5f);
-        else{
-            Vector clr;
-            if(guys[nguys].color<256&&guys[nguys].color>0)
-                clr= colorTable[guys[nguys].color];
-           
-            glColor4f(clr.x,clr.y,clr.z,.5f);
-        }
+       
         DrawModel(nguys);
        
         glDisable(GL_BLEND);
@@ -2051,7 +2173,7 @@ bool RenderModels()
     glColor4f(1,0,0,1);
     glDisable(GL_TEXTURE_2D);
     glScalef(1/scale,1/scale,1/scale);
-    glLineWidth(1.0f);
+   /* glLineWidth(1.0f);
     glDisable(GL_DEPTH_TEST);
     for(int i=0;i<nguys;i++){
         if(!guys[i].alive)continue;
@@ -2077,7 +2199,7 @@ bool RenderModels()
         //DrawBox(&guys[i].box);
         
     }
-     glEnable(GL_DEPTH_TEST);
+     glEnable(GL_DEPTH_TEST);*/
     glEnable(GL_TEXTURE_2D);
     
     
@@ -2102,9 +2224,9 @@ void DrawModel(int mi)
     float frame=guys[mi].frame;
     float angle=guys[mi].angle;
     PVRTVec3 position=guys[mi].pos;
-    if(guys[mi].model_type==M_GREEN){
-        position.x+=.35f;
-    }
+   // if(guys[mi].model_type==M_GREEN){
+   //     position.x+=.35f;
+   // }
     position.x-=16;
     position.z-=16;
     //position.y-=64;
@@ -2117,14 +2239,38 @@ void DrawModel(int mi)
     }
 	models[modelType].SetFrame(frame);
 
-	
+	int tex=-1;
+    if(guys[mi].ragetimer<=0&&guys[mi].color!=0&&modelType!=M_CHARGER&&modelType!=M_STALKER){
+        if(guys[mi].blinktimer>0){
+               tex=[[Resources getResources] getSkin:modelType:guys[mi].color:1];
+            
+            
+        }else{
+             tex=[[Resources getResources] getSkin:modelType:guys[mi].color:0];
+        }
+    }else
     if(modelType==M_MOOF){
         if(guys[mi].ragetimer>0)
             glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_MOOFRAGE].name);
-        else if(guys[mi].blinktimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_MOOFBLINK].name);            
-        else
+        else if(guys[mi].blinktimer>0){
+            if(guys[mi].color==0)
+                tex=[[Resources getResources] getTex:SKIN_MOOFBLINK].name;
+            else{
+               tex=[[Resources getResources] getSkin:M_MOOF:guys[mi].color:1];
+               
+                
+            }
+                     
+        }else{
+            if(guys[mi].color==0)
             glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_MOOF].name);
+            else{
+                tex=[[Resources getResources] getSkin:M_MOOF:guys[mi].color:0];
+               
+             
+            }
+            
+        }
     }else if(modelType==M_BATTY){
         if(guys[mi].ragetimer>0)
             glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_BATTYRAGE].name);
@@ -2154,8 +2300,23 @@ void DrawModel(int mi)
             glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_STUMPYBLINK].name);
         else
             glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_STUMPY].name);
+    }else if(modelType==M_CHARGER){
+        if(guys[mi].ragetimer>0)
+            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_CHARGERRAGE].name);
+        else if(guys[mi].blinktimer>0)
+            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_CHARGERBLINK].name);
+        else
+            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_CHARGER].name);
+    }else if(modelType==M_STALKER){
+        if(guys[mi].ragetimer>0)
+            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_STALKERRAGE].name);
+        else if(guys[mi].blinktimer>0)
+            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_STALKERBLINK].name);
+        else
+            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_STALKER].name);
     }
-    
+    if(tex!=-1)
+     glBindTexture(GL_TEXTURE_2D, tex);
 
 	//Iterate through all the mesh nodes in the scene
 	for(int iNode = 0; iNode < (int)models[modelType].nNumMeshNode; ++iNode)

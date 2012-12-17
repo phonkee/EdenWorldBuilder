@@ -15,7 +15,7 @@ static Input* singleton;
 extern float SCREEN_WIDTH; 
 extern float SCREEN_HEIGHT;
 extern float P_ASPECT_RATIO;
-
+extern BOOL IS_WIDESCREEN;
 
 + (Input*)getInput{
 	if(!singleton){
@@ -30,7 +30,11 @@ extern float P_ASPECT_RATIO;
         scr_height=IPAD_HEIGHT;
         
     }else{
-        scr_width=IPHONE_WIDTH;
+        if(IS_WIDESCREEN)
+        scr_width=IPHONE5_WIDTH;
+        else
+            scr_width=IPHONE_WIDTH;
+        //IPHONE_WIDTH;
         scr_height=IPHONE_HEIGHT;
     }
 	return self;

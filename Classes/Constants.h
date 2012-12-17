@@ -15,6 +15,7 @@
 #define IPAD_WIDTH 1024
 #define IPAD_HEIGHT 768
 #define IPHONE_WIDTH 480
+#define IPHONE5_WIDTH 568
 #define IPHONE_HEIGHT 320
 #define GRAVITY 20.0f
 #define THIRD_PERSON 0
@@ -23,12 +24,14 @@
 
 #define NUM_BLOCKS 80
 
-#define NUM_CREATURES 5
+#define NUM_CREATURES 7
 #define M_MOOF 0
 #define M_BATTY 1
 #define M_GREEN 2
 #define M_NERGLE 3
 #define M_STUMPY 4
+#define M_CHARGER 5
+#define M_STALKER 6
 #define MAX_CREATURES_SAVED 200
 
 #define CHUNK_SIZE 16

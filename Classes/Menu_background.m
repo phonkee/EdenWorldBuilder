@@ -108,6 +108,7 @@ static float counter=0;
 	}
     
 }
+extern BOOL IS_WIDESCREEN;
 -(void)render{
 	
 	CGRect bkg;
@@ -123,12 +124,15 @@ static float counter=0;
 	MENU_CLOUD_SM=31,
 	MENU_CLOUD_MD=32,
 	MENU_CLOUD_LG=33,*/
-	[[[Resources getResources] getMenuTex:MENU_SKY] drawText:bkg];
+	[[[Resources getResources] getMenuTex:MENU_SKY] drawInRect:bkg];
 	glPushMatrix();
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE);
     if(!IS_IPAD)
-	glTranslatef(SCREEN_WIDTH/2,0,0);
-    else
+        glTranslatef(SCREEN_WIDTH/2,0,0);
+    else if(IS_WIDESCREEN){
+      //  printf("Wtf\n");
+        glTranslatef(SCREEN_WIDTH,130,0);
+    }else
         glTranslatef(IPAD_WIDTH/2,0,0);
 	glRotatef(pinwheelr,0,0,-1);
 	glScalef(2.5,2.5,2.5);
@@ -147,6 +151,12 @@ static float counter=0;
 	[[[Resources getResources] getMenuTex:MENU_GROUND] drawText:ground];
 	ground.origin.x-=480;
 	[[[Resources getResources] getMenuTex:MENU_GROUND] drawText:ground];
+    if(IS_WIDESCREEN){
+        ground.origin.x+=480*2;
+        [[[Resources getResources] getMenuTex:MENU_GROUND] drawText:ground];
+         ground.origin.x-=480*2;
+
+    }
 	ground.origin.x+=480;
 	
 	//642 c 85
@@ -182,13 +192,19 @@ static float counter=0;
     else{
         mountain.origin.y=139.0f/SCALE_HEIGHT;
 
-	mountain.size.height=85;
-	mountain.size.width=1025.0f/SCALE_WIDTH;;
+        mountain.size.height=85;
+        mountain.size.width=1025.0f/SCALE_WIDTH;;
    
-	[[[Resources getResources] getMenuTex:MENU_MOUNTAINS] drawText:mountain];
-	mountain.origin.x-=1024.0f/SCALE_WIDTH;
-	[[[Resources getResources] getMenuTex:MENU_MOUNTAINS] drawText:mountain];
-	mountain.origin.x+=1025.0f/SCALE_WIDTH;
+        [[[Resources getResources] getMenuTex:MENU_MOUNTAINS] drawText:mountain];
+        mountain.origin.x-=1024.0f/SCALE_WIDTH;
+        [[[Resources getResources] getMenuTex:MENU_MOUNTAINS] drawText:mountain];
+        
+        if(IS_WIDESCREEN){
+            mountain.origin.x+=2*1024.0f/SCALE_WIDTH;
+            [[[Resources getResources] getMenuTex:MENU_MOUNTAINS] drawText:mountain];
+            mountain.origin.x-=2*1024.0f/SCALE_WIDTH;
+        }
+        mountain.origin.x+=1025.0f/SCALE_WIDTH;
    
     }
     

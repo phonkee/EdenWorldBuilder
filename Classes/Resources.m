@@ -300,6 +300,64 @@ static int voNumVariations[NUM_CREATURES][NUM_VO_ACTIONS]={
 
 static int voLastVariation[NUM_CREATURES][NUM_VO_ACTIONS];
 static int sfxLastVariation[NUM_SOUNDS];
+typedef struct{
+	Texture2D* tex;
+    int color;
+    int model_type;
+    int state;
+}CTexture;
+UIImage* storedSkins[5][2];
+UIImage* storedMasks[5][2];
+
+#define SKIN_CACHE_SIZE 50
+CTexture skin_cache[SKIN_CACHE_SIZE];
+
+
+void clearSkinCache(){
+    for(int i=0;i<SKIN_CACHE_SIZE;i++){
+        if(skin_cache[i].tex){
+            [skin_cache[i].tex release];
+            skin_cache[i].tex=NULL;
+        }
+    }
+}
+
+- (int)getSkin:(int)model_type:(int)color:(int)state{
+    for(int i=0;i<SKIN_CACHE_SIZE;i++){
+        if(skin_cache[i].tex!=NULL&&skin_cache[i].model_type==model_type&&skin_cache[i].color==color&&skin_cache[i].state==state){
+            return skin_cache[i].tex.name;
+        }
+    }
+    
+    int cidx=-1;
+    for(int i=0;i<SKIN_CACHE_SIZE;i++){
+        if(skin_cache[i].tex==NULL){
+            cidx=i;
+            break;
+        }
+    }
+    if(cidx==-1){
+        cidx=randi(SKIN_CACHE_SIZE);
+        if(skin_cache[cidx].tex)[skin_cache[cidx].tex release];
+    }
+    
+    
+  //  extern UIImage* storeMask;
+    CGImageRef img=[storedMasks[model_type][1-state] CGImage];
+    CGImageRef img2=[storedSkins[model_type][state] CGImage];
+    extern Vector colorTable[256];
+    Vector clr=colorTable[color];
+    int rgba= ((int)(255*clr.z)<<24) | ((int)(255*clr.y)<<16) | ((int)(255*clr.x) <<8)  | 0xFF;
+    UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData(img2,img,rgba)];
+    skin_cache[cidx].tex =
+    [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
+    skin_cache[cidx].model_type=model_type;
+    skin_cache[cidx].color=color;
+    skin_cache[cidx].state=state;
+    
+    printf("storing skin in cache idx: %d\n",cidx);
+    return skin_cache[cidx].tex.name;
+}
 
 -(void)voSound:(int)action:(int)type:(Vector)location{
     if(!playsound)return;
@@ -437,7 +495,11 @@ static float bkgtargetvolume=0;
 static float burnin[NS_BURN]={};
 static int sidx=0;
 extern BOOL SUPPORTS_OGL2;
+
 - (id)init{
+    for(int i=0;i<SKIN_CACHE_SIZE;i++){
+        skin_cache[i].tex=NULL;
+    }
 	landingEffectTimer=0;
 	textures=[[NSMutableArray alloc] init];
 	menutextures=[[NSMutableArray alloc] init];
@@ -449,8 +511,9 @@ extern BOOL SUPPORTS_OGL2;
             }
         }
 	}
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"Moof_Default.png" sizeToFit:FALSE];
+	temp=[[Texture2D alloc]
+          initWithImagePath:@"moof_icon.png" sizeToFit:FALSE];
+		 
 	[textures addObject:temp];
 	temp=[[Texture2D alloc] 
 		  initWithImagePath:@"build.png" sizeToFit:FALSE];
@@ -482,7 +545,7 @@ extern BOOL SUPPORTS_OGL2;
 
 	
 	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"smoke.png" sizeToFit:FALSE];
+		  initWithImagePath:@"smoke_tex.png" sizeToFit:FALSE];
 	[textures addObject:temp];
 	
 	temp=[[Texture2D alloc] 
@@ -567,9 +630,13 @@ extern BOOL SUPPORTS_OGL2;
 	[textures addObject:temp];
     
     
+    extern int storedSkinCounter;
+    extern int realStoredSkinCounter;
+    realStoredSkinCounter=0;
+    storedSkinCounter=0;
     
     temp=[[Texture2D alloc] 
-		  initWithImagePath:@"moof_icon.png" sizeToFit:FALSE];
+		   initWithImagePath:@"Moof_Default.png" sizeToFit:FALSE];
 	[textures addObject:temp];
     
     temp=[[Texture2D alloc] 
@@ -578,6 +645,17 @@ extern BOOL SUPPORTS_OGL2;
     temp=[[Texture2D alloc] 
 		  initWithImagePath:@"Moof_Blink.png" sizeToFit:FALSE];
 	[textures addObject:temp];
+    
+    temp=[[Texture2D alloc]
+		  initWithImagePath:@"Batty_Default.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc]
+		  initWithImagePath:@"Batty_Rage.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc]
+		  initWithImagePath:@"Batty_Blink.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+
     
     temp=[[Texture2D alloc] 
 		  initWithImagePath:@"Green_Default.png" sizeToFit:FALSE];
@@ -600,16 +678,7 @@ extern BOOL SUPPORTS_OGL2;
 		  initWithImagePath:@"Nergle_Blink.png" sizeToFit:FALSE];
 	[textures addObject:temp];
     
-    temp=[[Texture2D alloc] 
-		  initWithImagePath:@"Batty_Default.png" sizeToFit:FALSE];
-	[textures addObject:temp];
-    temp=[[Texture2D alloc] 
-		  initWithImagePath:@"Batty_Rage.png" sizeToFit:FALSE];
-	[textures addObject:temp];
-    temp=[[Texture2D alloc] 
-		  initWithImagePath:@"Batty_Blink.png" sizeToFit:FALSE];
-	[textures addObject:temp];
-    
+        
     temp=[[Texture2D alloc] 
 		  initWithImagePath:@"Stumpy_Default.png" sizeToFit:FALSE];
 	[textures addObject:temp];
@@ -649,7 +718,7 @@ extern BOOL SUPPORTS_OGL2;
 	[textures addObject:temp];
     
     temp=[[Texture2D alloc] 
-		  initWithImagePath:@"grass_04.png" sizeToFit:FALSE];
+		  initWithImagePath:@"flower_tex.png" sizeToFit:FALSE];
 	[textures addObject:temp];
     
     temp=[[Texture2D alloc] 
@@ -759,6 +828,58 @@ extern BOOL SUPPORTS_OGL2;
     temp=[[Texture2D alloc] 
 		  initWithImagePath:@"door_icon2.png" sizeToFit:FALSE];
     [textures addObject:temp];
+    
+    temp=[[Texture2D alloc]
+		  initWithImagePath:@"Charger_Default.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc]
+		  initWithImagePath:@"Charger_Rage.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc]
+		  initWithImagePath:@"Charger_Blink.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    
+    temp=[[Texture2D alloc]
+		  initWithImagePath:@"Stalker_Default.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc]
+		  initWithImagePath:@"Stalker_Default.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc]
+		  initWithImagePath:@"Stalker_Blink.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc]
+		  initWithImagePath:@"Moof_Default_Mask.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc]
+		  initWithImagePath:@"Flame_1024b.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    
+    extern int storedMaskCounter;
+    storedMaskCounter=0;
+    
+    temp=[[Texture2D alloc] initWithImagePath:@"Moof_BlinkMASK.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"Moof_DefaultMASK.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"Batty_BlinkMASK.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"Batty_DefaultMASK.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"Green_BlinkMASK.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"Green_DefaultMASK.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    
+    temp=[[Texture2D alloc] initWithImagePath:@"Nergle_BlinkMASK.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"Nergle_DefaultMASK.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"Stumpy_BlinkMASK.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"Stumpy_DefaultMASK.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    
 
     
 	[self loadMenuTextures];			  
