@@ -668,6 +668,7 @@ int flamecount=0;
                 if(mode==MODE_PICK_COLOR){
                     mode=MODE_PAINT;
                     paintColor=pressed+1;
+                    
                     printf("paint color-1:%d\n",paintColor-1);
                 }
                 pressed=-1;
@@ -815,6 +816,16 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 		};
 		
 		Vector hudColor=colorTable[i+1];
+        //if(i%9>3)hudColor=colorTable[i-9+5+1];
+        
+       // if(i%9 ==8){
+         //   hudColor=colorTable[i+1];
+           // printf("i:%d\n",i);
+           // if(i==13||i==22)
+           // hudColor=MakeVector(1.0f,1,1);
+        //}
+        
+        
         glColor4f(hudColor.x,hudColor.y,hudColor.z,at3);
 		
         
@@ -1734,14 +1745,14 @@ static int lmode=MODE_NONE;
         
 		
 	}
-    glDisable(GL_TEXTURE_2D);
+  /*  glDisable(GL_TEXTURE_2D);
     glColor4f(test2.x,test2.y,test2.z,1.0f);
     
     [Graphics drawRect:test2r.origin.x:test2r.origin.y:test2r.size.width:test2r.size.height];
     glColor4f(test1.x,test1.y,test1.z,1.0f);
    
      [Graphics drawRect:test1r.origin.x:test1r.origin.y:test1r.size.width:test1r.size.height];
-   
+   */
 
     glColor4f(1.0f,1.0f,1.0f,1.0f);
   

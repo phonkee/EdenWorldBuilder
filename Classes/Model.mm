@@ -1268,7 +1268,13 @@ void UpdateModels(float etime){
             
             float distance=(player_pos-guys[i].pos).lenSqr();
             float distance_fade=4.0f;
+            
+            if(guys[i].model_type==M_STALKER||guys[i].model_type==M_CHARGER){
+                if(distance/2<distance_fade*distance_fade&&guys[i].insideView&&guys[i].ragetimer<=0)
+                guys[i].justhit=true;
+            }else
             if(distance<distance_fade*distance_fade&&guys[i].insideView&&guys[i].ragetimer<=0){
+                
                 if(!guys[i].greeted){
                       guys[i].greeted=TRUE;
                     if(isFacingPlayer(i)&&guys[i].ragetimer<=0&&!guys[i].onfire){
@@ -1292,6 +1298,10 @@ void UpdateModels(float etime){
             if(guys[i].justhit){
                 guys[i].justhit=FALSE;
                 int response=arc4random()%6;
+                if(guys[i].model_type==M_CHARGER||guys[i].model_type==M_STALKER){
+                    
+                    response=1;
+                }
                 if(response==4||response==5){
                     guys[i].runaway=2;
                     
@@ -1622,6 +1632,10 @@ void BurnModel(int idx){
     e->fireidx=[[World getWorld].effects addFire:upos.x :e->pos.z :upos.y :1 :e->life*2];
     e->onfire=TRUE;
     e->runaway= e->life*2;
+    if(e->model_type==M_CHARGER||e->model_type==M_STALKER){
+        e->justhit=true;
+    }
+   
    if(!e->inLiquid)
       PlaySound(e->idx,VO_ONFIRE);
     Vector vpos=MakeVector(e->pos.x,e->pos.y,e->pos.z);

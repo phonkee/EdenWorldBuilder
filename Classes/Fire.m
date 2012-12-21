@@ -335,16 +335,20 @@ static int frame=0,frame2=0;
     glMatrixMode(GL_TEXTURE);
     glPopMatrix();
     glPushMatrix();
+    glLoadIdentity();
     glScalef(1.0f/16,1.0f/16.0f,1);
     
     framescale=4;
     frame2=(frame2+1)%((32)*framescale);
     row=(frame2/framescale)/16;
     col=(frame2/framescale)%16;
-    // printf("frame: %d\n",frame/framescale);
+     //printf("row: %d\n",row);
     glTranslatef(col,row+14,0);
     glMatrixMode(GL_MODELVIEW);
-    
+   // glDepthMask(FALSE);
+    glColor4f(1.0f,1.0f,1.0f,1.0f);
+    poof=1.1;
+    float epoof=1.2f;
     vert=0;
     for(int i=0;i<list_size;i++){
         bnode* node=&list[i];
@@ -355,12 +359,12 @@ static int frame=0,frame2=0;
                 vc=MakeVector((cubeVertices[k*3]-.5f)*poof,(cubeVertices[k*3+1]-.5f)*poof,(cubeVertices[k*3+2]-.5f)*poof);
                 
                 if(k>=24){
-                
+                    vc.x*=epoof;
+                    vc.z*=epoof;
                 
                 }else{
                     continue;
-                    //   vc.x*=epoof;
-                    //  vc.z*=epoof;
+                      
                 }
                 objVertices[vert].position[0]=(node->x)+vc.x;
                 objVertices[vert].position[1]=node->y+vc.y;
@@ -382,6 +386,7 @@ static int frame=0,frame2=0;
         // node->
         
     }
+   //  glDepthMask(TRUE);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
     
