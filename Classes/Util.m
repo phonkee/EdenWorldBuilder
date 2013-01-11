@@ -598,7 +598,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
 	NormalizeVector(&dir);
 	
 	
-	for(int i=0;i<8*10;i++){
+	for(int i=0;i<8*20;i++){
         fpoint.x=wp1.x+dir.x*i/8.0f;
         fpoint.y=wp1.y+dir.y*i/8.0f;
         fpoint.z=wp1.z+dir.z*i/8.0f;

@@ -418,29 +418,10 @@ extern int g_offcz;
                     hasVisy[CHUNK_SIZE-1]=TRUE;
                 }
     }
-   /* if(bounds[0]==0){
-        for(int y=0;y<CHUNK_SIZE;y++)
-            for(int z=0;z<CHUNK_SIZE;z++)
-                face_visibility[0*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]&=~FACE_LEFT;
-    }else if(bounds[0]+CHUNK_SIZE==T_SIZE){
-        for(int y=0;y<CHUNK_SIZE;y++)
-            for(int z=0;z<CHUNK_SIZE;z++)
-                face_visibility[(CHUNK_SIZE-1)*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]&=~FACE_RIGHT;
-    }
-    if(bounds[2]==0){
-        for(int y=0;y<CHUNK_SIZE;y++)
-            for(int x=0;x<CHUNK_SIZE;x++)
-                face_visibility[x*(CHUNK_SIZE*CHUNK_SIZE)+0*(CHUNK_SIZE)+y]&=~FACE_FRONT;
-    }else if(bounds[2]+CHUNK_SIZE==T_SIZE){
-        for(int y=0;y<CHUNK_SIZE;y++)
-            for(int x=0;x<CHUNK_SIZE;x++)
-                face_visibility[x*(CHUNK_SIZE*CHUNK_SIZE)+(CHUNK_SIZE-1)*(CHUNK_SIZE)+y]&=~FACE_BACK;
-        
-    }*/
+   
     
     if(!hasAnything){   
-        //printf("return early 2\n");
-       // printf("im gonna clear some old vertices\n");
+       
          pblocks=blocks1;
         clearOldVerticesOnly=TRUE;
         return 0;
@@ -521,7 +502,9 @@ extern int g_offcz;
                 if(blockinfo[type]&IS_PORTAL){
                    
                     if(type==TYPE_PORTAL_TOP){
+                        
                         objects[objidx].color=colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
+                       
                         objects[objidx].open=FALSE;
                         objects[objidx].type=TYPE_PORTAL_TOP;
                         objects[objidx].dir=getLandc(x+bounds[0],z+bounds[2],y+bounds[1]-1)-TYPE_PORTAL1;
@@ -1039,18 +1022,17 @@ extern int g_offcz;
         float paint[3];
         float light[3];
         color8 clr=colors[idx];
-        
+        if(blockinfo[type]&IS_PORTAL){
+            clr=0;
+          
+        }
         BOOL coloring=false;
         BOOL isLiquid=false;
         Vector cl=colorTable[clr];
         paint[0]=cl.x;
         paint[1]=cl.y;
         paint[2]=cl.z;
-        if(blockinfo[type]&IS_PORTAL){
-            for(int i=0;i<3;i++){
-                paint[i]/=4;
-            }
-        }
+       
         Vector lightv=lighting[(x)*CHUNK_SIZE*CHUNK_SIZE+(z)*CHUNK_SIZE+(y)];
         light[0]=lightv.x;
         light[1]=lightv.y;

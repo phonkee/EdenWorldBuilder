@@ -781,6 +781,7 @@ extern float P_ZFAR;
         
         clear();
         
+        
         if(g_terrain_type==0){
             makeDirt();
         }else if(g_terrain_type==1){

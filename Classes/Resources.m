@@ -849,7 +849,7 @@ extern BOOL SUPPORTS_OGL2;
 		  initWithImagePath:@"Stalker_Blink.png" sizeToFit:FALSE];
 	[textures addObject:temp];
     temp=[[Texture2D alloc]
-		  initWithImagePath:@"Moof_Default_Mask.png" sizeToFit:FALSE];
+		  initWithImagePath:@"Moof_DefaultMASK.png" sizeToFit:FALSE];
 	[textures addObject:temp];
     temp=[[Texture2D alloc]
 		  initWithImagePath:@"Flame_1024b.png" sizeToFit:FALSE];

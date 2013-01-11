@@ -13,7 +13,7 @@
 #define MOVE_SPEED 120.0f
 #define CLIMB_SPEED 3.0f
 //#define SPEED_M 4.5f
-#define SPEED_M 15.0f
+#define SPEED_M 8.0f
 
 #define YAW_SPEED .4f
 #define PITCH_SPEED .4f
@@ -331,9 +331,11 @@ extern bool hitCustom;
                         if(mode==MODE_PAINT){
                             
                             extern Vector colorTable[256];
-                            [[Resources getResources] playSound:S_PAINT_BLOCK];	
+                            [[Resources getResources] playSound:S_PAINT_BLOCK];
+                            
                             [World getWorld].terrain.final_skycolor=
                              colorTable[[World getWorld].hud.paintColor];
+                            
                             printf("painting sky %f,%f,%f\n",  [World getWorld].terrain.skycolor.x,  [World getWorld].terrain.skycolor.y,  [World getWorld].terrain.skycolor.z);
                             
 

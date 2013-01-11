@@ -1989,7 +1989,7 @@ int lolc=0;
                 }
                 extern Vector colorTable[256];
                 Vector color=colorTable[renderList[i].rtobjects[j].color];
-                if(renderList[i].rtobjects[j].color==0){
+                if(true||renderList[i].rtobjects[j].color==0){
                     color.x=color.y=color.z=1;
                     
                 }
@@ -2045,8 +2045,10 @@ int lolc=0;
     glLoadIdentity();
 	
     //skycolor.x=0;
+    extern Vector colorTable[256];
+    if(v_equals([World getWorld].terrain.final_skycolor,colorTable[14])){
+        
     
-    if(skycolor.x==1.0&&skycolor.y==1.0&&skycolor.z==1.0){
         glColor4f(1.0, 1.0, 1.0, 1.0);
         
         [[[Resources getResources] getTex:ICO_SKY_BOX] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
@@ -2105,7 +2107,9 @@ int lolc=0;
             for(int k=0;k<6;k++){
                 
                 Vector vc=MakeVector((cubeVertices[k*3]-cubeVertices[k*3]*20.0f/64.0f+10.0f/64.0f)*4,
-                                     (cubeVertices[k*3+1]*2-(cubeVertices[k*3+1]*(6.0f/64.0f+4.0f/64.0f))+4.0f/64.0f)*4,cubeVertices[k*3+2]*.45f-.5f);
+                                     (cubeVertices[k*3+1]*2-(cubeVertices[k*3+1]*(6.0f/64.0f+4.0f/64.0f))+4.0f/64.0f)*4,
+                                     
+                                     cubeVertices[k*3+2]*.45f-.46f);
                 
                 vc=rotateVertice(MakeVector(0,rot,0),vc);
                 vc.x+=offsets.x;

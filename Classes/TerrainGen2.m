@@ -860,6 +860,7 @@ void makeMars(){
 		}
 	}*/
     [World getWorld].terrain.final_skycolor=  colorTable[10];
+   
     printf("sky %f,%f,%f\n",  [World getWorld].terrain.final_skycolor.x,  [World getWorld].terrain.final_skycolor.y,  [World getWorld].terrain.final_skycolor.z);
 	
 }

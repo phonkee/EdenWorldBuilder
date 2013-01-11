@@ -85,11 +85,19 @@ extern float yawanimation;
                     float yaw[4]={0,90,180,270};
                     int dir=portals[k].dir;
                     vec.x2=mag*dx[(dir+1)%4];
-                    vec.y2=vel.y;
+                    vec.y2=0;
                     vec.z2=mag*dz[(dir+1)%4];
                     vec.x=portals[k].x+dx[(dir+1)%4];
+                    if(dx[(dir+1)%4]==0){
+                        vec.x+=.5f;
+                    }
                     vec.y=portals[k].y;
                     vec.z=portals[k].z+dz[(dir+1)%4];
+                    if(dz[(dir+1)%4]==0){
+                        vec.z+=.5f;
+                    }
+                    
+
                     yawanimation=0;
                     [World getWorld].player.yaw=yaw[(dir+3)%4];
                     

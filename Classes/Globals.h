@@ -35,6 +35,7 @@ extern bool SUPPORTS_RETINA;
 extern bool CREATURES_ON;
 
 
+
 extern const int blockTypeFaces[NUM_BLOCKS+1][6];
 extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 extern const int blockinfo[NUM_BLOCKS+1];

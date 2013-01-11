@@ -16,7 +16,7 @@
 #define n_particles 17
 #define max_fparticles 1000
 #define max_bb 500
-#define SMOKE_SIZER 190
+#define SMOKE_SIZER 140
 
 static unsigned short pindices[max_fparticles];
 typedef struct{
