@@ -45,6 +45,7 @@ Be aware that the content of the generated textures will be upside-down!
 }
 
 CGImageRef ManipulateImagePixelData(CGImageRef inImage,CGImageRef inMask,int color);
+CGImageRef ManipulateImagePixelData2(CGImageRef inImage,int tint,int mode);
 
 - (id) initWithData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size;
 - (id) initWithData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width 

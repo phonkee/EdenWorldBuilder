@@ -24,7 +24,7 @@
 #define THREE_TO_ONE(x,y,z) 
 
 @implementation Player
-@synthesize pos,yaw,pitch,move_back,jumping,invertcam,autojump_option,vel,flash,pbox;
+@synthesize pos,yaw,pitch,move_back,jumping,invertcam,autojump_option,vel,flash,pbox,life,dead;
 static int nest_count;
 static bool onground;
 static bool onramp;
@@ -46,6 +46,8 @@ float yawanimation;
 	lpos.y=pos.y;
 	lpos.z=pos.z;
 	yawanimation=0;
+    life=1;
+    dead=false;
 	pitch=-15;
 	jumping=FALSE;
     climbing=FALSE;
@@ -652,7 +654,33 @@ static float walkCount=0;
 static BOOL ladderSound=FALSE;
 static BOOL ladderIsVine=FALSE;
 static BOOL lastOnIce;
+- (void)takeDamage:(float)damage{
+    life-=damage;
+    if(life<0){
+        dead=TRUE;
+        [World getWorld].hud.fade_out=0;
+        printf("dead\n");
+    }
+    
+}
 
+-(BOOL) preupdate:(float)etime{
+    if(life<0){
+        flash=1;
+        
+    }else
+    if(life<1){
+        life+=.1*etime;
+        flash=1-life;
+    }else{
+        flash=0;
+    }
+    
+    if(!dead)
+        return [self update:etime];
+    else
+        return TRUE;
+}
 - (BOOL)update:(float)etime{
     
 	//if(etime>1.0f/30.0f)etime=1.0f/30.0f;
@@ -1189,8 +1217,10 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         
       //  NSLog(@"before-vel:(%f,%f,%f)  normal:(%f,%f,%f) dotp: %f",vel.x,vel.y,vel.z,normal.x,normal.y,normal.z,n);
         if(blockinfo[collided]&IS_LAVA){
+            
+            [self takeDamage:.08f];
             n*=1.8;
-            flash=.5f;
+            
             [[Resources getResources] playSound:S_LAVA_BURN];	
             NSLog(@"n:%f",n);
             if(minminTranDist.y>0){

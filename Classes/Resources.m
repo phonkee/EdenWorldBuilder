@@ -308,12 +308,23 @@ typedef struct{
 }CTexture;
 UIImage* storedSkins[5][2];
 UIImage* storedMasks[5][2];
-
+UIImage* storedPortal;
 #define SKIN_CACHE_SIZE 50
 CTexture skin_cache[SKIN_CACHE_SIZE];
 
+Texture2D* portal_cache[100];
 
 void clearSkinCache(){
+    for(int i=0;i<100;i++){
+        if(i<100){
+            if(portal_cache[i]){
+                [portal_cache[i] release];
+                portal_cache[i]=NULL;
+                
+                
+            }
+        }
+    }
     for(int i=0;i<SKIN_CACHE_SIZE;i++){
         if(skin_cache[i].tex){
             [skin_cache[i].tex release];
@@ -321,7 +332,27 @@ void clearSkinCache(){
         }
     }
 }
-
+extern Vector colorTable[256];
+- (int)getPortalTex:(int)color{
+    if(color==0)color=25;
+    if(portal_cache[color]!=NULL){
+        
+        return portal_cache[color].name;
+    }
+    else{
+       CGImageRef img=[storedPortal CGImage];
+        
+        Vector clr=colorTable[color];
+        int rgba= ((int)(255*clr.z)<<24) | ((int)(255*clr.y)<<16) | ((int)(255*clr.x) <<8)  | 0xFF;
+        UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData2(img,rgba,1)];
+        portal_cache[color] =
+        [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
+        printf("initing texture ;o");
+        return portal_cache[color].name;
+    }
+    
+    return [self getTex:ICO_SWIRL].name;
+}
 - (int)getSkin:(int)model_type:(int)color:(int)state{
     for(int i=0;i<SKIN_CACHE_SIZE;i++){
         if(skin_cache[i].tex!=NULL&&skin_cache[i].model_type==model_type&&skin_cache[i].color==color&&skin_cache[i].state==state){
@@ -345,7 +376,7 @@ void clearSkinCache(){
   //  extern UIImage* storeMask;
     CGImageRef img=[storedMasks[model_type][1-state] CGImage];
     CGImageRef img2=[storedSkins[model_type][state] CGImage];
-    extern Vector colorTable[256];
+    
     Vector clr=colorTable[color];
     int rgba= ((int)(255*clr.z)<<24) | ((int)(255*clr.y)<<16) | ((int)(255*clr.x) <<8)  | 0xFF;
     UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData(img2,img,rgba)];
@@ -499,6 +530,9 @@ extern BOOL SUPPORTS_OGL2;
 - (id)init{
     for(int i=0;i<SKIN_CACHE_SIZE;i++){
         skin_cache[i].tex=NULL;
+    }
+    for(int i=0;i<100;i++){
+        portal_cache[i]=NULL;
     }
 	landingEffectTimer=0;
 	textures=[[NSMutableArray alloc] init];

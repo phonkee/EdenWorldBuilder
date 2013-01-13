@@ -67,6 +67,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import "GLobals.h"
 #import "World.h"
 #import "Util.h"
+#import "ColorUtilc.h"
 //CONSTANTS:
 
 #define kMaxTextureSize		1024
@@ -367,9 +368,256 @@ CGImageRef ManipulateImagePixelData(CGImageRef inImage,CGImageRef inMask,int tin
     return ref;
     
 }
+#define MIN3(x,y,z)  ((y) <= (z) ? \
+((x) <= (y) ? (x) : (y)) \
+: \
+((x) <= (z) ? (x) : (z)))
+
+#define MAX3(x,y,z)  ((y) >= (z) ? \
+((x) >= (y) ? (x) : (y)) \
+: \
+((x) >= (z) ? (x) : (z)))
+
+struct rgb_color {
+    float r, g, b;    /* Channel intensities between 0.0 and 1.0 */
+};
+
+struct hsv_color {
+    float hue;        /* Hue degree between 0.0 and 360.0 */
+    float sat;        /* Saturation between 0.0 (gray) and 1.0 */
+    float val;        /* Value between 0.0 (black) and 1.0 */
+};
+
+
+struct hsv_color rgb_to_hsv(struct rgb_color rgb) {
+    struct hsv_color hsv;
+    double rgb_min, rgb_max;
+    rgb_min = MIN3(rgb.r, rgb.g, rgb.b);
+    rgb_max = MAX3(rgb.r, rgb.g, rgb.b);
+    hsv.val = rgb_max;
+    if (hsv.val == 0) {
+        hsv.hue = hsv.sat = 0;
+        return hsv;
+    }
+    /* Normalize value to 1 */
+    rgb.r /= hsv.val;
+    rgb.g /= hsv.val;
+    rgb.b /= hsv.val;
+    rgb_min = MIN3(rgb.r, rgb.g, rgb.b);
+    rgb_max = MAX3(rgb.r, rgb.g, rgb.b);
+    hsv.sat = rgb_max - rgb_min;
+    if (hsv.sat == 0) {
+        hsv.hue = 0;
+        return hsv;
+    }
+    /* Normalize saturation to 1 */
+    rgb.r = (rgb.r - rgb_min)/(rgb_max - rgb_min);
+    rgb.g = (rgb.g - rgb_min)/(rgb_max - rgb_min);
+    rgb.b = (rgb.b - rgb_min)/(rgb_max - rgb_min);
+    rgb_min = MIN3(rgb.r, rgb.g, rgb.b);
+    rgb_max = MAX3(rgb.r, rgb.g, rgb.b);
+    /* Compute hue */
+    if (rgb_max == rgb.r) {
+        hsv.hue = 0.0 + 60.0*(rgb.g - rgb.b);
+        if (hsv.hue < 0.0) {
+            hsv.hue += 360.0;
+        }
+    } else if (rgb_max == rgb.g) {
+        hsv.hue = 120.0 + 60.0*(rgb.b - rgb.r);
+    } else /* rgb_max == rgb.b */ {
+        hsv.hue = 240.0 + 60.0*(rgb.r - rgb.g);
+    }
+    return hsv;
+}
+/**
+ * Converts an RGB color value to HSL. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 1].
+ *
+ * @param   Number  r       The red color value
+ * @param   Number  g       The green color value
+ * @param   Number  b       The blue color value
+ * @return  Array           The HSL representation
+ */
+struct hsv_color rgbToHsl(float r, float g, float b){
+    struct hsv_color ret;
+    
+    float max = MAX3(r, g, b);
+    float min = MIN3(r, g, b);
+    float h, s, l = (max + min) / 2;
+    
+    if(max == min){
+        h = s = 0; // achromatic
+    }else{
+        float d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        if(max==r)
+            h = (g - b) / d + (g < b ? 6 : 0);
+        else if(max==g)
+            h = (b - r) / d + 2;
+        else if(max==b)
+            h = (r - g) / d + 4; 
+        
+        h /= 6;
+    }
+    ret.hue=h;
+    ret.sat=s;
+    ret.val=l;
+    return ret;
+}
+
+/**
+ * Converts an HSL color value to RGB. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes h, s, and l are contained in the set [0, 1] and
+ * returns r, g, and b in the set [0, 255].
+ *
+ * @param   Number  h       The hue
+ * @param   Number  s       The saturation
+ * @param   Number  l       The lightness
+ * @return  Array           The RGB representation
+ */
+float hue2rgb(p, q, t){
+    if(t < 0) t += 1;
+    if(t > 1) t -= 1;
+    if(t < 1/6) return p + (q - p) * 6 * t;
+    if(t < 1/2) return q;
+    if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    return p;
+}
+struct rgb_color hslToRgb(h, s, l){
+    float r, g, b;
+    
+    if(s == 0){
+        r = g = b = l; // achromatic
+    }else{
+        
+        
+        float q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        float p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+    }
+    struct rgb_color ret;
+    ret.r=r/255.0f;
+    ret.g=g/255.0f;
+    ret.b=b/255.0f;
+    return ret;
+}
+
+
+CGImageRef ManipulateImagePixelData2(CGImageRef inImage,int tint,int mode)
+{
+    // Create the bitmap context
+    CGContextRef cgctx = CreateARGBBitmapContext(inImage);
+   
+    if (cgctx == NULL)
+    {
+        // error creating context
+        printf("error creating context for manipulation\n");
+        return NULL;
+    }
+    
+    // Get image width, height. We'll use the entire image.
+    size_t w = CGImageGetWidth(inImage);
+    size_t h = CGImageGetHeight(inImage);
+    CGRect rect = {{0,0},{w,h}};
+    
+    // Draw the image to the bitmap context. Once we draw, the memory
+    // allocated for the context for rendering will then contain the
+    // raw image data in the specified color space.
+    CGContextDrawImage(cgctx, rect, inImage);
+       
+    // Now we can get a pointer to the image data associated with the bitmap
+    // context.
+    int *data = (int*)CGBitmapContextGetData (cgctx);
+   
+    
+    int cr =  (tint >> 8) & 255;
+    int cg = (tint >> 16) & 255;
+    int cb =   (tint >> 24) & 255;
+    float fr=cr/255.0f;
+    float fg=cg/255.0f;
+    float fb=cb/255.0f;
+    fr=fr;
+    fg=fg;
+    fb=fb;
+    //void RGB2HSL(int color,int* h,int* s,int* l);
+    //int HSL2RGB(int h,int s,int l);
+    unsigned int hh,ss,ll;
+    
+    void RGB2HSL(unsigned int color,unsigned int* h,unsigned int* s,unsigned int* l);
+    unsigned int HSL2RGB(unsigned int h,unsigned int s,unsigned int l);
+    unsigned int utint=((tint>>8)&0x00FFFFFF);
+    
+    
+    RGB2HSL(utint,&hh,&ss,&ll);
+    unsigned int ret=HSL2RGB(hh,ss,ll);
+        
+    if(ret!=utint){
+        printf("conversion off: %X != %X\n",utint,ret);
+    }else{
+        printf("convert success!");
+    }
+    if (data != NULL)
+    {
+        for(int i=0;i<w*h;i++){
+           
+                //outputRed = (foregroundRed * foregroundAlpha) + (backgroundRed * (1.0 - foregroundAlpha));
+                int rr,gg,bb;
+                int rgba=data[i];
+                rr =  (rgba >> 8) & 255;
+                gg = (rgba >> 16) & 255;
+                bb =   (rgba >> 24) & 255;
+                
+                
+                // int color= (()<<24) | (b<<16) | (b<<8)  | 0xFF;
+                // int igrey= (bb<<24) | (bb<<16) | (bb<<8)  | 0xFF;
+            
+            
+            float grey=bb/255.0f;
+            //grey*=100;
+           float r,g,b;
+           /*
+            unsigned int ret=HSL2RGB(hh,ss,(4.0f*grey+ll)/5.0f);
+            data[i]=(ret<<8)|0xFF;*/
+           
+            r=(grey*fr);
+            g=(grey*fg);
+            b=(grey*fb);
+            
+            
+            
+          
+              
+                rr=r*255;
+                gg=g*255;
+                bb=b*255;
+                data[i]= (bb<<24) | (gg<<16) | (rr<<8)  | 0xFF;
+                
+        }
+       
+        
+    }
+    CGImageRef ref=CGBitmapContextCreateImage(cgctx);
+    // When finished, release the context
+    CGContextRelease(cgctx);
+  
+    // Free image data memory for the context
+    if (data)
+    {
+        free(data);
+    }
+    return ref;
+    
+}
+
 
 extern UIImage* storedSkins[5][2];
 extern UIImage* storedMasks[5][2];
+extern UIImage* storedPortal;
 int storedMaskCounter=-1;
 int storedSkinCounter=-1;
 int realStoredSkinCounter=0;
@@ -399,6 +647,7 @@ int realStoredSkinCounter=0;
 {
 	UIImage*				uiImage;
     BOOL isMask=FALSE;
+    BOOL isPortal=FALSE;
     BOOL storeImage=FALSE;
     if(storedSkinCounter>=0&&storedSkinCounter<15){
         if(storedSkinCounter%3!=1){
@@ -414,7 +663,13 @@ int realStoredSkinCounter=0;
         storeImage=TRUE;
         
     }
-    
+    if([path isEqualToString:@"portal_twirl.png"]){
+        isPortal=TRUE;
+        storeImage=TRUE;
+        printf("stored portal path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
+
+    }
+    //    
     
     if(IS_IPAD||SUPPORTS_RETINA){
         NSString* oipadPath=[NSString stringWithFormat:@"ipad~%@",path];
@@ -438,6 +693,9 @@ int realStoredSkinCounter=0;
 	
     
     if(storeImage){
+        if(isPortal){
+            storedPortal=uiImage;
+        }else
         if(isMask){
           //  printf("Storing mask in [%d][%d]: %s\n",storedMaskCounter/2,storedMaskCounter%2,[path cStringUsingEncoding:NSUTF8StringEncoding]);
             storedMasks[storedMaskCounter/2][storedMaskCounter%2]=uiImage;

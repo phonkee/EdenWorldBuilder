@@ -80,7 +80,7 @@ static int marginLeft2=10-6;
 //static int marginRight=60;
 Vector colorTable[256];
 @implementation Hud
-@synthesize mode,blocktype,leftymode,use_joystick,paintColor,liquidColor,block_paintcolor,heartbeat,goldencubes,build_size;
+@synthesize mode,blocktype,leftymode,use_joystick,paintColor,liquidColor,block_paintcolor,heartbeat,goldencubes,build_size,fade_out;
 @synthesize m_jump,m_back,m_fwd,m_left,m_right,test_a,m_joy,fps,justLoaded,flash,flashcolor;
 @synthesize sb,hideui,take_screenshot,underLiquid,holding_creature,creature_color,inmenu,var1,var2,var3;
 
@@ -327,9 +327,23 @@ int flamecount=0;
 		flash-=etime;
 	}
     if([World getWorld].player.flash>0){
-        [World getWorld].player.flash-=etime;
+       // [World getWorld].player.flash-=etime;
     }
-	
+	if([World getWorld].player.dead){
+        if(fade_out<1){
+            fade_out+=etime/4;
+        }else if(fade_out>=1){
+            printf("warping home\n");
+            [[World getWorld].terrain warpToHome];
+            printf("finished warping\n");
+        }
+    }else{
+        if(fade_out>0){
+            if(etime>.1f)etime=.1f;
+            fade_out-=etime/2.5f;
+            if(fade_out<0)fade_out=0;
+        }
+    }
 	ttime+=[World getWorld].realtime;
 	fpsc++;
     if(justLoaded){
@@ -1745,6 +1759,20 @@ static int lmode=MODE_NONE;
         
 		
 	}
+    if(fade_out>0){
+        glColor4f(0,0,0,fade_out);
+        glDisable(GL_TEXTURE_2D);
+		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        if(IS_IPAD){
+            if(IS_RETINA){
+                [Graphics drawRect:0:0:SCREEN_WIDTH*2:SCREEN_HEIGHT*2];
+            }else
+                [Graphics drawRect:0:0:IPAD_WIDTH:IPAD_HEIGHT];
+        }else
+            [Graphics drawRect:0:0:SCREEN_WIDTH:SCREEN_HEIGHT];
+		glEnable(GL_TEXTURE_2D);
+
+    }
   /*  glDisable(GL_TEXTURE_2D);
     glColor4f(test2.x,test2.y,test2.z,1.0f);
     

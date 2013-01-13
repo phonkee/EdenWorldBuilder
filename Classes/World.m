@@ -314,9 +314,11 @@ extern int chunk_load_count;
 		[cam update:etime];	
 		[terrain update:etime];		
 		[hud update:etime];
-         if(CREATURES_ON)
+         if(CREATURES_ON&&![World getWorld].player.dead)
         UpdateModels(etime);
-		[player update:etime];	
+       
+		[player preupdate:etime];
+         if(![World getWorld].player.dead)
 		[effects update:etime];
         [terrain updateAllImportantChunks];
 		

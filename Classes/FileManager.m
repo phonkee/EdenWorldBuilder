@@ -773,6 +773,7 @@ extern float P_ZFAR;
         [imgHash release];
         imgHash=NULL;
     }
+    [[World getWorld].player reset];
 	if(![[World getWorld].fm worldExists:name]){
         
         extern int g_terrain_type;
@@ -841,6 +842,8 @@ extern float P_ZFAR;
         file_version=2;
 		//[ter updateAllImportantChunks];
 		[[World getWorld].player groundPlayer];
+        
+      
         for(int i=0;i<MAX_CREATURES_SAVED;i++){
             creatureData[i].type=-1;
         }
@@ -850,8 +853,7 @@ extern float P_ZFAR;
 		//[ter unloadTerrain:FALSE];
 		//[self loadWorld:name];
 	}else{
-        
-        
+               
 		NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];	
         [[World getWorld].sf_lock lock];
 		saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];		
@@ -897,7 +899,10 @@ extern float P_ZFAR;
 		sfh->pos.z-=chunkOffsetZ*CHUNK_SIZE;
 		sfh->pos.x*=BLOCK_SIZE; 
 		sfh->pos.z*=BLOCK_SIZE;
+          
 		*/player.pos=sfh->pos;
+       
+        
 		//NSLog(@"player pos load: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
 		int r=T_RADIUS;
 	//	int asdf=0;

@@ -329,6 +329,8 @@ int extraGeneration(any_t passedIn,any_t chunkToGen){
 	[self unloadTerrain:FALSE];
     
 	[self loadTerrain:world_name];
+    //[[World getWorld].player reset];
+
     [[World getWorld].player groundPlayer];	
 }
 - (void)addToUpdateList:(int)cx:(int)cy:(int)cz{
@@ -1231,8 +1233,9 @@ float last_etime;
         return FALSE;
     }
     etime/=4;
-    portal_rot.z+=5*etime;
+    portal_rot.z-=5*etime;
     if(portal_rot.z>2*M_PI)portal_rot.z-=2*M_PI;
+    if(portal_rot.z<0)portal_rot.z+=2*M_PI;
     
     gcrot.x+=2*etime;
     if(gcrot.x>2*M_PI)gcrot.x-=2*M_PI;
@@ -2072,14 +2075,29 @@ int lolc=0;
     glEnableClientState(GL_COLOR_ARRAY);
     
     
-    vert=0;
-    object=0;
+        //batch portals by color.  necessary because swirl texture is unique per color
+    
+    StaticObject* portalso[200];
+    int num_portals=0;
     for(int i=0;i<chunksr;i++){
         for(int j=0;j<renderList[i].rtnum_objects;j++){
             if(renderList[i].rtobjects[j].type!=TYPE_PORTAL_TOP)continue;
-                        
+            portalso[num_portals++]=&renderList[i].rtobjects[j];
+        }
+    }
+    
+   // for(int clr=0;clr<60;clr++){
+        vert=0;
+        object=0;
+
+    
+    for(int i=0;i<num_portals;i++){
+        StaticObject* portal=portalso[i];
+       // if(portal->color!=clr){
+       //     continue;
+       // }
             float rot=0;
-            int dir=(renderList[i].rtobjects[j].dir+3)%4;
+            int dir=(portal->dir+3)%4;
             Vector offsets=MakeVector(0,0,0);
             if(dir==0){
                 offsets.x=4;
@@ -2116,9 +2134,9 @@ int lolc=0;
                 vc.z+=offsets.z;
                 
                 
-                objVertices[vert].position[0]=4*(renderList[i].rtobjects[j].pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)+vc.x;
-                objVertices[vert].position[1]=4*renderList[i].rtobjects[j].pos.y+vc.y;
-                objVertices[vert].position[2]=4*(renderList[i].rtobjects[j].pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)+vc.z;
+                objVertices[vert].position[0]=4*(portal->pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)+vc.x;
+                objVertices[vert].position[1]=4*portal->pos.y+vc.y;
+                objVertices[vert].position[2]=4*(portal->pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)+vc.z;
                 
                 
                 vc=MakeVector((cubeTextureCustom[k*2+0]*(.723-.276f)+.276f)-.5f,(cubeTextureCustom[k*2+1]*(.947-.053f)+.053f)-.5f,0);
@@ -2128,8 +2146,8 @@ int lolc=0;
                         
                 
                 extern Vector colorTable[256];
-                Vector color=colorTable[renderList[i].rtobjects[j].color];
-                if(renderList[i].rtobjects[j].color==0){
+                Vector color=colorTable[portal->color];
+                if(portal->color==0){
                     color.x=color.y=color.z=1;
                     
                 }
@@ -2141,21 +2159,26 @@ int lolc=0;
                 
             }
            
-        }
+        
         if(object==max_render_objects)break;
     }
+        
+        
+        
+        if(vert!=0){
+        glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:ICO_SWIRL].name);
+        glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
+        
+        glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
+        glColorPointer(	4, GL_UNSIGNED_BYTE, sizeof(vertexObject), objVertices[0].colors);
+        
+        
+        glDrawArrays(GL_TRIANGLES, 0,vert);
+        }
+
+   // }
     
-    
-    
-    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:ICO_SWIRL].name);
-    glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
-    
-	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
-	glColorPointer(	4, GL_UNSIGNED_BYTE, sizeof(vertexObject), objVertices[0].colors);
-	
-    
-    glDrawArrays(GL_TRIANGLES, 0,vert);
-    
+       
 
 
     

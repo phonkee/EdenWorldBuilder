@@ -14,6 +14,8 @@
 		1967D0131639F3A900C03DF0 /* Nergle.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00E1639F3A900C03DF0 /* Nergle.pod */; };
 		1967D0141639F3A900C03DF0 /* Stumpy.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00F1639F3A900C03DF0 /* Stumpy.pod */; };
 		1967D0161639F80000C03DF0 /* TerrainGen2.m in Sources */ = {isa = PBXBuildFile; fileRef = 1967D0151639F80000C03DF0 /* TerrainGen2.m */; };
+		19B3B12416A07D4D00E86E8D /* portal_twirl2.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B12316A07D4D00E86E8D /* portal_twirl2.png */; };
+		19B3B12A16A1CF5900E86E8D /* ColorUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B3B12916A1CF5900E86E8D /* ColorUtil.cpp */; };
 		19C93C8B1672DEE7006ADF33 /* Stalker.pod in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C851672DEE7006ADF33 /* Stalker.pod */; };
 		19C93C8C1672DEE7006ADF33 /* Charger_Blink.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C861672DEE7006ADF33 /* Charger_Blink.png */; };
 		19C93C8D1672DEE7006ADF33 /* Charger_Rage.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C871672DEE7006ADF33 /* Charger_Rage.png */; };
@@ -738,6 +740,9 @@
 		1967D00F1639F3A900C03DF0 /* Stumpy.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Stumpy.pod; path = models/Stumpy.pod; sourceTree = "<group>"; };
 		1967D0151639F80000C03DF0 /* TerrainGen2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TerrainGen2.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		1967D0171639F81800C03DF0 /* TerrainGen2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TerrainGen2.h; sourceTree = "<group>"; };
+		19B3B12316A07D4D00E86E8D /* portal_twirl2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portal_twirl2.png; sourceTree = SOURCE_ROOT; };
+		19B3B12616A1CD2100E86E8D /* ColorUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorUtil.h; sourceTree = "<group>"; };
+		19B3B12916A1CF5900E86E8D /* ColorUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorUtil.cpp; sourceTree = "<group>"; };
 		19C93C851672DEE7006ADF33 /* Stalker.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Stalker.pod; path = models/Stalker.pod; sourceTree = "<group>"; };
 		19C93C861672DEE7006ADF33 /* Charger_Blink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Charger_Blink.png; path = models/Charger_Blink.png; sourceTree = "<group>"; };
 		19C93C871672DEE7006ADF33 /* Charger_Rage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Charger_Rage.png; path = models/Charger_Rage.png; sourceTree = "<group>"; };
@@ -2154,6 +2159,7 @@
 		C62C95A012713E1900379390 /* media */ = {
 			isa = PBXGroup;
 			children = (
+				19B3B12316A07D4D00E86E8D /* portal_twirl2.png */,
 				19D3339E167D6E2A0082ACE7 /* Batty_BlinkMASK.png */,
 				19D3339F167D6E2A0082ACE7 /* Batty_DefaultMASK.png */,
 				19D333A0167D6E2A0082ACE7 /* Green_BlinkMASK.png */,
@@ -2215,6 +2221,8 @@
 				C6AE407913C3DF240068685C /* md5.h */,
 				1D27123615151EFA00C7059F /* VectorUtil.h */,
 				1D27123715151F7400C7059F /* VectorUtil.cpp */,
+				19B3B12616A1CD2100E86E8D /* ColorUtil.h */,
+				19B3B12916A1CF5900E86E8D /* ColorUtil.cpp */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -3307,6 +3315,7 @@
 				19D333AF167D6E2A0082ACE7 /* Nergle_DefaultMASK.png in Resources */,
 				19D333B0167D6E2A0082ACE7 /* Stumpy_BlinkMASK.png in Resources */,
 				19D333B1167D6E2A0082ACE7 /* Stumpy_DefaultMASK.png in Resources */,
+				19B3B12416A07D4D00E86E8D /* portal_twirl2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3408,6 +3417,7 @@
 				1DC93AE81564244A0015616C /* Portal.m in Sources */,
 				1DC93AF3156C29B30015616C /* Firework.m in Sources */,
 				1967D0161639F80000C03DF0 /* TerrainGen2.m in Sources */,
+				19B3B12A16A1CF5900E86E8D /* ColorUtil.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -46,6 +46,7 @@
     int goldencubes;
     int build_size;
 	float flash;
+    float fade_out;
     Vector flashcolor;
     int pressed;
 	
@@ -79,7 +80,7 @@
 @property(nonatomic,assign) int blocktype,block_paintcolor,creature_color;
 @property(nonatomic,readonly) color8 paintColor;
 @property(nonatomic,assign) Vector liquidColor,flashcolor;
-@property(nonatomic,assign) float flash,var1,var2,var3;
+@property(nonatomic,assign) float flash,var1,var2,var3,fade_out;
 @property(nonatomic,readonly) float test_a;
 @property(nonatomic,assign) BOOL hideui;
 @property(nonatomic,readonly) statusbar* sb;

@@ -719,6 +719,8 @@ void ExplodeModels(Vector p,int color){
              [World getWorld].hud.flashcolor=colorTable[color];
             
         }else{
+            
+        
         float hit_force=((EXPLOSION_RADIUS*EXPLOSION_RADIUS)-pos.lenSqr())*.75f;
         pos=pos.normalize();
         
@@ -729,7 +731,11 @@ void ExplodeModels(Vector p,int color){
         vel.z+=pos.z;
         e.vel=vel;
          [[Resources getResources] playSound:S_HIT];
-        e.flash=0.6f;
+            if([World getWorld].player.life>.5f)
+                [[World getWorld].player takeDamage:.38f];
+            else
+                [[World getWorld].player takeDamage:.05f];
+       
         }
     }
 
@@ -786,7 +792,8 @@ bool CheckCollision(Entity* e){
                 vel.y+=pos.y+4;
                 vel.z+=pos.z;
                 ep.vel=vel;
-                
+            
+                [ep takeDamage:.2f];
                 ep.flash=0.6f;
                 [[Resources getResources] playSound:S_HIT];
             

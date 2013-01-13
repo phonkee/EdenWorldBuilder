@@ -36,26 +36,32 @@
     BOOL inLiquid;
     float flash;
     BOOL onIce;
+    BOOL dead;
     BOOL autojump_option;
+    float life;
     //BOOL onIceRamp;
 }
 - (void)groundPlayer;
 - (void)reset;
 - (void)horizc;
+-(BOOL) preupdate:(float)etime;
 - (BOOL)vertc;
 - (void)processInput:(float)etime;
 - (BOOL)update:(float)etime;
 - (id)initWithWorld:(World*)world;
 - (BOOL)test:(int)x:(int)y:(int)z:(float)r; 
 - (void)move:(float)etime;
+- (void)takeDamage:(float)damage;
 - (void)render;
 - (void)setSpeed:(Vector)svel,float speed;
 
+@property(nonatomic,assign) float life;
 @property(nonatomic,assign) int invertcam;
 @property(nonatomic,assign) Vector pos,vel;
 @property(nonatomic,assign) float yaw,pitch,flash;
 @property(nonatomic,assign) BOOL move_back,jumping;
 @property(nonatomic,assign) BOOL autojump_option;
+@property(nonatomic,assign) BOOL dead;
 @property(nonatomic,assign) Polyhedra pbox;
 
 Vector getFlowDirection(int x,int z,int y);

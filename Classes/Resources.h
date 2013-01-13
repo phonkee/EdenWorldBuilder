@@ -47,6 +47,7 @@
 - (void)stopMenuTune;
 -(void)soundEvent:(int)actionid;
 -(void)soundEvent:(int)actionid:(Vector)location;
+- (int)getPortalTex:(int)color;
 
 -(void)voSound:(int)action:(int)type:(Vector)location;
 
