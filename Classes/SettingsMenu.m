@@ -18,12 +18,12 @@ enum  {
 	//S_LEFTY_MODE=1,	
 	S_PLAY_MUSIC=4,
 	S_PLAY_SOUND=3,
-    S_AUTOJUMP=2,
+    S_HEALTH=2,
 	S_GRAPHICS=1,
     S_CREATURES=0,
 };
 static NSString* pnames[NUM_PROP]={
-	[S_AUTOJUMP]=@"Auto Jump",
+	[S_HEALTH]=@"Health",
 //	[S_LEFTY_MODE]=@"Lefty Controls",
 	[S_PLAY_MUSIC]=@"Music",
 	[S_PLAY_SOUND]=@"Sound Effects",
@@ -31,7 +31,7 @@ static NSString* pnames[NUM_PROP]={
     [S_CREATURES]=@"Creatures"
 };
 static const int pdefaults[NUM_PROP]={
-	[S_AUTOJUMP]=TRUE,
+	[S_HEALTH]=TRUE,
 //	[S_LEFTY_MODE]=FALSE,
 	[S_PLAY_MUSIC]=TRUE,
 	[S_PLAY_SOUND]=TRUE,
@@ -52,9 +52,9 @@ extern float P_ASPECT_RATIO;
 		properties[i].box.size.height=30;
 		properties[i].box.origin.y=i*40+68;
 		
-		if(i==S_AUTOJUMP){
+		if(i==S_HEALTH){
 			properties[i].box.size.width=200;
-			properties[i].tex=[[Resources getResources] getMenuTex:MENU_AUTOJUMP];
+			properties[i].tex=[[Resources getResources] getMenuTex:MENU_HEALTH];
 		}else if(i==S_PLAY_MUSIC){
 			properties[i].box.size.width=105;
 			properties[i].tex=[[Resources getResources] getMenuTex:MENU_MUSIC];			
@@ -173,7 +173,8 @@ static const int usage_id=3;
 	[Resources getResources].playmusic=properties[S_PLAY_MUSIC].value;
 	[Resources getResources].playsound=properties[S_PLAY_SOUND].value;
 	//[World getWorld].hud.leftymode=properties[S_LEFTY_MODE].value;
-   [World getWorld].player.autojump_option=properties[S_AUTOJUMP].value;
+   [World getWorld].player.autojump_option=TRUE;
+    [World getWorld].player.health_option=properties[S_HEALTH].value;
 	[World getWorld].player.invertcam=FALSE;
 	[World getWorld].hud.use_joystick=TRUE;
     [World getWorld].terrain.tgen.genCaves=FALSE;
@@ -205,8 +206,8 @@ static const int usage_id=3;
 	[[[Resources getResources] getMenuTex:MENU_SAVE] drawButton:rect_save];
 	for(int i=0;i<NUM_PROP;i++){
 		glColor4f(0.97, 0.97, 0.97, 1.0f);
-		if(i==S_AUTOJUMP){			
-			[[[Resources getResources] getMenuTex:MENU_AUTOJUMP] drawText:properties[i].box];
+		if(i==S_HEALTH){
+			[[[Resources getResources] getMenuTex:MENU_HEALTH] drawText:properties[i].box];
 		}else if(i==S_PLAY_MUSIC){
 			[[[Resources getResources] getMenuTex:MENU_MUSIC] drawText:properties[i].box];
 		}

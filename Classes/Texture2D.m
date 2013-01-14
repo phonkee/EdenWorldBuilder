@@ -617,7 +617,8 @@ CGImageRef ManipulateImagePixelData2(CGImageRef inImage,int tint,int mode)
 
 extern UIImage* storedSkins[5][2];
 extern UIImage* storedMasks[5][2];
-extern UIImage* storedPortal;
+extern UIImage* storedDoor;
+extern UIImage* storedDoorMask;
 int storedMaskCounter=-1;
 int storedSkinCounter=-1;
 int realStoredSkinCounter=0;
@@ -647,7 +648,7 @@ int realStoredSkinCounter=0;
 {
 	UIImage*				uiImage;
     BOOL isMask=FALSE;
-    BOOL isPortal=FALSE;
+    BOOL isDoor=FALSE;
     BOOL storeImage=FALSE;
     if(storedSkinCounter>=0&&storedSkinCounter<15){
         if(storedSkinCounter%3!=1){
@@ -663,13 +664,19 @@ int realStoredSkinCounter=0;
         storeImage=TRUE;
         
     }
-    if([path isEqualToString:@"portal_twirl.png"]){
-        isPortal=TRUE;
+    if([path isEqualToString:@"door.png"]){
+        isDoor=TRUE;
         storeImage=TRUE;
-        printf("stored portal path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
+        printf("stored door path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
 
+    }else if([path isEqualToString:@"door_mask.png"]){
+        isDoor=TRUE;
+        isMask=TRUE;
+        storeImage=TRUE;
+        printf("stored door mask path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
+        
     }
-    //    
+    //
     
     if(IS_IPAD||SUPPORTS_RETINA){
         NSString* oipadPath=[NSString stringWithFormat:@"ipad~%@",path];
@@ -693,8 +700,11 @@ int realStoredSkinCounter=0;
 	
     
     if(storeImage){
-        if(isPortal){
-            storedPortal=uiImage;
+        if(isDoor){
+            if(isMask){
+                storedDoorMask=uiImage;
+            }else
+                storedDoor=uiImage;
         }else
         if(isMask){
           //  printf("Storing mask in [%d][%d]: %s\n",storedMaskCounter/2,storedMaskCounter%2,[path cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -1289,6 +1299,49 @@ int realStoredSkinCounter=0;
     [self drawText:rect];
     }
 }
+- (void) drawNumbers:(CGRect)rect:(int)num{
+    if(num<0||num>10){
+        printf("num out of bounds/n");
+        num=0;
+    }
+    CGFloat depth=0.0;
+    float xoff=num*1/16.0f;
+    float xwidth=1;
+    if(num==10)xwidth=2;
+	GLfloat				coordinates[] = {
+        xoff,				_maxT,
+        xoff+_maxS/16.0f*xwidth,	_maxT,
+        xoff,				0,
+        xoff+_maxS/16.0f*xwidth,	0
+    };
+    GLfloat				width = roundf((GLfloat)_width * _maxS/16.0f),
+    height = roundf((GLfloat)_height * _maxT);
+    
+    if(num==10){
+        width = roundf((GLfloat)_width * _maxS/16.0f*2);
+    }
+    
+    if(IS_IPAD){
+        rect.origin.x*=SCALE_WIDTH;
+        rect.origin.y*=SCALE_HEIGHT;
+        rect.origin.x=roundf(rect.origin.x);
+        rect.origin.y=roundf(rect.origin.y);
+    }
+	GLfloat				vertices[] = {
+        rect.origin.x,							rect.origin.y,							depth,
+        rect.origin.x + width,		rect.origin.y,							depth,
+        rect.origin.x,							rect.origin.y + height,		depth,
+        rect.origin.x + width,		rect.origin.y + height,		depth
+    };
+	
+	glBindTexture(GL_TEXTURE_2D, _name);
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    
+    
+}
+
 - (void) drawText:(CGRect)rect{
     CGFloat depth=0.0;
 	GLfloat				coordinates[] = {

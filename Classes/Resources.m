@@ -308,18 +308,19 @@ typedef struct{
 }CTexture;
 UIImage* storedSkins[5][2];
 UIImage* storedMasks[5][2];
-UIImage* storedPortal;
+UIImage* storedDoor;
+UIImage* storedDoorMask;
 #define SKIN_CACHE_SIZE 50
 CTexture skin_cache[SKIN_CACHE_SIZE];
 
-Texture2D* portal_cache[100];
+Texture2D* door_cache[100];
 
 void clearSkinCache(){
     for(int i=0;i<100;i++){
         if(i<100){
-            if(portal_cache[i]){
-                [portal_cache[i] release];
-                portal_cache[i]=NULL;
+            if(door_cache[i]){
+                [door_cache[i] release];
+                door_cache[i]=NULL;
                 
                 
             }
@@ -333,25 +334,27 @@ void clearSkinCache(){
     }
 }
 extern Vector colorTable[256];
-- (int)getPortalTex:(int)color{
+- (int)getDoorTex:(int)color{
     if(color==0)color=25;
-    if(portal_cache[color]!=NULL){
+    if(door_cache[color]!=NULL){
         
-        return portal_cache[color].name;
+        return door_cache[color].name;
     }
     else{
-       CGImageRef img=[storedPortal CGImage];
-        
+       
+        CGImageRef img=[storedDoorMask CGImage];
+         CGImageRef img2=[storedDoor CGImage];
         Vector clr=colorTable[color];
         int rgba= ((int)(255*clr.z)<<24) | ((int)(255*clr.y)<<16) | ((int)(255*clr.x) <<8)  | 0xFF;
-        UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData2(img,rgba,1)];
-        portal_cache[color] =
+        UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData(img2,img,rgba)];
+        //UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData2(img,rgba,1)];
+        door_cache[color] =
         [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
         printf("initing texture ;o");
-        return portal_cache[color].name;
+        return door_cache[color].name;
     }
     
-    return [self getTex:ICO_SWIRL].name;
+    return [self getTex:ICO_DOOR].name;
 }
 - (int)getSkin:(int)model_type:(int)color:(int)state{
     for(int i=0;i<SKIN_CACHE_SIZE;i++){
@@ -532,7 +535,7 @@ extern BOOL SUPPORTS_OGL2;
         skin_cache[i].tex=NULL;
     }
     for(int i=0;i<100;i++){
-        portal_cache[i]=NULL;
+        door_cache[i]=NULL;
     }
 	landingEffectTimer=0;
 	textures=[[NSMutableArray alloc] init];
@@ -748,7 +751,7 @@ extern BOOL SUPPORTS_OGL2;
 	[textures addObject:temp];
     
     temp=[[Texture2D alloc] 
-		  initWithImagePath:@"door_bw.png" sizeToFit:FALSE];
+		  initWithImagePath:@"door_mask.png" sizeToFit:FALSE];
 	[textures addObject:temp];
     
     temp=[[Texture2D alloc] 
@@ -889,6 +892,15 @@ extern BOOL SUPPORTS_OGL2;
 		  initWithImagePath:@"Flame_1024b.png" sizeToFit:FALSE];
 	[textures addObject:temp];
     
+    temp=[[Texture2D alloc] initWithImagePath:@"text_numbers.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    
+    
+    
+    
+    
+    //////////MASKS
+    
     extern int storedMaskCounter;
     storedMaskCounter=0;
     
@@ -913,6 +925,8 @@ extern BOOL SUPPORTS_OGL2;
 	[textures addObject:temp];
     temp=[[Texture2D alloc] initWithImagePath:@"Stumpy_DefaultMASK.png" sizeToFit:FALSE];
 	[textures addObject:temp];
+    
+   ////////
     
 
     
@@ -1009,8 +1023,8 @@ extern BOOL SUPPORTS_OGL2;
 	temp=[[Texture2D alloc] 
 		  initWithImagePath:@"menu_cancel.png" sizeToFit:FALSE];
 	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_autojump.png" sizeToFit:FALSE];
+	temp=[[Texture2D alloc]
+		  initWithImagePath:@"menu_health.png" sizeToFit:FALSE];
 	[menutextures addObject:temp];
 	temp=[[Texture2D alloc] 
 		  initWithImagePath:@"menu_music.png" sizeToFit:FALSE];

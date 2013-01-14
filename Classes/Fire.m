@@ -272,7 +272,7 @@ static int frame=0,frame2=0;
     const GLshort* cubeTextureCustom=cubeTexture;
     const GLshort* cubeVertices=cubeShortVertices;
     int vert=0;
-    float poof=1.3f;
+    float poof=1.11f;
     float epoofx=1.3f;
     float epoofy=1.7f;
     for(int i=0;i<list_size;i++){
@@ -281,7 +281,7 @@ static int frame=0,frame2=0;
         for(int k=0;k<6*6;k++){
             Vector vc;
          
-            vc=MakeVector((cubeVertices[k*3]-.5f)*poof,(cubeVertices[k*3+1]-.5f)*poof*1.2f+.44f,(cubeVertices[k*3+2]-.5f)*poof);
+            vc=MakeVector((cubeVertices[k*3]-.5f)*poof,(cubeVertices[k*3+1]-.5f)*1.3f*1.2f+.44f,(cubeVertices[k*3+2]-.5f)*poof);
             
             if(k<12){
                 vc.x*=epoofx;
@@ -348,7 +348,7 @@ static int frame=0,frame2=0;
    // glDepthMask(FALSE);
     glColor4f(1.0f,1.0f,1.0f,1.0f);
     poof=1.1;
-    float epoof=1.2f;
+    float epoof=1.0f;
     vert=0;
     for(int i=0;i<list_size;i++){
         bnode* node=&list[i];
@@ -358,7 +358,7 @@ static int frame=0,frame2=0;
                 
                 vc=MakeVector((cubeVertices[k*3]-.5f)*poof,(cubeVertices[k*3+1]-.5f)*poof,(cubeVertices[k*3+2]-.5f)*poof);
                 
-                if(k>=24){
+                if(k>=24&&k<30){
                     vc.x*=epoof;
                     vc.z*=epoof;
                 
@@ -374,8 +374,8 @@ static int frame=0,frame2=0;
                 
                 
                 //  Vector uv=getFrameUV(0,SPRITE_FLAME);
-                objVertices[vert].texs[0]=cubeTextureCustom[k*2+0];
-                objVertices[vert].texs[1]=cubeTextureCustom[k*2+1];
+                objVertices[vert].texs[0]=cubeTextureCustom[k*2+0]*.8f+.1f;
+                objVertices[vert].texs[1]=cubeTextureCustom[k*2+1]*.8f+.1f;
                 
                 
                 

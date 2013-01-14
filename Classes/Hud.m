@@ -1264,7 +1264,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 	
 	glColor4f(1.0, 1.0, 1.0, at2);	
 	//glEnable(GL_TEXTURE_2D);
-	
+	int golden_cubei;
 	for(int i=0;i<NUM_DISPLAY_BLOCKS;i++){
         int type=hudBlocks[i];
         if(build_size==0){/*blockBounds[i].size.width-=10;
@@ -1304,15 +1304,22 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
             if(type==TYPE_FLOWER){
                 tid=ICO_FLOWER_ICO;
             }else if(type==TYPE_GOLDEN_CUBE){
+                golden_cubei=i;
+                
                 tid=ICO_GOLDCUBE;
-            }else if(type==TYPE_PORTAL_TOP){
+        }else if(type==TYPE_PORTAL_TOP){
                 tid=ICO_PORTAL2;
                 glColor4f(2000/255.0,150/255.0,255/255.0f,at2);
             }else if(type==TYPE_DOOR_TOP){
                 tid=ICO_DOOR2;
             }
-
+            if(tid==ICO_GOLDCUBE&&goldencubes==0){
+                glColor4f(1.0f,1.0f,1.0f,.3f);
                 [[[Resources getResources] getTex:tid ] drawButton:b];
+                glColor4f(1.0f,1.0f,1.0f,1.0f);
+            }else{
+                [[[Resources getResources] getTex:tid ] drawButton:b];
+            }
         }else if(type==TYPE_CUSTOM){
            
                 Button b=ButtonFromRect(blockBounds[i]);
@@ -1497,7 +1504,24 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         
 		//vertices[v_idx].texs[1]=cubeTexture[st+1]*tp.y+tp.x;
 	}
-	/*	
+    if(TRUE){
+       
+        CGRect num_rect=blockBounds[golden_cubei];
+        num_rect.origin.x+=18;
+        if(goldencubes!=10){
+            num_rect.origin.x+=3;
+        }
+        num_rect.origin.y-=2;
+        if(goldencubes==0){
+            glColor4f(1.0f,1.0f,1.0f,.3f);
+        [[[Resources getResources] getTex:TEXT_NUMBERS] drawNumbers:num_rect:goldencubes];
+            glColor4f(1.0f,1.0f,1.0f,1.0f);
+        }else{
+            [[[Resources getResources] getTex:TEXT_NUMBERS] drawNumbers:num_rect:goldencubes];
+            
+        }
+    }
+	/*
     glColor4f(1.0, 1.0, 1.0, 1.0f);
     glEnable(GL_BLEND);
     for(int i=0;i<NUM_DISPLAY_BLOCKS;i++){

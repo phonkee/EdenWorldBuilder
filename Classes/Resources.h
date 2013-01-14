@@ -47,7 +47,7 @@
 - (void)stopMenuTune;
 -(void)soundEvent:(int)actionid;
 -(void)soundEvent:(int)actionid:(Vector)location;
-- (int)getPortalTex:(int)color;
+- (int)getDoorTex:(int)color;
 
 -(void)voSound:(int)action:(int)type:(Vector)location;
 
@@ -140,7 +140,7 @@ enum MENU_TYPES{
 	MENU_SHARED_HEADER=15,
 	MENU_CLOUD=16,
 	MENU_CANCEL=17,
-	MENU_AUTOJUMP=18,
+	MENU_HEALTH=18,
 	MENU_MUSIC=19,
 	MENU_OFF=20,
 	MENU_ON=21,
@@ -231,7 +231,7 @@ enum ICON_TYPES{
     ICO_SKY_BOX_BW=48,
     ICO_GOLDEN_CUBE=49,
     ICO_GOLDEN_CUBE_BW=50,
-    ICO_DOOR_BW=51,
+    ICO_DOOR_MASK=51,
     ICO_FLOWER=52,
     ICO_PORTAL=53,
     ICO_SPHEREMAP=54,
@@ -270,6 +270,8 @@ enum ICON_TYPES{
     SKIN_STALKERBLINK=85,
     SKIN_MOOFMASK=86,
     SPRITE_FLAME=87,
+    
+    TEXT_NUMBERS=88,
     
     //88-98 reserved skin masks for coloring
     

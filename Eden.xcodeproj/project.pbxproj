@@ -16,6 +16,9 @@
 		1967D0161639F80000C03DF0 /* TerrainGen2.m in Sources */ = {isa = PBXBuildFile; fileRef = 1967D0151639F80000C03DF0 /* TerrainGen2.m */; };
 		19B3B12416A07D4D00E86E8D /* portal_twirl2.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B12316A07D4D00E86E8D /* portal_twirl2.png */; };
 		19B3B12A16A1CF5900E86E8D /* ColorUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B3B12916A1CF5900E86E8D /* ColorUtil.cpp */; };
+		19B3B13116A3398B00E86E8D /* ipad~menu_health.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B13016A3398B00E86E8D /* ipad~menu_health.png */; };
+		19B3B13316A3513600E86E8D /* door_mask.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B13216A3513600E86E8D /* door_mask.png */; };
+		19B3B13516A3B2C200E86E8D /* text_numbers.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B13416A3B2C200E86E8D /* text_numbers.png */; };
 		19C93C8B1672DEE7006ADF33 /* Stalker.pod in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C851672DEE7006ADF33 /* Stalker.pod */; };
 		19C93C8C1672DEE7006ADF33 /* Charger_Blink.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C861672DEE7006ADF33 /* Charger_Blink.png */; };
 		19C93C8D1672DEE7006ADF33 /* Charger_Rage.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C871672DEE7006ADF33 /* Charger_Rage.png */; };
@@ -743,6 +746,9 @@
 		19B3B12316A07D4D00E86E8D /* portal_twirl2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portal_twirl2.png; sourceTree = SOURCE_ROOT; };
 		19B3B12616A1CD2100E86E8D /* ColorUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorUtil.h; sourceTree = "<group>"; };
 		19B3B12916A1CF5900E86E8D /* ColorUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorUtil.cpp; sourceTree = "<group>"; };
+		19B3B13016A3398B00E86E8D /* ipad~menu_health.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ipad~menu_health.png"; path = "menu_text/ipad~menu_health.png"; sourceTree = "<group>"; };
+		19B3B13216A3513600E86E8D /* door_mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = door_mask.png; sourceTree = "<group>"; };
+		19B3B13416A3B2C200E86E8D /* text_numbers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = text_numbers.png; sourceTree = "<group>"; };
 		19C93C851672DEE7006ADF33 /* Stalker.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Stalker.pod; path = models/Stalker.pod; sourceTree = "<group>"; };
 		19C93C861672DEE7006ADF33 /* Charger_Blink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Charger_Blink.png; path = models/Charger_Blink.png; sourceTree = "<group>"; };
 		19C93C871672DEE7006ADF33 /* Charger_Rage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Charger_Rage.png; path = models/Charger_Rage.png; sourceTree = "<group>"; };
@@ -2332,6 +2338,7 @@
 		C6A9B10213C92F6D0074190B /* ipad_menu */ = {
 			isa = PBXGroup;
 			children = (
+				19B3B13016A3398B00E86E8D /* ipad~menu_health.png */,
 				C68A502213CC0BAB0008123A /* ipad~shared_world_unselected.png */,
 				C68A502313CC0BAB0008123A /* ipad~shared_world_selected.png */,
 				C6A9B15813C93AE40074190B /* ipad~back.png */,
@@ -2545,6 +2552,8 @@
 		C6FD455112905ECC005FC996 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				19B3B13416A3B2C200E86E8D /* text_numbers.png */,
+				19B3B13216A3513600E86E8D /* door_mask.png */,
 				192FD75D167AB593003F02FF /* flower_tex.png */,
 				1D7A376615E8171C0090768B /* portal_icon2.png */,
 				1D7A376315E8170C0090768B /* door_icon2.png */,
@@ -3316,6 +3325,9 @@
 				19D333B0167D6E2A0082ACE7 /* Stumpy_BlinkMASK.png in Resources */,
 				19D333B1167D6E2A0082ACE7 /* Stumpy_DefaultMASK.png in Resources */,
 				19B3B12416A07D4D00E86E8D /* portal_twirl2.png in Resources */,
+				19B3B13116A3398B00E86E8D /* ipad~menu_health.png in Resources */,
+				19B3B13316A3513600E86E8D /* door_mask.png in Resources */,
+				19B3B13516A3B2C200E86E8D /* text_numbers.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

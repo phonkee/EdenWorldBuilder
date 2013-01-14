@@ -38,6 +38,7 @@
     BOOL onIce;
     BOOL dead;
     BOOL autojump_option;
+    BOOL health_option;
     float life;
     //BOOL onIceRamp;
 }
@@ -60,7 +61,7 @@
 @property(nonatomic,assign) Vector pos,vel;
 @property(nonatomic,assign) float yaw,pitch,flash;
 @property(nonatomic,assign) BOOL move_back,jumping;
-@property(nonatomic,assign) BOOL autojump_option;
+@property(nonatomic,assign) BOOL autojump_option,health_option;
 @property(nonatomic,assign) BOOL dead;
 @property(nonatomic,assign) Polyhedra pbox;
 

@@ -24,7 +24,7 @@
 #define THREE_TO_ONE(x,y,z) 
 
 @implementation Player
-@synthesize pos,yaw,pitch,move_back,jumping,invertcam,autojump_option,vel,flash,pbox,life,dead;
+@synthesize pos,yaw,pitch,move_back,jumping,invertcam,autojump_option,vel,flash,pbox,life,dead,health_option;
 static int nest_count;
 static bool onground;
 static bool onramp;
@@ -656,6 +656,11 @@ static BOOL ladderIsVine=FALSE;
 static BOOL lastOnIce;
 - (void)takeDamage:(float)damage{
     life-=damage;
+    if(!health_option){
+        if(life<.36){
+            life=.36f;
+        }
+    }
     if(life<0){
         dead=TRUE;
         [World getWorld].hud.fade_out=0;
@@ -819,7 +824,7 @@ static BOOL lastOnIce;
         int z=pos.z+sinYaw*1.25f;
         int y=pos.y-boxheight/2+.01;
         int type=getLandc2(x,z,y);
-        if(autojump_option&&onground&&!jumping&&![World getWorld].hud.m_jump&&type!=TYPE_NONE&&type!=TYPE_LADDER&&type!=TYPE_VINE&&type!=TYPE_LAVA&&type>0&&!(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_SIDE4)&&!(blockinfo[type]&IS_WATER)&&getLandc2(x,z,y+1)<=0){
+        if(autojump_option&&onground&&!jumping&&![World getWorld].hud.m_jump&&type!=TYPE_NONE&&type!=TYPE_LADDER&&type!=TYPE_VINE&&type!=TYPE_LAVA&&type!=TYPE_GOLDEN_CUBE&&type>0&&!(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_SIDE4)&&!(blockinfo[type]&IS_WATER)&&getLandc2(x,z,y+1)<=0){
             
             if(getLandc2(x,z,y+2)<=0&&getLandc2(pos.x,pos.z,pos.y+2)<=0&&speed>18){
                hud.m_jump=TRUE;

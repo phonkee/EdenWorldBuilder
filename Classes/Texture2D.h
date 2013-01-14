@@ -72,6 +72,7 @@ These functions require GL_TEXTURE_2D and both GL_VERTEX_ARRAY and GL_TEXTURE_CO
 - (void) drawInRect:(CGRect)rect;
 - (void) drawInRect2:(CGRect)rect;
 - (void) drawText:(CGRect)rect;
+- (void) drawNumbers:(CGRect)rect:(int)num;
 - (void) drawButton:(Button)button;
 - (void) drawButton2:(Button)button;
 - (void) drawTextHalfsies:(CGRect)rect;

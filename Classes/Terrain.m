@@ -936,6 +936,11 @@ int getRampType(int x,int z,int y, int t){
             
         }
     }
+    if(blockinfo[cur]&IS_DOOR){
+        if(cur!=TYPE_DOOR_TOP){
+            [self paintBlock:x:z:y+1:color];
+        }
+    }
     
 }
 
@@ -1663,149 +1668,165 @@ int lolc=0;
     extern const GLfloat cubeNormals[36*3];
     const GLshort* cubeVertices=cubeShortVertices;
     const GLshort* cubeTextureCustom=cubeTexture;
-    int vert=0;
-    int object=0;
-        setViewNow();
-    Vector ppos=[World getWorld].player.pos;
+    StaticObject* doorso[500];
+    int num_doors=0;
     for(int i=0;i<chunksr;i++){
         for(int j=0;j<renderList[i].rtnum_objects;j++){
             if(renderList[i].rtobjects[j].type!=TYPE_DOOR_TOP)continue;
-            int dir=renderList[i].rtobjects[j].dir;
-            Vector v1=renderList[i].rtobjects[j].pos;
-            v1.x+=.5f;
-            v1.z+=.5f;
-            v1.y=ppos.y;
-            Vector vdist=v_sub(ppos,v1);
-            
-            int dist=v_length2(vdist);
-            
-            if(ppos.y>=renderList[i].rtobjects[j].pos.y&&ppos.y<=renderList[i].rtobjects[j].pos.y+2&&dist<2*2){                
-                renderList[i].rtobjects[j].ani=-1;
-            }else
-                renderList[i].rtobjects[j].ani=1;
-            float rot=renderList[i].rtobjects[j].rot;
-            /*if(renderList[i].rtobjects[j].ani==0){
-                renderList[i].rtobjects[j].ani=1;
-            }*/
-            if(renderList[i].rtobjects[j].ani==1){
-                renderList[i].rtobjects[j].rot+=6*last_etime;
-            }else if(renderList[i].rtobjects[j].ani==-1){
-                renderList[i].rtobjects[j].rot-=6*last_etime;
-            }
-            if(renderList[i].rtobjects[j].rot<0){
-                renderList[i].rtobjects[j].rot=0;
-               // renderList[i].rtobjects[j].ani=1;
-            }
-            if(renderList[i].rtobjects[j].rot>M_PI/2){
-                renderList[i].rtobjects[j].rot=M_PI/2;
-                //renderList[i].rtobjects[j].ani=-1;
-            }
-            Vector offsets=MakeVector(0,0,0);
-            if(dir==0){
-                offsets.x=4;
-                rot+=M_PI/2;
-            }else if(dir==1){
-                rot+=M_PI;
-                offsets.z=4;
-                offsets.x=4;
-                
-                
-            }else if(dir==2){
-                 rot+=M_PI+M_PI/2; 
-                offsets.z=4;
-               
-            }else if(dir==3){
-                
-            }
-           
-            if(rot>2*M_PI)rot-=(int)(rot/(2*M_PI))*(2*M_PI);
-           
-            
-            for(int k=0;k<6*6;k++){
-                Vector vc;
-                
-                vc=MakeVector(cubeVertices[k*3]*4,cubeVertices[k*3+1]*2*4,cubeVertices[k*3+2]*.50f-.25);
-                               
-                
-                
-                vc=rotateVertice(MakeVector(0,rot,0),vc);
-                vc.x+=offsets.x;
-                vc.z+=offsets.z;
-                if(vc.x<0)vc.x=0;
-                if(vc.z<0)vc.z=0;
-                if(vc.x>4)vc.x=4;
-                if(vc.z>4)vc.z=4;
-                /*if(vc.x>4)vc.x=4;
-                if(vc.z>4)vc.z=4;*/
-                objVertices[vert].position[0]=4*(renderList[i].rtobjects[j].pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)+vc.x;
-                objVertices[vert].position[1]=4*renderList[i].rtobjects[j].pos.y+vc.y;
-                objVertices[vert].position[2]=4*(renderList[i].rtobjects[j].pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)+vc.z;
-                if(k==0){
-                   /* printf("door objVertices[%d]= (%d,%d,%d) suggested offsets(%d,%d),\n",j,renderList[i].rtobjects[j].pos[0]
-                           ,renderList[i].rtobjects[j].pos[1]
-                           ,renderList[i].rtobjects[j].pos[2],
-                           -[World getWorld].fm.chunkOffsetX,-[World getWorld].fm.chunkOffsetZ);*/
-                    
-                }
-                Vector vn=MakeVector(cubeNormals[k*3],cubeNormals[k*3+1],cubeNormals[k*3+2]);
-                
-                vn=rotateVertice(MakeVector(0,rot,0),vn);
-                objVertices[vert].normal[0]=vn.x;
-                objVertices[vert].normal[1]=vn.y;
-                objVertices[vert].normal[2]=vn.z;
-                /*
-                for(int coord=0;coord<3;coord++){
-                    if(coord==1)
-                        objVertices[vert].position[coord]=4*renderList[i].objects[j].pos[coord]+4*cubeVertices[k*3+coord]*2; 
-                        else if (coord==2)
-                          objVertices[vert].position[coord]=4*renderList[i].objects[j].pos[coord]+.5f*cubeVertices[k*3+coord];     
-                            else
-                    objVertices[vert].position[coord]=4*renderList[i].objects[j].pos[coord]+4*cubeVertices[k*3+coord];
-                }*/
-                if(k>=12){
-                     objVertices[vert].texs[0]=cubeTextureCustom[k*2+0];     
-                    objVertices[vert].texs[1]=0;
-                }else{
-                    if(k>=6){
-                objVertices[vert].texs[0]=cubeTextureCustom[k*2+0];
-                objVertices[vert].texs[1]=cubeTextureCustom[k*2+1]*32;
-                    }
-                    else{
-                        objVertices[vert].texs[0]=1-cubeTextureCustom[k*2+0];
-                        objVertices[vert].texs[1]=cubeTextureCustom[k*2+1]*32;
-
-                        
-                    }
-                }
-                extern Vector colorTable[256];
-                Vector color=colorTable[renderList[i].rtobjects[j].color];
-                if(renderList[i].rtobjects[j].color==0){
-                    color.x=color.y=color.z=1;
-                    
-                }
-                objVertices[vert].colors[0]=color.x*255;
-                 objVertices[vert].colors[1]=color.y*255;
-                 objVertices[vert].colors[2]=color.z*255;
-                 objVertices[vert].colors[3]=255;
-                vert++;
-            }
-            object++;
-            if(object==max_render_objects)break;
+            doorso[num_doors++]=&renderList[i].rtobjects[j];
         }
-        if(object==max_render_objects)break;
     }
+    int vert=0;
+    int object=0;
     
+    
+   
+        setViewNow();
+    Vector ppos=[World getWorld].player.pos;
+    for(int clr=0;clr<60;clr++){
+        vert=0;
+        object=0;
+    for(int i=0;i<num_doors;i++){
+        StaticObject* door=doorso[i];
+        if(door->color!=clr){
+            continue;
+        }
+        int dir=door->dir;
+        Vector v1=door->pos;
+        v1.x+=.5f;
+        v1.z+=.5f;
+        v1.y=ppos.y;
+        Vector vdist=v_sub(ppos,v1);
+        
+        int dist=v_length2(vdist);
+        
+        if(ppos.y>=door->pos.y&&ppos.y<=door->pos.y+2&&dist<2*2){
+            door->ani=-1;
+        }else
+            door->ani=1;
+        float rot=door->rot;
+        /*if(renderList[i].rtobjects[j].ani==0){
+         renderList[i].rtobjects[j].ani=1;
+         }*/
+        if(door->ani==1){
+            door->rot+=6*last_etime;
+        }else if(door->ani==-1){
+            door->rot-=6*last_etime;
+        }
+        if(door->rot<0){
+            door->rot=0;
+            // door->ani=1;
+        }
+        if(door->rot>M_PI/2){
+            door->rot=M_PI/2;
+            //door->ani=-1;
+        }
+        Vector offsets=MakeVector(0,0,0);
+        if(dir==0){
+            offsets.x=4;
+            rot+=M_PI/2;
+        }else if(dir==1){
+            rot+=M_PI;
+            offsets.z=4;
+            offsets.x=4;
+            
+            
+        }else if(dir==2){
+            rot+=M_PI+M_PI/2;
+            offsets.z=4;
+            
+        }else if(dir==3){
+            
+        }
+        
+        if(rot>2*M_PI)rot-=(int)(rot/(2*M_PI))*(2*M_PI);
+        
+        
+        for(int k=0;k<6*6;k++){
+            Vector vc;
+            
+            vc=MakeVector(cubeVertices[k*3]*4,cubeVertices[k*3+1]*2*4,cubeVertices[k*3+2]*.50f-.25);
+            
+            
+            
+            vc=rotateVertice(MakeVector(0,rot,0),vc);
+            vc.x+=offsets.x;
+            vc.z+=offsets.z;
+            if(vc.x<0)vc.x=0;
+            if(vc.z<0)vc.z=0;
+            if(vc.x>4)vc.x=4;
+            if(vc.z>4)vc.z=4;
+            /*if(vc.x>4)vc.x=4;
+             if(vc.z>4)vc.z=4;*/
+            objVertices[vert].position[0]=4*(door->pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)+vc.x;
+            objVertices[vert].position[1]=4*door->pos.y+vc.y;
+            objVertices[vert].position[2]=4*(door->pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)+vc.z;
+            if(k==0){
+                /* printf("door objVertices[%d]= (%d,%d,%d) suggested offsets(%d,%d),\n",j,door->pos[0]
+                 ,door->pos[1]
+                 ,door->pos[2],
+                 -[World getWorld].fm.chunkOffsetX,-[World getWorld].fm.chunkOffsetZ);*/
+                
+            }
+            Vector vn=MakeVector(cubeNormals[k*3],cubeNormals[k*3+1],cubeNormals[k*3+2]);
+            
+            vn=rotateVertice(MakeVector(0,rot,0),vn);
+            objVertices[vert].normal[0]=vn.x;
+            objVertices[vert].normal[1]=vn.y;
+            objVertices[vert].normal[2]=vn.z;
+            /*
+             for(int coord=0;coord<3;coord++){
+             if(coord==1)
+             objVertices[vert].position[coord]=4*renderList[i].objects[j].pos[coord]+4*cubeVertices[k*3+coord]*2;
+             else if (coord==2)
+             objVertices[vert].position[coord]=4*renderList[i].objects[j].pos[coord]+.5f*cubeVertices[k*3+coord];
+             else
+             objVertices[vert].position[coord]=4*renderList[i].objects[j].pos[coord]+4*cubeVertices[k*3+coord];
+             }*/
+            if(k>=12){
+                objVertices[vert].texs[0]=cubeTextureCustom[k*2+0];
+                objVertices[vert].texs[1]=0;
+            }else{
+                if(k>=6){
+                    objVertices[vert].texs[0]=cubeTextureCustom[k*2+0];
+                    objVertices[vert].texs[1]=cubeTextureCustom[k*2+1]*32;
+                }
+                else{
+                    objVertices[vert].texs[0]=1-cubeTextureCustom[k*2+0];
+                    objVertices[vert].texs[1]=cubeTextureCustom[k*2+1]*32;
+                    
+                    
+                }
+            }
+            extern Vector colorTable[256];
+            Vector color=colorTable[door->color];
+            if(TRUE||door->color==0){
+                color.x=color.y=color.z=1;
+                
+            }
+            objVertices[vert].colors[0]=color.x*255;
+            objVertices[vert].colors[1]=color.y*255;
+            objVertices[vert].colors[2]=color.z*255;
+            objVertices[vert].colors[3]=255;
+            vert++;
+            
+        }
+    }
+        if(vert!=0){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
 
-    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:ICO_DOOR].name);
+    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getDoorTex:clr]);
     glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
     glNormalPointer( GL_FLOAT, sizeof(vertexObject), objVertices[0].normal);
 	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
 	glColorPointer(	4, GL_UNSIGNED_BYTE, sizeof(vertexObject), objVertices[0].colors);
+    
 	
   
         glDrawArrays(GL_TRIANGLES, 0,vert);
+        }
+    }
     
     //float lightDiffuse[4]  = {0.7f, 0.7f, 0.7f, 1.0f};
     glLightfv(GL_LIGHT0, GL_DIFFUSE,  lightDiffuse);
@@ -1960,7 +1981,7 @@ int lolc=0;
             
             
             for(int k=0;k<6*6;k++){
-                Vector vc=MakeVector(cubeVertices[k*3]*4,cubeVertices[k*3+1]*2*4,cubeVertices[k*3+2]*.45f-.45f);
+                Vector vc=MakeVector(cubeVertices[k*3]*4,cubeVertices[k*3+1]*2*4,cubeVertices[k*3+2]*.25f-.25f);
                 
                 vc=rotateVertice(MakeVector(0,rot,0),vc);
                 vc.x+=offsets.x;
@@ -2075,7 +2096,7 @@ int lolc=0;
     glEnableClientState(GL_COLOR_ARRAY);
     
     
-        //batch portals by color.  necessary because swirl texture is unique per color
+        
     
     StaticObject* portalso[200];
     int num_portals=0;
@@ -2127,7 +2148,7 @@ int lolc=0;
                 Vector vc=MakeVector((cubeVertices[k*3]-cubeVertices[k*3]*20.0f/64.0f+10.0f/64.0f)*4,
                                      (cubeVertices[k*3+1]*2-(cubeVertices[k*3+1]*(6.0f/64.0f+4.0f/64.0f))+4.0f/64.0f)*4,
                                      
-                                     cubeVertices[k*3+2]*.45f-.46f);
+                                     cubeVertices[k*3+2]*.25f-.26f);
                 
                 vc=rotateVertice(MakeVector(0,rot,0),vc);
                 vc.x+=offsets.x;
