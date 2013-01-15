@@ -898,6 +898,14 @@ int getRampType(int x,int z,int y, int t){
 	[self updateChunks:x :z :y :type];
    [self setColor:x :z :y : [World getWorld].hud.block_paintcolor ];
     }
+    
+    if([World getWorld].hud.blocktype==TYPE_GOLDEN_CUBE){
+        if([World getWorld].hud.goldencubes<=0){
+            [World getWorld].hud.goldencubes=0;
+            [World getWorld].hud.blocktype=TYPE_BRICK;
+            [World getWorld].hud.block_paintcolor=0;
+        }
+    }
 }
 
 - (void)paintBlock:(int)x :(int)z :(int)y :(int)color{

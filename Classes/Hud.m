@@ -864,12 +864,9 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         if(IS_IPAD&&!SUPPORTS_RETINA){
             offsetx=(128-90)/2.0f/SCALE_WIDTH;
             offsety=(128-90)/2.0f/SCALE_HEIGHT;
-            
-            
         }else{
             offsetx=(128-90)/2.0f/2.0f;
             offsety=(128-90)/2.0f/2.0f;
-            
         }
         
         if(mode==MODE_BUILD||mode==MODE_PICK_BLOCK){
@@ -903,7 +900,25 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
             
         }
         [[[Resources getResources] getTex:ICO_BUILD_PLUS] drawTextHalfsies:recto];
-        
+        if(type==TYPE_GOLDEN_CUBE){
+           // printf("wtf\n");
+            CGRect num_rect=recto;
+            //recto.origin.x/=2;
+            //recto.origin.y/=2;
+            num_rect.origin.x+=18;
+            if(goldencubes!=10){
+                num_rect.origin.x+=3;
+            }
+            num_rect.origin.y-=2;
+            if(goldencubes==0){
+                glColor4f(1.0f,1.0f,1.0f,.3f);
+                [[[Resources getResources] getTex:TEXT_NUMBERS] drawNumbers:num_rect:goldencubes];
+                glColor4f(1.0f,1.0f,1.0f,1.0f);
+            }else{
+                [[[Resources getResources] getTex:TEXT_NUMBERS] drawNumbers:num_rect:goldencubes];
+                
+            }
+        }
         return;
     }else
     if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
@@ -1205,7 +1220,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     
     //vertices[v_idx].texs[1]=cubeTexture[st+1]*tp.y+tp.x;
     
-    
+   
 	
 }
 
@@ -1631,7 +1646,7 @@ static int lmode=MODE_NONE;
 	Texture2D* tmine=[res getTex:ICO_MINE];
 	Texture2D* tburn=[res getTex:ICO_BURN];
 	Texture2D* tjump=[res getTex:ICO_JUMP];
-    Texture2D* tpaint=[res getTex:ICO_PAINT];
+    Texture2D* tpaint=[res getPaintTex:paintColor];
 	//Texture2D* tback=[res getTex:ICO_BACK];
 	
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
@@ -1705,6 +1720,7 @@ static int lmode=MODE_NONE;
         glowbox.origin.x-=offsetx;
         glowbox.origin.y-=offsety;
         [[res getTex:ICO_PAINT_ACTIVE] drawButton:glowbox];
+        [tpaint drawButton: rpaint];
     }else
    	[tpaint drawButton: rpaint];  
     

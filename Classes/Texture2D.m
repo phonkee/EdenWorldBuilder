@@ -619,6 +619,9 @@ extern UIImage* storedSkins[5][2];
 extern UIImage* storedMasks[5][2];
 extern UIImage* storedDoor;
 extern UIImage* storedDoorMask;
+extern UIImage* storedPaint;
+extern UIImage* storedPaintMask;
+
 int storedMaskCounter=-1;
 int storedSkinCounter=-1;
 int realStoredSkinCounter=0;
@@ -649,6 +652,7 @@ int realStoredSkinCounter=0;
 	UIImage*				uiImage;
     BOOL isMask=FALSE;
     BOOL isDoor=FALSE;
+    BOOL isPaint=FALSE;
     BOOL storeImage=FALSE;
     if(storedSkinCounter>=0&&storedSkinCounter<15){
         if(storedSkinCounter%3!=1){
@@ -675,6 +679,15 @@ int realStoredSkinCounter=0;
         storeImage=TRUE;
         printf("stored door mask path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
         
+    }else if([path isEqualToString:@"palette.png"]){
+          printf("stored palette path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
+        isPaint=TRUE;
+        storeImage=TRUE;
+    }else if([path isEqualToString:@"paint_mask.png"]){
+        printf("stored paint path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
+        isPaint=TRUE;
+        isMask=TRUE;
+        storeImage=TRUE;
     }
     //
     
@@ -700,6 +713,12 @@ int realStoredSkinCounter=0;
 	
     
     if(storeImage){
+        if(isPaint){
+            if(isMask){
+                storedPaintMask=uiImage;
+            }else
+                storedPaint=uiImage;
+        }else
         if(isDoor){
             if(isMask){
                 storedDoorMask=uiImage;

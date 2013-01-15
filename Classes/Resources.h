@@ -48,6 +48,7 @@
 -(void)soundEvent:(int)actionid;
 -(void)soundEvent:(int)actionid:(Vector)location;
 - (int)getDoorTex:(int)color;
+- (Texture2D*)getPaintTex:(int)color;
 
 -(void)voSound:(int)action:(int)type:(Vector)location;
 
@@ -272,7 +273,8 @@ enum ICON_TYPES{
     SPRITE_FLAME=87,
     
     TEXT_NUMBERS=88,
+    ICO_PAINT_MASK=89,
     
-    //88-98 reserved skin masks for coloring
+    //10 texs after this reserved for coloring
     
 };

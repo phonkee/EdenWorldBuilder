@@ -310,12 +310,23 @@ UIImage* storedSkins[5][2];
 UIImage* storedMasks[5][2];
 UIImage* storedDoor;
 UIImage* storedDoorMask;
+UIImage* storedPaint;
+UIImage* storedPaintMask;
+
 #define SKIN_CACHE_SIZE 50
 CTexture skin_cache[SKIN_CACHE_SIZE];
 
 Texture2D* door_cache[100];
 
+Texture2D* paint_cache;
+int paint_cache_color;
+
 void clearSkinCache(){
+    if(paint_cache){
+        [paint_cache release];
+        paint_cache=NULL;
+        paint_cache_color=0;
+    }
     for(int i=0;i<100;i++){
         if(i<100){
             if(door_cache[i]){
@@ -334,6 +345,30 @@ void clearSkinCache(){
     }
 }
 extern Vector colorTable[256];
+- (Texture2D*)getPaintTex:(int)color{
+    if(color==0)return [self getTex:ICO_PAINT];
+    if(color==paint_cache_color)return paint_cache;
+    
+    if(paint_cache!=NULL){
+        
+        [paint_cache release];
+    }
+    
+    paint_cache_color=color;
+        CGImageRef img=[storedPaintMask CGImage];
+        CGImageRef img2=[storedPaint CGImage];
+        Vector clr=colorTable[color];
+        int rgba= ((int)(255*clr.z)<<24) | ((int)(255*clr.y)<<16) | ((int)(255*clr.x) <<8)  | 0xFF;
+        UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData(img2,img,rgba)];
+        //UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData2(img,rgba,1)];
+        paint_cache =
+        [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
+        printf("initing paint texture ;o");
+        return paint_cache;
+    
+    
+    
+}
 - (int)getDoorTex:(int)color{
     if(color==0)color=25;
     if(door_cache[color]!=NULL){
@@ -537,6 +572,8 @@ extern BOOL SUPPORTS_OGL2;
     for(int i=0;i<100;i++){
         door_cache[i]=NULL;
     }
+    paint_cache=NULL;
+    paint_cache_color=0;
 	landingEffectTimer=0;
 	textures=[[NSMutableArray alloc] init];
 	menutextures=[[NSMutableArray alloc] init];
@@ -895,7 +932,8 @@ extern BOOL SUPPORTS_OGL2;
     temp=[[Texture2D alloc] initWithImagePath:@"text_numbers.png" sizeToFit:FALSE];
 	[textures addObject:temp];
     
-    
+    temp=[[Texture2D alloc] initWithImagePath:@"paint_mask.png" sizeToFit:FALSE];
+	[textures addObject:temp];
     
     
     

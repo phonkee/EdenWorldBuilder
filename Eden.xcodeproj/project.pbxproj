@@ -19,6 +19,7 @@
 		19B3B13116A3398B00E86E8D /* ipad~menu_health.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B13016A3398B00E86E8D /* ipad~menu_health.png */; };
 		19B3B13316A3513600E86E8D /* door_mask.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B13216A3513600E86E8D /* door_mask.png */; };
 		19B3B13516A3B2C200E86E8D /* text_numbers.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B13416A3B2C200E86E8D /* text_numbers.png */; };
+		19B3B13716A4EC9200E86E8D /* ipad~paint_mask.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B13616A4EC9200E86E8D /* ipad~paint_mask.png */; };
 		19C93C8B1672DEE7006ADF33 /* Stalker.pod in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C851672DEE7006ADF33 /* Stalker.pod */; };
 		19C93C8C1672DEE7006ADF33 /* Charger_Blink.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C861672DEE7006ADF33 /* Charger_Blink.png */; };
 		19C93C8D1672DEE7006ADF33 /* Charger_Rage.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C871672DEE7006ADF33 /* Charger_Rage.png */; };
@@ -749,6 +750,7 @@
 		19B3B13016A3398B00E86E8D /* ipad~menu_health.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ipad~menu_health.png"; path = "menu_text/ipad~menu_health.png"; sourceTree = "<group>"; };
 		19B3B13216A3513600E86E8D /* door_mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = door_mask.png; sourceTree = "<group>"; };
 		19B3B13416A3B2C200E86E8D /* text_numbers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = text_numbers.png; sourceTree = "<group>"; };
+		19B3B13616A4EC9200E86E8D /* ipad~paint_mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~paint_mask.png"; sourceTree = "<group>"; };
 		19C93C851672DEE7006ADF33 /* Stalker.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Stalker.pod; path = models/Stalker.pod; sourceTree = "<group>"; };
 		19C93C861672DEE7006ADF33 /* Charger_Blink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Charger_Blink.png; path = models/Charger_Blink.png; sourceTree = "<group>"; };
 		19C93C871672DEE7006ADF33 /* Charger_Rage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Charger_Rage.png; path = models/Charger_Rage.png; sourceTree = "<group>"; };
@@ -2552,6 +2554,7 @@
 		C6FD455112905ECC005FC996 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				19B3B13616A4EC9200E86E8D /* ipad~paint_mask.png */,
 				19B3B13416A3B2C200E86E8D /* text_numbers.png */,
 				19B3B13216A3513600E86E8D /* door_mask.png */,
 				192FD75D167AB593003F02FF /* flower_tex.png */,
@@ -3328,6 +3331,7 @@
 				19B3B13116A3398B00E86E8D /* ipad~menu_health.png in Resources */,
 				19B3B13316A3513600E86E8D /* door_mask.png in Resources */,
 				19B3B13516A3B2C200E86E8D /* text_numbers.png in Resources */,
+				19B3B13716A4EC9200E86E8D /* ipad~paint_mask.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
