@@ -860,27 +860,38 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     if(type==TYPE_FLOWER||type==TYPE_GOLDEN_CUBE||type==TYPE_DOOR_TOP||type==TYPE_PORTAL_TOP){
         float offsetx;
         float offsety;
-        
+        float osize=90;
+        if(type!=TYPE_FLOWER)osize=70;
         if(IS_IPAD&&!SUPPORTS_RETINA){
-            offsetx=(128-90)/2.0f/SCALE_WIDTH;
-            offsety=(128-90)/2.0f/SCALE_HEIGHT;
+            offsetx=(128-osize)/2.0f/SCALE_WIDTH;
+            offsety=(128-osize)/2.0f/SCALE_HEIGHT;
         }else{
-            offsetx=(128-90)/2.0f/2.0f;
-            offsety=(128-90)/2.0f/2.0f;
+            offsetx=(128-osize)/2.0f/2.0f;
+            offsety=(128-osize)/2.0f/2.0f;
         }
         
         if(mode==MODE_BUILD||mode==MODE_PICK_BLOCK){
+            /*
+             ICOICO_GOLDCUBE_ACTIVE=94,
+             ICOICO_FLOWER_ACTIVE=95,
+             ICOICO_DOOR_ACTIVE=96,
+             ICOICO_PORTAL_ACTIVE=97,
+             */
             int tid;
             if(type==TYPE_FLOWER){
-                tid=ICO_FLOWER_ICO;
+                tid=ICOICO_FLOWER_ACTIVE;
             }else if(type==TYPE_GOLDEN_CUBE){
-                tid=ICO_GOLDCUBE;
+                tid=ICOICO_GOLDCUBE_ACTIVE;
             }else if(type==TYPE_PORTAL_TOP){
-                tid=ICO_PORTAL2;
+                tid=ICOICO_PORTAL_ACTIVE;
             }else if(type==TYPE_DOOR_TOP){
-                tid=ICO_DOOR2;
+                tid=ICOICO_DOOR_ACTIVE;
             }
-            [[[Resources getResources] getTex:tid] drawTextHalfsies:recto];
+            CGRect offrect=recto;
+            offrect.origin.x-=offsetx;
+            offrect.origin.y-=offsety;
+            [[[Resources getResources] getTex:tid] drawTextHalfsies:offrect];
+            [[[Resources getResources] getPaintedTex:type:block_paintcolor] drawTextHalfsies:recto];
           
         }else{
             
@@ -895,7 +906,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                 tid=ICO_DOOR2;
             }
 
-            [[[Resources getResources] getTex:tid] drawTextHalfsies:recto];   
+            [[[Resources getResources] getPaintedTex:type:block_paintcolor] drawTextHalfsies:recto];
             
             
         }
@@ -1324,7 +1335,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                 tid=ICO_GOLDCUBE;
         }else if(type==TYPE_PORTAL_TOP){
                 tid=ICO_PORTAL2;
-                glColor4f(2000/255.0,150/255.0,255/255.0f,at2);
+               // glColor4f(2000/255.0,150/255.0,255/255.0f,at2);
             }else if(type==TYPE_DOOR_TOP){
                 tid=ICO_DOOR2;
             }

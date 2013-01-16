@@ -312,6 +312,15 @@ UIImage* storedDoor;
 UIImage* storedDoorMask;
 UIImage* storedPaint;
 UIImage* storedPaintMask;
+UIImage* storedCube;
+UIImage* storedCubeMask;
+UIImage* storedFlowerico;
+UIImage* storedFlowericoMask;
+UIImage* storedDoorico;
+UIImage* storedDooricoMask;
+UIImage* storedPortalico;
+UIImage* storedPortalicoMask;
+
 
 #define SKIN_CACHE_SIZE 50
 CTexture skin_cache[SKIN_CACHE_SIZE];
@@ -320,12 +329,21 @@ Texture2D* door_cache[100];
 
 Texture2D* paint_cache;
 int paint_cache_color;
+Texture2D* build_cache;
+int build_cache_color;
+int build_cache_type;
 
 void clearSkinCache(){
     if(paint_cache){
         [paint_cache release];
         paint_cache=NULL;
         paint_cache_color=0;
+    }
+    if(build_cache){
+        [build_cache release];
+        build_cache=NULL;
+        build_cache_color=0;
+        build_cache_type=0;
     }
     for(int i=0;i<100;i++){
         if(i<100){
@@ -345,6 +363,66 @@ void clearSkinCache(){
     }
 }
 extern Vector colorTable[256];
+/*
+ UIImage* storedCube;
+ UIImage* storedCubeMask;
+ UIImage* storedFlowerico;
+ UIImage* storedFlowericoMask;
+ UIImage* storedDoorico;
+ UIImage* storedDooricoMask;
+ UIImage* storedPortalico;
+ UIImage* storedPortalicoMask;
+ */
+-(Texture2D*)getPaintedTex:(int)type:(int)color{
+   
+    if(color==0||(type==TYPE_GOLDEN_CUBE&&color==20)){
+        int tid;
+        if(type==TYPE_FLOWER){
+            tid=ICO_FLOWER_ICO;
+        }else if(type==TYPE_GOLDEN_CUBE){
+            tid=ICO_GOLDCUBE;
+        }else if(type==TYPE_PORTAL_TOP){
+            tid=ICO_PORTAL2;
+        }else if(type==TYPE_DOOR_TOP){
+            tid=ICO_DOOR2;
+        }
+        return [self getTex:tid];
+    }else if(build_cache!=NULL&&build_cache_color==color&&build_cache_type==type){
+        return build_cache;
+    }
+    if(build_cache!=NULL){
+        [build_cache release];
+    }
+    build_cache_color=color;
+    build_cache_type=type;
+    UIImage* ui1;
+    UIImage* ui2;
+    if(type==TYPE_FLOWER){
+        ui1=storedFlowerico;
+        ui2=storedFlowericoMask;
+        
+    }else if(type==TYPE_GOLDEN_CUBE){
+        ui1=storedCube;
+        ui2=storedCubeMask;
+    }else if(type==TYPE_PORTAL_TOP){
+        ui1=storedPortalico;
+        ui2=storedPortalicoMask;
+    }else if(type==TYPE_DOOR_TOP){
+        ui1=storedDoorico;
+        ui2=storedDooricoMask;
+    }
+    
+    CGImageRef img=[ui2 CGImage];
+    CGImageRef img2=[ui1 CGImage];
+    Vector clr=colorTable[color];
+    int rgba= ((int)(255*clr.z)<<24) | ((int)(255*clr.y)<<16) | ((int)(255*clr.x) <<8)  | 0xFF;
+    UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData(img2,img,rgba)];
+    //UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData2(img,rgba,1)];
+    build_cache =
+    [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
+    printf("initing build texture ;o");
+    return build_cache;
+}
 - (Texture2D*)getPaintTex:(int)color{
     if(color==0)return [self getTex:ICO_PAINT];
     if(color==paint_cache_color)return paint_cache;
@@ -574,6 +652,11 @@ extern BOOL SUPPORTS_OGL2;
     }
     paint_cache=NULL;
     paint_cache_color=0;
+    
+        build_cache=NULL;
+        build_cache_color=0;
+    build_cache_type=0;
+    
 	landingEffectTimer=0;
 	textures=[[NSMutableArray alloc] init];
 	menutextures=[[NSMutableArray alloc] init];
@@ -935,10 +1018,24 @@ extern BOOL SUPPORTS_OGL2;
     temp=[[Texture2D alloc] initWithImagePath:@"paint_mask.png" sizeToFit:FALSE];
 	[textures addObject:temp];
     
+    temp=[[Texture2D alloc] initWithImagePath:@"goldcube_icon_mask.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"flower_icon_mask.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"door_icon2_mask.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"portal_icon2_mask.png" sizeToFit:FALSE];
+	[textures addObject:temp];
     
-    
-    //////////MASKS
-    
+    temp=[[Texture2D alloc] initWithImagePath:@"goldcube_icon_active.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"flower_icon_active.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"door_icon2_active.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    temp=[[Texture2D alloc] initWithImagePath:@"portal_icon2_active.png" sizeToFit:FALSE];
+	[textures addObject:temp];
+    //////////MASKS    
     extern int storedMaskCounter;
     storedMaskCounter=0;
     
@@ -963,8 +1060,7 @@ extern BOOL SUPPORTS_OGL2;
 	[textures addObject:temp];
     temp=[[Texture2D alloc] initWithImagePath:@"Stumpy_DefaultMASK.png" sizeToFit:FALSE];
 	[textures addObject:temp];
-    
-   ////////
+       ////////END MASKS\\\\\\\\\\
     
 
     

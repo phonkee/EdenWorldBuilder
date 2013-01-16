@@ -621,6 +621,14 @@ extern UIImage* storedDoor;
 extern UIImage* storedDoorMask;
 extern UIImage* storedPaint;
 extern UIImage* storedPaintMask;
+extern UIImage* storedCube;
+extern UIImage* storedCubeMask;
+extern UIImage* storedFlowerico;
+extern UIImage* storedFlowericoMask;
+extern UIImage* storedDoorico;
+extern UIImage* storedDooricoMask;
+extern UIImage* storedPortalico;
+extern UIImage* storedPortalicoMask;
 
 int storedMaskCounter=-1;
 int storedSkinCounter=-1;
@@ -653,6 +661,10 @@ int realStoredSkinCounter=0;
     BOOL isMask=FALSE;
     BOOL isDoor=FALSE;
     BOOL isPaint=FALSE;
+    BOOL isGoldcubeico=FALSE;
+    BOOL isFlowerico=FALSE;
+    BOOL isDoorico=FALSE;
+    BOOL isPortalico=FALSE;
     BOOL storeImage=FALSE;
     if(storedSkinCounter>=0&&storedSkinCounter<15){
         if(storedSkinCounter%3!=1){
@@ -671,25 +683,51 @@ int realStoredSkinCounter=0;
     if([path isEqualToString:@"door.png"]){
         isDoor=TRUE;
         storeImage=TRUE;
-        printf("stored door path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
+        //printf("stored door path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
 
     }else if([path isEqualToString:@"door_mask.png"]){
         isDoor=TRUE;
         isMask=TRUE;
         storeImage=TRUE;
-        printf("stored door mask path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
-        
+       
     }else if([path isEqualToString:@"palette.png"]){
-          printf("stored palette path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
-        isPaint=TRUE;
+       isPaint=TRUE;
         storeImage=TRUE;
     }else if([path isEqualToString:@"paint_mask.png"]){
-        printf("stored paint path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
         isPaint=TRUE;
         isMask=TRUE;
         storeImage=TRUE;
-    }
-    //
+    }else if([path isEqualToString:@"goldcube_icon.png"]){
+        printf("stored cube path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
+        isGoldcubeico=TRUE;
+        storeImage=TRUE;
+    }else if([path isEqualToString:@"goldcube_icon_mask.png"]){
+        printf("stored cube mask path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
+        isGoldcubeico=TRUE;
+        isMask=TRUE;
+        storeImage=TRUE;
+    }else if([path isEqualToString:@"flower_icon.png"]){
+        isFlowerico=TRUE;
+        storeImage=TRUE;
+    }else if([path isEqualToString:@"flower_icon_mask.png"]){
+        isFlowerico=TRUE;
+        isMask=TRUE;
+        storeImage=TRUE;
+    }else if([path isEqualToString:@"door_icon2.png"]){
+        isDoorico=TRUE;
+        storeImage=TRUE;
+    }else if([path isEqualToString:@"door_icon2_mask.png"]){
+        isDoorico=TRUE;
+        isMask=TRUE;
+        storeImage=TRUE;
+    }else if([path isEqualToString:@"portal_icon2.png"]){
+        isPortalico=TRUE;
+        storeImage=TRUE;
+    }else if([path isEqualToString:@"portal_icon2_mask.png"]){
+        isPortalico=TRUE;
+        isMask=TRUE;
+        storeImage=TRUE;
+    }    //
     
     if(IS_IPAD||SUPPORTS_RETINA){
         NSString* oipadPath=[NSString stringWithFormat:@"ipad~%@",path];
@@ -713,7 +751,33 @@ int realStoredSkinCounter=0;
 	
     
     if(storeImage){
-        if(isPaint){
+        /* BOOL isGoldcubeico=FALSE;
+         BOOL isFlowerico=FALSE;
+         BOOL isDoorico=FALSE;
+         BOOL isPortalico=FALSE;
+         BOOL storeImage=FALSE;
+*/
+        if(isPortalico){
+            if(isMask){
+                storedPortalicoMask=uiImage;
+            }else
+                storedPortalico=uiImage;
+        }else if(isDoorico){
+            if(isMask){
+                storedDooricoMask=uiImage;
+            }else
+                storedDoorico=uiImage;
+        }else if(isFlowerico){
+            if(isMask){
+                storedFlowericoMask=uiImage;
+            }else
+                storedFlowerico=uiImage;
+        }else if(isGoldcubeico){
+            if(isMask){
+                storedCubeMask=uiImage;
+            }else
+                storedCube=uiImage;
+        }else if(isPaint){
             if(isMask){
                 storedPaintMask=uiImage;
             }else

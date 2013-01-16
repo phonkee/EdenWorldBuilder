@@ -1753,7 +1753,7 @@ int lolc=0;
         for(int k=0;k<6*6;k++){
             Vector vc;
             
-            vc=MakeVector(cubeVertices[k*3]*4,cubeVertices[k*3+1]*2*4,cubeVertices[k*3+2]*.50f-.25);
+            vc=MakeVector(cubeVertices[k*3]*4,cubeVertices[k*3+1]*2*4,cubeVertices[k*3+2]*.60f-.30);
             
             
             

@@ -244,17 +244,6 @@ Vector getFrameUV(int frame,int sprite){
 static int frame=0,frame2=0;
 - (void)renderFireSprites{
    // glDepthMask(GL_TRUE);
-    glMatrixMode(GL_TEXTURE);
-    glPushMatrix();
-    glScalef(1.0f/16,1.0f/8.0f,1);
-    
-    int framescale=4;
-    frame=(frame+1)%((112)*framescale);
-    int row=(frame/framescale)/16;
-    int col=(frame/framescale)%16;
-   // printf("frame: %d\n",frame/framescale);
-    glTranslatef(col,row,0);
-    glMatrixMode(GL_MODELVIEW);
     
     glDisable(GL_POINT_SPRITE_OES);
     
@@ -265,6 +254,30 @@ static int frame=0,frame2=0;
     glDisableClientState(GL_COLOR_ARRAY);
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    //////////BOT AND TOP
+    glMatrixMode(GL_TEXTURE);
+  
+    glPushMatrix();
+  
+    glScalef(1.0f/16,1.0f/16.0f,1);
+    
+    int framescale=4;
+    frame=(frame+1)%((112)*framescale);
+    int row=(frame/framescale)/16;
+    int col=(frame/framescale)%16;
+    // printf("frame: %d\n",frame/framescale);
+   // glTranslatef(col,row,0);
+    
+    framescale=4;
+    frame2=(frame2+1)%((32)*framescale);
+    row=(frame2/framescale)/16;
+    col=(frame2/framescale)%16;
+    //printf("row: %d\n",row);
+    glTranslatef(col,row+14,0);
+    glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
+    
+    
     
     vertexObject objVertices[max_bb*6*6];
     extern const GLshort cubeShortVertices[36*3];
@@ -272,9 +285,94 @@ static int frame=0,frame2=0;
     const GLshort* cubeTextureCustom=cubeTexture;
     const GLshort* cubeVertices=cubeShortVertices;
     int vert=0;
-    float poof=1.11f;
+    float poof=1.18f;
     float epoofx=1.3f;
     float epoofy=1.7f;
+
+    
+    
+    // glDepthMask(FALSE);
+    glColor4f(1.0f,1.0f,1.0f,1.0f);
+    poof=1.1;
+    float epoof=1.0f;
+    vert=0;
+    for(int i=0;i<list_size;i++){
+        bnode* node=&list[i];
+        if(node->life>0)
+            for(int k=0;k<6*6;k++){
+                Vector vc;
+                
+                vc=MakeVector((cubeVertices[k*3]-.5f)*poof,(cubeVertices[k*3+1]-.5f)*poof,(cubeVertices[k*3+2]-.5f)*poof);
+                
+                if(k>=24&&k<30){
+                    vc.x*=epoof;
+                    vc.z*=epoof;
+                    
+                }else{
+                    continue;
+                    
+                }
+                objVertices[vert].position[0]=(node->x)+vc.x;
+                objVertices[vert].position[1]=node->y+vc.y;
+                objVertices[vert].position[2]=node->z+vc.z;
+                
+                
+                
+                
+                //  Vector uv=getFrameUV(0,SPRITE_FLAME);
+                objVertices[vert].texs[0]=cubeTextureCustom[k*2+0]*.8f+.1f;
+                objVertices[vert].texs[1]=cubeTextureCustom[k*2+1]*.8f+.1f;
+                
+                
+                
+                
+                vert++;
+            }
+        
+        // node->
+        
+    }
+    //  glDepthMask(TRUE);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+    
+    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SPRITE_FLAME].name);
+    glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
+   	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
+	
+	
+    glColor4f(0,0,0,1.0f);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDrawArrays(GL_TRIANGLES, 0,vert);
+    
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glColor4f(1.0,1.0,1,1);
+    glDrawArrays(GL_TRIANGLES, 0,vert);
+    
+    glMatrixMode(GL_TEXTURE);
+    glPopMatrix();
+    glPushMatrix();
+    glLoadIdentity();
+   
+    glScalef(1.0f/16,1.0f/8.0f,1);
+    
+    framescale=4;
+    frame=(frame+1)%((112)*framescale);
+    row=(frame/framescale)/16;
+    col=(frame/framescale)%16;
+   // printf("frame: %d\n",frame/framescale);
+    glTranslatef(col,row,0);
+    glMatrixMode(GL_MODELVIEW);
+    
+   
+    
+  
+    
+    
+    vert=0;
+     poof=1.25f;
+   epoofx=1.3f;
+     epoofy=1.7f;
     for(int i=0;i<list_size;i++){
         bnode* node=&list[i];
         if(node->life>0)
@@ -331,77 +429,7 @@ static int frame=0,frame2=0;
     glDrawArrays(GL_TRIANGLES, 0,vert);
     
     
-    //////////BOT AND TOP
-    glMatrixMode(GL_TEXTURE);
-    glPopMatrix();
-    glPushMatrix();
-    glLoadIdentity();
-    glScalef(1.0f/16,1.0f/16.0f,1);
     
-    framescale=4;
-    frame2=(frame2+1)%((32)*framescale);
-    row=(frame2/framescale)/16;
-    col=(frame2/framescale)%16;
-     //printf("row: %d\n",row);
-    glTranslatef(col,row+14,0);
-    glMatrixMode(GL_MODELVIEW);
-   // glDepthMask(FALSE);
-    glColor4f(1.0f,1.0f,1.0f,1.0f);
-    poof=1.1;
-    float epoof=1.0f;
-    vert=0;
-    for(int i=0;i<list_size;i++){
-        bnode* node=&list[i];
-        if(node->life>0)
-            for(int k=0;k<6*6;k++){
-                Vector vc;
-                
-                vc=MakeVector((cubeVertices[k*3]-.5f)*poof,(cubeVertices[k*3+1]-.5f)*poof,(cubeVertices[k*3+2]-.5f)*poof);
-                
-                if(k>=24&&k<30){
-                    vc.x*=epoof;
-                    vc.z*=epoof;
-                
-                }else{
-                    continue;
-                      
-                }
-                objVertices[vert].position[0]=(node->x)+vc.x;
-                objVertices[vert].position[1]=node->y+vc.y;
-                objVertices[vert].position[2]=node->z+vc.z;
-                
-                
-                
-                
-                //  Vector uv=getFrameUV(0,SPRITE_FLAME);
-                objVertices[vert].texs[0]=cubeTextureCustom[k*2+0]*.8f+.1f;
-                objVertices[vert].texs[1]=cubeTextureCustom[k*2+1]*.8f+.1f;
-                
-                
-                
-                
-                vert++;
-            }
-        
-        // node->
-        
-    }
-   //  glDepthMask(TRUE);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
-    glBindBuffer(GL_ARRAY_BUFFER,0);
-    
-    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SPRITE_FLAME].name);
-    glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
-   	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
-	
-	
-    glColor4f(0,0,0,1.0f);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDrawArrays(GL_TRIANGLES, 0,vert);
-    
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    glColor4f(1.0,1.0,1,1);
-    glDrawArrays(GL_TRIANGLES, 0,vert);
     
     
     //////////

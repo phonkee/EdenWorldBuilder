@@ -49,6 +49,7 @@
 -(void)soundEvent:(int)actionid:(Vector)location;
 - (int)getDoorTex:(int)color;
 - (Texture2D*)getPaintTex:(int)color;
+-(Texture2D*)getPaintedTex:(int)type:(int)color;
 
 -(void)voSound:(int)action:(int)type:(Vector)location;
 
@@ -274,6 +275,25 @@ enum ICON_TYPES{
     
     TEXT_NUMBERS=88,
     ICO_PAINT_MASK=89,
+    
+    SMALL_ICO_MASK1=90,
+    SMALL_ICO_MASK2=91,
+    SMALL_ICO_MASK3=92,
+    SMALL_ICO_MASK4=93,
+    /*
+     temp=[[Texture2D alloc] initWithImagePath:@"goldcube_icon_active.png" sizeToFit:FALSE];
+     [textures addObject:temp];
+     temp=[[Texture2D alloc] initWithImagePath:@"flower_icon_active.png" sizeToFit:FALSE];
+     [textures addObject:temp];
+     temp=[[Texture2D alloc] initWithImagePath:@"door_icon2_active.png" sizeToFit:FALSE];
+     [textures addObject:temp];
+     temp=[[Texture2D alloc] initWithImagePath:@"portal_icon2_active.png" sizeToFit:FALSE];
+     [textures addObject:temp];
+*/
+    ICOICO_GOLDCUBE_ACTIVE=94,
+    ICOICO_FLOWER_ACTIVE=95,
+    ICOICO_DOOR_ACTIVE=96,
+    ICOICO_PORTAL_ACTIVE=97,
     
     //10 texs after this reserved for coloring
     
