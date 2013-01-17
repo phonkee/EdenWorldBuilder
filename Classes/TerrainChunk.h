@@ -32,6 +32,8 @@ typedef struct _small_block{
     color8 colors[8];
     
 }SmallBlock;
+#define CC(x,z,y) ((int)(x)*(CHUNK_SIZE*CHUNK_SIZE)+(int)(z)*(CHUNK_SIZE)+(int)(y))
+
 @interface TerrainChunk : NSObject {
 	
 	
@@ -41,6 +43,8 @@ typedef struct _small_block{
     block8 blocks1[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
     block8 blocks2[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
     color8 colors[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
+    float lightsf[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
+    
     block8* pblocks;
     color8* pcolors;
     SmallBlock* sblocks[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];

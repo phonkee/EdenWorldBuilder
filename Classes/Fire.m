@@ -237,6 +237,50 @@ static int pid=0;
 	return p->pid;
 	
 }
+- (int)addSmoke:(float)x:(float)z:(float)y{
+    
+    while(num_particles+n_particles>max_fparticles){
+		[self removeNode:arc4random()%list_size];
+	}
+	num_particles+=n_particles;
+	
+	bnode* p=&list[list_size];
+	
+	for(int i=0;i<n_particles;i++){
+		p->particles[i].life=-1;
+		
+		int pvbi=getPVBI();
+		p->particles[i].pvbi=pvbi;
+		
+		int color=arc4random()%2;
+		pbuffer[pvbi].colors[0]=colors[color][0];
+		pbuffer[pvbi].colors[1]=colors[color][1];
+		pbuffer[pvbi].colors[2]=colors[color][2];
+		pbuffer[pvbi].colors[3]=255;
+        /*  pbuffer[pvbi].colors[0]=255;
+         pbuffer[pvbi].colors[1]=255;
+         pbuffer[pvbi].colors[2]=255;*/
+        if(IS_RETINA){
+            pbuffer[pvbi].size[0]=SMOKE_SIZER;
+        }else{
+            pbuffer[pvbi].size[0]=70;
+        }
+	}
+	
+        p->type=2;
+        p->x=x*BLOCK_SIZE+BLOCK_SIZE/2;
+        p->y=y*BLOCK_SIZE+BLOCK_SIZE/2;
+        p->z=z*BLOCK_SIZE+BLOCK_SIZE/2;
+    
+	p->pid=pid++;
+	p->life=1.37f;
+	updateIndexes=TRUE;
+	
+	list_size++;	
+	
+	return p->pid;
+    
+}
 Vector getFrameUV(int frame,int sprite){
     Vector uv;
     return uv;
@@ -298,6 +342,9 @@ static int frame=0,frame2=0;
     vert=0;
     for(int i=0;i<list_size;i++){
         bnode* node=&list[i];
+        if(node->type==2){
+           
+            continue;}
         if(node->life>0)
             for(int k=0;k<6*6;k++){
                 Vector vc;
@@ -374,7 +421,11 @@ static int frame=0,frame2=0;
    epoofx=1.3f;
      epoofy=1.7f;
     for(int i=0;i<list_size;i++){
+        
         bnode* node=&list[i];
+        if(node->type==2){
+            
+            continue;}
         if(node->life>0)
         for(int k=0;k<6*6;k++){
             Vector vc;
@@ -441,140 +492,7 @@ static int frame=0,frame2=0;
     
     glMatrixMode(GL_MODELVIEW);
     
-      /* vertexObject objVertices[max_render_objects*6*6];
-    extern const GLshort cubeShortVertices[36*3];
-    extern const GLshort cubeTexture[36*2];
-    extern const GLfloat cubeNormals[36*3];
-    const GLshort* cubeVertices=cubeShortVertices;
-    const GLshort* cubeTextureCustom=cubeTexture;
-    int vert=0;
-    int object=0;
-    
-    Vector ppos=[World getWorld].player.pos;
-    for(int i=0;i<chunksr;i++){
-        for(int j=0;j<renderList[i].rtnum_objects;j++){
-            if(renderList[i].rtobjects[j].type!=TYPE_DOOR_TOP)continue;
-            int dir=renderList[i].rtobjects[j].dir;
-            Vector v1=renderList[i].rtobjects[j].pos;
-            v1.x+=.5f;
-            v1.z+=.5f;
-            v1.y=ppos.y;
-            Vector vdist=v_sub(ppos,v1);
-            
-            int dist=v_length2(vdist);
-            
-            if(ppos.y>=renderList[i].rtobjects[j].pos.y&&ppos.y<=renderList[i].rtobjects[j].pos.y+2&&dist<2*2){
-                renderList[i].rtobjects[j].ani=-1;
-            }else
-                renderList[i].rtobjects[j].ani=1;
-            float rot=renderList[i].rtobjects[j].rot;
-           
-            if(renderList[i].rtobjects[j].ani==1){
-                renderList[i].rtobjects[j].rot+=6*last_etime;
-            }else if(renderList[i].rtobjects[j].ani==-1){
-                renderList[i].rtobjects[j].rot-=6*last_etime;
-            }
-            if(renderList[i].rtobjects[j].rot<0){
-                renderList[i].rtobjects[j].rot=0;
-                // renderList[i].rtobjects[j].ani=1;
-            }
-            if(renderList[i].rtobjects[j].rot>M_PI/2){
-                renderList[i].rtobjects[j].rot=M_PI/2;
-                //renderList[i].rtobjects[j].ani=-1;
-            }
-            Vector offsets=MakeVector(0,0,0);
-            if(dir==0){
-                offsets.x=4;
-                rot+=M_PI/2;
-            }else if(dir==1){
-                rot+=M_PI;
-                offsets.z=4;
-                offsets.x=4;
-                
-                
-            }else if(dir==2){
-                rot+=M_PI+M_PI/2;
-                offsets.z=4;
-                
-            }else if(dir==3){
-                
-            }
-            
-            if(rot>2*M_PI)rot-=(int)(rot/(2*M_PI))*(2*M_PI);
-            
-            
-            for(int k=0;k<6*6;k++){
-                Vector vc;
-                
-                vc=MakeVector(cubeVertices[k*3]*4,cubeVertices[k*3+1]*2*4,cubeVertices[k*3+2]*.50f-.25);
-                
-                
-                
-                vc=rotateVertice(MakeVector(0,rot,0),vc);
-                vc.x+=offsets.x;
-                vc.z+=offsets.z;
-                if(vc.x<0)vc.x=0;
-                if(vc.z<0)vc.z=0;
-                if(vc.x>4)vc.x=4;
-                if(vc.z>4)vc.z=4;
-               
-                objVertices[vert].position[0]=4*(renderList[i].rtobjects[j].pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)+vc.x;
-                objVertices[vert].position[1]=4*renderList[i].rtobjects[j].pos.y+vc.y;
-                objVertices[vert].position[2]=4*(renderList[i].rtobjects[j].pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)+vc.z;
-               
-                    
-              
-                Vector vn=MakeVector(cubeNormals[k*3],cubeNormals[k*3+1],cubeNormals[k*3+2]);
-                
-                vn=rotateVertice(MakeVector(0,rot,0),vn);
-                objVertices[vert].normal[0]=vn.x;
-                objVertices[vert].normal[1]=vn.y;
-                objVertices[vert].normal[2]=vn.z;
-                               if(k>=12){
-                    objVertices[vert].texs[0]=cubeTextureCustom[k*2+0];
-                    objVertices[vert].texs[1]=0;
-                }else{
-                    if(k>=6){
-                        objVertices[vert].texs[0]=cubeTextureCustom[k*2+0];
-                        objVertices[vert].texs[1]=cubeTextureCustom[k*2+1]*32;
-                    }
-                    else{
-                        objVertices[vert].texs[0]=1-cubeTextureCustom[k*2+0];
-                        objVertices[vert].texs[1]=cubeTextureCustom[k*2+1]*32;
-                        
-                        
-                    }
-                }
-                extern Vector colorTable[256];
-                Vector color=colorTable[renderList[i].rtobjects[j].color];
-                if(renderList[i].rtobjects[j].color==0){
-                    color.x=color.y=color.z=1;
-                    
-                }
-                objVertices[vert].colors[0]=color.x*255;
-                objVertices[vert].colors[1]=color.y*255;
-                objVertices[vert].colors[2]=color.z*255;
-                objVertices[vert].colors[3]=255;
-                vert++;
-            }
-            object++;
-            if(object==max_render_objects)break;
-        }
-        if(object==max_render_objects)break;
-    }
-    
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
-    glBindBuffer(GL_ARRAY_BUFFER,0);
-    
-    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:ICO_DOOR].name);
-    glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
-    glNormalPointer( GL_FLOAT, sizeof(vertexObject), objVertices[0].normal);
-	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
-	glColorPointer(	4, GL_UNSIGNED_BYTE, sizeof(vertexObject), objVertices[0].colors);
-	
-    
-    glDrawArrays(GL_TRIANGLES, 0,vert);*/
-
+  
     
     
 }

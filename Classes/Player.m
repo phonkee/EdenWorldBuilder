@@ -441,7 +441,9 @@ extern bool hitCustom;
 						[[World getWorld].terrain burnBlock:point.x	:point.z :point.y];
 						if(blockinfo[type]&IS_FLAMMABLE){
 							[[Resources getResources] playSound:S_FIRE_SUCCEED];
-						}													
+						}else{
+                            [[World getWorld].effects addSmoke:point.x:point.z:point.y];
+                        }
 					}else if(mode==MODE_MINE){
                        
 						if(type!=TYPE_BEDROCK){

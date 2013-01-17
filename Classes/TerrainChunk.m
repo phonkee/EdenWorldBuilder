@@ -87,7 +87,9 @@ extern GLfloat cubeNormals[3*6*6];
 		rbounds[i]=(float)bounds[i]*BLOCK_SIZE;
 		
 	}
-   
+    for(int i=0;i<CHUNK_SIZE3;i++){
+        lightsf[i]=1.0f;
+    }
 
     isTesting=0;
 	n_vertices=0;
@@ -111,7 +113,7 @@ extern GLfloat cubeNormals[3*6*6];
 	}	
 }
 static int face_visibility[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
-static Vector lighting[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE]; 
+//static Vector lighting[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
 static short face_size[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*6];
 
 //static vertexStructSmall vertices[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*6*6];
@@ -210,7 +212,7 @@ extern int g_offcz;
     }
 	[self clearMeshes];
     memset(hasBlocky,0,sizeof(bool)*CHUNK_SIZE);
-    memset(lighting,0,sizeof(Vector)*CHUNK_SIZE);
+   /* memset(lighting,0,sizeof(Vector)*CHUNK_SIZE);
     for(int y=0;y<CHUNK_SIZE;y++){
         for(int x=0;x<CHUNK_SIZE;x++){
             
@@ -218,13 +220,13 @@ extern int g_offcz;
                 lighting[(x)*CHUNK_SIZE*CHUNK_SIZE+(z)*CHUNK_SIZE+(y)]=MakeVector(0,0,0);
             }
         }
-    }
+    }*/
     bool hasSeeThrough=FALSE;
     bool hasAnything=FALSE;
     for(int y=0;y<CHUNK_SIZE;y++){
         for(int x=0;x<CHUNK_SIZE;x++){
 			for(int z=0;z<CHUNK_SIZE;z++){
-				int type=blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
+				int type=blocks[CC(x,z,y)];
                 if( type==TYPE_FLOWER){
                     //[self setLand:x:z:y:TYPE_GRASS];
                     //type=TYPE_GRASS;
@@ -241,9 +243,9 @@ extern int g_offcz;
                     hasBlocky[y]=TRUE;
                 }else if(type==TYPE_CUSTOM){
                     
-                    SmallBlock* sb=sblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
+                    SmallBlock* sb=sblocks[CC(x,z,y)];
                     if(sb==NULL){
-                        sblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=sb=malloc(sizeof(SmallBlock));
+                        sblocks[CC(x,z,y)]=sb=malloc(sizeof(SmallBlock));
                         printf("Custom with no blocks??\n");
                         for(int i=0;i<8;i++){
                             if(arc4random()%2==0)sb->blocks[i]=0;
@@ -264,7 +266,7 @@ extern int g_offcz;
                     hasAnything=TRUE;
                     hasBlocky[y]=TRUE;
                 }else if(type==TYPE_LIGHTBOX){
-                    Vector color=colorTable[colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]];
+                    /*Vector color=colorTable[colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]];
                     if(colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]==0){
                         color=MakeVector(blockColor[type][0]/255.0f,blockColor[type][1]/255.0f,blockColor[type][2]/255.0f);
                     }int r=6;
@@ -292,7 +294,7 @@ extern int g_offcz;
                                 lighting[(x+dx)*CHUNK_SIZE*CHUNK_SIZE+(z+dz)*CHUNK_SIZE+(y+dy)]=v;
                             }
                         }
-                    }
+                    }*/
                     hasBlocky[y]=TRUE;
                     hasAnything=TRUE;
                 }else if(type!=0){
@@ -711,16 +713,16 @@ extern int g_offcz;
                     paint[0]=cl.x;
                     paint[1]=cl.y;
                     paint[2]=cl.z;
-                    Vector lightv=lighting[(x)*CHUNK_SIZE*CHUNK_SIZE+(z)*CHUNK_SIZE+(y)];
-                    light[0]=lightv.x;
-                    light[1]=lightv.y;
-                    light[2]=lightv.z;
+                   // Vector lightv=lighting[(x)*CHUNK_SIZE*CHUNK_SIZE+(z)*CHUNK_SIZE+(y)];
+                   // light[0]=lightv.x;
+                   // light[1]=lightv.y;
+                   // light[2]=lightv.z;
                     //if(light[0]!=0||light[1]!=0||light[2]!=0)
                     // printf("lighting at(%d,%d,%d),  (%f,%f,%f)\n",x,y,z,light[0],light[1],light[2]);
                     //int corners[4]={4,4,4,4};
                     int top_shadow=255;
                     if(FACE_TOP&isvisible){
-                        top_shadow-=getShadow(x+bounds[0],z+bounds[2],y+bounds[1]);
+                        top_shadow-=0;//getShadow(x+bounds[0],z+bounds[2],y+bounds[1]);
                     }
                     // if(top_shadow!=255)NSLog(@"yay");
                     vertexStructSmall* vert_array=verticesbg;
@@ -1033,16 +1035,17 @@ extern int g_offcz;
         paint[1]=cl.y;
         paint[2]=cl.z;
        
-        Vector lightv=lighting[(x)*CHUNK_SIZE*CHUNK_SIZE+(z)*CHUNK_SIZE+(y)];
-        light[0]=lightv.x;
-        light[1]=lightv.y;
-        light[2]=lightv.z;
+        light[0]=light[1]=light[2]=lightsf[CC(x,z,y)];
+    //    Vector lightv=lighting[(x)*CHUNK_SIZE*CHUNK_SIZE+(z)*CHUNK_SIZE+(y)];
+    //    light[0]=lightv.x;
+    //    light[1]=lightv.y;
+    //    light[2]=lightv.z;
         //if(light[0]!=0||light[1]!=0||light[2]!=0)
         // printf("lighting at(%d,%d,%d),  (%f,%f,%f)\n",x,y,z,light[0],light[1],light[2]);
         //int corners[4]={4,4,4,4};
         int top_shadow=255;
         if(FACE_TOP&isvisible){
-            top_shadow-=getShadow(x+bounds[0],z+bounds[2],y+bounds[1]);
+            top_shadow-=0;//getShadow(x+bounds[0],z+bounds[2],y+bounds[1]);
         }
         // if(top_shadow!=255)NSLog(@"yay");
         vertexStructSmall* vert_array=verticesbg;
@@ -1267,8 +1270,8 @@ extern int g_offcz;
             if(type!=TYPE_LIGHTBOX)
                 for(int i=0;i<3;i++){
                     
-                    float n=light[i]+paint[i]*5.0f/5.0f;
-                    if(n<=paint[i])paint[i]=n;
+                    float n=light[i]*paint[i];
+                    paint[i]=n;
                     
                 }
             CGPoint tp;
@@ -1299,13 +1302,14 @@ extern int g_offcz;
                     if(type==TYPE_CLOUD&&f==4)
                         color=paint[coord]*180;
                     else if(f==5){                      
-                        color=paint[coord]*top_shadow;
+                        color=paint[coord]*(float)cubeColors[f*3+coord];//*top_shadow;
                     }else if(type>=TYPE_STONE_SIDE1&&type<=TYPE_ICE_SIDE4&&sideface==f){
                         color=paint[coord]*wshadow;
                     }
                     else
                         color=paint[coord]*(float)cubeColors[f*3+coord];
                     
+                    //printf("WTFWTF\n");
                     if(burned){
                         color/=2.0f;
                     }

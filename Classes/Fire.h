@@ -20,4 +20,5 @@
 -(void)removeNode:(int)idx;
 -(void)updateFire:(int)idx:(Vector)pos;
 - (void)clearAllEffects;
+- (int)addSmoke:(float)x:(float)z:(float)y;
 @end

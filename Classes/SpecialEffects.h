@@ -25,6 +25,7 @@
 - (void)addBlockExplode:(int)x:(int)z:(int)y:(int)type:(int)color;
 - (void)addCreatureVanish:(float)x:(float)z:(float)y:(int)color:(int)type;
 - (int)addFire:(float)x:(float)z:(float)y:(int)type:(float)life;
+- (int)addSmoke:(float)x:(float)z:(float)y;
 - (void)addFirework:(float)x:(float)z:(float)y:(int)color;
 - (void)render;
 -(void)updateFire:(int)idx:(Vector)pos;

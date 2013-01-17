@@ -116,6 +116,9 @@ int getPVBI(){
 	return [fire addFire:x :z :y :type :life];
 	
 }
+- (int)addSmoke:(float)x:(float)z:(float)y{
+    return [fire addSmoke:x:z:y];
+}
 - (void)addFirework:(float)x:(float)z:(float)y:(int)color{
     
     [bb addFirework:x :z :y :color ];
