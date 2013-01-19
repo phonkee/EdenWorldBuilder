@@ -88,7 +88,7 @@ extern GLfloat cubeNormals[3*6*6];
 		
 	}
     for(int i=0;i<CHUNK_SIZE3;i++){
-        lightsf[i]=1.0f;
+        lightsf[i]=randf(.2f)+.7f;
     }
 
     isTesting=0;
@@ -1208,7 +1208,13 @@ extern int g_offcz;
                 }
                 
             }
-        
+        float lightm;
+        if(type!=TYPE_LIGHTBOX){
+            lightm=lightsf[CC(x,z,y)];
+        }else
+            lightm=1.0f;
+            
+
         for(int f=0;f<6;f++){
             if(!( isvisible&(1<<f) ) )continue;
             int size=face_size[x*(CHUNK_SIZE*CHUNK_SIZE*6)+z*(CHUNK_SIZE*6)+y*6+f];
@@ -1267,14 +1273,7 @@ extern int g_offcz;
                 }
                 
             }
-            if(type!=TYPE_LIGHTBOX)
-                for(int i=0;i<3;i++){
-                    
-                    float n=light[i]*paint[i];
-                    paint[i]=n;
-                    
-                }
-            CGPoint tp;
+                       CGPoint tp;
             tp=[res getBlockTexShort:bf];
             
             
@@ -1300,14 +1299,14 @@ extern int g_offcz;
                     }
                     int color;
                     if(type==TYPE_CLOUD&&f==4)
-                        color=paint[coord]*180;
+                        color=lightm*paint[coord]*180;
                     else if(f==5){                      
-                        color=paint[coord]*(float)cubeColors[f*3+coord];//*top_shadow;
+                        color=lightm*paint[coord]*(float)cubeColors[f*3+coord];//*top_shadow;
                     }else if(type>=TYPE_STONE_SIDE1&&type<=TYPE_ICE_SIDE4&&sideface==f){
-                        color=paint[coord]*wshadow;
+                        color=lightm*paint[coord]*wshadow;
                     }
                     else
-                        color=paint[coord]*(float)cubeColors[f*3+coord];
+                        color=lightm*paint[coord]*(float)cubeColors[f*3+coord];
                     
                     //printf("WTFWTF\n");
                     if(burned){

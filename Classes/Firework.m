@@ -41,6 +41,9 @@
 -(void)update:(float)etime{
     for(int i=0;i<n_firework;i++){
         fireworks[i].pos=v_add(fireworks[i].pos,v_mult(fireworks[i].vel,etime));
+        if(getLandc(roundf(fireworks[i].pos.x),roundf(fireworks[i].pos.z),roundf(fireworks[i].pos.y))!=TYPE_NONE){
+            fireworks[i].fuse=-1;
+        }
         fireworks[i].fuse-=etime;
        
     }

@@ -520,6 +520,9 @@ void makeCave(int xs,int zs,int ys,int sizex,int sizez,int sizey,int colorScheme
                 
                 if(n3>0){
                     BLOCK(x,z,y)=TYPE_STONE;
+                    if(y==sizey-1&&colorScheme==1){
+                        COLOR(x,z,y)=25;
+                    }else
                     if(colorScheme==0){
                         COLOR(x,z,y)=0;
                     }else if(colorScheme==1){
