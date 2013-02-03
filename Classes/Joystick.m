@@ -85,7 +85,8 @@ static const int usage_id=999;
 		}	
 		
 	}
-	
+	//[[World getWorld].player setSpeed:MakeVector(0,1,0),40];
+
 	return FALSE;
 }
 - (void)render{

@@ -56,6 +56,7 @@
 - (void)updateCustom:(int)x :(int)z :(int)y:(int)type:(int)color;
 - (int)getLand:(int)x :(int)z :(int)y;
 - (int)getColor:(int)x :(int)z :(int)y;
+- (void)refreshChunksInRadius:(int)x:(int)z:(int)y:(int)radius;
 
 - (void)addToUpdateList:(int)cx:(int)cy:(int)cz;
 
@@ -81,9 +82,11 @@
 -(void) startLoadingThread;
 -(void)startDynamics;
 
-int getShadow(int x,int z,int y);
+float getShadow(int x,int z,int y);
+float calcLight(int x,int z,int y,float shadow,int coord);
 int getLandc(int x,int z,int y);
 int getLandc2(int x,int z,int y);
+int getColorc(int x,int z,int y);
 bool isOnFire(int x ,int z, int y);
 int getRampType(int x,int z,int y, int t);
 int getCustomc(int x,int z,int y);

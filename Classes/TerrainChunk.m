@@ -88,7 +88,7 @@ extern GLfloat cubeNormals[3*6*6];
 		
 	}
     for(int i=0;i<CHUNK_SIZE3;i++){
-        lightsf[i]=randf(.2f)+.7f;
+        lightsf[i]=randf(.1f)+.9f;
     }
 
     isTesting=0;
@@ -1035,7 +1035,12 @@ extern int g_offcz;
         paint[1]=cl.y;
         paint[2]=cl.z;
        
-        light[0]=light[1]=light[2]=lightsf[CC(x,z,y)];
+       
+        float shadow=getShadow(x+bounds[0],z+bounds[2],y+bounds[1]);
+        light[0]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],shadow,0);
+        light[1]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],shadow,1);
+        light[2]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],shadow,2);
+        /*lightsf[CC(x,z,y)]+*/
     //    Vector lightv=lighting[(x)*CHUNK_SIZE*CHUNK_SIZE+(z)*CHUNK_SIZE+(y)];
     //    light[0]=lightv.x;
     //    light[1]=lightv.y;
@@ -1208,12 +1213,12 @@ extern int g_offcz;
                 }
                 
             }
-        float lightm;
+        /*float lightm;
         if(type!=TYPE_LIGHTBOX){
-            lightm=lightsf[CC(x,z,y)];
+            lightm=light[0];//lightsf[CC(x,z,y)];
         }else
-            lightm=1.0f;
-            
+            lightm=light[0];*/
+        
 
         for(int f=0;f<6;f++){
             if(!( isvisible&(1<<f) ) )continue;
@@ -1299,18 +1304,21 @@ extern int g_offcz;
                     }
                     int color;
                     if(type==TYPE_CLOUD&&f==4)
-                        color=lightm*paint[coord]*180;
+                        color=light[coord]*paint[coord]*180;
                     else if(f==5){                      
-                        color=lightm*paint[coord]*(float)cubeColors[f*3+coord];//*top_shadow;
+                        color=light[coord]*paint[coord]*(float)cubeColors[f*3+coord];//*top_shadow;
                     }else if(type>=TYPE_STONE_SIDE1&&type<=TYPE_ICE_SIDE4&&sideface==f){
-                        color=lightm*paint[coord]*wshadow;
+                        color=light[coord]*paint[coord]*wshadow;
                     }
                     else
-                        color=lightm*paint[coord]*(float)cubeColors[f*3+coord];
+                        color=light[coord]*paint[coord]*(float)cubeColors[f*3+coord];
                     
                     //printf("WTFWTF\n");
                     if(burned){
                         color/=2.0f;
+                    }
+                    if(type==TYPE_LIGHTBOX){
+                        color=paint[coord]*255;
                     }
                     if( color>255) vert_array[vert_c].colors[coord]=255;
                     else vert_array[vert_c].colors[coord]=color;

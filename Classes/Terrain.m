@@ -11,6 +11,9 @@
 #import "Globals.h"
 #import "Model.h"
 #import "VectorUtil.h"
+
+#import "Lighting.h"
+
 @implementation Terrain
 @synthesize home,loaded,world_name,level_seed,tgen,counter,skycolor,final_skycolor,chunkTable,portals,fireworks;
 
@@ -31,6 +34,7 @@ static BOOL* chunksToUpdateImmediatley;
 
 block8* blockarray;
 static color8* shadowarray;
+Vector* lightarray;
 //static map_t chunkMapc;
 static TerrainChunk** chunkTablec;
 static BOOL secondPass;
@@ -188,6 +192,7 @@ void initTree(TreeNode* node){
 	
 	memset(blockarray,0,sizeof(block8)*T_SIZE*T_SIZE*T_HEIGHT);
     memset(shadowarray,0,sizeof(color8)*T_SIZE*T_SIZE);
+    memset(lightarray,0,sizeof(Vector)*T_SIZE*T_SIZE*T_HEIGHT);
 }
 
 
@@ -205,6 +210,8 @@ extern int g_offcz;
 	//chunkMapc=chunkMap=hashmap_new();		
     chunkTablec=chunkTable=malloc(sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
     memset(chunkTable,0,sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+    //int s=(int)sizeof(TerrainChunk);
+    printf("sizeofTerrainChunk: %d\n",(int)sizeof(TerrainChunk*));
 	chunksToUpdate=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
     chunksToUpdatefg=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
     columnsToUpdate=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE);
@@ -215,6 +222,7 @@ extern int g_offcz;
     fireworks=[[Firework alloc] init];
 	 initTree(&troot);
 	blockarray=malloc(sizeof(block8)*(T_SIZE+1)*(T_SIZE+1)*(T_HEIGHT+1));
+    lightarray=malloc(sizeof(Vector)*T_SIZE*T_SIZE*T_HEIGHT);
     shadowarray=malloc(sizeof(block8)*T_SIZE*T_SIZE);
 	singleton=self;
 	loaded=FALSE;
@@ -294,17 +302,10 @@ int extraGeneration(any_t passedIn,any_t chunkToGen){
     firstframe=TRUE;
     //hashmap_iterate(chunkMap,extraGeneration,NULL);
 	//[self startDynamics];
+    void calculateLighting();
+    calculateLighting();
     double end_time=-[start timeIntervalSinceNow];
-    for(int x=0;x<T_SIZE;x++){
-        for(int z=0;z<T_SIZE;z++){
-            for(int y=T_HEIGHT-1;y>=0;y--){
-                if(blockarray[x*T_SIZE*T_HEIGHT+z*T_HEIGHT+y]>0&&blockarray[x*T_SIZE*T_HEIGHT+z*T_HEIGHT+y]!=TYPE_CLOUD){
-                    shadowarray[x*T_SIZE+z]=y;
-                    break;
-                }
-            }
-        }
-    }
+   
     
 	loaded=1;
     [World getWorld].hud.justLoaded=1;
@@ -361,7 +362,7 @@ static int sanity_test=0;
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
         if([self loaded]){
             int num=0;
-            int list[10000];
+            int list[2000];
           
           
             for(int x=0;x<CHUNKS_PER_SIDE;x++){
@@ -372,8 +373,8 @@ static int sanity_test=0;
                                 
                                 int n=threeToOne(x,y,z);
                                 
-                                if(n>576){
-                                  //  printf("how: %d\n",n);
+                                if(n>=CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN){
+                                   printf("out of bounds index: %d\n",n);
                                 }
                                 list[num++]=n;
                                 
@@ -397,11 +398,13 @@ static int sanity_test=0;
            
             for(int i=0;i<num;i++){
             TerrainChunk* chunk=NULL;
-                if(list[i]<0||list[i]>576){
-                   // printf("list[%d]=%d  num: %d idxrl: %d\n",i,list[i],num,idxrl);
+                if(list[i]<0||list[i]>=CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN){
+                    printf("out of bounds access list[%d]=%d  num: %d idxrl: %d  max:%d\n",i,list[i],num,idxrl, CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+                
+                  //  continue;
                 }
                 chunk=chunkTable[list[i]];
-           
+           //=malloc(sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
                 if(chunk){
                     rebuildList[idxrl++]=chunk;
                     chunk.idxn=list[i];
@@ -649,9 +652,18 @@ static int sanity_test=0;
     if((cur==TYPE_TNT||cur==TYPE_FIREWORK)||isOnFire(x,z,y)){
         paint=[self getColor:x:z:y];//save color so it can be used when explosion is triggered
     }
+    if(cur==TYPE_LIGHTBOX){
+       void addlight(int xx,int zz,int yy,float brightness,Vector color);
+        
+        extern Vector colorTable[256];
+        addlight(x,z,y,-1.0f,colorTable[paint]);
+        [self updateChunks:x :z :y :TYPE_NONE];
+         [self refreshChunksInRadius:x:z:y:LIGHT_RADIUS];
+        
+    }
 	[[World getWorld].effects addBlockBreak:x :z :y :[self getLand:x :z :y]:[self getColor:x:z:y]];
 	[self updateChunks:x :z :y :TYPE_NONE];
-    [self setColor:x:z:y:paint];//add color attribute back in after updatechunks clears it
+    [self setColor:x:z:y:paint];//adds color attribute back in after updatechunks clears it  
     
     if(blockinfo[cur]&IS_DOOR){
         if(cur==TYPE_DOOR_TOP){
@@ -894,9 +906,18 @@ int getRampType(int x,int z,int y, int t){
         [self setColor:x :z :boty : [World getWorld].hud.block_paintcolor ];
         
         return; 
+    }else if(type==TYPE_LIGHTBOX){
+        void addlight(int xx,int zz,int yy,float brightness,Vector color);
+       extern Vector colorTable[256];
+        addlight(x,z,y,1.0f,colorTable[[World getWorld].hud.block_paintcolor]);
+        
+        [self updateChunks:x :z :y :type];
+        [self refreshChunksInRadius:x:z:y:LIGHT_RADIUS];
+        [self setColor:x :z :y : [World getWorld].hud.block_paintcolor ];
+
     }else{
-	[self updateChunks:x :z :y :type];
-   [self setColor:x :z :y : [World getWorld].hud.block_paintcolor ];
+        [self updateChunks:x :z :y :type];
+        [self setColor:x :z :y : [World getWorld].hud.block_paintcolor ];
     }
     
     if([World getWorld].hud.blocktype==TYPE_GOLDEN_CUBE){
@@ -912,16 +933,35 @@ int getRampType(int x,int z,int y, int t){
     
     int pos[3]={x,y,z};
 	int cx,cy,cz;
-	
-	
+    int cur=getLandc(x,z,y);
+
+	if(cur==TYPE_LIGHTBOX){
+        int pcolor=getColorc(x,z,y);
+        if([self setColor:x :z :y :color]){
+            
+            void addlight(int xx,int zz,int yy,float brightness,Vector color);
+            extern Vector colorTable[256];
+            addlight(x,z,y,-1.0f,colorTable[pcolor]);
+            addlight(x,z,y,1.0f,colorTable[color]);
+            [self refreshChunksInRadius:x:z:y:LIGHT_RADIUS];
+            
+            
+            
+            cx=pos[0]/CHUNK_SIZE;
+            cy=pos[1]/CHUNK_SIZE;
+            cz=pos[2]/CHUNK_SIZE;
+            [self addToUpdateList2:cx:cy:cz];
+        }
+        
+        
+    }
 	if([self setColor:x :z :y :color]){
 	cx=pos[0]/CHUNK_SIZE;
 	cy=pos[1]/CHUNK_SIZE;
 	cz=pos[2]/CHUNK_SIZE;
 	 [self addToUpdateList2:cx:cy:cz];
     }
-    int cur=getLandc(x,z,y);
-    if(blockinfo[cur]&IS_PORTAL){
+       if(blockinfo[cur]&IS_PORTAL){
         if(cur==TYPE_PORTAL_TOP){
             
             [self setColor:x:z:y-1:color];
@@ -951,7 +991,188 @@ int getRampType(int x,int z,int y, int t){
     }
     
 }
+-(void)refreshChunksInRadius:(int)x:(int)z:(int)y:(int)radius{
+    int pos[3]={x,y,z};
+	int cx,cy,cz;
+	int radius2=radius*2;
+   
+	cx=pos[0]/CHUNK_SIZE;
+	cy=pos[1]/CHUNK_SIZE;
+	cz=pos[2]/CHUNK_SIZE;
+    [self addToUpdateList2:cx:cy:cz];
+	
+	int cx2,cy2,cz2;
+	for(int i=0;i<3;i++){
+		pos[i]+=radius;
+        
+		cx2=pos[0]/CHUNK_SIZE;
+		cy2=pos[1]/CHUNK_SIZE;
+		cz2=pos[2]/CHUNK_SIZE;
+        [self addToUpdateList2:cx2:cy2:cz2];
+		
+		pos[i]-=radius2;
+		cx2=pos[0]/CHUNK_SIZE;
+		cy2=pos[1]/CHUNK_SIZE;
+		cz2=pos[2]/CHUNK_SIZE;
+        [self addToUpdateList2:cx2:cy2:cz2];
+		
+		pos[i]+=radius;
+		
+	}
+    for(int i=0;i<3;i++){
+        int j=(i+1)%3;
+            pos[i]+=radius;
+            pos[j]+=radius;
+            
+            cx2=pos[0]/CHUNK_SIZE;
+            cy2=pos[1]/CHUNK_SIZE;
+            cz2=pos[2]/CHUNK_SIZE;
+            [self addToUpdateList2:cx2:cy2:cz2];
+            
+            pos[i]-=radius2;
+            pos[j]-=radius2;
+            cx2=pos[0]/CHUNK_SIZE;
+            cy2=pos[1]/CHUNK_SIZE;
+            cz2=pos[2]/CHUNK_SIZE;
+            [self addToUpdateList2:cx2:cy2:cz2];
+            
+            pos[i]+=radius;
+            pos[j]+=radius;
+        
+		
+	}
+    for(int i=0;i<3;i++){
+        int j=(i+1)%3;
+        pos[i]+=radius;
+        pos[j]-=radius;
+        
+        cx2=pos[0]/CHUNK_SIZE;
+        cy2=pos[1]/CHUNK_SIZE;
+        cz2=pos[2]/CHUNK_SIZE;
+        [self addToUpdateList2:cx2:cy2:cz2];
+        
+        pos[i]-=radius2;
+        pos[j]+=radius2;
+        cx2=pos[0]/CHUNK_SIZE;
+        cy2=pos[1]/CHUNK_SIZE;
+        cz2=pos[2]/CHUNK_SIZE;
+        [self addToUpdateList2:cx2:cy2:cz2];
+        
+        pos[i]+=radius;
+        pos[j]-=radius;
+        
+		
+	}
+    for(int i=0;i<3;i++){
+        int j=(i+1)%3;
+        int k=(j+1)%3;
+        pos[i]+=radius;
+        pos[j]+=radius;
+        pos[k]+=radius;
+        
+        cx2=pos[0]/CHUNK_SIZE;
+        cy2=pos[1]/CHUNK_SIZE;
+        cz2=pos[2]/CHUNK_SIZE;
+        [self addToUpdateList2:cx2:cy2:cz2];
+        
+        pos[i]-=radius2;
+        pos[j]-=radius2;
+        pos[k]-=radius2;
+        
+        cx2=pos[0]/CHUNK_SIZE;
+        cy2=pos[1]/CHUNK_SIZE;
+        cz2=pos[2]/CHUNK_SIZE;
+        [self addToUpdateList2:cx2:cy2:cz2];
+        
+        pos[i]+=radius;
+        pos[j]+=radius;
+        pos[k]+=radius;
+        
+		
+	}
+    for(int i=0;i<3;i++){
+        int j=(i+1)%3;
+        int k=(j+1)%3;
+        pos[i]+=radius;
+        pos[j]-=radius;
+        pos[k]+=radius;
+        
+        cx2=pos[0]/CHUNK_SIZE;
+        cy2=pos[1]/CHUNK_SIZE;
+        cz2=pos[2]/CHUNK_SIZE;
+        [self addToUpdateList2:cx2:cy2:cz2];
+        
+        pos[i]-=radius2;
+        pos[j]+=radius2;
+        pos[k]-=radius2;
+        
+        cx2=pos[0]/CHUNK_SIZE;
+        cy2=pos[1]/CHUNK_SIZE;
+        cz2=pos[2]/CHUNK_SIZE;
+        [self addToUpdateList2:cx2:cy2:cz2];
+        
+        pos[i]+=radius;
+        pos[j]-=radius;
+        pos[k]+=radius;
+        
+		
+	}
+    for(int i=0;i<3;i++){
+        int j=(i+1)%3;
+        int k=(j+1)%3;
+        pos[i]+=radius;
+        pos[j]-=radius;
+        pos[k]-=radius;
+        
+        cx2=pos[0]/CHUNK_SIZE;
+        cy2=pos[1]/CHUNK_SIZE;
+        cz2=pos[2]/CHUNK_SIZE;
+        [self addToUpdateList2:cx2:cy2:cz2];
+        
+        pos[i]-=radius2;
+        pos[j]+=radius2;
+        pos[k]+=radius2;
+        
+        cx2=pos[0]/CHUNK_SIZE;
+        cy2=pos[1]/CHUNK_SIZE;
+        cz2=pos[2]/CHUNK_SIZE;
+        [self addToUpdateList2:cx2:cy2:cz2];
+        
+        pos[i]+=radius;
+        pos[j]-=radius;
+        pos[k]-=radius;
+        
+		
+	}
+    for(int i=0;i<3;i++){
+        int j=(i+1)%3;
+        int k=(j+1)%3;
+        pos[i]+=radius;
+        pos[j]+=radius;
+        pos[k]-=radius;
+        
+        cx2=pos[0]/CHUNK_SIZE;
+        cy2=pos[1]/CHUNK_SIZE;
+        cz2=pos[2]/CHUNK_SIZE;
+        [self addToUpdateList2:cx2:cy2:cz2];
+        
+        pos[i]-=radius2;
+        pos[j]-=radius2;
+        pos[k]+=radius2;
+        
+        cx2=pos[0]/CHUNK_SIZE;
+        cy2=pos[1]/CHUNK_SIZE;
+        cz2=pos[2]/CHUNK_SIZE;
+        [self addToUpdateList2:cx2:cy2:cz2];
+        
+        pos[i]+=radius;
+        pos[j]+=radius;
+        pos[k]-=radius;
+        
+		
+	}
 
+}
 - (void)updateChunks:(int)x :(int)z :(int)y:(int)type{
     int pos[3]={x,y,z};
 	int cx,cy,cz;
@@ -1028,17 +1249,51 @@ int getRampType(int x,int z,int y, int t){
 	
 }
 
-int getShadow(int x,int z,int y){
+float getShadow(int x,int z,int y){
+   // return .5f;
+    float ret=y/T_HEIGHT/2+.7f;
+    for(int i=1;i<20;i++){
+        if(i+y>=T_HEIGHT){
+            if(ret>1)ret=1;
+            return ret;
+        }
+        if(getLandc(x,z,y+i)!=TYPE_NONE){
+            
+            ret-=.05f;
+           
+            
+        }
+    }
+    if(getLandc(x,z,y)==TYPE_LIGHTBOX){
+      //  printf("lightarray at box:%f\n",lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].x);
+    }
+    
+    return ret;
     //if(x<=0||z<=0||y<0||x>=T_SIZE-1||z>=T_SIZE-1||y>=T_HEIGHT)return 0;
     
-    int count=0;
+    
+  /*  int count=0;
     for(int dx=-1;dx<=1;dx++)
         for(int dz=-1;dz<=1;dz++){
             //if(x+dx>=0&&x+dx<CHUNK_SIZE&&z+dz>=0&&z+dz<CHUNK_SIZE)
             if(shadowarray[((x+dx+g_offcx)%T_SIZE)*T_SIZE+((z+dz+g_offcz)%T_SIZE)]>y)count++;
         }
-    return 100.0f*count/9.0f; 
+    return 100.0f*count/9.0f; */
     
+}
+float calcLight(int x,int z,int y,float shadow,int coord){
+    if(coord==0)
+        shadow+=lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].x;
+    else if(coord==1)
+        shadow+=lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].y;
+    else if(coord==2)
+        shadow+=lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].z;
+    
+    
+    
+    if(shadow<0)shadow=0;
+    if(shadow>1.5f)shadow=1.5f;
+    return shadow;
 }
 inline int getLandc2(int x,int z,int y){	
     if(y<0||y>=T_HEIGHT)return -1;
@@ -1080,6 +1335,9 @@ inline int getLandc(int x,int z,int y){
 	z-=cz*CHUNK_SIZE;
 	return chunk.blocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];	*/													
 	
+}
+int getColorc(int x,int z,int y){
+    return [[World getWorld].terrain getColor:x:z:y];
 }
 - (int)getLand:(int)x :(int)z :(int)y{
 	//return -1;

@@ -114,7 +114,6 @@ extern int g_offcx,g_offcz;
         
         for(int x=0;x<CHUNK_SIZE;x++){
             for(int z=0;z<CHUNK_SIZE;z++){
-               
                 for(int y=0;y<T_HEIGHT;y++){
                     setLandt(x,z,y,BLOCK(((x+boundx+g_offcx)%T_SIZE),((g_offcz+z+boundz)%T_SIZE),y));
                     setColort(x,z,y,COLOR(((x+boundx+g_offcx)%T_SIZE),((g_offcz+z+boundz)%T_SIZE),y));

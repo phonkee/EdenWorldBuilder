@@ -200,10 +200,18 @@ extern bool hitCustom;
             jumpandbuild=FALSE;
         }
     }
-	
+	//BOOL fakebuild=false;
+    if(TRUE){
+      //  fakebuild=true;
+        for(int i=0;i<400;i++)
+        [[World getWorld].terrain buildBlock:randi(T_SIZE):randi(T_SIZE):randi(T_HEIGHT)];
+
+    
+    }
 	
 	for(int i=0;i<MAX_TOUCHES;i++){
 		if(touches[i].inuse==0&&touches[i].down==M_DOWN){
+           
 			touches[i].inuse=usage_id;
             if(mode==MODE_BUILD){
                 Point3D point=findWorldCoords(touches[i].my,touches[i].mx,FC_PLACE);
@@ -280,6 +288,7 @@ extern bool hitCustom;
                     if(fwc_result!=-1)printf("hit model: %d\n",fwc_result);
 					if(mode==MODE_BUILD){
 						point=findWorldCoords(touches[i].my,touches[i].mx,FC_PLACE);
+                        
                         
                         if([World getWorld].hud.holding_creature&&[World getWorld].hud.blocktype==TYPE_CLOUD){
                            

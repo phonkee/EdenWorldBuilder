@@ -201,9 +201,9 @@ extern BOOL IS_WIDESCREEN;
 		}
 	}
     c=r=0;
-    colorTable[0].x=0;
-    colorTable[0].y=0;
-    colorTable[0].z=0;
+    colorTable[0].x=1.0f;
+    colorTable[0].y=1.0f;
+    colorTable[0].z=1.0f;
     for(int i=0;i<NUM_COLORS;i++){
 		
 		colorBounds[i].origin.x=5+4+COLOR_ICON_SPACING+marginLeft2+(COLOR_ICON_SPACING+COLOR_ICON_SIZE)*c;

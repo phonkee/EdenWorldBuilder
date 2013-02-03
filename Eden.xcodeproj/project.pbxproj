@@ -36,6 +36,7 @@
 		19C93C921672E668006ADF33 /* Stalker_Blink.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C901672E668006ADF33 /* Stalker_Blink.png */; };
 		19C93C981679216E006ADF33 /* Flame_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C971679216E006ADF33 /* Flame_1024.png */; };
 		19C93C9A167998B8006ADF33 /* Flameb_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C99167998B8006ADF33 /* Flameb_1024.png */; };
+		19D327B016AE0A23001EF2DB /* Lighting.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D327AF16AE0A23001EF2DB /* Lighting.m */; };
 		19D3339B167B0CE20082ACE7 /* smoke_tex.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D3339A167B0CE20082ACE7 /* smoke_tex.png */; };
 		19D3339D167D34F70082ACE7 /* Flame_1024b.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D3339C167D34F70082ACE7 /* Flame_1024b.png */; };
 		19D333A8167D6E2A0082ACE7 /* Batty_BlinkMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D3339E167D6E2A0082ACE7 /* Batty_BlinkMASK.png */; };
@@ -775,6 +776,8 @@
 		19C93C901672E668006ADF33 /* Stalker_Blink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Stalker_Blink.png; path = models/Stalker_Blink.png; sourceTree = "<group>"; };
 		19C93C971679216E006ADF33 /* Flame_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flame_1024.png; sourceTree = "<group>"; };
 		19C93C99167998B8006ADF33 /* Flameb_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flameb_1024.png; sourceTree = "<group>"; };
+		19D327AE16AE0A23001EF2DB /* Lighting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lighting.h; path = ../Lighting.h; sourceTree = "<group>"; };
+		19D327AF16AE0A23001EF2DB /* Lighting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Lighting.m; path = ../Lighting.m; sourceTree = "<group>"; };
 		19D3339A167B0CE20082ACE7 /* smoke_tex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smoke_tex.png; sourceTree = "<group>"; };
 		19D3339C167D34F70082ACE7 /* Flame_1024b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flame_1024b.png; sourceTree = "<group>"; };
 		19D3339E167D6E2A0082ACE7 /* Batty_BlinkMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Batty_BlinkMASK.png; path = models/MASKS/Batty_BlinkMASK.png; sourceTree = "<group>"; };
@@ -1609,6 +1612,8 @@
 				C6B192361283232400A48E22 /* Effects */,
 				C6F1B797127561D10080BD97 /* FileManager.h */,
 				C6F1B798127561D10080BD97 /* FileManager.m */,
+				1DC93AF1156C29B30015616C /* Firework.h */,
+				1DC93AF2156C29B30015616C /* Firework.m */,
 				C62C2CE312862AA500C84AD7 /* Gamepad.h */,
 				C62C2CE412862AA500C84AD7 /* Gamepad.m */,
 				1D9D039E15485B4600E975AC /* Geometry.c */,
@@ -1623,6 +1628,8 @@
 				C6B85B7F12661DE600915D76 /* Input.m */,
 				C6CF4E7B12C8E5780001CD51 /* Joystick.h */,
 				C6CF4E7C12C8E5780001CD51 /* Joystick.m */,
+				19D327AE16AE0A23001EF2DB /* Lighting.h */,
+				19D327AF16AE0A23001EF2DB /* Lighting.m */,
 				C624DBF413D0108D00B46513 /* Liquids.h */,
 				C624DBF513D0108D00B46513 /* Liquids.m */,
 				C6F1B5391274E9DE0080BD97 /* Menu.h */,
@@ -1632,8 +1639,6 @@
 				C6B5A03E144796410065FBD4 /* Model */,
 				C6832DB9126780C80078839E /* Player.h */,
 				C6832DBA126780C80078839E /* Player.m */,
-				1DC93AF1156C29B30015616C /* Firework.h */,
-				1DC93AF2156C29B30015616C /* Firework.m */,
 				1DC93AE61564244A0015616C /* Portal.h */,
 				1DC93AE71564244A0015616C /* Portal.m */,
 				C6983B801266893A00D3D279 /* Resources.h */,
@@ -1648,8 +1653,8 @@
 				C6F311B21263A2F800890361 /* Terrain.m */,
 				C6BB0586126C9DB9003A490A /* TerrainChunk.h */,
 				C6BB0587126C9DB9003A490A /* TerrainChunk.m */,
-				1967D0151639F80000C03DF0 /* TerrainGen2.m */,
 				1967D0171639F81800C03DF0 /* TerrainGen2.h */,
+				1967D0151639F80000C03DF0 /* TerrainGen2.m */,
 				C6F66CF4127328AC0067ECD9 /* TerrainGenerator.h */,
 				C6F66CF5127328AC0067ECD9 /* TerrainGenerator.m */,
 				C64A25A3141BDF0C00FED97A /* Toolbar.h */,
@@ -3474,6 +3479,7 @@
 				1DC93AF3156C29B30015616C /* Firework.m in Sources */,
 				1967D0161639F80000C03DF0 /* TerrainGen2.m in Sources */,
 				19B3B12A16A1CF5900E86E8D /* ColorUtil.cpp in Sources */,
+				19D327B016AE0A23001EF2DB /* Lighting.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3491,7 +3497,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INPUT_FILETYPE = automatic;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = Eden_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = (
