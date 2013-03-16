@@ -46,6 +46,7 @@ typedef struct _small_block{
     float lightsf[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
     
     block8* pblocks;
+  //  block8* pblocks2;
     color8* pcolors;
     SmallBlock* sblocks[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
     SmallBlock** psblocks;
@@ -106,9 +107,10 @@ typedef struct bnode{
 	int type;
 	struct bnode* next;
 }BurnNode;
-@property(nonatomic,assign) BOOL needsRebuild,needsGen,loaded,in_view;
+@property(nonatomic,assign) BOOL needsRebuild,needsGen,loaded,in_view,needsVBO;
 @property(nonatomic,readonly) int* pbounds;
 @property(nonatomic,assign) block8* pblocks;
+//@property(nonatomic,assign) block8* pblocks2;
 @property(nonatomic,assign) color8* pcolors;
 
 @property(nonatomic,readonly) SmallBlock** psblocks;

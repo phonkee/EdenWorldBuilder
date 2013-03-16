@@ -16,3 +16,10 @@ int main(int argc, char *argv[]) {
     [pool release];
     return retVal;
 }
+
+
+
+
+
+
+//(x,z) 13  //(x,z,)=14

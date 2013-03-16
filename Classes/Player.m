@@ -200,11 +200,18 @@ extern bool hitCustom;
             jumpandbuild=FALSE;
         }
     }
+    extern int flamecount;
 	//BOOL fakebuild=false;
-    if(TRUE){
+    if(flamecount%2==0){
       //  fakebuild=true;
-        for(int i=0;i<400;i++)
-        [[World getWorld].terrain buildBlock:randi(T_SIZE):randi(T_SIZE):randi(T_HEIGHT)];
+        
+        static int c=0;
+        for(int i=0;i<200;i++){
+            [[World getWorld].terrain buildBlock:c%T_SIZE:(c/T_SIZE)%T_SIZE:T_HEIGHT/2+(c/(T_SIZE*T_SIZE))%T_HEIGHT];
+            c++;
+        }
+     //   printf("c:%d\n",c);
+        
 
     
     }

@@ -73,7 +73,6 @@ void genChildren(TreeNode* node){
 	}
 	
 	for(int j=0;j<8;j++){
-		
 		BOOL toosmall=FALSE;
 		TreeNode* child=malloc(sizeof(TreeNode));
 		memset(child,0,sizeof(TreeNode));
@@ -351,6 +350,7 @@ int compare_rebuild_order (const void *a, const void *b);
 int compare_back2front (const void *a, const void *b);
 
  int idxrl=0;
+TerrainChunk* rebuildList[13000];
 static int sanity_test=0;
 - (void)chunkBuildingThread:(id)object{
     //Terrain* ter=object;
@@ -363,88 +363,89 @@ static int sanity_test=0;
         if([self loaded]){
             int num=0;
             int list[2000];
-          
-          
-            for(int x=0;x<CHUNKS_PER_SIDE;x++){
-                for(int z=0;z<CHUNKS_PER_SIDE;z++){
-                    if(columnsToUpdate[getColIndex(x,z)]){
-                        for(int y=0;y<CHUNKS_PER_COLUMN;y++){
-                            if(chunksToUpdate[threeToOne(x,y,z)]){
-                                
-                                int n=threeToOne(x,y,z);
-                                
-                                if(n>=CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN){
-                                   printf("out of bounds index: %d\n",n);
+            
+            if(idxrl<10000){
+                for(int x=0;x<CHUNKS_PER_SIDE;x++){
+                    for(int z=0;z<CHUNKS_PER_SIDE;z++){
+                        if(columnsToUpdate[getColIndex(x,z)]){
+                            for(int y=0;y<CHUNKS_PER_COLUMN;y++){
+                                if(chunksToUpdate[threeToOne(x,y,z)]){
+                                    
+                                    int n=threeToOne(x,y,z);
+                                    
+                                    if(n>=CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN||n<0){
+                                        printf("out of bounds index: %d\n",n);
+                                    }
+                                    list[num++]=n;
+                                    
+                                    chunksToUpdate[threeToOne(x,y,z)]=FALSE;
                                 }
-                                list[num++]=n;
                                 
-                                chunksToUpdate[threeToOne(x,y,z)]=FALSE;
                             }
+                            columnsToUpdate[getColIndex(x,z)]=FALSE;
+                            // if(num>=1000){printf("1234overflow\n");break;}
                             
                         }
-                        columnsToUpdate[getColIndex(x,z)]=FALSE;
-                       // if(num>=1000){printf("1234overflow\n");break;}
-                        
+                    }
+                }
+                
+                
+                
+                
+                // goto cleanup;
+                
+                
+                
+                for(int i=0;i<num;i++){
+                    TerrainChunk* chunk=NULL;
+                    if(list[i]<0||list[i]>=CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN){
+                        printf("out of bounds access list[%d]=%d  num: %d idxrl: %d  max:%d\n",i,list[i],num,idxrl, CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+                        //  continue;
+                    }
+                    chunk=chunkTable[list[i]];
+                    //=malloc(sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+                    if(chunk){
+                        rebuildList[idxrl++]=chunk;
+                        chunk.idxn=list[i];
                     }
                 }
             }
-           
-                
-               
-               
-          
-            
-            TerrainChunk* rebuildList[40000];
-           
-            for(int i=0;i<num;i++){
-            TerrainChunk* chunk=NULL;
-                if(list[i]<0||list[i]>=CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN){
-                    printf("out of bounds access list[%d]=%d  num: %d idxrl: %d  max:%d\n",i,list[i],num,idxrl, CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
-                
-                  //  continue;
-                }
-                chunk=chunkTable[list[i]];
-           //=malloc(sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
-                if(chunk){
-                    rebuildList[idxrl++]=chunk;
-                    chunk.idxn=list[i];
-                }
-            }
-           // printf("rebuild %d\n",idx);
+            // printf("rebuild %d\n",idx);
             if(idxrl>0){
-             qsort (rebuildList, idxrl, sizeof (TerrainChunk*), compare_rebuild_order);
-            
-               /* for(int x=0;x<CHUNKS_PER_SIDE;x++){
-                    for(int z=0;z<CHUNKS_PER_SIDE;z++){
-                        // if(columnsToUpdate[getColIndex(x,z)]){
-                        for(int y=0;y<CHUNKS_PER_COLUMN;y++){
-                            if(chunksToUpdatefg[threeToOne(x,y,z)])
-                            {
-                                TerrainChunk* chunk;
-                                
-                                chunk=chunkTable[threeToOne(x,y,z)];
-                                [chunk rebuild2:FALSE];
-                                
-                                if(chunk){
-                                    chunksToUpdateImmediatley[threeToOne(x,y,z)]=TRUE;
-                                }
-                                chunksToUpdatefg[threeToOne(x,y,z)]=FALSE;
-                            }
-                        }
-                        
-                    }
-                }*/
+                qsort (rebuildList, idxrl, sizeof (TerrainChunk*), compare_rebuild_order);
                 
+                /* for(int x=0;x<CHUNKS_PER_SIDE;x++){
+                 for(int z=0;z<CHUNKS_PER_SIDE;z++){
+                 // if(columnsToUpdate[getColIndex(x,z)]){
+                 for(int y=0;y<CHUNKS_PER_COLUMN;y++){
+                 if(chunksToUpdatefg[threeToOne(x,y,z)])
+                 {
+                 TerrainChunk* chunk;
+                 
+                 chunk=chunkTable[threeToOne(x,y,z)];
+                 [chunk rebuild2:FALSE];
+                 
+                 if(chunk){
+                 chunksToUpdateImmediatley[threeToOne(x,y,z)]=TRUE;
+                 }
+                 chunksToUpdatefg[threeToOne(x,y,z)]=FALSE;
+                 }
+                 }
+                 
+                 }
+                 }*/
                 
+            }
+            if(idxrl>0)
             for(int i=0;i<35;i++){
-            
+                
                 idxrl--;
                 if(idxrl!=0&&rebuildList[idxrl-1]==rebuildList[idxrl]){
                     i--;
                     continue;
                     printf("really???\n");
                 }
-               // printf("hi\n");
+                // printf("hi\n");
                 if(rebuildList[idxrl]){
                     sanity_test++;
                     if(sanity_test!=1){
@@ -454,11 +455,11 @@ static int sanity_test=0;
                         chunksToUpdate[rebuildList[idxrl].idxn]=TRUE;
                         columnsToUpdate[rebuildList[idxrl].idxn/CHUNKS_PER_COLUMN]=TRUE;
                     }else{
-                    
+                        
                         rebuildList[idxrl].needsRebuild=FALSE;
                         
                         
-                        chunksToUpdateImmediatley[rebuildList[idxrl].idxn]=TRUE; 
+                        chunksToUpdateImmediatley[rebuildList[idxrl].idxn]=TRUE;
                     }
                     sanity_test--;
                 }
@@ -466,7 +467,9 @@ static int sanity_test=0;
                 if(idxrl==0)break;
                 
             }
-            }
+           // printf("idxrl:%d\n",idxrl);
+            
+            
 		}
     cleanup:
         [pool release];
@@ -477,8 +480,8 @@ static int sanity_test=0;
 /*-(void) initialGenChunks{
 	for(int x=0;x<T_SIZE/CHUNK_SIZE;x++){
 		for(int z=0;z<T_SIZE/CHUNK_SIZE;z++){
-			[tgen generateColumn:x:z];	
-			
+			[tgen generateColumn:x:z];
+	
 		}
 	}
 	
@@ -573,24 +576,25 @@ static int sanity_test=0;
     
 	blockarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y]=type;
 	if(chunkToo){
-	int cx=x/CHUNK_SIZE;
-	int cy=y/CHUNK_SIZE;
-	int cz=z/CHUNK_SIZE;
-	
-	TerrainChunk* chunk;
-        chunk=chunkTable[threeToOne(cx,cy,cz)];
-	//hashmap_get(chunkMap, threeToOne(cx,cy,cz),(any_t)&chunk);
-	if(!chunk){
-		return;
-		
-	}
-	
-	x-=cx*CHUNK_SIZE;
-	y-=cy*CHUNK_SIZE;
-	z-=cz*CHUNK_SIZE;
+        int cx=x/CHUNK_SIZE;
+        int cy=y/CHUNK_SIZE;
+        int cz=z/CHUNK_SIZE;
         
+        TerrainChunk* chunk;
+        chunk=chunkTable[threeToOne(cx,cy,cz)];
+        //hashmap_get(chunkMap, threeToOne(cx,cy,cz),(any_t)&chunk);
+        if(!chunk){
+            return;
+            
+        }
+        
+        x-=cx*CHUNK_SIZE;
+        y-=cy*CHUNK_SIZE;
+        z-=cz*CHUNK_SIZE;
+        // extern block8* blocks2;
         if(chunk.pblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]==TYPE_CUSTOM){
-            SmallBlock* sb=chunk.psblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];           
+            
+            SmallBlock* sb=chunk.psblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
             if(sb){
                 printf("clearing blocks");
                 for(int i=0;i<8;i++){
@@ -600,7 +604,8 @@ static int sanity_test=0;
                 
             }
         }
-	chunk.pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]=type;
+        if(![chunk needsVBO])
+            chunk.pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]=type;
 		
 	}
 	
@@ -1204,11 +1209,6 @@ int getRampType(int x,int z,int y, int t){
 		pos[i]++;
 		
 	}
-	
-    
-    
-    
-    
 }
 - (void)updateCustom:(int)x :(int)z :(int)y:(int)type:(int)color{
    	int pos[3]={x/2,y/2,z/2};
@@ -1671,7 +1671,7 @@ float last_etime;
 	
   
     if(count>0){
-       
+        
         double end_time=-[start timeIntervalSinceNow];
         float etime=end_time-start_time;
         etime+=.0001f;

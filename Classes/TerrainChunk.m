@@ -13,7 +13,7 @@
 #import "Geometry.h"
 
 @implementation TerrainChunk
-@synthesize pbounds,prbounds,rtn_vertices,rtn_vertices2,pblocks,needsRebuild,needsGen,rtobjects,rtnum_objects,idxn,loaded,m_treenode,m_listnode,in_view,psblocks;
+@synthesize pbounds,prbounds,rtn_vertices,rtn_vertices2,pblocks,needsRebuild,needsGen,rtobjects,rtnum_objects,idxn,loaded,m_treenode,m_listnode,in_view,psblocks,needsVBO;
 @synthesize pcolors;
 
 extern Vector colorTable[256];
@@ -61,11 +61,14 @@ extern GLfloat cubeNormals[3*6*6];
 	if(genblocks){
         blocks=blocks1;
 		pblocks=blocks;
+        
         psblocks=sblocks;
 		memset(blocks,0,sizeof(block8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
        
         
 	}
+  //  pblocks2=blocks2;
+    
     rtnum_objects=0;
     rtobjects=NULL;
     objects=NULL;
@@ -179,11 +182,14 @@ extern int getBaseType(int type);
 extern int g_offcx;
 extern int g_offcz;
 - (int)rebuild2{   //here be dragons//
-    if(needsVBO){
-        printf("not ready to rebuild chunk yet\n");
+    
+    if(needsVBO||pblocks==blocks2){
+      //  printf("not ready to rebuild chunk yet\n");
         return -1;
     }
+    needsVBO=TRUE;
     pblocks=blocks2;
+    
    /* if(flip){
     if(blocks==blocks2){
     blocks=blocks1;
@@ -197,7 +203,7 @@ extern int g_offcz;
     }else{
         memcpy(pblocks,
     }*/
-    needsVBO=TRUE;
+    
     clearOldVerticesOnly=FALSE;
     
     needsGen=FALSE;
@@ -338,7 +344,7 @@ extern int g_offcz;
                         hasVisy[gy-bounds[1]]=TRUE;
                         
                         face_visibility[(gx-bounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-bounds[2])*(CHUNK_SIZE)+(gy-bounds[1])]=FACE_ALL;
-                        //printf("hi\n");
+                        
                         continue;
                     }
                     int isvisible=0;            
@@ -1385,6 +1391,7 @@ extern int g_offcz;
 	
 }
 - (void)prepareVBO{
+    
     if(clearOldVerticesOnly){
        // printf("clearing some old vertices\n");
        
