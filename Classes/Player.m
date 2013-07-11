@@ -131,7 +131,7 @@ extern Vector minTranDist;
 
 static const int usage_id=10;
 extern int fwc_result;
-- (void)setSpeed:(Vector)walk_dir,float walk_speed{
+- (void)setSpeed:(Vector)walk_dir:(float)walk_speed{
     walk_force=walk_dir;
     walk_force.z=walk_force.y;
     walk_force.y=0;
@@ -205,11 +205,11 @@ extern bool hitCustom;
     if(flamecount%2==0){
       //  fakebuild=true;
         
-        static int c=0;
-        for(int i=0;i<200;i++){
+     //   static int c=0;
+      /*  for(int i=0;i<200;i++){
             [[World getWorld].terrain buildBlock:c%T_SIZE:(c/T_SIZE)%T_SIZE:T_HEIGHT/2+(c/(T_SIZE*T_SIZE))%T_HEIGHT];
             c++;
-        }
+        }*/
      //   printf("c:%d\n",c);
         
 
@@ -1691,14 +1691,15 @@ static int icesound=0;
         }*/
         
        
-       
+        
     }
-    
-   
+       
     
     float mag=0;
     mag=sqrt(v_length2(vel));
    // NSLog(@"speed: %f, hspeed: %f",accel.z, hspeed);
+    extern int flamecount;
+    // BURN FLY if(flamecount%2==0)vel.y=0;
 	pos.y+=vel.y*etime;
     pos.x+=vel.x*etime;
 	pos.z+=vel.z*etime;

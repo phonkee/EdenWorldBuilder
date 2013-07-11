@@ -1,0 +1,120 @@
+<html><head><title>grafixMask</title></head><body  ><table><tr><td colspan="2"><h3>Problem Statement</h3></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><p>
+
+<i><b>Note:</b> This problem statement includes images that may not appear
+if you are using a plugin. For best results, use the Arena editor.</i>
+
+</p>
+<p>
+
+In one mode of the grafix software package, the user blocks off portions
+of a masking layer using opaque rectangles. The bitmap used as the masking
+layer is 400 pixels tall and 600 pixels wide. Once the rectangles have
+been blocked off, the user can perform painting actions through the
+remaining areas of the masking layer, known as <i>holes</i>. To be
+precise, each hole is a maximal collection of contiguous pixels that
+are not covered by any of the opaque rectangles. Two pixels are contiguous
+if they share an edge, and contiguity is transitive.
+
+</p>
+<p>
+
+You are given a String[] named <b>rectangles</b>, the
+elements of which specify the rectangles that have been blocked off
+in the masking layer. Each String in <b>rectangles</b> consists of four
+integers separated by single spaces, with no additional spaces in the
+string. The first two integers are the <i>window coordinates</i> of the
+top left pixel in the given rectangle, and the last two integers are
+the window coordinates of its bottom right pixel. The window coordinates
+of a pixel are a pair of integers specifying the row number and column
+number of the pixel, in that order. Rows are numbered from top to bottom,
+starting with 0 and ending with 399. Columns are numbered from left to
+right, starting with 0 and ending with 599.
+Every pixel within and along the border of the rectangle defined by these
+opposing corners is blocked off.
+
+</p>
+<p>
+
+Return a int[] containing the area, in pixels, of every
+hole in the resulting masking area, sorted from smallest area to greatest. 
+
+</p>
+</td></tr><tr><td colspan="2"><h3>Definition</h3></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td>Class:</td><td>grafixMask</td></tr><tr><td>Method:</td><td>sortedAreas</td></tr><tr><td>Parameters:</td><td>String[]</td></tr><tr><td>Returns:</td><td>int[]</td></tr><tr><td>Method signature:</td><td>int[] sortedAreas(String[] rectangles)</td></tr><tr><td colspan="2">(be sure your method is public)</td></tr></table></td></tr><tr><td>&#160;&#160;&#160;&#160;</td></tr><tr><td></td></tr><tr><td colspan="2"><h3>Notes</h3></td></tr><tr><td align="center" valign="top">-</td><td>Window coordinates are not the same as Cartesian coordinates. Follow the definition given in the second paragraph of the problem statement.</td></tr><tr><td colspan="2"><h3>Constraints</h3></td></tr><tr><td align="center" valign="top">-</td><td><b>rectangles</b> contains between 1 and 50 elements, inclusive</td></tr><tr><td align="center" valign="top">-</td><td>each element of <b>rectangles</b> has the form &quot;ROW COL ROW COL&quot;, where: &quot;ROW&quot; is a placeholder for a non-zero-padded integer between 0 and 399, inclusive; &quot;COL&quot; is a placeholder for a non-zero-padded integer between 0 and 599, inclusive; the first row number is no greater than the second row number; the first column number is no greater than the second column number</td></tr><tr><td colspan="2"><h3>Examples</h3></td></tr><tr><td align="center" nowrap="true">0)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>{&quot;0 292 399 307&quot;}</pre></td></tr></table></td></tr><tr><td><pre>Returns: { 116800,  116800 }</pre></td></tr><tr><td><table><tr><td colspan="2">The masking layer is depicted below in a 1:4 scale diagram.
+<pre></pre>
+<img src="http://www.topcoder.com/contest/problem/grafixMask/grafixMask_diagram_1.png"></img>
+<pre>
+</pre></td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">1)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>{&quot;48 192 351 207&quot;, &quot;48 392 351 407&quot;, &quot;120 52 135 547&quot;, &quot;260 52 275 547&quot;}</pre></td></tr></table></td></tr><tr><td><pre>Returns: { 22816,  192608 }</pre></td></tr><tr><td><table><tr><td colspan="2"><img src="http://www.topcoder.com/contest/problem/grafixMask/grafixMask_diagram_2.png"></img>
+<pre>
+</pre>
+</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">2)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>{&quot;0 192 399 207&quot;, &quot;0 392 399 407&quot;, &quot;120 0 135 599&quot;, &quot;260 0 275 599&quot;}</pre></td></tr></table></td></tr><tr><td><pre>Returns: { 22080,  22816,  22816,  23040,  23040,  23808,  23808,  23808,  23808 }</pre></td></tr><tr><td><table><tr><td colspan="2"><img src="http://www.topcoder.com/contest/problem/grafixMask/grafixMask_diagram_3.png"></img>
+<pre>
+</pre>
+</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">3)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>{&quot;50 300 199 300&quot;, &quot;201 300 350 300&quot;, &quot;200 50 200 299&quot;, &quot;200 301 200 550&quot;}</pre></td></tr></table></td></tr><tr><td><pre>Returns: { 1,  239199 }</pre></td></tr><tr><td></td></tr></table></td></tr><tr><td align="center" nowrap="true">4)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>{&quot;0 20 399 20&quot;, &quot;0 44 399 44&quot;, &quot;0 68 399 68&quot;, &quot;0 92 399 92&quot;,
+ &quot;0 116 399 116&quot;, &quot;0 140 399 140&quot;, &quot;0 164 399 164&quot;, &quot;0 188 399 188&quot;,
+ &quot;0 212 399 212&quot;, &quot;0 236 399 236&quot;, &quot;0 260 399 260&quot;, &quot;0 284 399 284&quot;,
+ &quot;0 308 399 308&quot;, &quot;0 332 399 332&quot;, &quot;0 356 399 356&quot;, &quot;0 380 399 380&quot;,
+ &quot;0 404 399 404&quot;, &quot;0 428 399 428&quot;, &quot;0 452 399 452&quot;, &quot;0 476 399 476&quot;,
+ &quot;0 500 399 500&quot;, &quot;0 524 399 524&quot;, &quot;0 548 399 548&quot;, &quot;0 572 399 572&quot;,
+ &quot;0 596 399 596&quot;, &quot;5 0 5 599&quot;, &quot;21 0 21 599&quot;, &quot;37 0 37 599&quot;,
+ &quot;53 0 53 599&quot;, &quot;69 0 69 599&quot;, &quot;85 0 85 599&quot;, &quot;101 0 101 599&quot;,
+ &quot;117 0 117 599&quot;, &quot;133 0 133 599&quot;, &quot;149 0 149 599&quot;, &quot;165 0 165 599&quot;,
+ &quot;181 0 181 599&quot;, &quot;197 0 197 599&quot;, &quot;213 0 213 599&quot;, &quot;229 0 229 599&quot;,
+ &quot;245 0 245 599&quot;, &quot;261 0 261 599&quot;, &quot;277 0 277 599&quot;, &quot;293 0 293 599&quot;,
+ &quot;309 0 309 599&quot;, &quot;325 0 325 599&quot;, &quot;341 0 341 599&quot;, &quot;357 0 357 599&quot;,
+ &quot;373 0 373 599&quot;, &quot;389 0 389 599&quot;}</pre></td></tr></table></td></tr><tr><td><pre>Returns: 
+{ 15,  30,  45,  45,  45,  45,  45,  45,  45,  45,  45,  45,  45,  45,
+  45,  45,  45,  45,  45,  45,  45,  45,  45,  45,  45,  45,  100,  115,
+  115,  115,  115,  115,  115,  115,  115,  115,  115,  115,  115,  115,
+  115,  115,  115,  115,  115,  115,  115,  115,  115,  115,  115,  200,
+  230,  230,  230,  230,  230,  230,  230,  230,  230,  230,  230,  230,
+  230,  230,  230,  230,  230,  230,  230,  230,  230,  230,  230,  230,
+  300,  300,  300,  300,  300,  300,  300,  300,  300,  300,  300,  300,
+  300,  300,  300,  300,  300,  300,  300,  300,  300,  300,  300,  300,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,
+  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345,  345 }</pre></td></tr><tr><td></td></tr></table></td></tr></table><p>This problem statement is the exclusive and proprietary property of TopCoder, Inc.  Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited.  (c)2003, TopCoder, Inc.  All rights reserved.  </p></body></html>

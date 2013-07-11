@@ -54,7 +54,7 @@
 - (void)move:(float)etime;
 - (void)takeDamage:(float)damage;
 - (void)render;
-- (void)setSpeed:(Vector)svel,float speed;
+- (void)setSpeed:(Vector)svel:(float)speed;
 
 @property(nonatomic,assign) float life;
 @property(nonatomic,assign) int invertcam;

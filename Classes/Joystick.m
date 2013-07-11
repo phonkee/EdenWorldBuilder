@@ -65,7 +65,7 @@ static const int usage_id=999;
 				mag/=45;
 				//pos.x*=mag;
 				//pos.y*=mag;
-				[[World getWorld].player setSpeed:pos,mag];
+				[[World getWorld].player setSpeed:pos:mag];
 				handled=TRUE;	
 				touches[i].inuse=usage_id;	
 			}		
@@ -77,7 +77,7 @@ static const int usage_id=999;
 			joystick_pos.origin.y=default_pos.origin.y;
 			pos.x=0;
 			pos.y=0;
-			[[World getWorld].player setSpeed:pos,0];
+			[[World getWorld].player setSpeed:pos:0];
 		}
 		
 		if(touches[i].inuse==usage_id&&touches[i].down==M_RELEASE){			

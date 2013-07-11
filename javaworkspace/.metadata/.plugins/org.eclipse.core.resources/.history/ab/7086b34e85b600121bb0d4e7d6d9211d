@@ -1,0 +1,7 @@
+public class RobotHerbDiv2 {
+
+	public int getdist(int T, int[] a) {
+		return 0;
+	}
+
+}

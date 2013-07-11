@@ -1,0 +1,13 @@
+public class BenfordsLaw {
+
+	public int questionableDigit(int[] transactions, int threshold) {
+		double [] benford=new double[9];
+		for(int i=0;i<9;i++){
+			benford[i]=Math.log10(1+1.0f/(double)(1+i));
+			System.out.println((benford[i])*transactions.length+",");
+		}
+		
+		return 0;
+	}
+
+}

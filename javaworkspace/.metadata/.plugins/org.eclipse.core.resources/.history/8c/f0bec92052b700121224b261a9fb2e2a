@@ -1,0 +1,7 @@
+public class TeamContest {
+
+	public int worstRank(int[] strength) {
+		return 0;
+	}
+
+}

@@ -1,0 +1,7 @@
+public class FenceRepairing {
+
+	public double calculateCost(String[] boards) {
+		return 0.0;
+	}
+
+}

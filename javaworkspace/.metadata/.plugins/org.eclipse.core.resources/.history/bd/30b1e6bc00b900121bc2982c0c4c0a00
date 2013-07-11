@@ -1,0 +1,72 @@
+import java.util.*;
+
+public class grafixMask {
+
+	public int[] sortedAreas(String[] rectangles) {
+		int[][] screen=new int[400][600];
+		for(String r:rectangles){
+			Scanner sc=new Scanner(r);
+			int r1=sc.nextInt();
+			int c1=sc.nextInt();
+			int r2=sc.nextInt();
+			int c2=sc.nextInt();
+			for(int rr=r1;rr<=r2;rr++){
+				for(int cc=c1;cc<=c2;cc++){
+					screen[rr][cc]=1;
+				}
+			}
+			
+		}
+		ArrayList<Integer> holes=new ArrayList<Integer>();
+		
+		for(int r=0;r<400;r++){
+			for(int c=0;c<600;c++){
+				if(screen[r][c]==0){
+					int holesize=1;
+					screen[r][c]=1;
+					Stack<Pair<Integer,Integer>> dfs=new Stack<Pair<Integer,Integer>>();
+					Pair<Integer,Integer> p=new Pair<Integer,Integer>();
+					p.first=r;
+					p.second=c;
+					dfs.push(p);
+					while(!dfs.isEmpty()){
+						Pair<Integer,Integer> node=dfs.pop();
+						
+						int[] dx={1,0,-1,0};
+						int[] dy={0,-1,0,1};
+						for(int i=0;i<4;i++){
+							int r2=node.first+dy[i];
+							int c2=node.second+dx[i];
+							if(r2<0||r2>=400||c2<0||c2>=600)
+							if(screen[r2][c2]==0){
+								holesize++;
+								screen[r2][c2]=1;
+								Pair<Integer,Integer> newnode=new Pair<Integer,Integer>();
+								newnode.first=r2;
+								newnode.second=c2;
+								
+								dfs.push(newnode);
+							}
+						}
+					}
+					holes.add(holesize);
+					
+					
+				}
+			}
+		}
+		Collections.sort(holes);
+		int [] ret=new int[holes.size()];
+		for(int i=0;i<holes.size();i++){
+			ret[i]=holes.get(i );
+		}
+		return ret;
+	}
+
+}
+class Pair<A, B> {
+    public A first;
+    public B second;
+
+   
+}

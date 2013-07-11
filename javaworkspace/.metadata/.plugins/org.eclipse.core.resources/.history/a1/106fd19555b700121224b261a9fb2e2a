@@ -1,0 +1,41 @@
+import java.util.Arrays;
+
+public class TeamContest {
+
+	public int worstRank(int[] strength) {
+		if(strength.length==3)return 1;
+		int[] player=new int[strength.length-3];
+		int mystrength=Math.max(Math.max(strength[0], strength[1]),strength[2]);
+		int temp=Math.min(Math.min(strength[0], strength[1]),strength[2]);
+		mystrength+=temp;
+		for(int i=0;i<player.length;i++){
+			player[i]=strength[i];
+		}
+		Arrays.sort(player);
+		
+		int mini=0;
+		int nteams=player.length/3;
+		int rank=1;
+		for(int i=0;i<nteams;i++){
+			int min=player[mini];
+			for(int j=mini+2;j<player.length;j++){
+				if(player[j]+min>mystrength){
+					System.out.println("("+player[j]+","+min+")");
+					rank++;
+					player[j]=-1000000;
+				}
+			}
+			mini+=2;
+			//3,3,5,5,7,7
+			while(player[mini]<0){
+				mini++;
+				if(mini>=player.length)break;
+			}
+		}
+		
+		
+		
+		return rank;
+	}
+
+}

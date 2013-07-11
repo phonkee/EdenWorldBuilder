@@ -41,7 +41,145 @@
 
 											   </script>
     <style type="text/css">
-      
+@font-face {
+    font-family: 'titillium_webitalic';
+    src: url('../fonts/titilliumweb-italic-webfont.eot');
+    src: url('../fonts/titilliumweb-italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/titilliumweb-italic-webfont.woff') format('woff'),
+         url('../fonts/titilliumweb-italic-webfont.ttf') format('truetype'),
+         url('../fonts/titilliumweb-italic-webfont.svg#titillium_webitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'titillium_webregular';
+    src: url('../fonts/titilliumweb-regular-webfont.eot');
+    src: url('../fonts/titilliumweb-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/titilliumweb-regular-webfont.woff') format('woff'),
+         url('../fonts/titilliumweb-regular-webfont.ttf') format('truetype'),
+         url('../fonts/titilliumweb-regular-webfont.svg#titillium_webregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'titillium_websemibold';
+    src: url('../fonts/titilliumweb-semibold-webfont.eot');
+    src: url('../fonts/titilliumweb-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/titilliumweb-semibold-webfont.woff') format('woff'),
+         url('../fonts/titilliumweb-semibold-webfont.ttf') format('truetype'),
+         url('../fonts/titilliumweb-semibold-webfont.svg#titillium_websemibold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'titillium_websemibold_italic';
+    src: url('../fonts/titilliumweb-semibolditalic-webfont.eot');
+    src: url('../fonts/titilliumweb-semibolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/titilliumweb-semibolditalic-webfont.woff') format('woff'),
+         url('../fonts/titilliumweb-semibolditalic-webfont.ttf') format('truetype'),
+         url('../fonts/titilliumweb-semibolditalic-webfont.svg#titillium_websemibold_italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'ubuntubold';
+    src: url('../fonts/ubuntu-bold-webfont.eot');
+    src: url('../fonts/ubuntu-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ubuntu-bold-webfont.woff') format('woff'),
+         url('../fonts/ubuntu-bold-webfont.ttf') format('truetype'),
+         url('../fonts/ubuntu-bold-webfont.svg#ubuntubold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+ /* grid */
+#updates h2,
+#page-header .hero-column,
+#page-footer section,
+.col {
+    border:0px solid rgba(0,0,0,0);
+    float:left;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+    -moz-background-clip:padding-box !important;
+    -webkit-background-clip:padding-box !important;
+    background-clip:padding-box !important;
+}
+
+
+#page-header .right,
+#page-content .right,
+#page-footer .right {
+	float: right;
+}
+
+
+
+ @media screen and (min-width: 1140px) {
+        
+        .col {
+            margin-right:2%;
+        	padding:0 0%;
+        }
+        
+        .row .col:first-child {
+            margin-left:0;
+        }
+
+
+        #page-footer #credits {
+        	width: 50%;
+        }
+        
+  
+    }
+
+
+/* clearfix */
+
+.container:before,
+.container:after,
+#page-content section:before,
+#page-content section:after,
+#page-content:before,
+#page-content:after,
+#page-footer:before,
+#page-footer:after {
+    content:"";
+    display:table;
+}
+
+.container:after,
+#page-content section:after,
+#page-content:after,
+#page-footer:after {
+    clear:both;
+}
+
+#page-content section,
+#page-content,
+#page-footer,
+.container {
+	position: relative;
+	zoom: 1;
+}
+
+/* end clearfix */
+
+
+
+
       body {
 
         color: BLACK;
@@ -61,15 +199,47 @@
       margin:0px;
       
       }
+body {
+	font: 1em/1.25em 'titillium_webregular', 'Lucida Grande', 'Lucida Sans', 'Tahoma', sans-serif;
+	/*background: #7eb3ee url(../images/eden-clouds.png) left 20% repeat-x;*/
+	background-attachment: fixed;
+	color: #666;
+}
+
+a {
+	text-decoration: none;
+}
+
+nav a:link,
+nav a:visited,
+nav a:active,
+nav a:hover {
+	color: #fff;
+}
+
+a:link,
+a:visited {
+	color: #5e85b1;
+}
+
+a:hover {
+	color: #7eb3ee;
+}
+
+a:active {
+	color: #9dc6f3;
+}
+
+
       h3{
 margin-top:4px;
 margin-bottom:4px;
 	}
 
-      a:link {color:#FFFFFF;}      /* unvisited link */
-      a:visited {color:#FFFFFF;}  /* visited link */
-      a:hover {color:#FFFFFF;}  /* mouse over link */
-      a:active {color:#FFFFFF;}  /* selected link */
+   /*   a:link {color:#FFFFFF;}      
+      a:visited {color:#FFFFFF;}  
+      a:hover {color:#FFFFFF;} 
+      a:active {color:#FFFFFF;} */
       div.top {
       background-image:url('website_top.png');
       background-position: center top;
@@ -82,16 +252,16 @@ margin-bottom:4px;
 
 
 
--moz-box-shadow: -3px 3px 4px #000;
+-moz-box-shadow: -3px 3px 4px #111;
 
--webkit-box-shadow: -3px 3px 4px #000;
+-webkit-box-shadow: -3px 3px 4px #111;
 
-box-shadow: -1px 3px 4px #000;
+box-shadow: -1px 3px 4px #111;
 
 
 	}
       div.bottom{
-      background-color:#000000;
+      background-color:#111;
       margin-left:10%;
       margin-right:10%;
       margin-top:0%;
@@ -109,6 +279,222 @@ box-shadow: -1px 3px 4px #000;
 -webkit-box-shadow: 0 0 15px 15px #000000;
 box-shadow: 0 0 15px 15px #000000;
       }
+
+
+
+
+
+
+
+.container {
+	margin: 0 auto;
+	max-width: 60em;
+	position: relative;
+}
+
+#page-header #top,
+#page-header,
+#page-footer,
+#page-header nav,
+#page-header nav ul {
+	display: block;
+	float: none;
+	width: 100%;
+	position: relative;
+}
+
+#features,
+#updates,
+#faq {
+	padding: 5em 0;
+}
+
+#page-footer {
+	padding: 5em 0 7.5em 0;	
+}
+
+
+
+strong,
+b,
+#page-footer h2,
+dt,
+#page-header ul li {
+	font-weight: normal;
+	font-family: 'titillium_websemibold';
+}
+
+#page-content ul {
+	list-style-type: square;
+}
+
+#page-header p,
+#page-footer h2,
+#page-footer dd,
+#page-content ul.changelist,
+#page-content p,
+#page-content dd {
+	margin: 0;
+	margin-bottom: 1.25em;
+}
+
+#page-content ul,
+#page-content ol {
+	padding-left: 1.25em;
+}
+
+#page-content #updates {
+	background: #eee;
+}
+
+
+strong,
+b,
+#page-footer h2,
+dt,
+#page-header ul li {
+	font-weight: normal;
+	font-family: 'titillium_websemibold';
+}
+
+#page-content ul {
+	list-style-type: square;
+}
+
+#page-header p,
+#page-footer h2,
+#page-footer dd,
+#page-content ul.changelist,
+#page-content p,
+#page-content dd {
+	margin-bottom: 1.25em;
+}
+
+#page-content ul,
+#page-content ol {
+	padding-left: 1.25em;
+}
+
+#page-content #updates {
+	background: #eee;
+}
+
+
+
+	#page-footer {
+	background: #111;
+	text-shadow: 0 2px #222;
+	color: #777;
+}
+p, ul li, ol li, dl dd, dl dt {
+font-size: 1.25em;
+line-height: 1.5em;
+}
+
+dl dd,
+dl dt {
+	font-size: 1.25em;
+	line-height: 1.5em;
+}
+
+
+#page-footer {
+	background: #111;
+	text-shadow: 0 2px #222;
+	color: #777;
+}
+
+#page-footer dt {
+	color: #bbb;
+}
+
+#page-footer #credits {
+	padding-bottom: 10em;
+}
+
+#page-footer #contact-copyright {
+	padding: 5em 0;
+}
+
+#page-footer #contact-copyright p:last-child {
+	margin: 0 0 2.5em 0;
+}
+
+#page-footer #contact-copyright p {
+	margin: 0;
+}
+
+#page-footer #credits,
+#page-footer #contact-copyright {
+	font-size: 0.85em;
+}
+
+
+#page-footer h2 {
+	font-size: 1.5em;
+	line-height: 1.5em;
+	letter-spacing: 0;
+	color: #444;
+	
+}
+
+#logo {
+	text-indent: -9999em;
+	display: block;
+	width: 15.625em;
+	height: 7em;
+}
+
+/* non-retina images */
+@media (max-resolution: 191dpi), (-webkit-max-device-pixel-ratio: 1.9999999), (max--moz-device-pixel-ratio: 1.9999999), (-o-max-device-pixel-ratio: 1.9999999/1), (max-device-pixel-ratio: 1.9999999), (max-resolution: 1.9999999dppx) {
+	#nav-top {
+		background: transparent url(../images/top.png) center center no-repeat;
+		background-size: 20px 10px;
+	}
+	#logo {
+		background: transparent url(../images/kingly-games-150px.png) left center no-repeat;
+		background-size: 150px 84px;
+	}
+}
+
+/* retina images */
+@media (min-resolution: 192dpi), (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+	#nav-top {
+		background: transparent url(../images/top.png) center center no-repeat;
+		background-size: 10px 10px;
+	}
+	#logo {
+		background: transparent url(../images/kingly-games-300px.png) left center no-repeat;
+		background-size: 150px 84px;
+	}
+}
+
+@media screen and (min-width: 43.75em) and (max-width: 68.75em) {
+	.container {
+		padding: 0 7.5em;
+	}
+}
+
+@media screen and (max-width: 43.75em) {
+	#page-header #hero-text,
+	.container {
+		padding: 0 2.5em;
+	}
+	#page-header .container {
+		padding: 0;
+	}
+	#page-header #phone-slideshow,
+	#page-header #slides {
+		width: 100%;
+		top: 0;
+		left: 0;
+	}
+	#page-header #iphone {
+		display: none;
+	}
+}
+
+
 
       </style>
     <script type="text/javascript">
@@ -200,5 +586,46 @@ Try pressing the button that looks like a house in the build menu and selecting 
     <center><font size="3">Send questions and comments to <a href="mailto:general@edengame.net">general@edengame.net</a><br><br><font size="2">&#169; 2012 Kingly Software Inc</font></font></center>
     </div>
   <br>
+ <footer id="page-footer">
+
+        <div class="container">
+
+          <section id="credits">
+
+            <h2>Credits</h2>
+
+            <dl>
+
+              <dt>Production and Programming</dt>
+              <dd><a href="mailto:general@edengame.net">Ari Ronen</a></dd>
+
+              <dt>Artwork</dt>
+              <dd>Steve Byrne</dd>
+
+              <dt>Sound and Music</dt>
+              <dd>Somatone Interactive, <a href="http://vihart.com/">Vi Hart</a></dd>
+
+              <dt>Special Thanks</dt>
+              <dd>Erik Measure</dd>
+
+            </dl>
+
+          </section>
+
+          <section id="contact-copyright">
+
+            <p id="logo">Kingly Games</p>
+            <p>&copy; 2013 Kingly Software Inc</p>
+            <p>Send questions and comments to <a href="mailto:general@edengame.net">general@edengame.net</a>.</p>
+	    <p>Send featured world suggestions to <a href="mailto:worlds@edengame.net">worlds@edengame.net</a>.</p>
+
+	    <p>We may be unable to respond to your request due to volume</p>
+
+          </section>
+
+        </div>
+
+      </footer>
+
 </body>
 </html>

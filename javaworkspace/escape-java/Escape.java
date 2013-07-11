@@ -1,0 +1,107 @@
+import java.util.*;
+import java.util.Map.Entry;
+import java.awt.*;
+
+public class Escape {
+
+	public int lowest(String[] harmful, String[] deadly) {
+		int[][] map=new int[503][503];
+		for(String s:harmful){
+			Scanner sc=new Scanner(s);
+			int x1=sc.nextInt();
+			int y1=sc.nextInt();
+			int x2=sc.nextInt();
+			int y2=sc.nextInt();
+			if(x1>x2){
+				int t=x1;
+				x1=x2;
+				x2=t;
+			}
+			if(y1>y2){
+				int t=y1;
+				y1=y2;
+				y2=t;
+			}
+			for(int x=x1;x<=x2;x++){
+				for(int y=y1;y<=y2;y++){
+					map[x+1][y+1]=-1;
+				}
+			}
+		}
+		for(String s:deadly){
+			Scanner sc=new Scanner(s);
+			int x1=sc.nextInt();
+			int y1=sc.nextInt();
+			int x2=sc.nextInt();
+			int y2=sc.nextInt();
+			
+			if(x1>x2){
+				int t=x1;
+				x1=x2;
+				x2=t;
+			}
+			if(y1>y2){
+				int t=y1;
+				y1=y2;
+				y2=t;
+			}
+			for(int x=x1;x<=x2;x++){
+				for(int y=y1;y<=y2;y++){
+					map[x+1][y+1]=-2;
+				}
+			}
+		}
+		for(int x=0;x<503;x++){
+			for(int y=0;y<503;y++){
+				if(x==0||y==0||x==502||y==502){
+					map[x][y]=-2;
+				}
+			}
+		}
+		Point pos=new Point(); 
+		pos.x=1;
+		pos.y=1;
+		
+		int[][] dist=new int[503][503];
+		for(int i=0;i<503;i++){
+			for(int j=0;j<503;j++){
+				dist[i][j]=-1;
+			}
+		}
+		dist[pos.x][pos.y]=0;
+		LinkedList<Point> q=new LinkedList<Point>();
+		q.add(pos);
+		while(!q.isEmpty()){
+			Point p=q.removeFirst();
+			
+			int damage=dist[p.x][p.y];
+			
+			
+			int[] dx=new int[]{0,0,-1,1};
+			int[] dy=new int[]{-1,1,0,0};
+			for(int d=0;d<4;d++){
+				Point pp=new Point(p.x+dx[d],p.y+dy[d]);
+				if(map[pp.x][pp.y]==-1||map[pp.x][pp.y]==0){
+					if(map[pp.x][pp.y]==-1){
+						
+						if(dist[pp.x][pp.y]<0||dist[pp.x][pp.y]>damage+1){
+							dist[pp.x][pp.y]=damage+1;
+							q.add( pp);
+						}
+						
+						
+					}else{
+						if(dist[pp.x][pp.y]<0||dist[pp.x][pp.y]>damage){
+							dist[pp.x][pp.y]=damage;
+							q.add( pp);
+						}
+						
+					} 
+					
+				}
+			}
+		}
+		return dist[501][501];
+	}
+
+}

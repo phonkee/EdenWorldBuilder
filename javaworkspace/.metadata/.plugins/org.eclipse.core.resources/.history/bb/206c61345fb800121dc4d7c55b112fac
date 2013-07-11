@@ -1,0 +1,24 @@
+import java.util.Arrays;
+
+public class UnluckyNumbers {
+
+	public int getCount(int[] luckySet, int n) {
+		int mini=0;
+		int maxi=1001;
+		Arrays.sort(luckySet);
+		for(int i=0;i<luckySet.length;i++){
+			if(luckySet[i]<n){
+				mini=luckySet[i];
+				if(i==luckySet.length-1)return 0;
+				if(luckySet[i+1]>n){
+				maxi=luckySet[i+1];
+					break;
+				}else if(luckySet[i+1]==n)return 0;
+			}
+			
+		}
+		System.out.println("min:"+mini+" , max:"+maxi);
+		return (maxi-1)-n+n-(mini+1);
+	}
+
+}

@@ -1,0 +1,24 @@
+public class AutoLoan {
+
+	public double interestRate(double price, double monthlyPayment, int loanTerm) {
+		double total=monthlyPayment*loanTerm;
+		double interest=total-price;
+		
+		double apr=50;
+		double high=100.0f;
+		double low=0;
+		 for(int i=0;i<500;i++){
+			
+			for(int j=0;j<loanTerm;j++){
+				price+=price+price*(apr/100.0f/12.0f);
+				price-=monthlyPayment;
+			}
+			if(price>0)high=apr;
+			else if(price<0)low=apr;
+			apr=(high+low)/2.0f;
+		}
+		
+		return apr;
+	}
+
+}

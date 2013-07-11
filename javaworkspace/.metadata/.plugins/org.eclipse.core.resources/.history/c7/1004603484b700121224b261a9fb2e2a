@@ -1,0 +1,7 @@
+public class SkiResorts {
+
+	public long minCost(String[] road, int[] altitude) {
+		return 0;
+	}
+
+}

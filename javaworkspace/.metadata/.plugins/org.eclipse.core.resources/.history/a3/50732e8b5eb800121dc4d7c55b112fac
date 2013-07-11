@@ -1,0 +1,7 @@
+public class UnluckyNumbers {
+
+	public int getCount(int[] luckySet, int n) {
+		return 0;
+	}
+
+}

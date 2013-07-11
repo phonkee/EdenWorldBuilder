@@ -1,0 +1,7 @@
+public class EasyHomework {
+
+	public String determineSign(int[] A) {
+		return null;
+	}
+
+}

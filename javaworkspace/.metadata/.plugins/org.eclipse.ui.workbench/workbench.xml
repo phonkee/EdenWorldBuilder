@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="30" version="2.0">
+<workbench progressCount="35" version="2.0">
 <workbenchAdvisor/>
-<window height="715" maximized="true" width="1024" x="-12" y="22">
+<window height="825" maximized="true" width="1440" x="31" y="400">
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
 <itemSize x="160"/>
@@ -13,7 +13,7 @@
 <coolItem id="org.eclipse.debug.ui.launchActionSet" itemType="typeToolBarContribution" x="100" y="22"/>
 <coolItem id="org.eclipse.jdt.ui.JavaElementCreationActionSet" itemType="typeToolBarContribution" x="62" y="22"/>
 <coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="106" y="22"/>
-<coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="120" y="22"/>
+<coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="54" y="22"/>
 <coolItem id="org.eclipse.wst.xml.ui.perspective.NewFileToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="group.nav" itemType="typeGroupMarker"/>
@@ -21,8 +21,8 @@
 <coolItem id="group.editor" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.DefaultTextEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" itemType="typePlaceholder" x="-1" y="-1"/>
-<coolItem id="org.eclipse.jdt.ui.ClassFileEditor" itemType="typePlaceholder" x="-1" y="-1"/>
-<coolItem id="org.eclipse.jdt.ui.CompilationUnitEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="org.eclipse.jdt.ui.ClassFileEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="org.eclipse.jdt.ui.CompilationUnitEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="group.help" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.workbench.help" itemType="typeToolBarContribution" x="-1" y="-1"/>
 </coolbarLayout>
@@ -31,26 +31,10 @@
 <editorArea activeWorkbook="DefaultEditorWorkbook">
 <info part="DefaultEditorWorkbook">
 <folder appearance="1" expanded="2">
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
-<part id="1"/>
-<part id="2"/>
-</presentation>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
 </folder>
 </info>
 </editorArea>
-<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="List2.java" partName="List2.java" path="/Users/arironen/Documents/Eden/javaworkspace/eden2/src/List2.java" title="List2.java" tooltip="eden2/src/List2.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/eden2/src/List2.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2856" selectionTopPixel="1267"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UploadMap2.java" partName="UploadMap2.java" path="/Users/arironen/Documents/Eden/javaworkspace/eden2/src/UploadMap2.java" title="UploadMap2.java" tooltip="eden2/src/UploadMap2.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/eden2/src/UploadMap2.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AtlasTool.java" partName="AtlasTool.java" path="/Users/argonide/Documents/Eden/javaworkspace/AtlasTool/src/AtlasTool.java" title="AtlasTool.java" tooltip="AtlasTool/src/AtlasTool.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/AtlasTool/src/AtlasTool.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="562" selectionTopPixel="0"/>
-</editor>
 </editors>
 <views>
 <view id="org.eclipse.jdt.junit.ResultView" partName="JUnit">
@@ -59,7 +43,7 @@
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
-<category IMemento.internal.id="Warnings (7 items)"/>
+<category IMemento.internal.id="Warnings (13 items)"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="90" org.eclipse.ui.ide.markerType="90" org.eclipse.ui.ide.pathField="120" org.eclipse.ui.ide.resourceField="90" org.eclipse.ui.ide.severityAndDescriptionField="705"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -101,12 +85,15 @@
 </customFilters>
 </viewState>
 </view>
+<view id="org.eclipse.ui.browser.view:net.fornwall.eclipsecoder.archive.ArchiveListView-64-64" partName="Internal Web Browser">
+<viewState/>
+</view>
 <view id="org.eclipse.jdt.ui.SourceView" partName="Declaration"/>
 <view id="org.eclipse.jdt.ui.JavadocView" partName="Javadoc">
 <viewState/>
 </view>
 </views>
-<perspectives activePart="org.eclipse.jdt.ui.CompilationUnitEditor" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
+<perspectives activePart="org.eclipse.ui.browser.view:net.fornwall.eclipsecoder.archive.ArchiveListView-64-64" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.jdt.internal.ui.JavaPerspectiveFactory" id="org.eclipse.jdt.ui.JavaPerspective" label="Java"/>
 <alwaysOnActionSet id="org.eclipse.mylyn.context.ui.actionSet"/>
@@ -169,6 +156,7 @@
 <view id="org.eclipse.jdt.ui.JavadocView"/>
 <view id="org.eclipse.jdt.ui.SourceView"/>
 <view id="org.eclipse.ui.console.ConsoleView"/>
+<view id="org.eclipse.ui.browser.view:net.fornwall.eclipsecoder.archive.ArchiveListView-64-64"/>
 <fastViewBars/>
 <layout>
 <mainWindow>
@@ -193,14 +181,17 @@
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
 </folder>
 </info>
-<info part="org.eclipse.ui.editorss" ratio="0.15794669" ratioLeft="160" ratioRight="853" relationship="2" relative="left"/>
-<info folder="true" part="bottom" ratio="0.7862839" ratioLeft="493" ratioRight="134" relationship="4" relative="org.eclipse.ui.editorss">
-<folder activePageID="org.eclipse.ui.views.ProblemView" appearance="2" expanded="2">
+<info part="org.eclipse.ui.editorss" ratio="0.23652904" ratioLeft="338" ratioRight="1091" relationship="2" relative="left"/>
+<info folder="true" part="bottom" ratio="0.74626863" ratioLeft="550" ratioRight="187" relationship="4" relative="org.eclipse.ui.editorss">
+<folder activePageID="org.eclipse.ui.browser.view:net.fornwall.eclipsecoder.archive.ArchiveListView-64-64" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
 <page content="org.eclipse.jdt.ui.JavadocView" label="Javadoc"/>
 <page content="org.eclipse.jdt.ui.SourceView" label="Declaration"/>
 <page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
+<page content="org.eclipse.ui.browser.view:net.fornwall.eclipsecoder.archive.ArchiveListView-64-64" label="Internal Web Browser"/>
+<page content="net.fornwall.eclipsecoder.archive.ArchiveListView" label="LabelNotFound"/>
 <page content="net.fornwall.eclipsecoder.views.ProblemStatementView" label="LabelNotFound"/>
+<page content="net.fornwall.eclipsecoder.archive.SubmissionListView" label="LabelNotFound"/>
 <page content="org.eclipse.search.ui.views.SearchView" label="LabelNotFound"/>
 <page content="org.eclipse.ui.views.BookmarkView" label="LabelNotFound"/>
 <page content="org.eclipse.ui.views.ProgressView" label="LabelNotFound"/>
@@ -209,6 +200,7 @@
 <part id="1"/>
 <part id="2"/>
 <part id="3"/>
+<part id="4"/>
 </presentation>
 </folder>
 </info>
@@ -231,173 +223,15 @@
 </perspective>
 </perspectives>
 <workingSets/>
-<navigationHistory>
-<editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/UploadMap2.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/UploadMap.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/List2.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/List2.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/List2.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/AtlasTool/src/AtlasTool.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/List2.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/UploadMap2.java"/>
-</editors>
-<item historyLabel="List2.java" index="2">
-<position/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="1734" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="1734" y="0"/>
-</item>
-<item historyLabel="UploadMap.java" index="1">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="955" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="4250" y="11"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="1014" y="11"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="4346" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="4425" y="167"/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="8197" y="77"/>
-</item>
-<item historyLabel="UploadMap.java" index="1">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="6314" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="4425" y="167"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="5647" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="5773" y="0"/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="6314" y="0"/>
-</item>
-<item historyLabel="List2.java" index="2">
-<position info="not_deleted" x="5667" y="5"/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="6314" y="0"/>
-</item>
-<item historyLabel="List2.java" index="3">
-<position info="not_deleted" x="8250" y="6"/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="6509" y="0"/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="8017" y="0"/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="7985" y="0"/>
-</item>
-<item historyLabel="List2.java" index="3">
-<position info="not_deleted" x="8250" y="6"/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="7985" y="0"/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="8332" y="0"/>
-</item>
-<item historyLabel="List2.java" index="3">
-<position info="not_deleted" x="8250" y="6"/>
-</item>
-<item historyLabel="List2.java" index="3">
-<position info="not_deleted" x="492" y="0"/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="4947" y="0"/>
-</item>
-<item historyLabel="List2.java" index="3">
-<position info="not_deleted" x="8395" y="9"/>
-</item>
-<item historyLabel="UploadMap2.java" index="0">
-<position info="not_deleted" x="4947" y="0"/>
-</item>
-<item historyLabel="List2.java" index="4">
-<position info="not_deleted" x="8396" y="9"/>
-</item>
-<item historyLabel="AtlasTool.java" index="5">
-<position info="not_deleted" x="4023" y="0"/>
-</item>
-<item historyLabel="List2.java" index="6">
-<position info="not_deleted" x="8390" y="0"/>
-</item>
-<item historyLabel="List2.java" index="6">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="UploadMap2.java" index="7">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="UploadMap2.java" index="7">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="List2.java" index="6">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="List2.java" index="6">
-<position info="not_deleted" x="1312" y="0"/>
-</item>
-<item historyLabel="List2.java" index="6">
-<position info="not_deleted" x="5864" y="0"/>
-</item>
-<item historyLabel="List2.java" index="6">
-<position info="not_deleted" x="5765" y="0"/>
-</item>
-<item historyLabel="List2.java" index="6">
-<position info="not_deleted" x="5766" y="0"/>
-</item>
-<item historyLabel="List2.java" index="6">
-<position info="not_deleted" x="5797" y="0"/>
-</item>
-<item historyLabel="List2.java" index="6">
-<position info="not_deleted" x="5802" y="0"/>
-</item>
-<item active="true" historyLabel="List2.java" index="6">
-<position info="not_deleted" x="5805" y="0"/>
-</item>
-</navigationHistory>
+<navigationHistory/>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
 </page>
 <workbenchWindowAdvisor/>
 <actionBarAdvisor/>
 <trimLayout>
+<trimArea IMemento.internal.id="16384">
+<trimItem IMemento.internal.id="left"/>
+</trimArea>
 <trimArea IMemento.internal.id="128">
 <trimItem IMemento.internal.id="org.eclipse.mylyn.tasks.ui.trim.container"/>
 <trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
@@ -406,54 +240,55 @@
 <trimItem IMemento.internal.id="org.eclise.ui.internal.FastViewBar"/>
 <trimItem IMemento.internal.id="org.eclipse.jface.action.StatusLineManager"/>
 <trimItem IMemento.internal.id="org.eclipse.ui.internal.progress.ProgressRegion"/>
+<trimItem IMemento.internal.id="bottom"/>
 </trimArea>
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AtlasTool.java" tooltip="AtlasTool/src/AtlasTool.java">
-<persistable path="/AtlasTool/src/AtlasTool.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MegaFactorialDiv2.java" tooltip="megafactorialdiv2-java/MegaFactorialDiv2.java">
+<persistable path="/megafactorialdiv2-java/MegaFactorialDiv2.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UploadMap.java" tooltip="eden2/src/UploadMap.java">
-<persistable path="/eden2/src/UploadMap.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TheDeviceDiv2.java" tooltip="thedevicediv2-java/TheDeviceDiv2.java">
+<persistable path="/thedevicediv2-java/TheDeviceDiv2.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UploadMap2.java" tooltip="eden2/src/UploadMap2.java">
-<persistable path="/eden2/src/UploadMap2.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TheJediTestDiv2.java" tooltip="thejeditestdiv2-java/TheJediTestDiv2.java">
+<persistable path="/thejeditestdiv2-java/TheJediTestDiv2.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="List2.java" tooltip="eden2/src/List2.java">
-<persistable path="/eden2/src/List2.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="FenceRepairing.java" tooltip="fencerepairing-java/FenceRepairing.java">
+<persistable path="/fencerepairing-java/FenceRepairing.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="List.java" tooltip="eden2/src/List.java">
-<persistable path="/eden2/src/List.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Escape.java" tooltip="escape-java/Escape.java">
+<persistable path="/escape-java/Escape.java"/>
 </file>
-<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UploadMap2.java" tooltip="/Users/argonide/Documents/Eden/edenweb/src/UploadMap2.java">
-<persistable uri="file:/Users/argonide/Documents/Eden/edenweb/src/UploadMap2.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="grafixMask.java" tooltip="grafixmask-java/grafixMask.java">
+<persistable path="/grafixmask-java/grafixMask.java"/>
 </file>
-<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="List2.java" tooltip="/Users/argonide/Documents/Eden/edenweb/src/List2.java">
-<persistable uri="file:/Users/argonide/Documents/Eden/edenweb/src/List2.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UnluckyNumbersTest.java" tooltip="unluckynumbers-java/UnluckyNumbersTest.java">
+<persistable path="/unluckynumbers-java/UnluckyNumbersTest.java"/>
 </file>
-<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="Character.class" tooltip="java.lang.Character">
-<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=edenweb/\/System\/Library\/Frameworks\/JavaVM.framework\/Versions\/1.6.0\/Classes\/classes.jar&lt;java.lang(Character.class"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UnluckyNumbers.java" tooltip="unluckynumbers-java/UnluckyNumbers.java">
+<persistable path="/unluckynumbers-java/UnluckyNumbers.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UploadMap.java" tooltip="edenweb/src/UploadMap.java">
-<persistable path="/edenweb/src/UploadMap.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NumberChanger.java" tooltip="numberchanger-java/NumberChanger.java">
+<persistable path="/numberchanger-java/NumberChanger.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="List.java" tooltip="edenweb/src/List.java">
-<persistable path="/edenweb/src/List.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="BenfordsLaw.java" tooltip="benfordslaw-java/BenfordsLaw.java">
+<persistable path="/benfordslaw-java/BenfordsLaw.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="List2.java" tooltip="edenweb/src/List2.java">
-<persistable path="/edenweb/src/List2.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AutoLoan.java" tooltip="autoloan-java/AutoLoan.java">
+<persistable path="/autoloan-java/AutoLoan.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="test.java" tooltip="test/src/test.java">
-<persistable path="/test/src/test.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TheBasketballDivOne.java" tooltip="thebasketballdivone-java/TheBasketballDivOne.java">
+<persistable path="/thebasketballdivone-java/TheBasketballDivOne.java"/>
 </file>
-<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name=".project" tooltip="/Users/aronen/Documents/Eden/edenweb/.project">
-<persistable uri="file:/Users/aronen/Documents/Eden/edenweb/.project"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SkiResorts.java" tooltip="skiresorts-java/SkiResorts.java">
+<persistable path="/skiresorts-java/SkiResorts.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="PalindromeGame.java" tooltip="palindromegame-java/PalindromeGame.java">
-<persistable path="/palindromegame-java/PalindromeGame.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TeamContestTest.java" tooltip="teamcontest-java/TeamContestTest.java">
+<persistable path="/teamcontest-java/TeamContestTest.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ColorfulRabbits.java" tooltip="colorfulrabbits-java/ColorfulRabbits.java">
-<persistable path="/colorfulrabbits-java/ColorfulRabbits.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TeamContest.java" tooltip="teamcontest-java/TeamContest.java">
+<persistable path="/teamcontest-java/TeamContest.java"/>
 </file>
 </mruList>
 </workbench>

@@ -1,0 +1,93 @@
+import java.util.*;
+import java.util.Map.Entry;
+import java.awt.*;
+
+public class Escape {
+
+	public int lowest(String[] harmful, String[] deadly) {
+		int[][] map=new int[503][503];
+		for(String s:harmful){
+			Scanner sc=new Scanner(s);
+			int x1=sc.nextInt();
+			int y1=sc.nextInt();
+			int x2=sc.nextInt();
+			int y2=sc.nextInt();
+			if(x1>x2){
+				int t=x1;
+				x1=x2;
+				x2=t;
+			}
+			if(y1>y2){
+				int t=y1;
+				y1=y2;
+				y2=t;
+			}
+			for(int x=x1;x<=x2;x++){
+				for(int y=y1;y<=y2;y++){
+					map[x+1][y+1]=-1;
+				}
+			}
+		}
+		for(String s:deadly){
+			Scanner sc=new Scanner(s);
+			int x1=sc.nextInt();
+			int y1=sc.nextInt();
+			int x2=sc.nextInt();
+			int y2=sc.nextInt();
+			
+			if(x1>x2){
+				int t=x1;
+				x1=x2;
+				x2=t;
+			}
+			if(y1>y2){
+				int t=y1;
+				y1=y2;
+				y2=t;
+			}
+			for(int x=x1;x<=x2;x++){
+				for(int y=y1;y<=y2;y++){
+					map[x+1][y+1]=-2;
+				}
+			}
+		}
+		for(int x=0;x<503;x++){
+			for(int y=0;y<503;y++){
+				if(x==0||y==0||x==502||y==502){
+					map[x][y]=-2;
+				}
+			}
+		}
+		Point pos=new Point(); 
+		pos.x=1;
+		pos.y=1;
+		map[pos.x][pos.y]=-3;
+		TreeMap<Integer,Point> q=new TreeMap<Integer,Point>();
+		q.put(0, pos);
+		while(!q.isEmpty()){
+			Entry<Integer, Point> node=q.pollFirstEntry();
+			q.remove(node);
+			Point p=node.getValue();
+			int damage=node.getKey();
+			if(p.x==501&&p.y==501){
+				return damage;
+			}
+			int[] dx=new int[]{0,0,-1,1};
+			int[] dy=new int[]{-1,1,0,0};
+			for(int d=0;d<4;d++){
+				Point pp=new Point(p.x+dx[d],p.y+dy[d]);
+				if(map[pp.x][pp.y]==-1||map[pp.x][pp.y]==0){
+					if(map[pp.x][pp.y]==-1){
+						q.put(damage+1, pp);
+						
+					}else{
+						q.put(damage, pp);
+					}
+					map[pp.x][pp.y]=-3;
+				}
+			}
+		}
+		return -1;
+	}
+
+}

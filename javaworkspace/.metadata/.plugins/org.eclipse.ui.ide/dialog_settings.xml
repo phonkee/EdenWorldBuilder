@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<section name="ChooseWorkspaceDialogSettings">
+		<item value="250" key="DIALOG_Y_ORIGIN"/>
+		<item value="425" key="DIALOG_X_ORIGIN"/>
+	</section>
+	<section name="WORKBENCH_SETTINGS">
+		<list key="ENABLED_TRANSFERS">
+		</list>
+	</section>
 	<section name="SaveAsDialogSettings">
 		<item value="525" key="DIALOG_WIDTH"/>
 		<item value="22" key="DIALOG_Y_ORIGIN"/>
-		<item value="244" key="DIALOG_X_ORIGIN"/>
 		<item value="509" key="DIALOG_HEIGHT"/>
+		<item value="244" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="CleanDialogSettings">
+		<item value="484" key="DIALOG_WIDTH"/>
+		<item value="142" key="DIALOG_Y_ORIGIN"/>
+		<item value="356" key="DIALOG_HEIGHT"/>
+		<item value="270" key="DIALOG_X_ORIGIN"/>
+		<item value="false" key="TOGGLE_SELECTED"/>
 	</section>
 	<section name="NewWizardAction">
 		<item value="org.eclipse.jdt.ui.wizards.JavaProjectWizard" key="NewWizardSelectionPage.STORE_SELECTED_ID"/>
 		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
 			<item value="org.eclipse.jdt.ui.java"/>
 		</list>
-	</section>
-	<section name="CleanDialogSettings">
-		<item value="484" key="DIALOG_WIDTH"/>
-		<item value="142" key="DIALOG_Y_ORIGIN"/>
-		<item value="270" key="DIALOG_X_ORIGIN"/>
-		<item value="356" key="DIALOG_HEIGHT"/>
-		<item value="false" key="TOGGLE_SELECTED"/>
 	</section>
 </section>

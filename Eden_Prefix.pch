@@ -18,3 +18,5 @@
 #else
 #    define NSLog(...) {}
 #endif
+
+#pragma clang diagnostic ignored "-Wmissing-selector-name"

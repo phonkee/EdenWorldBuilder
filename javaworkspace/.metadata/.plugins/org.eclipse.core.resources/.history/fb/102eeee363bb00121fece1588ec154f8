@@ -1,0 +1,27 @@
+public class TheJediTestDiv2 {
+
+	public int countSupervisors(int[] students, int Y, int J) {
+		int min=99999;
+		for(int yf=-1;yf<students.length;yf++){
+			int jedi=0;
+			for(int f=0;f<students.length;f++){
+				int s=students[f];
+				if(s>0){
+					if(yf==f){
+						s-=Y;
+						jedi++;
+					}
+					while(s>0){
+						s-=J;
+						jedi++;
+					}
+				}
+			}
+			if(jedi<min){
+				min=jedi;
+			}
+		}
+		return min;
+	}
+
+}

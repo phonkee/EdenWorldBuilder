@@ -1,0 +1,30 @@
+import java.util.*;
+
+public class grafixMask {
+
+	public int[] sortedAreas(String[] rectangles) {
+		int[][] screen=new int[400][600];
+		for(String r:rectangles){
+			Scanner sc=new Scanner(r);
+			int r1=sc.nextInt();
+			int c1=sc.nextInt();
+			int r2=sc.nextInt();
+			int c2=sc.nextInt();
+			for(int rr=r1;rr<=r2;rr++){
+				for(int cc=c1;cc<=c2;cc++){
+					screen[rr][cc]=1;
+				}
+			}
+			
+		}
+		ArrayList<Integer> holes=new ArrayList<>();
+		
+		for(int r=0;r<400;r++){
+			for(int c=0;c<600;c++){
+				
+			}
+		}
+		return null;
+	}
+
+}

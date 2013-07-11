@@ -1,0 +1,7 @@
+public class BenfordsLaw {
+
+	public int questionableDigit(int[] transactions, int threshold) {
+		return 0;
+	}
+
+}

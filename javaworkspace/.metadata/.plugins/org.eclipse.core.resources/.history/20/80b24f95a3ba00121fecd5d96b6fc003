@@ -1,0 +1,27 @@
+public class FenceRepairing {
+
+	public double calculateCost(String[] boards) {
+		boolean[] fence;
+		int n=0;
+		for(int i=0;i<boards.length;i++){
+			n+=boards[i].length();
+		}
+		fence=new boolean[n];
+		int idx=0;
+		for(int i=0;i<boards.length;i++){
+			for(int j=0;j<boards[i].length();j++){
+				if(boards[i].charAt(j)=='.'){
+					fence[idx++]=true;
+				}else{
+					fence[idx++]=false;
+				}
+			}
+		}
+		for(int i=0;i<n;i++){
+			System.out.print(fence[idx]);
+		}System.out.println();
+		
+		return 0.0;
+	}
+
+}

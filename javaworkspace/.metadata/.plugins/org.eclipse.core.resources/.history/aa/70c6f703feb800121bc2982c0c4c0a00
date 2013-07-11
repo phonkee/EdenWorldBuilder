@@ -1,0 +1,7 @@
+public class grafixMask {
+
+	public int[] sortedAreas(String[] rectangles) {
+		return null;
+	}
+
+}

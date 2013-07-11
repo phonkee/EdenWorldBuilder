@@ -1,0 +1,7 @@
+public class Chopsticks {
+
+	public int getmax(int[] length) {
+		return 0;
+	}
+
+}
