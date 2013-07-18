@@ -1,10 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html><head>
     <title>
       Eden - World Builder
       </title>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.js"></script>
 
     <script type="text/javascript" src="fadeslideshow.js">
 
@@ -39,7 +38,7 @@
 
 											   
 
-											   </script>
+											   </script>
     <style type="text/css">
 @font-face {
     font-family: 'titillium_webitalic';
@@ -185,7 +184,7 @@
         color: BLACK;
 
       font-family: "Arial", "Helvetica", "sans-serif";
-      background-image: url('website_bottom.png');
+      background-image: url('TileWev.png');
       background-repeat-x: repeat;
 
 
@@ -202,8 +201,8 @@
 body {
 	font: 1em/1.25em 'titillium_webregular', 'Lucida Grande', 'Lucida Sans', 'Tahoma', sans-serif;
 	/*background: #7eb3ee url(../images/eden-clouds.png) left 20% repeat-x;*/
-	background-attachment: fixed;
-	color: #666;
+	
+	color: #bbb;
 }
 
 a {
@@ -240,23 +239,28 @@ margin-bottom:4px;
       a:visited {color:#FFFFFF;}  
       a:hover {color:#FFFFFF;} 
       a:active {color:#FFFFFF;} */
-      div.top {
-      background-image:url('website_top.png');
+      div.edentop {
+      background-image:url('HeaderWeb.png');
       background-position: center top;
       width:100%;
-      height:523px;
+      height:430px;
+      
+      }
+
+div.edentopnav {
+      background-image:url('BlackBarWeb.png');
+      background-position: center top;
+      width:100%;
+      height:54px;
       
       }
 
       div.fadeborder{
 
+	float:right;
+margin-left: 30px;
 
 
--moz-box-shadow: -3px 3px 4px #111;
-
--webkit-box-shadow: -3px 3px 4px #111;
-
-box-shadow: -1px 3px 4px #111;
 
 
 	}
@@ -264,7 +268,7 @@ box-shadow: -1px 3px 4px #111;
       background-color:#111;
       margin-left:10%;
       margin-right:10%;
-      margin-top:0%;
+      margin-top:30px;
       margin-bottom:0%;
       padding:5%;
       padding-top:8px;
@@ -275,9 +279,9 @@ box-shadow: -1px 3px 4px #111;
      
 
 	
-      -moz-box-shadow: 0 0 15px 15px #000000;
--webkit-box-shadow: 0 0 15px 15px #000000;
-box-shadow: 0 0 15px 15px #000000;
+      -moz-box-shadow: 0 0 15px 15px #111;
+-webkit-box-shadow: 0 0 15px 15px #111;
+box-shadow: 0 0 15px 15px #111;
       }
 
 
@@ -428,7 +432,9 @@ dl dt {
 #page-footer #contact-copyright {
 	font-size: 0.85em;
 }
-
+#contact-copyright {
+	float:right;
+}
 
 #page-footer h2 {
 	font-size: 1.5em;
@@ -443,6 +449,96 @@ dl dt {
 	display: block;
 	width: 15.625em;
 	height: 7em;
+}
+nav {
+	/*background: #5e85b1;*/
+	/*position: fixed;*/
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	width: 100%;
+}
+
+nav a {
+font-family: "Franklin Gothic Medium", "Franklin Gothic", "ITC Franklin Gothic", Arial, sans-serif;
+	font-size:28pt;
+line-height: 5px;
+}
+
+nav p {
+	position: absolute;
+}
+
+nav #nav-top {
+	left: 0;
+	top: 1.25em;
+	text-indent: -9999em;
+	width: 3em;
+}
+
+div.navdownload {
+	right: 0;
+	margin: 0;
+	top: 0;
+	float: right;
+	margin-left: 30px;
+}
+
+div.navdownload a {
+	/*background: #fff;
+	color: #5e85b1;
+	margin: 0.875em 0;
+	padding: 0 1.25em;
+	border-radius: 5em;*/
+}
+
+div.navdownload a:hover {
+	/*background: #d4e8ff;*/
+}
+
+nav ul {
+	text-align: center;
+}
+
+nav ul li {
+	display: block;
+	float: left;
+	
+}
+
+nav ul li:last-child {
+	
+}
+
+nav ul li a,
+nav p a {
+	display: block;
+	padding:3px 17px;
+}
+
+#updates .right a:hover,
+nav a:hover {
+	color: #bbb;
+}
+
+nav.intro #nav-intro a,
+nav.features #nav-features a,
+nav.updates #nav-updates a,
+nav.faq #nav-faq a {
+	background: #4f7096;
+}
+
+div.faq {
+	display: none;
+	color: #777;
+}
+div.faq b{
+	color: #bbb;
+}
+div.faq h1{
+	color: #bbb;
 }
 
 /* non-retina images */
@@ -509,25 +605,74 @@ dl dt {
 	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
+	
 
+
+	
 	</script>
 </head>
 <body>
-  <div class="top">
-    <div class="topframe">
+  <div class="edentop">
+
+  <!--  <div class="topframe">
       <center><br><br><br><br><br><br>
 	
-	<div class="fadeborder" id="fadeshow1"></div>
+  	
 	
 	</center>
       </div>
       
-    </div>
+      -->
+
+</div>
+<div class="edentopnav">
+<nav>
+<div class="container">
+
+        <ul>
+          <li id="nav-intro">
+            <a id="mainlink" href="#main">Main</a>
+          </li>
+         
+          <li id="nav-updates">
+            <a href="#updates">Media</a>
+          </li>
+          <li id="nav-faq">
+            <a id="faqlink" href="#FAQ">FAQ</a>
+          </li>
+ 	<li id="nav-features">
+            <a href="#feature-slideshow">Forums</a>
+          </li>
+	  <li id="nav-updates">
+            <a href="http://www.facebook.com/EdenWorldBuilder">Facebook</a>
+          </li>
+        </ul>
+
+      
+
+      </div>
+
+</nav>
+
+
+</div>
   <div class="bottom">
-    <a href="http://itunes.apple.com/app/eden-world-builder/id405743220"><img src="apple.svg" width=200 align=right border=0></img></a>
+
+  
+
+    <div class="navdownload">
+         <a href="http://itunes.apple.com/app/eden-world-builder/id405743220"><img src="apple.svg" width=200 border=0></img></a>
+        </div>
+<div class="edenmain">
     <h1>Eden - World Builder</h1>
-    Explore a vast pristine world of infinite possibility. Build your own personal Eden. Eden brings creative sandbox building to the touch screen.<br><br> 
+
+
+
+    Explore a world of infinite possibility. Build your own personal Eden.<br> Unleash your creative and adventurous spirit.  Available on the iOS app store.<br><br> 
+
 <h3>Features:</h3>
+ <div class="fadeborder" id="fadeshow1"></div> 
+
 - Unique, beautifully generated worlds to explore, build, and destroy<br>
 - Dozens of block types including ice slides, water, lava, glass,
 ladders, TNT, trampolines, vines, and ramps<br>
@@ -552,7 +697,12 @@ To suggest a world for the featured list, send the name and a picture to <a href
     
 
 <br>
-<h3>FAQ:</h3><br>
+</div>
+<div class="faq">
+
+
+
+<h1>FAQ:</h1><br>
 <b>When's the next update coming out?</b><br>
 When it's done, probably sometime this year.<br><br> 
 
@@ -574,17 +724,9 @@ Eden is currently only available for iOS devices(iPhones, iPads, and iPod touche
 <b>I can't find what I built, please help!</b><br>
 Try pressing the button that looks like a house in the build menu and selecting "warp home".  By default this will bring you to where you first entered the world.  If you explore a little you can usually find lost buildings.   You can also use the world sharing feature in the main menu to store a backup of your world online for safekeeping. 
 <br><br> 
-<br>
-<h3>Credits</h3>
-    Production and Programming: <a href="mailto:general@edengame.net">Ari Ronen</a><br>
-    Artwork: Steve Byrne<br>
-    Sound and Music: Somatone Interactive, <a href="http://vihart.com/">Vi Hart</a><br>
-    Special Thanks: Erik Measure <!-- (Try his new game <a href="http://itunes.apple.com/us/app/bumbledore/id531549256">Bumbledore</a>) --><br><br>
+</div>
 
-<br>
-    
-    <center><font size="3">Send questions and comments to <a href="mailto:general@edengame.net">general@edengame.net</a><br><br><font size="2">&#169; 2012 Kingly Software Inc</font></font></center>
-    </div>
+
   <br>
  <footer id="page-footer">
 
@@ -626,6 +768,29 @@ Try pressing the button that looks like a house in the build menu and selecting 
         </div>
 
       </footer>
+
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $("#faqlink").click(function(){
+	$("div.faq").fadeIn("slow");
+
+   $("div.edenmain").fadeOut("fast");
+          
+     
+
+    });
+
+  $("#mainlink").click(function(){
+	$("div.edenmain").fadeIn("slow");
+
+   $("div.faq").fadeOut("fast");
+          
+     
+
+    });
+
+}); 
+</script>
 
 </body>
 </html>

@@ -60,6 +60,7 @@ EntityData creatureData[MAX_CREATURES_SAVED];
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	documents = [paths objectAtIndex:0];
 	[documents retain];
+    printf("!!!!!! %s\n",[documents cStringUsingEncoding:NSUTF8StringEncoding]);
 	oldOffsetX=oldOffsetZ=chunkOffsetX=chunkOffsetZ=-1;
 	indexes=hashmap_new();
     indexes_hmm=indexes;
@@ -554,7 +555,7 @@ extern int g_offcz;
      [[World getWorld].sf_lock unlock];
 }
 -(NSString*)getName:(NSString*)name{
-	if(![[World getWorld].fm worldExists:name]) return @"error~";
+	if(![[World getWorld].fm worldExists:name]) return @"error1~";
 	NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];	
 	 [[World getWorld].sf_lock lock];
 	saveFile=[NSFileHandle fileHandleForReadingAtPath:file_name];		
@@ -563,7 +564,7 @@ extern int g_offcz;
                     
                       [saveFile closeFile];
                       [[World getWorld].sf_lock unlock];
-                       return @"error~";
+                       return @"error2~";
                   }
 	WorldFileHeader* fh=(WorldFileHeader*)[data bytes];
   
@@ -571,9 +572,10 @@ extern int g_offcz;
 	//NSLog(@"fn:%s",fh->name);
 	NSString* fname=[NSString stringWithCString:fh->name encoding:NSUTF8StringEncoding];
 	if([fname length]==0){
-        [saveFile closeFile];
-        [[World getWorld].sf_lock unlock];
-        return @"error~";
+        fname=@"temp";
+       // [saveFile closeFile];
+        //[[World getWorld].sf_lock unlock];
+        //return @"error3~";
     }
 	[saveFile closeFile];
      [[World getWorld].sf_lock unlock];
