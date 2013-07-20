@@ -138,7 +138,7 @@
 
 
         #page-footer #credits {
-        	width: 50%;
+        	width: 30%;
         }
         
   
@@ -184,14 +184,7 @@
         color: BLACK;
 
       font-family: "Arial", "Helvetica", "sans-serif";
-      background-image: url('TileWev.png');
-      background-repeat-x: repeat;
-
-
-      background-position-x: 50% 523px;
-      background-origin: initial;
-      background-clip: initial;
-      background-color: hsl(183, 63%, 76%);
+      
 
       padding:0px;
 
@@ -203,6 +196,7 @@ body {
 	/*background: #7eb3ee url(../images/eden-clouds.png) left 20% repeat-x;*/
 	
 	color: #bbb;
+background-color:#333333;
 }
 
 a {
@@ -243,7 +237,10 @@ margin-bottom:4px;
       background-image:url('HeaderWeb.png');
       background-position: center top;
       width:100%;
+      
       height:430px;
+	max-width:1280px;
+	margin: 0 auto;
       
       }
 
@@ -252,8 +249,24 @@ div.edentopnav {
       background-position: center top;
       width:100%;
       height:54px;
-      
+      max-width:1280px;
+	margin: 0 auto;
       }
+div.edenbody{
+	background-image: url('TileWev.png');
+      background-repeat-x: repeat;
+
+
+      background-position-x: 50% 523px;
+      background-origin: initial;
+      background-clip: initial;
+      background-color: hsl(183, 63%, 76%);
+
+	width:100%;
+      
+      max-width:1280px;
+	margin: 0 auto;
+}
 
       div.fadeborder{
 
@@ -314,7 +327,7 @@ box-shadow: 0 0 15px 15px #111;
 }
 
 #page-footer {
-	padding: 5em 0 7.5em 0;	
+	padding: 5em 0 0 0;	
 }
 
 
@@ -390,6 +403,10 @@ dt,
 	text-shadow: 0 2px #222;
 	color: #777;
 }
+
+ 
+
+
 p, ul li, ol li, dl dd, dl dt {
 font-size: 1.25em;
 line-height: 1.5em;
@@ -413,11 +430,11 @@ dl dt {
 }
 
 #page-footer #credits {
-	padding-bottom: 10em;
+	padding-bottom: 5em;
 }
 
 #page-footer #contact-copyright {
-	padding: 5em 0;
+	padding: 3.5em 0;
 }
 
 #page-footer #contact-copyright p:last-child {
@@ -432,7 +449,7 @@ dl dt {
 #page-footer #contact-copyright {
 	font-size: 0.85em;
 }
-#contact-copyright {
+#page-footer #contact-copyright {
 	float:right;
 }
 
@@ -468,7 +485,7 @@ line-height: 5px;
 }
 
 nav p {
-	position: absolute;
+	
 }
 
 nav #nav-top {
@@ -503,8 +520,9 @@ nav ul {
 }
 
 nav ul li {
-	display: block;
-	float: left;
+	display: inline-block;
+	
+	
 	
 }
 
@@ -515,7 +533,8 @@ nav ul li:last-child {
 nav ul li a,
 nav p a {
 	display: block;
-	padding:3px 17px;
+	padding:0px 25px 7px 25px;
+	
 }
 
 #updates .right a:hover,
@@ -538,8 +557,19 @@ div.faq b{
 	color: #bbb;
 }
 div.faq h1{
-	color: #bbb;
+	color: #ddd;
 }
+
+div.edenmain{
+color: #999;
+}
+div.edenmain h1{
+	color: #ddd;
+}
+div.edenmain h3{
+	color: #ddd;
+}
+
 
 /* non-retina images */
 @media (max-resolution: 191dpi), (-webkit-max-device-pixel-ratio: 1.9999999), (max--moz-device-pixel-ratio: 1.9999999), (-o-max-device-pixel-ratio: 1.9999999/1), (max-device-pixel-ratio: 1.9999999), (max-resolution: 1.9999999dppx) {
@@ -625,6 +655,8 @@ div.faq h1{
       -->
 
 </div>
+<div class="edenbody">
+
 <div class="edentopnav">
 <nav>
 <div class="container">
@@ -634,9 +666,9 @@ div.faq h1{
             <a id="mainlink" href="#main">Main</a>
           </li>
          
-          <li id="nav-updates">
+         <!-- <li id="nav-updates">
             <a href="#updates">Media</a>
-          </li>
+          </li> -->
           <li id="nav-faq">
             <a id="faqlink" href="#FAQ">FAQ</a>
           </li>
@@ -656,6 +688,8 @@ div.faq h1{
 
 
 </div>
+
+
   <div class="bottom">
 
   
@@ -728,7 +762,7 @@ Try pressing the button that looks like a house in the build menu and selecting 
 
 
   <br>
- <footer id="page-footer">
+ 	<footer id="page-footer">
 
         <div class="container">
 
@@ -768,6 +802,8 @@ Try pressing the button that looks like a house in the build menu and selecting 
         </div>
 
       </footer>
+
+</div>
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
