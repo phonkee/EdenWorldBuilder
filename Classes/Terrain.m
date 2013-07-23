@@ -321,11 +321,11 @@ int extraGeneration(any_t passedIn,any_t chunkToGen){
 }
 - (void)warpToHome{
 	Vector pp;
-	pp.x=BLOCK_SIZE*(home.x*CHUNK_SIZE+.5f);
-	pp.z=BLOCK_SIZE*(home.z*CHUNK_SIZE+.5f);
-	pp.y=BLOCK_SIZE*(home.y+1);
-	[World getWorld].player.pos=pp;
-	[[World getWorld].fm saveWorld];
+	pp.x=(home.x+.5f);
+	pp.z=(home.z+.5f);
+	pp.y=(home.y+1);
+	//[World getWorld].player.pos=pp;
+	[[World getWorld].fm saveWorld:pp];
 	[self unloadTerrain:FALSE];
     
 	[self loadTerrain:world_name];

@@ -1022,6 +1022,18 @@ int twoToOne(int cx,int cz){
 	}
 	return n;
 }
+int twoToOneTest(int cx,int cz){
+	if(cx<0||cz<0||cx>=(1<<15)||cz>=(1<<15)){
+		printf("tt1 test overflowing! %d,%d \n",cx,cz);
+		return 0;
+	}
+	int n=(cx<<15)+cz;
+	if(n<0){
+		printf("tt1 test overflowing2! %d,%d %X \n",cx,cz,n);
+		return 0;
+	}
+	return n;
+}
 void VectorMatrixMultiply(Vector* vDest, Vector vSrc,const float mat[16]){
 	//untrustworthy/untested!
 	float W=0;	

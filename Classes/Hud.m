@@ -668,11 +668,13 @@ int flamecount=0;
                           
                         }
                     }else if(hudBlocks[pressed]==TYPE_CUSTOM){
+                        /*
                         build_size++;
                         if(build_size==2){
                             build_size=0;
                         }
                         printf("Setting buildsize: %d\n",build_size);
+                         */
                     }else{
                      block_paintcolor=0;
                         mode=MODE_BUILD;
@@ -776,8 +778,13 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 	
 	for(int i=0;i<NUM_DISPLAY_BLOCKS;i++){
 		if(inbox(x,y,blockBounds[i])){
-            pressed=i;
-            printf("set pressed: %d\n",i);
+            if(hudBlocks[pressed]==TYPE_CUSTOM){
+                printf("no custom\n");
+            }else{
+                pressed=i;
+                 printf("set pressed: %d\n",i);
+            }
+           
 			 handled=TRUE;
 		}
 	}
@@ -1349,20 +1356,22 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         }else if(type==TYPE_CUSTOM){
            
                 Button b=ButtonFromRect(blockBounds[i]);
-                
+            
+            
+            
                 if(pressed==i)
                     b.pressed=TRUE;
                 else {
                     b.pressed=FALSE;
                 } 
                 
-                
-                
+            
+             /*
             if(build_size==0)
                 [[[Resources getResources] getTex:ICO_SIZETOGGLE2] drawButton:b];
             else
                 [[[Resources getResources] getTex:ICO_SIZETOGGLE1] drawButton:b];
-            
+            */
         }else{
             if(pressed==i)
                 if(build_size==0){

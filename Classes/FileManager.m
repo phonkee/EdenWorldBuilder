@@ -145,10 +145,15 @@ static int count=0;
     }
      
 	 printf("end save:%d\n",sfh->version);
+}
+
+-(void)saveWorld{
+    [self saveWorld:[World getWorld].player.pos];
+    
     
 }
--(void)saveWorld{
-    return;
+
+-(void)saveWorld:(Vector)warp{   
    // [TestFlight passCheckpoint:[NSString stringWithFormat:@"header_size:%d",(int)sizeof(WorldFileHeader)]];
     //printf("sizeof(WFH)=%d",(int)sizeof(WorldFileHeader));
 	[[World getWorld].terrain endDynamics:TRUE];
@@ -164,10 +169,10 @@ static int count=0;
 	sfh->directory_offset=cur_dir_offset;
 	sfh->home=ter.home;
 	sfh->pos=[World getWorld].player.pos;
-	sfh->pos.x/=BLOCK_SIZE;
-	sfh->pos.z/=BLOCK_SIZE;
-	sfh->pos.x+=CHUNK_SIZE*chunkOffsetX;
-	sfh->pos.z+=CHUNK_SIZE*chunkOffsetZ;
+	//sfh->pos.x/=BLOCK_SIZE;
+	//sfh->pos.z/=BLOCK_SIZE;
+	//sfh->pos.x+=CHUNK_SIZE*chunkOffsetX;
+	//sfh->pos.z+=CHUNK_SIZE*chunkOffsetZ;
 	sfh->yaw=[World getWorld].player.yaw;
     sfh->version=file_version;
 	[[World getWorld].menu.selected_world->display_name getCString:sfh->name
@@ -197,7 +202,27 @@ static int count=0;
 	count=0;
 	[self readDirectory];
 	NSLog(@"read %d colidx's",count);
-	
+    Player* player=[World getWorld].player;
+    int scox=player.pos.x/CHUNK_SIZE-T_RADIUS;
+    int scoz=player.pos.z/CHUNK_SIZE-T_RADIUS;
+   
+    sfh->pos=warp;
+    
+    
+    //NSLog(@"player pos load: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
+    int r=T_RADIUS;
+	//	int asdf=0;
+    printf("saving at co(%d,%d)",scox,scoz);
+    printf("save player pos(%d,%d)\n",(int)warp.x,(int)warp.z);
+    for(int x=scox;x<scox+2*r;x++){
+        for(int z=scoz;z<scoz+2*r;z++){
+			//	NSLog(@"lch:%d",asdf++);
+            [[World getWorld].fm saveColumn:x:z];
+        }
+    }
+
+  
+	//hashmap_iterate(ter.chunkMap, saveChunk, NULL);
 	[self saveCreatures];
     
     sfh->version=FILE_VERSION;
@@ -280,11 +305,11 @@ int saveColIdx(any_t passedIn,any_t colToSave){
  – writeData:
  */
 -(void)saveColumn:(int)cx:(int)cz{
-    printf("saving column??");
+    
 	Terrain* ter=[[World getWorld] terrain];
 	ColumnIndex* colIndex=NULL;
 	
-	int n=twoToOne(cx,cz);
+	int n=twoToOneTest(cx,cz);
 	if(n==0){
 		return;
 	}
@@ -303,7 +328,7 @@ int saveColIdx(any_t passedIn,any_t colToSave){
 		colIndex->x=cx;
 		colIndex->z=cz;
 		hashmap_put(indexes, n, colIndex);
-        printf("saving col?!!!!\n");
+       
 	}
 	if((colIndex->chunk_offset-192)%SIZEOF_COLUMN!=0||colIndex->chunk_offset>=sfh->directory_offset){
 		NSLog(@"BAD BAD OFFSET!!");
@@ -314,6 +339,7 @@ int saveColIdx(any_t passedIn,any_t colToSave){
 		TerrainChunk* chunk;
         chunk=ter.chunkTable[threeToOne(cx-chunkOffsetX, cy, cz-chunkOffsetZ)];
 		//hashmap_get(ter.chunkMap, threeToOne(cx-chunkOffsetX, cy, cz-chunkOffsetZ), (any_t)&chunk);
+        //co(16316,16395),co(16316,16395)
 		if(chunk!=NULL){
 			/*ChunkHeader ch;
 			ch.n_vertices=chunk.n_vertices;
@@ -339,7 +365,7 @@ int saveColIdx(any_t passedIn,any_t colToSave){
                                 freeWhenDone:FALSE];
 			[saveFile writeData:data];
 		}else{
-			NSLog(@"NULL CHUNK O SHIT");
+			printf("NULL CHUNK O SHIT\n");
 		}
 	}
 	
@@ -777,6 +803,7 @@ extern float P_ZFAR;
     }
     [[World getWorld].player reset];
 	if(![[World getWorld].fm worldExists:name]){
+        printf("world file doesn't exist!\n");
         
         extern int g_terrain_type;
         
@@ -855,7 +882,7 @@ extern float P_ZFAR;
 		//[ter unloadTerrain:FALSE];
 		//[self loadWorld:name];
 	}else{
-               
+               printf("world file exists\n!");
 		NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];	
         [[World getWorld].sf_lock lock];
 		saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];		
@@ -864,18 +891,18 @@ extern float P_ZFAR;
         if(sfh->version!=1&&sfh->version!=2&&sfh->version!=3){
             [saveFile closeFile];
             [[World getWorld].sf_lock unlock];
-        NSLog(@"converting file");
+            NSLog(@"converting file");
             convertingWorld=TRUE;
             [self convertFile:file_name];
             
-             NSLog(@"done converting file");
+            NSLog(@"done converting file");
             [[World getWorld].sf_lock lock];
             saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];		
             sfh=(WorldFileHeader*)[[saveFile readDataOfLength:sizeof(WorldFileHeader)] bytes];
             convertingWorld=FALSE;
         }
         if(sfh->hash[32]==0)
-        NSLog(@"image hash is %s",sfh->hash);
+            NSLog(@"image hash is %s",sfh->hash);
         if(imgHash!=NULL){
             [imgHash release];
             imgHash=NULL;
@@ -904,7 +931,8 @@ extern float P_ZFAR;
           
 		*/player.pos=sfh->pos;
        
-        
+        printf("reading at co(%d,%d)\n",chunkOffsetX,chunkOffsetZ);
+        printf("player pos(%d,%d)\n",(int)player.pos.x,(int)player.pos.z);
 		//NSLog(@"player pos load: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
 		int r=T_RADIUS;
 	//	int asdf=0;

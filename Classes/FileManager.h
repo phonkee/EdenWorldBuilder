@@ -22,6 +22,7 @@
 -(void)saveColumn:(int)cx:(int)cz;
 -(void)readColumn:(int)cx:(int)cz:(NSFileHandle*)nsfh;
 -(void)saveWorld;
+-(void)saveWorld:(Vector)warp;
 -(void)writeDirectory;
 -(void)readDirectory;
 -(void)clearDirectory;

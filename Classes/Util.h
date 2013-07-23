@@ -105,6 +105,7 @@ Button ButtonFromRect(CGRect b);
 int threeToOne(int cx,int cy,int cz);
 int getColIndex(int cx,int cz);
 int twoToOne(int cx,int cz);
+int twoToOneTest(int cx,int cz);
 float randf(float max);
 int randi(int max);
 NSString* genhash();
