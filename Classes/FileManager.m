@@ -978,9 +978,9 @@ extern float P_ZFAR;
         
         printf("loading sup2: %d\n",g_terrain_type);
         
-        clear();
+      //  clear();
         
-       // g_terrain_type=8;
+       g_terrain_type=8;
         if(g_terrain_type==0){
             makeDirt();
         }else if(g_terrain_type==1){

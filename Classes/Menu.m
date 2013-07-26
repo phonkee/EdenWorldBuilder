@@ -143,7 +143,9 @@ UIAlertView *alertWorldType;
 	
     
     WorldNode* new_world;
-    new_world=malloc(sizeof(WorldNode));
+    
+    ///sample terrain gens
+   /* new_world=malloc(sizeof(WorldNode));
     memset(new_world,0,sizeof(WorldNode));
     new_world->display_name=@"Mountains";
     new_world->file_name=[NSString stringWithFormat:@"%@.eden",genhash()];
@@ -204,7 +206,7 @@ UIAlertView *alertWorldType;
     selected_world=new_world;
     [sbar setStatus:[NSString stringWithFormat:@"%@ created",new_world->display_name]
                    :2];
-    [fnbar setStatus:selected_world->display_name :9999];
+    [fnbar setStatus:selected_world->display_name :9999];*/
     
     
     /*

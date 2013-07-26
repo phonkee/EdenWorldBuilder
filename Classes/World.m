@@ -13,7 +13,7 @@
 #import "Globals.h"
 #import "TerrainGen2.h"
 
-#define JUST_TERRAIN_GEN 1
+#define JUST_TERRAIN_GEN 0
 static	World* singleton;
 @implementation World
 @synthesize cam, terrain, player, hud,fm,FLIPPED,effects,realtime,bestGraphics,sf_lock,rebuild_lock;
