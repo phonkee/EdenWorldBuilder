@@ -33,6 +33,9 @@ block8 tcolors[(CHUNKS_PER_COLUMN*CHUNK_SIZE*2)*(CHUNK_SIZE*2)*(CHUNK_SIZE*2)];
 	return self;
 	
 }
+void tgenInit(){
+    init();
+}
 static TerrainChunk* column[CHUNKS_PER_COLUMN];
 
 inline static int getCustomct(int x,int z,int y){
@@ -108,8 +111,8 @@ extern int g_offcx,g_offcz;
         }else*/
 		//[ter addChunk:chunk:ocx:cy:ocz:TRUE];		
 	}
-    extern block8 blockz[BLOCKZ_SIZE];
-    extern color8 colorz[BLOCKZ_SIZE];
+    extern block8* blockz;
+    extern color8* colorz;
    	if(LEVEL_SEED!=0){
         
         for(int x=0;x<CHUNK_SIZE;x++){

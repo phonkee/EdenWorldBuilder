@@ -2099,7 +2099,7 @@ bool RenderModels()
     for(int i=0;i<nguys;i++){
         if(!guys[i].alive)continue;
         if(!guys[i].update){
-            printf("model alive but not updating[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
+          //  printf("model alive but not updating[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
             continue;
         }else{
            

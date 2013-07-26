@@ -116,8 +116,8 @@ extern BOOL IS_WIDESCREEN;
 	bkg.origin.y=0;
 	bkg.size.width=SCREEN_WIDTH;
 	bkg.size.height=SCREEN_HEIGHT;
-	
-	/*MENU_SKY=27,
+	/*
+	MENU_SKY=27,
 	MENU_PINWHEEL=28,
 	MENU_MOUNTAINS=29,
 	MENU_GROUND=30,

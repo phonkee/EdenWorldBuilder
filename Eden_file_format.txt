@@ -1,0 +1,24 @@
+Eden File Format
+
+HEADER
+BLOCK DATA
+CREATURES
+DIRECTORY
+
+HEADER includes file information includes (terrain gen seed, player position, directory offset(location of DIRECTORY in file), home location, descriptive name, sky color, preview screenshot verification hash)
+
+BLOCK DATA is the world data. it's packed like so:
+
+16x16x16 bytes block type
+16x16x16 bytes block color
+Together the above make 1 chunk
+4 chunks are sequentially arranged per column.
+Each 16x64x16 column is indexed by the directory pointing to the location of the first block.
+
+CREATURES has the location/type/color of the creatures in the world, fixed size
+
+DIRECTORY is a list of columns indexed by their (x,z) coordinates and their corresponding location in BLOCK DATA.  It has an unfixed size.
+
+
+
+The logic behind this file design is that, one new block data needs to be saved, it can be appended to the BLOCK DATA section only the CREATURES and DIRECTORY data sections need to be moved instead of the computationally expensive operation of shifting the block data. (the directory offset in the header needs to be updated as well).

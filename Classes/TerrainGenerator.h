@@ -19,7 +19,7 @@
 - (void)placeTree:(int)x :(int)z :(int)y;
 float noise3(float vec[3]);
 float noise2(float vec[2]);
-
+void tgenInit();
 
 @property(nonatomic,assign) int LEVEL_SEED;
 @property(nonatomic,assign) bool genCaves;

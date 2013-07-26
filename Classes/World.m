@@ -13,6 +13,7 @@
 #import "Globals.h"
 #import "TerrainGen2.h"
 
+#define JUST_TERRAIN_GEN 1
 static	World* singleton;
 @implementation World
 @synthesize cam, terrain, player, hud,fm,FLIPPED,effects,realtime,bestGraphics,sf_lock,rebuild_lock;
@@ -20,32 +21,44 @@ static	World* singleton;
 extern EAGLView* G_EAGL_VIEW;
  BOOL exit_to_menu=FALSE;
 - (World*)init{
+    singleton=self;
+    if(JUST_TERRAIN_GEN){
+        double start=CFAbsoluteTimeGetCurrent();
+        printf("Terrain gen started\n");
+        fm=[[FileManager alloc] init];
+        tg2_init();
+        printf("Terrain gen finished %f\n",(CFAbsoluteTimeGetCurrent()-start));
+        start=CFAbsoluteTimeGetCurrent();
+         [[World getWorld].fm writeGenToDisk];
+        printf("File write finished %f\n",(CFAbsoluteTimeGetCurrent()-start));
+        return self;
+    }
     tc_initGeometry();
-	game_mode=GAME_MODE_MENU;
-	singleton=self;
+    game_mode=GAME_MODE_MENU;
+    
     bestGraphics=TRUE;
-	[Graphics initGraphics];
-	terrain=[[Terrain alloc] init];	
-	cam=[[Camera alloc] init];
-	res=[Resources getResources];
-	player=[[Player alloc] initWithWorld:self];
-	hud=[[Hud alloc] init];
-	fm=[[FileManager alloc] init];
+    [Graphics initGraphics];
+    terrain=[[Terrain alloc] init];	
+    cam=[[Camera alloc] init];
+    res=[Resources getResources];
+    player=[[Player alloc] initWithWorld:self];
+    hud=[[Hud alloc] init];
+    fm=[[FileManager alloc] init];
     effects=[[SpecialEffects alloc] init];
     menu=[[Menu alloc] init];
-   sf_lock=[[NSLock alloc] init];
+    sf_lock=[[NSLock alloc] init];
     rebuild_lock=[[NSLock alloc] init];
           
     [NSThread detachNewThreadSelector:@selector(loadWorldThread2:) toTarget:self withObject:self];
     [terrain startLoadingThread];
-	FLIPPED=FALSE;
-	[[Resources getResources] playMenuTune];
-	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-	[[UIApplication sharedApplication] setStatusBarHidden:YES];
-	[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
+    FLIPPED=FALSE;
+    [[Resources getResources] playMenuTune];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
     
-    
-    tg2_init();
+     //tg2_init();
+   
 	/*int crapsize=1;//(16777216);
 	int* crap=malloc(sizeof(int)*crapsize);
 	for(int i=0;i<crapsize;i++){
@@ -276,6 +289,9 @@ extern int chunk_load_count;
 	[super dealloc];
 }
 - (BOOL)update: (float)etime{
+    if(JUST_TERRAIN_GEN){
+        return FALSE;
+    }
     if(game_mode==GAME_MODE_WAIT){
         if(SUPPORTS_RETINA&&!bestGraphics){
             return TRUE;
@@ -328,6 +344,9 @@ extern int chunk_load_count;
 
 
 - (void)render{
+    if(JUST_TERRAIN_GEN){
+       // printf("hi");
+    }
     if(game_mode==GAME_MODE_WAIT){
        
         game_mode=target_game_mode;

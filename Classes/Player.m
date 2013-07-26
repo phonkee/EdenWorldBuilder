@@ -912,6 +912,7 @@ static BOOL lastOnIce;
     
 	//if(sinPitch*speed>0)vy=sinPitch*speed;
     if(climbing){
+       
         accel.y+=vspeed;
         if(accel.y==0||sign(accel.y)!=sign(vel.y)){
             vel.y=0+sign(vel.y)/1000.0f;
@@ -1652,7 +1653,10 @@ static int icesound=0;
     if(climbing&&vel.y>CLIMB_SPEED)vel.y=CLIMB_SPEED;
     if(climbing&&vel.y<-CLIMB_SPEED)vel.y=-CLIMB_SPEED;
     if(climbing){
-        
+        if(vel.x>.30f)vel.x=.30f;
+        if(vel.z>.30f)vel.z=.30;
+        if(vel.x<-.30f)vel.x=-.30f;
+        if(vel.z<-.30f)vel.z=-.30f;
        // NSLog(@"vel.y: %f",vel.y);
     }
     if(onground){

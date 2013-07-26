@@ -20,9 +20,11 @@
 }
 -(BOOL)worldExists:(NSString*)name;
 -(void)saveColumn:(int)cx:(int)cz;
+-(void)saveGenColumn:(int)cx:(int)cz:(int)origin;
 -(void)readColumn:(int)cx:(int)cz:(NSFileHandle*)nsfh;
 -(void)saveWorld;
 -(void)saveWorld:(Vector)warp;
+-(void)writeGenToDisk;
 -(void)writeDirectory;
 -(void)readDirectory;
 -(void)clearDirectory;

@@ -29,8 +29,9 @@ typedef struct{
     
     //below here is post 1.1.1 stuff
     int version;
-    char hash[33];
-	char reserved[100-sizeof(int)-33];	 //subtract new stuff from reserve bytes
+    char hash[35];
+    int skycolor;
+	char reserved[100-sizeof(int)-33-sizeof(Vector)];	 //subtract new stuff from reserve bytes
 }WorldFileHeader;
 typedef struct{
 	int x, z;
@@ -152,9 +153,101 @@ static int count=0;
     
     
 }
+-(void)writeGenToDisk{
+    printf("writing gen to disk\n");
+    NSString* name=@"Eden.eden";
+	NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
+    
+    sfh=malloc(sizeof(WorldFileHeader));
+    
+    NSFileManager* fm=[NSFileManager defaultManager];
+	if([fm fileExistsAtPath:file_name]){
+       
 
+        BOOL success = [fm removeItemAtPath:file_name error:NULL];
+        if(success){
+            printf("removed existing world file\n");
+        }else
+            printf("error removing world file\n");
+		
+        
+	}
+	sfh->directory_offset=sizeof(WorldFileHeader)+sizeof(EntityData)*MAX_CREATURES_SAVED;;
+    
+	sfh->level_seed=0;
+    
+    int centerChunk=4096;
+    int r=GSIZE/CHUNK_SIZE/2;
+    Vector temp;
+    temp.x=centerChunk*CHUNK_SIZE+CHUNK_SIZE/2;
+    temp.z=centerChunk*CHUNK_SIZE+CHUNK_SIZE/2;
+    temp.y=T_HEIGHT-10;
+    sfh->home=temp;
+    Vector temp2;
+    temp2.x=BLOCK_SIZE*(sfh->home.x+.5f);
+    temp2.y=BLOCK_SIZE*(sfh->home.y+1);
+    temp2.z=BLOCK_SIZE*(sfh->home.z+.5f);
+    sfh->pos=temp2;
+    
+    
+	//sfh->home=MakeVector(5000,50,5000);
+	//sfh->pos=MakeVector(5000,50,5000);
+    
+	sfh->yaw=90;
+    sfh->version=FILE_VERSION;
+    sfh->skycolor=lookupColor([World getWorld].terrain.final_skycolor);
+	strcpy(sfh->name,"Eden");
+    
+    [fm createFileAtPath:file_name
+                contents:[NSData dataWithBytesNoCopy:sfh
+                 length:sizeof(WorldFileHeader) freeWhenDone:FALSE]
+              attributes:nil];
+    
+    saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];
+    
+    
+	//////////////////////////
+	count=0;
+	[self readDirectory];
+	
+    
+    
+    
+ 
+    
+ 
+ 
+    for(int x=0;x<GEN_CWIDTH;x++){
+        for(int z=0;z<GEN_CDEPTH;z++){
+            [[World getWorld].fm saveGenColumn:x+centerChunk-r:z+centerChunk-r:centerChunk-r];
+        }
+    }
+    
+    
+	
+	//[self saveCreatures];
+    
+   
+    NSData* dh=[NSData dataWithBytesNoCopy:sfh length:sizeof(WorldFileHeader) freeWhenDone:FALSE];
+    
+    
+	[saveFile seekToFileOffset:0];
+    [saveFile writeData:dh];
+	if(writeDirectory){
+		
+		
+		count=0;
+		[self writeDirectory];
+		
+	}
+	
+	[self readDirectory];
+	free(sfh);
+	[saveFile closeFile];
+
+}
 -(void)saveWorld:(Vector)warp{   
-   // [TestFlight passCheckpoint:[NSString stringWithFormat:@"header_size:%d",(int)sizeof(WorldFileHeader)]];
+    //[TestFlight passCheckpoint:[NSString stringWithFormat:@"header_size:%d",(int)sizeof(WorldFileHeader)]];
     //printf("sizeof(WFH)=%d",(int)sizeof(WorldFileHeader));
 	[[World getWorld].terrain endDynamics:TRUE];
 	//[[World getWorld].terrain updateAllImportantChunks];
@@ -175,6 +268,7 @@ static int count=0;
 	//sfh->pos.z+=CHUNK_SIZE*chunkOffsetZ;
 	sfh->yaw=[World getWorld].player.yaw;
     sfh->version=file_version;
+    sfh->skycolor=lookupColor([World getWorld].terrain.final_skycolor);
 	[[World getWorld].menu.selected_world->display_name getCString:sfh->name
 														 maxLength:49
 														  encoding:NSUTF8StringEncoding];
@@ -304,6 +398,81 @@ int saveColIdx(any_t passedIn,any_t colToSave){
  – readDataOfLength:
  – writeData:
  */
+
+-(void)saveGenColumn:(int)cx:(int)cz:(int)origin{
+    
+	
+	ColumnIndex* colIndex=NULL;
+	
+
+	
+    colIndex=malloc(sizeof(ColumnIndex));
+    colIndex->chunk_offset=sfh->directory_offset-sizeof(EntityData)*MAX_CREATURES_SAVED;
+    sfh->directory_offset+=SIZEOF_COLUMN;
+    writeDirectory=TRUE;
+    colIndex->x=cx;
+    colIndex->z=cz;
+    int n=twoToOneTest(cx,cz);
+	hashmap_put(indexes, n, colIndex);
+        
+	
+	[saveFile seekToFileOffset:colIndex->chunk_offset];
+    block8 blocks[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
+    block8 colors[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
+	
+    extern block8* blockz;
+    extern color8* colorz;
+    
+    int xoffset=CHUNK_SIZE*(cx-origin);
+    int zoffset=CHUNK_SIZE*(cz-origin);
+    /*if(xoffset<0||xoffset>T_SIZE-CHUNK_SIZE||zoffset<0||zoffset>T_SIZE-CHUNK_SIZE){
+        printf("offests (%d,%d)\n chunk: (%d,%d)",xoffset,zoffset,cx-CHUNK_SIZE);
+    }*/
+    for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
+        int yoffset=cy*CHUNK_SIZE;
+        
+            for(int x=0;x<CHUNK_SIZE;x++){
+            for(int y=0;y<CHUNK_SIZE;y++){
+            for(int z=0;z<CHUNK_SIZE;z++){
+                blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=BLOCK(x+xoffset,z+zoffset,y+yoffset);
+                colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=COLOR(x+xoffset,z+zoffset,y+yoffset);
+            }}}
+      
+             /*   for(int y=0;y<CHUNK_SIZE;y++){
+                    if((y+1)%10==0){
+                        for(int x=0;x<CHUNK_SIZE;x++){
+                            for(int z=0;z<CHUNK_SIZE;z++){
+                                blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=TYPE_STONE;
+                                 colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=y-1;
+                            }
+                        }
+                        
+                    }else{
+                        for(int x=0;x<CHUNK_SIZE;x++){
+                            for(int z=0;z<CHUNK_SIZE;z++){
+                                blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=0;
+                                colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=0;
+                            }
+                        }
+
+                    }
+                }
+            */
+            
+        
+            
+			NSData* data=[NSData dataWithBytesNoCopy:blocks
+											  length:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(block8))
+										freeWhenDone:FALSE];
+			[saveFile writeData:data];
+            data=[NSData dataWithBytesNoCopy:colors
+                                      length:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(color8))
+                                freeWhenDone:FALSE];
+			[saveFile writeData:data];
+		
+	}
+	
+}
 -(void)saveColumn:(int)cx:(int)cz{
     
 	Terrain* ter=[[World getWorld] terrain];
@@ -391,7 +560,7 @@ extern int g_offcz;
      //   int cx2=cx-chunkOffsetX;
       //  int cz2=cz-chunkOffsetZ;
      //   if(rcfile==saveFile){
-       //   printf("loading column from gen\n");
+      //   printf("loading column from gen\n");
          [ter.tgen generateColumn:cx:cz:FALSE];
       //   }else{
              // printf("loading column from gen for bgthread\n");
@@ -914,6 +1083,11 @@ extern float P_ZFAR;
 		ter.home=sfh->home;
 		player.pos=sfh->pos;
 		player.yaw=sfh->yaw;
+         extern Vector colorTable[256];
+        if(sfh->skycolor<=0||sfh->skycolor>NUM_COLORS)
+           [World getWorld].terrain.final_skycolor=colorTable[14];
+        else
+        [World getWorld].terrain.final_skycolor=colorTable[sfh->skycolor];
 		[self readDirectory];
 		//NSLog(@"indexes: %d",hashmap_length(indexes));
 		//NSLog(@"loading level_seed: %d",ter.level_seed);
