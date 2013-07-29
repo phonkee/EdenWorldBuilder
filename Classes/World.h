@@ -38,7 +38,7 @@
 	SpecialEffects* effects;
     int target_game_mode;
 	int game_mode;
-	BOOL FLIPPED; 
+	//BOOL FLIPPED;
     int doneLoading;
     float realtime;
     BOOL bestGraphics;

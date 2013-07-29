@@ -333,15 +333,15 @@ void takeScreenshot(){
 	// gl renders "upside down" so swap top to bottom into new array.
 	// there's gotta be a better way, but this works.
 	GLubyte *buffer2 = (GLubyte *) malloc(myDataLength);
-	BOOL flip=[World getWorld].FLIPPED;
+	//BOOL flip=[World getWorld].FLIPPED;
 	for(int y = 0; y < height; y++)
 	{
 		for(int x = 0; x < width; x++)
 		{
 			for(int b=0;b<4;b++){
-				if(flip)
-				buffer2[x * height * 4 + y*4 +b] = buffer[y * 4 * width + x*4 +b];
-				else
+				//if(flip)
+				//buffer2[x * height * 4 + y*4 +b] = buffer[y * 4 * width + x*4 +b];
+				//else
 				buffer2[(width-1-x) * height * 4 + y*4 +b] = buffer[(height-1-y) * 4 * width + x*4 +b];
 			}
 		}
@@ -538,6 +538,10 @@ Point3D findWorldCoords(int mx,int my,int mode){
          mx*=SCALE_HEIGHT;
          my*=SCALE_WIDTH;
      }
+    int temp=my;
+    my=mx;
+    mx=temp;
+    
     fwc_result=-1;
 	Point3D point;
 	point.x=-1;
@@ -552,7 +556,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
 	glMatrixMode(GL_MODELVIEW);
 	
 	glLoadIdentity();
-	glRotatef(270,0,0,1);
+	//glRotatef(270,0,0,1);
 	[[World getWorld].cam render2];
 	
 	glGetFloatv( GL_MODELVIEW_MATRIX, modelviewf );
@@ -564,8 +568,10 @@ Point3D findWorldCoords(int mx,int my,int mode){
 	}
 	
 	winX = (float)mx;
-	winY = (float)viewport[3] - (float)my;
+	winY = (float)my;
 	
+    printf("winX: %f, winY: %f viewport[3]:%d\n",winX,winY,viewport[3]);
+    
 	gluUnProject( winX, winY, 0, modelview, projection, viewport, &posX, &posY, &posZ);
 	gluUnProject( winX, winY, 1, modelview, projection, viewport, &posX2, &posY2, &posZ2);
 	

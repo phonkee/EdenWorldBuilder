@@ -49,7 +49,7 @@ extern EAGLView* G_EAGL_VIEW;
 	share_explain_rect.size.width=370;
 	share_explain_lbl=[[statusbar alloc] initWithRect:share_explain_rect:15];
 	[share_explain_lbl setStatus:@"Note: Players will spawn where you last saved.  The last picture you took is used as a preview picture." :9999];
-	starto=FALSE;
+	//starto=FALSE;
 	return self;
 }
 -(void)activate{
@@ -66,14 +66,14 @@ extern EAGLView* G_EAGL_VIEW;
 }
 -(void)beginShare:(WorldNode*)world{
 	node=world;
-	if(![World getWorld].FLIPPED){
+	/*if(![World getWorld].FLIPPED){
 		[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
 	}
 	else{
 		[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
 		
-	}
-	starto=[World getWorld].FLIPPED;
+	}*/
+	//starto=[World getWorld].FLIPPED;
 	[world_name_field becomeFirstResponder];
 	name=[NSMutableString stringWithString:world->display_name];
 	[name retain];

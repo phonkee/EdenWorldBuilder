@@ -736,13 +736,13 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 	}
 	if(inbox2(x,y,&rhome)||inbox2(x,y,&rtHome)){	
         rhome.pressed=rtHome.pressed=FALSE;
-        if(![World getWorld].FLIPPED){
+    /*    if(![World getWorld].FLIPPED){
             [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
         }
         else{
             [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
             
-        }
+        }*/
         [alertWarpHome show];
 		inmenu=false;
 		handled=TRUE;

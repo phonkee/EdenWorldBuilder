@@ -605,7 +605,7 @@ void LoadModels2(){
             
             continue;
         }*/
-         printf("creating creature:%d pos:(%f,%f,%f)\n",gc,guys[gc].pos.x,guys[gc].pos.y,guys[gc].pos.z);
+         //printf("creating creature:%d pos:(%f,%f,%f)\n",gc,guys[gc].pos.x,guys[gc].pos.y,guys[gc].pos.z);
         guys[gc].model_type=arc4random()%(NUM_CREATURES);
         guys[gc].state=0;   
         guys[gc].touched=FALSE;

@@ -131,7 +131,7 @@ extern EAGLView* G_EAGL_VIEW;
 	/*}*/
 	
 	G_EAGL_VIEW=self;	
-	P_ASPECT_RATIO=(SCREEN_HEIGHT/SCREEN_WIDTH);
+	P_ASPECT_RATIO=( (float)IPAD_WIDTH/(float)IPAD_HEIGHT);
 	
 	[self setMultipleTouchEnabled:TRUE];
 	
@@ -227,6 +227,7 @@ extern EAGLView* G_EAGL_VIEW;
         glBindFramebufferOES(GL_FRAMEBUFFER_OES, defaultFramebuffer);
         glBindRenderbufferOES(GL_RENDERBUFFER_OES, colorRenderbuffer);
         
+        printf("glviewport!: %d, %d\n",framebufferWidth,framebufferHeight);
         glViewport(0, 0, framebufferWidth, framebufferHeight);
 	
 	}

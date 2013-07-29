@@ -16,7 +16,7 @@
 #define JUST_TERRAIN_GEN 0
 static	World* singleton;
 @implementation World
-@synthesize cam, terrain, player, hud,fm,FLIPPED,effects,realtime,bestGraphics,sf_lock,rebuild_lock;
+@synthesize cam, terrain, player, hud,fm/*,FLIPPED*/,effects,realtime,bestGraphics,sf_lock,rebuild_lock;
 @synthesize game_mode,menu;
 extern EAGLView* G_EAGL_VIEW;
  BOOL exit_to_menu=FALSE;
@@ -51,9 +51,9 @@ extern EAGLView* G_EAGL_VIEW;
           
     [NSThread detachNewThreadSelector:@selector(loadWorldThread2:) toTarget:self withObject:self];
     [terrain startLoadingThread];
-    FLIPPED=FALSE;
+  //  FLIPPED=FALSE;
     [[Resources getResources] playMenuTune];
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+   // [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
     
@@ -302,7 +302,7 @@ extern int chunk_load_count;
     realtime=etime;
    // NSLog(@"Hi");
 	if([World getWorld].menu.is_sharing!=1){
-	if([UIDevice currentDevice].orientation==UIDeviceOrientationLandscapeRight){
+	/*if([UIDevice currentDevice].orientation==UIDeviceOrientationLandscapeRight){
 		//[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
         if(FLIPPED==FALSE)
             [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
@@ -317,7 +317,7 @@ extern int chunk_load_count;
 		FLIPPED=FALSE;
          
 		
-	}
+	}*/
 	}
     
 	
@@ -345,7 +345,15 @@ extern int chunk_load_count;
 
 - (void)render{
     if(JUST_TERRAIN_GEN){
-       // printf("hi");
+        [Graphics prepareMenu];
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glColor4f(1.0, 1.0, 1.0, 1.0f);
+        [Graphics drawRect:-5:-5:5:5];
+        glDisable(GL_BLEND);
+        [Graphics endMenu];
+        
+        //printf("hi");
     }
     if(game_mode==GAME_MODE_WAIT){
        
@@ -362,7 +370,7 @@ extern int chunk_load_count;
 		
 		[cam render];
        
-		//[Graphics setLighting];	
+       // [Graphics setLighting];	
        // glShadeModel(GL_SMOOTH);
 		[terrain render];
         if(CREATURES_ON)

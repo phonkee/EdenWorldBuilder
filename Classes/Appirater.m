@@ -106,13 +106,13 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 }
 
 - (void)showRatingAlert {
-    if(![World getWorld].FLIPPED){
+   /* if(![World getWorld].FLIPPED){
         [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
     }
     else{
         [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
-        
-    }
+    
+    }*/
 	UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:APPIRATER_MESSAGE_TITLE
 														 message:APPIRATER_MESSAGE
 														delegate:self

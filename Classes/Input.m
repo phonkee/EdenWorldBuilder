@@ -83,23 +83,25 @@ extern BOOL IS_WIDESCREEN;
 		}
 		
 		touches[idx].touch_id=touch;
-		CGPoint point=[touch locationInView:touch.view];		
-		if([World getWorld].FLIPPED){
-			//point.y+=11;
-			point.y=scr_width-point.y;
-			point.x=scr_height-point.x;
-		}		
+		CGPoint point=[touch locationInView:touch.view];
+        point.y=scr_height-point.y;
+        printf("touch (%f,%f)\n",point.x,point.y);
+		/*if([World getWorld].FLIPPED){
+			//point.x+=11;
+			point.x=scr_width-point.x;
+			point.y=scr_height-point.y;
+		}*/		
 		touches[idx].down=M_DOWN;
      
 		touches[idx].inuse=0;
 		touches[idx].etime=0;
 		touches[idx].moved=YES;
         if(IS_IPAD&&!IS_RETINA){
-            touches[idx].mx=(float)point.y/SCALE_WIDTH;
-            touches[idx].my=(float)point.x/SCALE_HEIGHT;
+            touches[idx].mx=(float)point.x/SCALE_WIDTH;
+            touches[idx].my=(float)point.y/SCALE_HEIGHT;
         }else{
-            touches[idx].mx=point.y;
-            touches[idx].my=point.x;
+            touches[idx].mx=point.x;
+            touches[idx].my=point.y;
         }
 		
 		touches[idx].pmx=touches[idx].mx;
@@ -125,21 +127,22 @@ extern BOOL IS_WIDESCREEN;
 		if(idx==-1){
 			continue;
 		}
-		CGPoint point=[touch locationInView:touch.view];		
-		if([World getWorld].FLIPPED){
-			//point.y+=11;
-			point.y=scr_width-point.y;
-			point.x=scr_height-point.x;
-		}	
+		CGPoint point=[touch locationInView:touch.view];
+        point.y=scr_height-point.y;
+		/*if([World getWorld].FLIPPED){
+			//point.x+=11;
+			point.x=scr_width-point.x;
+			point.y=scr_height-point.y;
+		}*/
 		touches[idx].moved=TRUE;
 		touches[idx].pmx=touches[idx].mx;
 		touches[idx].pmy=touches[idx].my;
 		if(IS_IPAD&&!IS_RETINA){
-            touches[idx].mx=(float)point.y/SCALE_WIDTH;
-            touches[idx].my=(float)point.x/SCALE_HEIGHT;
+            touches[idx].mx=(float)point.x/SCALE_WIDTH;
+            touches[idx].my=(float)point.y/SCALE_HEIGHT;
         }else{
-            touches[idx].mx=point.y;
-            touches[idx].my=point.x;
+            touches[idx].mx=point.x;
+            touches[idx].my=point.y;
         }
 	}		
 }
@@ -157,21 +160,22 @@ extern BOOL IS_WIDESCREEN;
 			continue;
 		}
         if(!touch)continue;
-		CGPoint point=[touch locationInView:touch.view];	
-		if([World getWorld].FLIPPED){
-		//	point.y+=11;
-			point.y=scr_width-point.y;
-			point.x=scr_height-point.x;
-		}	
+		CGPoint point=[touch locationInView:touch.view];
+        point.y=scr_height-point.y;
+		/*if([World getWorld].FLIPPED){
+		//	point.x+=11;
+			point.x=scr_width-point.x;
+			point.y=scr_height-point.y;
+		}	*/
 		touches[idx].moved=TRUE;
 		touches[idx].pmx=touches[idx].mx;
 		touches[idx].pmy=touches[idx].my;
 		if(IS_IPAD&&!IS_RETINA){
-            touches[idx].mx=(float)point.y/SCALE_WIDTH;
-            touches[idx].my=(float)point.x/SCALE_HEIGHT;
+            touches[idx].mx=(float)point.x/SCALE_WIDTH;
+            touches[idx].my=(float)point.y/SCALE_HEIGHT;
         }else{
-            touches[idx].mx=point.y;
-            touches[idx].my=point.x;
+            touches[idx].mx=point.x;
+            touches[idx].my=point.y;
         }
 		touches[idx].touch_id=0;
 		if(touches[idx].inuse)

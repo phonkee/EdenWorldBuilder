@@ -24,7 +24,7 @@
       NSMutableString* displays;
 	NSMutableString* name;
  
-	BOOL starto;
+	//BOOL starto;
 }
 - (void) trimDisplay;
 -(void)beginShare:(WorldNode*)world;

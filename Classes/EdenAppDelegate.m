@@ -26,7 +26,8 @@
 	
     // Override point for customization after app launch.
     // Add your cool controller's view to the window.
-    [window addSubview:viewController.view];
+   // [window addSubview:viewController.view];
+    [self.window setRootViewController:viewController];
     [window makeKeyAndVisible];
 	//NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
 	//[FlurryAPI startSession:@"LUWB9P4UZU1K1A4YUT9V"]; 

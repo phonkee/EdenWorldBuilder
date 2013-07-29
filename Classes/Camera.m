@@ -163,14 +163,11 @@
 	
 	glPopMatrix();
 	
-	/*glPushMatrix();
+	glPushMatrix();
 	
     // Reset and transform the matrix.
     glLoadIdentity();
-	if([World getWorld].FLIPPED)
-		glRotatef(90,0,0,1);
-	else
-		glRotatef(270,0,0,1);	
+		
 	
 		gluLookAt(
 			 0,0,0,
@@ -178,7 +175,7 @@
 			  0,1,0);
 	
 	[Graphics drawSkybox];
-	glPopMatrix();*/
+	glPopMatrix();
 
 	if(mode==1){
 		
@@ -196,7 +193,7 @@
 	}else{
        // gluLookAt(px, py, pz, look.x, look.y, look.z, 0, 1, 0);	
         
-		gluLookAt(px-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE, py, pz-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE, look.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE, look.y, look.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);	
+		gluLookAt(px-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE, py, pz-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE, look.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE, look.y, look.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);
 	}
 		
 }

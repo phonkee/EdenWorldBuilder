@@ -224,10 +224,10 @@ extern BOOL SUPPORTS_OGL2;
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);  	
 	glMatrixMode(GL_PROJECTION);							
 	glLoadIdentity();	
-	if([World getWorld].FLIPPED)
+	/*if([World getWorld].FLIPPED)
 	glRotatef(90,0,0,1);
 	else
-	glRotatef(270,0,0,1);
+	glRotatef(270,0,0,1);*/
     if(IS_IPAD){
         if(IS_RETINA)
             glOrthof(0, SCREEN_WIDTH*2, 0, SCREEN_HEIGHT*2, -1, 1);
@@ -315,11 +315,11 @@ extern BOOL SUPPORTS_OGL2;
     glMatrixMode(GL_PROJECTION);			
 	glPushMatrix();							
 	glLoadIdentity();	
-	if([World getWorld].FLIPPED)
+	/*if([World getWorld].FLIPPED)
 		glRotatef(90,0,0,1);
 	else
 		glRotatef(270,0,0,1);
-	
+	*/
    // NSLog(@"zf:%f",P_ZFAR);
     if(IS_IPAD){
         if(IS_RETINA)
@@ -349,14 +349,16 @@ extern BOOL SUPPORTS_OGL2;
 	//glClear();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	
-	gluPerspective(P_FOVY,P_ASPECT_RATIO,P_ZNEAR,P_ZFAR-25);	
+	static int c=0;
+    if(c==0){c++;
+        printf("ar: %f, fovy:%f\n",P_ASPECT_RATIO,P_FOVY);}
+	gluPerspective(70,P_ASPECT_RATIO,P_ZNEAR,P_ZFAR-25);
 	glMatrixMode(GL_MODELVIEW);		
 	glLoadIdentity();
-	if([World getWorld].FLIPPED)
+/*	if([World getWorld].FLIPPED)
 		glRotatef(90,0,0,1);
 	else
-		glRotatef(270,0,0,1);	
+		glRotatef(270,0,0,1);	*/
 	
 	
 	
@@ -412,7 +414,7 @@ extern BOOL SUPPORTS_OGL2;
 	glLoadIdentity();
 	//GLAPI void GLAPIENTRY gluPerspective (GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar);
 
-	gluPerspective(P_FOVY,P_ASPECT_RATIO,P_ZNEAR,P_ZFAR-25);
+	//gluPerspective(60,P_ASPECT_RATIO,P_ZNEAR,P_ZFAR-25);
 }
 
 + (void)drawSquare:(float)x1 :(float)y1 :(float)z1 :(float)len{

@@ -363,13 +363,13 @@ static float cursor_blink=0;
 -(void)activateKB{
     [self clearWorldList];
     [sbar setStatus:@"" :9999];
-    if(![World getWorld].FLIPPED){
+   /* if(![World getWorld].FLIPPED){
         [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
     }
     else{
         [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
         
-    }
+    }*/
     //  starto=[World getWorld].FLIPPED;
     [search_field becomeFirstResponder];
     

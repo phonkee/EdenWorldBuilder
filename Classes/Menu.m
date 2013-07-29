@@ -142,10 +142,10 @@ UIAlertView *alertWorldType;
 	shared_list=[[SharedList alloc] init];
 	
     
-    WorldNode* new_world;
+   /*  WorldNode* new_world;
     
     ///sample terrain gens
-   /* new_world=malloc(sizeof(WorldNode));
+   new_world=malloc(sizeof(WorldNode));
     memset(new_world,0,sizeof(WorldNode));
     new_world->display_name=@"Mountains";
     new_world->file_name=[NSString stringWithFormat:@"%@.eden",genhash()];
@@ -450,13 +450,13 @@ static const int usage_id=7;
 					if(node==selected_world){					
 						if(delete_mode){	
 							if(selected_world){
-                                if(![World getWorld].FLIPPED){
+                               /* if(![World getWorld].FLIPPED){
                                     [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
                                 }
                                 else{
                                     [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
                                     
-                                }
+                                }*/
         
                                 [alertDeleteConfirm setMessage:[NSString stringWithFormat:@"Are you sure you want to delete \"%@\"?",selected_world->display_name] ];
                                 [alertDeleteConfirm show];

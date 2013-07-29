@@ -2317,10 +2317,10 @@ int lolc=0;
     glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
-	if([World getWorld].FLIPPED)
+/*	if([World getWorld].FLIPPED)
 		glRotatef(90,0,0,1);
 	else
-		glRotatef(270,0,0,1);
+		glRotatef(270,0,0,1);*/
 	
     
     if(IS_IPAD){
