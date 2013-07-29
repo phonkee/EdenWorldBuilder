@@ -85,7 +85,7 @@ extern BOOL IS_WIDESCREEN;
 		touches[idx].touch_id=touch;
 		CGPoint point=[touch locationInView:touch.view];
         point.y=scr_height-point.y;
-        printf("touch (%f,%f)\n",point.x,point.y);
+        //printf("touch (%f,%f)\n",point.x,point.y);
 		/*if([World getWorld].FLIPPED){
 			//point.x+=11;
 			point.x=scr_width-point.x;

@@ -93,4 +93,5 @@
 - (void)worldLoaded;
 - (BOOL)update:(float)etime;
 - (void)render;
++(void)genColorTable;
 @end

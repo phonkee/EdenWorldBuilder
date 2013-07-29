@@ -866,6 +866,11 @@ void makeMars(){
     printf("sky %f,%f,%f\n",  [World getWorld].terrain.final_skycolor.x,  [World getWorld].terrain.final_skycolor.y,  [World getWorld].terrain.final_skycolor.z);
 	
 }
+int clampy(int h){
+    if(h>T_HEIGHT-1)    return T_HEIGHT-1;
+    if(h<1) return 1;
+    return h;
+}
 void makeMix(){
     makeGreenHills(T_HEIGHT/3);
     
@@ -873,11 +878,14 @@ void makeMix(){
     //LEVEL_SEED=0;
 	[World getWorld].terrain.final_skycolor=colorTable[6];
 	
-	const int offsety=T_HEIGHT/2-10;
+	int offsety=T_HEIGHT/2-10;
     for(int x=0;x<GSIZE;x++){ //Heightmap
 		for(int z=0;z<GSIZE;z++){
             int h;
-            
+            if(x>GSIZE/2+10)break;
+            if(x>GSIZE/2-10){
+                offsety=(T_HEIGHT/2-10)-(20-((GSIZE/2+10)-x));
+            }
             float n=offsety;
             float FREQ=1.0f;
             //float FREQ3=4.0f;
@@ -890,9 +898,8 @@ void makeMix(){
                 AMPLITUDE/=2;
             }
             h=(int)roundf(n);
-            if(h-1>=T_HEIGHT){
-                NSLog(@"NONONO");
-            }
+            h=clampy(h);
+           
             
 			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply
             //The deeper the 3D noise and the more variance in heightmap,
@@ -1309,8 +1316,12 @@ void makeGreenHills(int height){
     //LEVEL_SEED=0;
 	[World getWorld].terrain.final_skycolor=colorTable[15];
 	
-	const int offsety=height;;
+	int offsety=height;;
     for(int x=0;x<GSIZE;x++){ //Heightmap
+        if(x<100){
+            offsety=height-(100-x);
+            offsety=clampy(offsety);
+        }
 		for(int z=0;z<GSIZE;z++){
             int h;
             
@@ -1579,7 +1590,11 @@ void makeTransition(int sx,int sz,int ex,int ez){
            // printf("fx:%f\n",fx);
             //int h=(lh*fx+rh*(1-fx))/2.0f;
             int h=deltay*fx+lh;//(lh+rh)/2;
-            Vector mcolor=MakeVector(lvcolor.x+deltacolor.x*fx,lvcolor.y+deltacolor.y*fx,lvcolor.z+deltacolor.z*fx);
+            float cx=1-fx;
+            if(cx>1.0f||cx<0){
+                printf("error color interpolating\n");
+            }
+            Vector mcolor=MakeVector(rvcolor.x-deltacolor.x*cx,rvcolor.y-deltacolor.y*cx,rvcolor.z-deltacolor.z*cx);
             
             for(int y=1;y<h;y++){
                 
@@ -1603,12 +1618,12 @@ void makeTransition(int sx,int sz,int ex,int ez){
                 }else if(fx<.5f){
                     
                     BLOCK(x,z,y)=ltype;
-                    COLOR(x,z,y)=lcolor;
+                    COLOR(x,z,y)=lookupColor(mcolor);
                     
                     
                 }else if(fx>=.5f){
                     BLOCK(x,z,y)=rtype;
-                    COLOR(x,z,y)=rcolor;
+                    COLOR(x,z,y)=lookupColor(mcolor);
                 }
             }
             
@@ -1772,6 +1787,7 @@ void clear(){
         for(int z=0;z<GSIZE;z++){
             for(int y=0;y<2;y++){
                 BLOCK(x,z,y)=TYPE_BEDROCK;
+                
             }
             // for(int y=2;y<T_HEIGHT;y++){
             //    BLOCK(x,z,y)=TYPE_NONE;
@@ -1805,7 +1821,7 @@ int tg2_init(){
     }
       clear();
       
-      g_terrain_type=2;
+      g_terrain_type=7;
       if(g_terrain_type==0){
       makeDirt();
       }else if(g_terrain_type==1){
@@ -1814,8 +1830,8 @@ int tg2_init(){
       makeRiverTrees(0,0,GSIZE,GSIZE,550);
       }else if(g_terrain_type==3){
       makeRiverTrees(GSIZE/2,0,GSIZE,GSIZE,550);
-      makeMountains(0,0,GSIZE/2-16,GSIZE,400);
-      makeTransition(GSIZE/2-16,0,GSIZE/2,GSIZE);
+      makeMountains(0,0,GSIZE/2-32,GSIZE,550);
+      makeTransition(GSIZE/2-32,0,GSIZE/2,GSIZE);
       }else if(g_terrain_type==4){
       makeDesert();
       }else if(g_terrain_type==5){
@@ -1831,5 +1847,54 @@ int tg2_init(){
    
 
     return 0;
+    
+}
+void tg2_render(){
+    float increment=1;
+    if(GSIZE>768){
+       increment=GSIZE/768.0f;
+    }
+    int sx=0;
+    int sz=0;
+    for(float x=0;x<GSIZE;x+=increment){
+        sx++;
+        sz=0;
+        for(float z=0;z<GSIZE;z+=increment){
+            sz++;
+            
+            for(int y=T_HEIGHT-1;y>0;y--){
+                int ix=x;
+                int iz=z;
+                if(BLOCK(ix,iz,y)==0)continue;
+                
+                
+                    int icolor=COLOR(ix,iz,y);
+                    
+                    Vector color;
+                    if(icolor==0){
+                        int type=BLOCK(ix,iz,y);
+                        
+                        color.x=blockColor[type][0]/255.0f;
+                        color.z=blockColor[type][2]/255.0f;
+                        color.y=blockColor[type][1]/255.0f;
+                        //color.x=1.0f;
+                        
+                        
+                    }else{
+                        color=colorTable[icolor];
+                    }
+                    glColor4f(color.x,color.y,color.z,1.0f);
+                    [Graphics drawRect:sx:sz:sx+1:sz+1];
+                    
+                    
+                    break;
+                    
+               
+           }
+        }
+        
+        
+
+    }
     
 }

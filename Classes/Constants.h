@@ -9,7 +9,7 @@
 #ifndef Eden_Constants_h
 #define Eden_Constants_h
 
-#define P_FOVY 90.0f
+#define P_FOVY 70.0f
 
 #define P_ZNEAR .1f
 #define IPAD_WIDTH 1024

@@ -112,6 +112,53 @@ static Vector test2;
 static CGRect test1r;
 static CGRect test2r;
 extern BOOL IS_WIDESCREEN;
++(void)genColorTable{
+   
+    int c;
+    int r;
+    c=r=0;
+    colorTable[0].x=1.0f;
+    colorTable[0].y=1.0f;
+    colorTable[0].z=1.0f;
+    for(int i=0;i<NUM_COLORS;i++){
+		
+		        float red,g,b;
+        if(c==8){
+            if(r==5)
+                HSVtoRGB(&red,&g,&b,1,0,0.01f);
+            else
+                HSVtoRGB(&red,&g,&b,1,0,1.0f-r/5.0f);
+        }else{
+            float hu=c;
+            if(c==2)
+                hu-=.6f;
+            if(r<3)
+                HSVtoRGB(&red,&g,&b,360.0f*(float)hu/8,(float)(r+1)/3,1);
+            else
+                HSVtoRGB(&red,&g,&b,360.0f*(float)hu/8,1,1.0f-(float)(r-2)/4);  /*
+                                                                                 int hu=c;
+                                                                                 if(r>=3)hu+=8;
+                                                                                 if(r==0||r==3)
+                                                                                 HSVtoRGB(&red,&g,&b,360.0f*(float)hu/16,0.5f,1);
+                                                                                 else if(r==1||r==4)
+                                                                                 HSVtoRGB(&red,&g,&b,360.0f*(float)hu/16,1,1);
+                                                                                 else
+                                                                                 HSVtoRGB(&red,&g,&b,360.0f*(float)hu/16,1,0.5f);*/
+        }
+        colorTable[i+1].x=red;
+        colorTable[i+1].y=g;
+        colorTable[i+1].z=b;
+        
+		c++;
+		if(c>8){
+			c=0;
+			r++;
+		}
+	}
+
+    
+    
+}
 - (id)init{
     
     fps=60;
@@ -200,6 +247,8 @@ extern BOOL IS_WIDESCREEN;
 			r++;
 		}
 	}
+    [Hud genColorTable];
+  
     c=r=0;
     colorTable[0].x=1.0f;
     colorTable[0].y=1.0f;
@@ -211,40 +260,13 @@ extern BOOL IS_WIDESCREEN;
         (                                                                                                COLOR_ICON_SPACING+COLOR_ICON_SIZE)*r;									 ;
 		colorBounds[i].size.height=COLOR_ICON_SIZE;
 		colorBounds[i].size.width=COLOR_ICON_SIZE;
-        float red,g,b;
-        if(c==8){
-            if(r==5)
-                HSVtoRGB(&red,&g,&b,1,0,0.01f);
-                else                    
-            HSVtoRGB(&red,&g,&b,1,0,1.0f-r/5.0f);
-        }else{
-            float hu=c;
-            if(c==2)
-                hu-=.6f;
-        if(r<3)
-        HSVtoRGB(&red,&g,&b,360.0f*(float)hu/8,(float)(r+1)/3,1);
-        else
-        HSVtoRGB(&red,&g,&b,360.0f*(float)hu/8,1,1.0f-(float)(r-2)/4);  /*
-            int hu=c;
-            if(r>=3)hu+=8;
-            if(r==0||r==3)
-                HSVtoRGB(&red,&g,&b,360.0f*(float)hu/16,0.5f,1);
-            else if(r==1||r==4)
-                HSVtoRGB(&red,&g,&b,360.0f*(float)hu/16,1,1);
-            else
-                 HSVtoRGB(&red,&g,&b,360.0f*(float)hu/16,1,0.5f);*/
-        }
-        colorTable[i+1].x=red;
-        colorTable[i+1].y=g;
-        colorTable[i+1].z=b;
-
-		c++;
+        		c++;
 		if(c>8){
 			c=0;
 			r++;
 		}
 	}
-	rhome.origin.y=rsave.origin.y=rexit.origin.y=rcam.origin.y=marginVert+26;
+   	rhome.origin.y=rsave.origin.y=rexit.origin.y=rcam.origin.y=marginVert+26;
 	int magic_number=40;
 	/*if(IS_IPAD){
 		magic_number=85;

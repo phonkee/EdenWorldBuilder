@@ -570,7 +570,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
 	winX = (float)mx;
 	winY = (float)my;
 	
-    printf("winX: %f, winY: %f viewport[3]:%d\n",winX,winY,viewport[3]);
+    //printf("winX: %f, winY: %f viewport[3]:%d\n",winX,winY,viewport[3]);
     
 	gluUnProject( winX, winY, 0, modelview, projection, viewport, &posX, &posY, &posZ);
 	gluUnProject( winX, winY, 1, modelview, projection, viewport, &posX2, &posY2, &posZ2);

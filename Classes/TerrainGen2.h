@@ -9,7 +9,7 @@
 #ifndef Eden_TerrainGen2_h
 #define Eden_TerrainGen2_h
 
-#define GSIZE (T_SIZE)
+#define GSIZE (T_SIZE*3)
 #define GEN_CWIDTH (GSIZE/CHUNK_SIZE)
 #define GEN_CDEPTH (GSIZE/CHUNK_SIZE)
 
@@ -40,6 +40,6 @@ void clear();
 void makeCave(int xs,int zs,int ys,int sizex,int sizez,int sizey,int colorScheme);
 
 int tg2_init();
-
+void tg2_render();
 
 #endif

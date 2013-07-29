@@ -26,11 +26,16 @@ extern EAGLView* G_EAGL_VIEW;
         double start=CFAbsoluteTimeGetCurrent();
         printf("Terrain gen started\n");
         fm=[[FileManager alloc] init];
+        [Hud genColorTable];
         tg2_init();
         printf("Terrain gen finished %f\n",(CFAbsoluteTimeGetCurrent()-start));
         start=CFAbsoluteTimeGetCurrent();
          [[World getWorld].fm writeGenToDisk];
         printf("File write finished %f\n",(CFAbsoluteTimeGetCurrent()-start));
+        
+        
+        bestGraphics=TRUE;
+        [Graphics initGraphics];
         return self;
     }
     tc_initGeometry();
@@ -345,11 +350,25 @@ extern int chunk_load_count;
 
 - (void)render{
     if(JUST_TERRAIN_GEN){
+        glClearColor(.39f, .25f, .39f, 1.0f);
+        [Graphics prepareScene];
         [Graphics prepareMenu];
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glColor4f(1.0, 1.0, 1.0, 1.0f);
-        [Graphics drawRect:-5:-5:5:5];
+		glColor4f(1.0,0.0, 0.0, 1.0f);
+        glDisable(GL_TEXTURE_2D);
+        
+        tg2_render();
+        /* int size=1;
+        for(int x=0;x<1024;x++){
+            for(int y=0;y<768;y++){
+                glColor4f(randf(1.0f),0,0,.05f);
+                [Graphics drawRect:x*size:y*size:x*size+15:y*size+15];
+            }
+        }*/
+        
+        
+        glEnable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);
         [Graphics endMenu];
         

@@ -349,10 +349,10 @@ extern BOOL SUPPORTS_OGL2;
 	//glClear();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	static int c=0;
-    if(c==0){c++;
-        printf("ar: %f, fovy:%f\n",P_ASPECT_RATIO,P_FOVY);}
-	gluPerspective(70,P_ASPECT_RATIO,P_ZNEAR,P_ZFAR-25);
+	//static int c=0;
+    //if(c==0){c++;
+       // printf("ar: %f, fovy:%f\n",P_ASPECT_RATIO,P_FOVY);}
+	gluPerspective(P_FOVY,P_ASPECT_RATIO,P_ZNEAR,P_ZFAR-25);
 	glMatrixMode(GL_MODELVIEW);		
 	glLoadIdentity();
 /*	if([World getWorld].FLIPPED)
@@ -420,6 +420,7 @@ extern BOOL SUPPORTS_OGL2;
 + (void)drawSquare:(float)x1 :(float)y1 :(float)z1 :(float)len{
 //	[Graphics drawRect:x1:y1:z1:x1+len:y1+len:z1+len];
 }
+
 + (void)drawRect:(float)x1 :(float)y1 :(float)x2 :(float)y2{	
 	GLfloat rectVertices[] = {
 		x1	  ,y1	 ,-.5   ,

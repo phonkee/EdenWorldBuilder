@@ -227,7 +227,7 @@ extern EAGLView* G_EAGL_VIEW;
         glBindFramebufferOES(GL_FRAMEBUFFER_OES, defaultFramebuffer);
         glBindRenderbufferOES(GL_RENDERBUFFER_OES, colorRenderbuffer);
         
-        printf("glviewport!: %d, %d\n",framebufferWidth,framebufferHeight);
+    //    printf("glviewport!: %d, %d\n",framebufferWidth,framebufferHeight);
         glViewport(0, 0, framebufferWidth, framebufferHeight);
 	
 	}
