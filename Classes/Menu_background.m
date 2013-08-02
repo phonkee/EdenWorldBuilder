@@ -46,11 +46,12 @@ static float counter=0;
 	if(groundx>480)groundx-=480;
     if(!IS_IPAD){
         mountainx+=10*etime;
-        if(mountainx>642)mountainx-=642;
+        if(mountainx>835*2)mountainx-=835*2;
     }
     else{
 	mountainx+=11*etime;
-	if(mountainx>1025.0f/SCALE_WIDTH)mountainx-=1025.0f/SCALE_WIDTH;;
+        if(mountainx>835*2)mountainx-=835*2;
+
     }
     clouds[2].origin.x+=12*etime;
     clouds[1].origin.x+=18*etime;
@@ -82,7 +83,7 @@ static float counter=0;
     counter+=etime;
 	if(counter>5){
         counter=0;
-		
+		int cloudoffsety=115;
 		cloud* new_cloud=malloc(sizeof(cloud));
 		new_cloud->next=cloud_list;
 		new_cloud->type=arc4random()%3;
@@ -90,15 +91,15 @@ static float counter=0;
 		//new_cloud->rect.origin.y=arc4random()%((int)(SCREEN_HEIGHT-85-44))+85;
 		new_cloud->rect.origin.x=-175;
         if(new_cloud->type==0){
-		new_cloud->rect.origin.y=90+(float)arc4random()/UINT_MAX*30;
+		new_cloud->rect.origin.y=cloudoffsety+(float)arc4random()/UINT_MAX*30;
             new_cloud->speed=12;
         }
         if(new_cloud->type==1){
-        new_cloud->rect.origin.y=120+(float)arc4random()/UINT_MAX*40;
+        new_cloud->rect.origin.y=cloudoffsety+30+(float)arc4random()/UINT_MAX*40;
              new_cloud->speed=16;
         }
         if(new_cloud->type==2){
-            new_cloud->rect.origin.y=170+(float)arc4random()/UINT_MAX*60;
+            new_cloud->rect.origin.y=cloudoffsety+80+(float)arc4random()/UINT_MAX*60;
              new_cloud->speed=20;
         }
 		
@@ -143,32 +144,18 @@ extern BOOL IS_WIDESCREEN;
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glPopMatrix();
 	glColor4f(1.0,1.0,1.0,1.0);
-	CGRect ground;
-	ground.origin.x=groundx;
-	ground.origin.y=0;
-	ground.size.height=25;
-	ground.size.width=481;
-	[[[Resources getResources] getMenuTex:MENU_GROUND] drawText:ground];
-	ground.origin.x-=480;
-	[[[Resources getResources] getMenuTex:MENU_GROUND] drawText:ground];
-    if(IS_WIDESCREEN){
-        ground.origin.x+=480*2;
-        [[[Resources getResources] getMenuTex:MENU_GROUND] drawText:ground];
-         ground.origin.x-=480*2;
-
-    }
-	ground.origin.x+=480;
-	
-	//642 c 85
-   // for(int i=0;i<3;i++){
-    //    [[[Resources getResources] getMenuTex:MENU_CLOUD] drawText:clouds[i]];        
+    
+    
+    //642 c 85
+    // for(int i=0;i<3;i++){
+    //    [[[Resources getResources] getMenuTex:MENU_CLOUD] drawText:clouds[i]];
     //}
     cloud* node=cloud_list;
 	if(node)
-       
+        
         while(node!=NULL){
-           // NSLog(@" x:%f y:%f width:%f height:%f",node->rect.origin.x,node->rect.origin.y,
-           //       node->rect.size.width,node->rect.size.height);
+            // NSLog(@" x:%f y:%f width:%f height:%f",node->rect.origin.x,node->rect.origin.y,
+            //       node->rect.size.width,node->rect.size.height);
             Texture2D* tex=NULL;
             if(node->type==0)tex=[[Resources getResources] getMenuTex:MENU_CLOUD];
             if(node->type==1)tex=[[Resources getResources] getMenuTex:MENU_CLOUD2];
@@ -178,36 +165,68 @@ extern BOOL IS_WIDESCREEN;
             node=node->next;
         }
     
-	CGRect mountain;
+    CGRect mountain;
 	mountain.origin.x=mountainx;
-    if(!IS_IPAD){
-	mountain.origin.y=25;
-        mountain.size.height=85;
-        mountain.size.width=643;
-        [[[Resources getResources] getMenuTex:MENU_MOUNTAINS] drawInRect:mountain];
-        mountain.origin.x-=642;
-        [[[Resources getResources] getMenuTex:MENU_MOUNTAINS] drawInRect:mountain];
-        mountain.origin.x+=642;
-    }
-    else{
-        mountain.origin.y=139.0f/SCALE_HEIGHT;
+    
+	mountain.origin.y=0;
+    mountain.size.height=456;
+    mountain.size.width=835;
+    
+    [[[Resources getResources] getMenuTex:MENU_TREESLEFT] drawTextNoScale:mountain];
+    mountain.origin.x+=835;
+    [[[Resources getResources] getMenuTex:MENU_TREESRIGHT] drawTextNoScale:mountain];
+    mountain.origin.x-=835;
+    
+    mountain.origin.x-=835*2;
+    [[[Resources getResources] getMenuTex:MENU_TREESLEFT] drawTextNoScale:mountain];
+    mountain.origin.x+=835;
+    [[[Resources getResources] getMenuTex:MENU_TREESRIGHT] drawTextNoScale:mountain];
+    mountain.origin.x-=835;
+    
+    mountain.origin.x+=835*2;
+    
+    
+	CGRect ground;
+	ground.origin.x=groundx;
+	ground.origin.y=0;
+	ground.size.height=25;
+	ground.size.width=481;
+	[[[Resources getResources] getMenuTex:MENU_GROUND] drawTextM:ground];
+	ground.origin.x-=480;
+	[[[Resources getResources] getMenuTex:MENU_GROUND] drawTextM:ground];
+    if(IS_WIDESCREEN){
+        ground.origin.x+=480*2;
+        [[[Resources getResources] getMenuTex:MENU_GROUND] drawTextM:ground];
+         ground.origin.x-=480*2;
 
-        mountain.size.height=85;
-        mountain.size.width=1025.0f/SCALE_WIDTH;;
+    }
+	ground.origin.x+=480;
+	
+    
    
-        [[[Resources getResources] getMenuTex:MENU_MOUNTAINS] drawText:mountain];
+    
+    
+    
+
+    
+    /*else{
+        mountain.origin.y=139.0f/SCALE_HEIGHT;
+        mountain.size.height=85;
+        mountain.size.width=1025.0f/SCALE_WIDTH;
+   
+        [[[Resources getResources] getMenuTex:MENU_MOUNTAINS] drawTextNoScale:mountain];
         mountain.origin.x-=1024.0f/SCALE_WIDTH;
-        [[[Resources getResources] getMenuTex:MENU_MOUNTAINS] drawText:mountain];
+        [[[Resources getResources] getMenuTex:MENU_MOUNTAINS] drawTextNoScale:mountain];
         
         if(IS_WIDESCREEN){
             mountain.origin.x+=2*1024.0f/SCALE_WIDTH;
-            [[[Resources getResources] getMenuTex:MENU_MOUNTAINS] drawText:mountain];
+            [[[Resources getResources] getMenuTex:MENU_MOUNTAINS] drawTextNoScale:mountain];
             mountain.origin.x-=2*1024.0f/SCALE_WIDTH;
         }
         mountain.origin.x+=1025.0f/SCALE_WIDTH;
    
     }
-    
+    */
    
     
    

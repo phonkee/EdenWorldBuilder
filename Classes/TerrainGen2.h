@@ -9,7 +9,7 @@
 #ifndef Eden_TerrainGen2_h
 #define Eden_TerrainGen2_h
 
-#define GSIZE (T_SIZE*3)
+#define GSIZE (T_SIZE*4)
 #define GEN_CWIDTH (GSIZE/CHUNK_SIZE)
 #define GEN_CDEPTH (GSIZE/CHUNK_SIZE)
 
@@ -17,11 +17,14 @@
 #define CAP(y,max) ((y)>=(max)?(max):(y))
 #define BLOCK(x,z,y) blockz[((int)(x)*(GSIZE*T_HEIGHT)+(int)(z)*(T_HEIGHT)+(int)(y))]
 #define COLOR(x,z,y) colorz[((int)(x)*(GSIZE*T_HEIGHT)+(int)(z)*(T_HEIGHT)+(int)(y))]
+#define TEMP(x,z) elevation[((int)(x)*(GSIZE)+(int)(z))]
 
+#define NOBLOCKGEN 1
 
 block8* blockz;
 color8* colorz;
 
+block8* elevation;
 
 
 

@@ -216,7 +216,7 @@ static int count=0;
  
     
  
- 
+    if(!NOBLOCKGEN)
     for(int x=0;x<GEN_CWIDTH;x++){
         for(int z=0;z<GEN_CDEPTH;z++){
             [[World getWorld].fm saveGenColumn:x+centerChunk-r:z+centerChunk-r:centerChunk-r];

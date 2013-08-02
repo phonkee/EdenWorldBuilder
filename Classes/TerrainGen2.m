@@ -701,14 +701,14 @@ void makeDirt(){
 	
 }
 
-void makeMars(){
+void makeMars(int x1,int z1,int x2,int z2){
     float var=3;  //how much variance in heightmap?
     //LEVEL_SEED=0;
 	
 	
 	const int offsety=T_HEIGHT/8;
-    for(int x=0;x<GSIZE;x++){ //Heightmap
-		for(int z=0;z<GSIZE;z++){
+    for(int x=x1;x<x2;x++){ //Heightmap
+		for(int z=z1;z<z2;z++){
             int h;
             
             float n=offsety;
@@ -739,30 +739,7 @@ void makeMars(){
                         BLOCK(x,z,y)=TYPE_STONE;
                         COLOR(x,z,y)=colorCycle2(h,0);
                         continue;
-                        //}
-						/*float n3=0;
-                         float FREQ3=4.0f;
-                         float AMPLITUDE3=0.25f;
-                         for(int i=0;i<3;i++){
-                         float vec[3]={(float)FREQ3*(x+LEVEL_SEED)/NOISE_CONSTANT
-                         ,(float)FREQ3*(z+LEVEL_SEED)/NOISE_CONSTANT,
-                         (float)FREQ3*(y+LEVEL_SEED)/NOISE_CONSTANT};
-                         n3+=noise3(vec)*(AMPLITUDE3);
-                         FREQ3*=2;
-                         AMPLITUDE3/=2;
-                         }
-                         
-                         if(n3>0){
-                         if(n3<=0.01f)
-                         setLandt(x ,z ,y ,TYPE_DARK_STONE);
-                         else
-                         setLandt(x ,z ,y ,TYPE_STONE);
-                         
-                         }else {
-                         
-                         setLandt(x ,z ,y ,TYPE_NONE);
-                         }*/
-						
+                        
                         
 					}else{
                         BLOCK(x,z,y)=TYPE_STONE;
@@ -787,20 +764,18 @@ void makeMars(){
 					}
 				}
                 
-                //	setLandt(x :z :y :TYPE_DIRT];
+               
 				
 				
 			}
-			
-			//if(self getLandc(<#int x#>, <#int z#>, <#int y#>)
-			//setLandt(x :z :h-1 :TYPE_GRASS];
+	
             
 		}
 		
 	}
     
-    for(int x=0;x<GSIZE;x++){
-		for(int z=0;z<GSIZE;z++){
+    for(int x=x1;x<x2;x++){
+		for(int z=z1;z<z2;z++){
             BLOCK(x ,z ,0)=TYPE_SAND;
 			
 			for(int y=0;y<5;y++){
@@ -829,38 +804,8 @@ void makeMars(){
         }while(pos.x==-1);
         
     }
-    makeVolcano(GSIZE/2,GSIZE/2,1,30);
-   /* for(int zz=0;zz<3;zz++){
-    int x=randi(GSIZE-10)+5;
-    int z=randi(GSIZE-10)+5;
-    // int color=randi(53);
-    
-       Vector pos;
-    do{
-    pos= makeWorm(x,z,15,randi(4)+1);
-    }while(pos.x==-1);
-
-    for(int i=0;i<15;i++){
-        printf("worm: %f,%f,%f",pos.x,pos.z,pos.y);
-        if(pos.x<0)pos.x+=GSIZE;
-        if(pos.x>=GSIZE)pos.x-=GSIZE;
-        if(pos.z<0)pos.z+=GSIZE;
-        if(pos.z>=GSIZE)pos.z-=GSIZE;
-        pos=makeWorm(pos.x,pos.z,pos.y,randi(2)+3);
-        
-    }
-    }*/
-    
-    
-   /* for(int x=2;x<CHUNK_SIZE-2;x++){ //Trees
-		for(int z=2;z<CHUNK_SIZE-2;z++){
-			for(int y=1;y<T_HEIGHT-1;y++){
-				if(BLOCK(x ,z ,y)==TYPE_GRASS||BLOCK(x ,z ,y)==TYPE_GRASS2){
-					//[self placeTree:x :z :y+1];
-				}
-			}
-		}
-	}*/
+    makeVolcano((x1+x2)/2,(z1+z2)/2,1,30);
+ 
     [World getWorld].terrain.final_skycolor=  colorTable[10];
    
     printf("sky %f,%f,%f\n",  [World getWorld].terrain.final_skycolor.x,  [World getWorld].terrain.final_skycolor.y,  [World getWorld].terrain.final_skycolor.z);
@@ -990,6 +935,7 @@ void makeMix(){
             }
         }
     }
+    makeMars(GSIZE*3/4,0,GSIZE,GSIZE);
     
 }
 void makeBeach(){
@@ -1322,6 +1268,10 @@ void makeGreenHills(int height){
             offsety=height-(100-x);
             offsety=clampy(offsety);
         }
+        if(x>GSIZE*3/4){
+            offsety=height-(x-GSIZE*3/4);
+            offsety=clampy(offsety);
+        }
 		for(int z=0;z<GSIZE;z++){
             int h;
             
@@ -1389,12 +1339,15 @@ void makeGreenHills(int height){
 			
 		}
 	}
-    int sea_level=-3;
+    int sea_level=0;
     for(int x=0;x<GSIZE;x++){
 		for(int z=0;z<GSIZE;z++){
             //BLOCK(x ,z ,0)=TYPE_SAND;
-			
-			for(int y=6;y<23+sea_level;y++){
+            if(x>GSIZE*3/4){
+               sea_level=(GSIZE*3/4-x);
+                if(sea_level<-19)sea_level=-19;
+                           }
+			for(int y=6;y<20+sea_level;y++){
 				if(BLOCK(x ,z ,y)==TYPE_NONE){
                     for(int iy=1;iy<6;iy++){
                     BLOCK(x,z,y-iy)=TYPE_WATER;
@@ -1781,6 +1734,8 @@ int g_terrain_type=7;
 void clear(){
     [World getWorld].terrain.final_skycolor=colorTable[9];
     
+    memset(elevation,0,sizeof(block8)*(GSIZE*GSIZE));
+    if(NOBLOCKGEN)return;
     memset(blockz,0,sizeof(block8)*(BLOCKZ_SIZE));
     memset(colorz,0,sizeof(color8)*(BLOCKZ_SIZE));
     for(int x=0;x<GSIZE;x++){
@@ -1795,15 +1750,89 @@ void clear(){
         }
     }
 }
-
+void genTemperatureMap(){
+    float var=3;
+    int offset=T_HEIGHT/2;
+    int mwidth=16;
+    int mheight=16;
+    float map[mwidth+2][mheight+2];
+    memset(map,0,sizeof(map));
+    for(int x=0;x<mwidth;x++){ //Heightmap
+        for(int z=0;z<mheight;z++){
+            int h;
+            
+            float n=0;
+            float FREQ=16.0f;
+            //float FREQ3=4.0f;
+            float AMPLITUDE=16.0f;
+            for(int i=0;i<10;i++){
+                float vec[2]={(float)FREQ*(x+LEVEL_SEED2)/NOISE_CONSTANT
+                    ,(float)FREQ*(z+LEVEL_SEED2)/NOISE_CONSTANT};
+                n+=noise2(vec)*(AMPLITUDE)*var;
+                FREQ*=2;
+                AMPLITUDE/=2;
+            }
+            h=(int)roundf(n)+offset;
+            if(h-1>=T_HEIGHT){
+                NSLog(@"NONONO");
+            }
+           
+			
+            int y;
+            y=clampy(h);
+            map[x][z]=y/64.0f;
+            
+                 
+           
+                
+				
+			
+			
+            
+		}
+		
+	}
+    float mwr=GSIZE/(float)mwidth;
+    float mhr=GSIZE/(float)mheight;
+    for(int x=0;x<GSIZE;x++){
+        for(int z=0;z<GSIZE;z++){
+            float fx=(float)x/mwr;
+            float fz=(float)z/mhr;
+            float f00=map[(int)fx][(int)fz];
+            float f10=map[(int)fx+1][(int)fz];
+            float f01=map[(int)fx][(int)fz+1];
+            float f11=map[(int)fx+1][(int)fz+1];
+            
+            float px=fx-(int)fx;
+            float pz=fz-(int)fz;
+            
+            float r=f00*(1-px)+f10*px;
+            float r2=f01*(1-px)+f11*px;
+            
+            
+            r=(r*(1-pz)+r2*pz);
+            
+          /*  float r3=f00*(1-pz)+f01*pz;
+            float r4=f10*(1-pz)+f11*pz;
+            r3=(r3+r4)/2.0f;*/
+           
+           
+            TEMP(x,z)=r*255.0f-128.0f;
+        }
+    }
+    
+}
 int tg2_init(){
     //clear();
+    elevation=malloc(sizeof(block8)*GSIZE*GSIZE);
     
-    //
+    if(!NOBLOCKGEN){
     blockz=malloc(sizeof(block8)*BLOCKZ_SIZE);
     colorz=malloc(sizeof(block8)*BLOCKZ_SIZE);
     if(!blockz)printf("couldn't allocate mem for blockz\n");
     if(!colorz)printf("couldn't allocate mem for colorz\n");
+        
+    }
     
     tgenInit();
     
@@ -1820,12 +1849,18 @@ int tg2_init(){
     //    makeHill(randi(GSIZE),randi(GSIZE),3,randi(35),0);
     }
       clear();
-      
+    if(NOBLOCKGEN){
+        
+        genTemperatureMap();
+        
+        return 0;
+        
+    }
       g_terrain_type=7;
       if(g_terrain_type==0){
       makeDirt();
       }else if(g_terrain_type==1){
-      makeMars();
+      makeMars(0,0,GSIZE,GSIZE);
       }else if(g_terrain_type==2){
       makeRiverTrees(0,0,GSIZE,GSIZE,550);
       }else if(g_terrain_type==3){
@@ -1841,6 +1876,7 @@ int tg2_init(){
       }else if(g_terrain_type==7){
       makeMix();
       }else if(g_terrain_type==8){
+          
       //genflat=TRUE;
       }
    
@@ -1861,10 +1897,15 @@ void tg2_render(){
         sz=0;
         for(float z=0;z<GSIZE;z+=increment){
             sz++;
+            int ix=x;
+            int iz=z;
             
-            for(int y=T_HEIGHT-1;y>0;y--){
-                int ix=x;
-                int iz=z;
+            float value=(TEMP(ix,iz)+128.0f)/255.0f;
+            glColor4f(value,value,value,1.0f);
+            [Graphics drawRect:sx:sz:sx+1:sz+1];
+            
+           /* for(int y=T_HEIGHT-1;y>0;y--){
+               
                 if(BLOCK(ix,iz,y)==0)continue;
                 
                 
@@ -1890,7 +1931,7 @@ void tg2_render(){
                     break;
                     
                
-           }
+           }*/
         }
         
         

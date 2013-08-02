@@ -1425,6 +1425,39 @@ int realStoredSkinCounter=0;
     
 }
 
+- (void) drawTextM:(CGRect)rect{
+    CGFloat depth=0.0;
+	
+    GLfloat				width = 480,
+    height = roundf((GLfloat)_height * _maxT);
+    
+    if(IS_IPAD){
+        rect.origin.x*=SCALE_WIDTH;
+        width=1024;
+        rect.origin.y*=SCALE_HEIGHT;
+        rect.origin.x=roundf(rect.origin.x);
+        rect.origin.y=roundf(rect.origin.y);
+    }
+	GLfloat				vertices[] = {
+        rect.origin.x,							rect.origin.y,							depth,
+        rect.origin.x + width,		rect.origin.y,							depth,
+        rect.origin.x,							rect.origin.y + height,		depth,
+        rect.origin.x + width,		rect.origin.y + height,		depth
+    };
+	GLfloat				coordinates[] = {
+        0,				_maxT,
+        _maxS,			_maxT,
+        0,				0,
+        _maxS,			0
+    };
+	glBindTexture(GL_TEXTURE_2D, _name);
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    
+    
+}
+
 - (void) drawText:(CGRect)rect{
     CGFloat depth=0.0;
 	GLfloat				coordinates[] = {

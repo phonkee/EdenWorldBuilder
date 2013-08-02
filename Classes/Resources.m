@@ -1224,6 +1224,13 @@ extern BOOL SUPPORTS_OGL2;
 		  initWithImagePath:@"menu_creatures.png" sizeToFit:FALSE];
 	[menutextures addObject:temp];
 	
+    temp=[[Texture2D alloc]
+		  initWithImagePath:@"treelayerleft.png" sizeToFit:FALSE];
+	[menutextures addObject:temp];
+    
+    temp=[[Texture2D alloc]
+		  initWithImagePath:@"treelayerright.png" sizeToFit:FALSE];
+	[menutextures addObject:temp];
 	
 }
 static float cuetimer=0;
