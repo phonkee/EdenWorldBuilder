@@ -310,10 +310,9 @@ public class List2 extends HttpServlet
         	 
         	 return;
         }
-        if(sort>=0&&sort<3){ 
-        	if(listBuffers[sort]!=null)
+        if(sort>=0&&sort<3) 
             outp.write(listBuffers[sort]);
-        }else      	
+        else
         	outp.write("");
     	}catch(Exception ex){
     		ex.printStackTrace();

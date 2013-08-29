@@ -1817,7 +1817,7 @@ void genTemperatureMap(){
             r3=(r3+r4)/2.0f;*/
            
            
-            TEMP(x,z)=r*255.0f-128.0f;
+            TEMP(x,z)=f00*255.0f-128.0f;
         }
     }
     

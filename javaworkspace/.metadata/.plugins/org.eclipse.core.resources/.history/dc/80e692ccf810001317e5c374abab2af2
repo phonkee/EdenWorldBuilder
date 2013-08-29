@@ -311,7 +311,7 @@ public class List2 extends HttpServlet
         	 return;
         }
         if(sort>=0&&sort<3){ 
-        	if(listBuffers[sort]!=null)
+        	if(listBuffers[sort])
             outp.write(listBuffers[sort]);
         }else      	
         	outp.write("");
