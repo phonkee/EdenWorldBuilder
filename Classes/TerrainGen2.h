@@ -18,13 +18,13 @@
 #define BLOCK(x,z,y) blockz[((int)(x)*(GSIZE*T_HEIGHT)+(int)(z)*(T_HEIGHT)+(int)(y))]
 #define COLOR(x,z,y) colorz[((int)(x)*(GSIZE*T_HEIGHT)+(int)(z)*(T_HEIGHT)+(int)(y))]
 #define TEMP(x,z) elevation[((int)(x)*(GSIZE)+(int)(z))]
+#define BIOME(x,z) biomez[((int)(x)*(1024)+(int)(z))]
 
-#define NOBLOCKGEN 1
 
-block8* blockz;
-color8* colorz;
+#define NOBLOCKGEN 0
 
-block8* elevation;
+
+
 
 
 

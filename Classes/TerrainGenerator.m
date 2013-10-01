@@ -375,7 +375,7 @@ extern int g_offcx,g_offcz;
 					AMPLITUDE/=2;
 				}			
 				if(n<0.0f){				
-					[ter setLand:x :z :y :TYPE_DIRT];				
+				e	[ter setLand:x :z :y :TYPE_DIRT];				
 				}			
 			}		
 		}	

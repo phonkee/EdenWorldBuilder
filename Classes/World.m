@@ -29,6 +29,7 @@ extern EAGLView* G_EAGL_VIEW;
         fm=[[FileManager alloc] init];
         [Hud genColorTable];
         tg2_init();
+        [[World getWorld].fm loadGenFromDisk];
         printf("Terrain gen finished %f\n",(CFAbsoluteTimeGetCurrent()-start));
         start=CFAbsoluteTimeGetCurrent();
          [[World getWorld].fm writeGenToDisk];

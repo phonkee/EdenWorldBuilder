@@ -153,6 +153,84 @@ static int count=0;
     
     
 }
+-(void)loadGenFromDisk{
+    NSString *path =@"test.png";
+    
+   
+    
+    if (path != nil)
+    {
+        //UIImage *image = [UIImage imageNamed:path];
+        
+        if(![path isAbsolutePath])
+            path = [[NSBundle mainBundle] pathForResource:path ofType:nil];
+       
+        UIImage *image = [UIImage imageWithContentsOfFile:path];
+       
+        if(image != NULL)printf("loaded image\n");
+        
+       
+        
+        // First get the image into your data buffer
+        CGImageRef imageRef = [image CGImage];
+        NSUInteger width = CGImageGetWidth(imageRef);
+        NSUInteger height = CGImageGetHeight(imageRef);
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        unsigned char *rawData = (unsigned char*) calloc(height * width * 4, sizeof(unsigned char));
+        NSUInteger bytesPerPixel = 4;
+        NSUInteger bytesPerRow = bytesPerPixel * width;
+        NSUInteger bitsPerComponent = 8;
+        CGContextRef context = CGBitmapContextCreate(rawData, width, height,
+                                                     bitsPerComponent, bytesPerRow, colorSpace,
+                                                     kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
+        CGColorSpaceRelease(colorSpace);
+        
+        CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef);
+        CGContextRelease(context);
+        
+        int xx=0;
+        int yy=0;
+        int count=width*height;
+        extern block8* biomez;
+        biomez=malloc(height*width*sizeof(block8));
+        // Now your rawData contains the image data in the RGBA8888 pixel format.
+        int x=0;
+        int y=0;
+        int byteIndex = (bytesPerRow * yy) + xx * bytesPerPixel;
+        BOOL onetime=false;
+        int waterc=0;
+        int landc=0;
+        for (int ii = 0 ; ii < count ; ++ii)
+        {
+            int red   = (rawData[byteIndex]     * 1.0);
+            int green = (rawData[byteIndex + 1] * 1.0);
+            int blue  = (rawData[byteIndex + 2] * 1.0);
+            int alpha = (rawData[byteIndex + 3] * 1.0);
+            byteIndex += 4;
+            x++;
+            if(x==width){
+                x=0;
+                y++;
+            }
+            if(green==255){
+                BIOME(x,y)=1;
+                landc++;
+                
+            }else if(blue==255){
+                BIOME(x,y)=2;
+                waterc++;
+            }
+            
+        }
+        printf("landc:%d waterc:%d total:%d\n",landc,waterc, count);
+        free(rawData);
+        
+       
+    
+    }
+    
+    
+}
 -(void)writeGenToDisk{
     printf("writing gen to disk\n");
     NSString* name=@"Eden.eden";

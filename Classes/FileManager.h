@@ -24,6 +24,7 @@
 -(void)readColumn:(int)cx:(int)cz:(NSFileHandle*)nsfh;
 -(void)saveWorld;
 -(void)saveWorld:(Vector)warp;
+-(void)loadGenFromDisk;
 -(void)writeGenToDisk;
 -(void)writeDirectory;
 -(void)readDirectory;

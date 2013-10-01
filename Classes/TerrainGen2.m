@@ -21,6 +21,13 @@
 #define LEVEL_SEED 400
 #define LEVEL_SEED2 123
 
+block8* biomez;
+block8* blockz;
+color8* colorz;
+
+block8* elevation;
+
+
 extern Vector colorTable[256];
 void makeHill(int x,int z,int y, int size,int type);
 int BC(int i){
@@ -824,8 +831,10 @@ void makeMix(){
 	[World getWorld].terrain.final_skycolor=colorTable[6];
 	
 	int offsety=T_HEIGHT/2-10;
+   
     for(int x=0;x<GSIZE;x++){ //Heightmap
 		for(int z=0;z<GSIZE;z++){
+            //float value=((TEMP(x,z)+128.0f)/255.0f);
             int h;
             if(x>GSIZE/2+10)break;
             if(x>GSIZE/2-10){
@@ -844,64 +853,29 @@ void makeMix(){
             }
             h=(int)roundf(n);
             h=clampy(h);
-           
-            
-			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply
+                        
+			int FORMATION_HEIGHT=h-6;
+            //how deep should the 3D noise apply
             //The deeper the 3D noise and the more variance in heightmap,
             //The more intense the terrain is
-            //
+            
             FORMATION_HEIGHT=T_HEIGHT-1;
 			
 			for(int y=0;y<h;y++){
 				
-                // if(y>(h%2+1)&&y<FORMATION_HEIGHT-16){
+                 if(y>(h%2+1)&&y<FORMATION_HEIGHT-16){
+                ///if(value>0){
+                    BLOCK(x,z,y)=TYPE_STONE;
+               
                 
-                BLOCK(x,z,y)=TYPE_STONE;
-                COLOR(x,z,y)=colorCycle7(y+10,8);//colorCycle3(y+30,8);
-                //COLOR(x,z,y)=colorCycle3(y+30,1);
-                
-                
-                
-                
-				
-			}
-			
-            
+                    COLOR(x,z,y)=colorCycle7(y+10,8);//colorCycle3(y+30,8);
+                // }//COLOR(x,z,y)=colorCycle3(y+30,1);
+                 }
+            }
 		}
-		
-	}
+    }
     
-    /*for(int x=0;x<GSIZE;x++){
-		for(int z=0;z<GSIZE;z++){
-            //   BLOCK(x ,z ,0)=TYPE_SAND;
-			int snowlevel=34;
-			for(int y=snowlevel;y<T_HEIGHT;y++){
-                if(y==34||y==35)if(arc4random()%2==0)continue;
-                
-                if(y==36||y==37)if(arc4random()%2==0)continue;
-                
-                if(y==38||y==39)if(arc4random()%2==0&&arc4random()%2==0)continue;
-                
-				if(BLOCK(x ,z ,y)==TYPE_NONE){
-					if(BLOCK(x ,z ,y-1)==TYPE_STONE){
-                        
-                        BLOCK(x ,z ,y-1 )=TYPE_CLOUD;
-                        COLOR(x ,z ,y-1 )=9;
-                        if(BLOCK(x,z,y-2)==TYPE_STONE){
-                            BLOCK(x,z,y-2)=TYPE_CLOUD;
-                            COLOR(x,z,y-2)=9;
-                        }
-					}
-				}else{
-					
-					
-					
-				}
-				
-			}
-			
-		}
-	}*/
+    
     //  int sea_level=-14;
     for(int x=0;x<GSIZE;x++){
 		for(int z=0;z<GSIZE;z++){
@@ -1806,18 +1780,26 @@ void genTemperatureMap(){
             float px=fx-(int)fx;
             float pz=fz-(int)fz;
             
+            float d00=sqrtf((1-px)*(1-px)+(1-pz)*(1-pz));
+            float d10=sqrtf(px*px+(1-pz)*(1-pz));
+            float d01=sqrtf((1-px)*(1-px)+pz*pz);
+            float d11=sqrtf(px*px+pz*pz);
+            
+           // float r=(f00*d00+f10*d10)/(d00+d10);//+f10*d10+f11*d11+f01*d01)/(d00+d01+d10+d11);
+            
+                            
             float r=f00*(1-px)+f10*px;
             float r2=f01*(1-px)+f11*px;
             
             
             r=(r*(1-pz)+r2*pz);
             
-          /*  float r3=f00*(1-pz)+f01*pz;
+            float r3=f00*(1-pz)+f01*pz;
             float r4=f10*(1-pz)+f11*pz;
-            r3=(r3+r4)/2.0f;*/
+            r3=(r3*(1-px)+r4*px);
            
            
-            TEMP(x,z)=f00*255.0f-128.0f;
+            TEMP(x,z)=((r+r3)/2.0f)*255.0f-128.0f;
         }
     }
     
@@ -1849,9 +1831,10 @@ int tg2_init(){
     //    makeHill(randi(GSIZE),randi(GSIZE),3,randi(35),0);
     }
       clear();
+    genTemperatureMap();
     if(NOBLOCKGEN){
         
-        genTemperatureMap();
+        
         
         return 0;
         
@@ -1900,11 +1883,19 @@ void tg2_render(){
             int ix=x;
             int iz=z;
             
-            float value=(TEMP(ix,iz)+128.0f)/255.0f;
-            glColor4f(value,value,value,1.0f);
-            [Graphics drawRect:sx:sz:sx+1:sz+1];
+           
+           // glColor4f(value,value,value,1.0f);
+           // [Graphics drawRect:sx:sz:sx+1:sz+1];
+             float value=(TEMP(ix,iz)+128.0f)/255.0f;
             
-           /* for(int y=T_HEIGHT-1;y>0;y--){
+            int biome=BIOME(ix,iz);
+            if(biome==1)
+                BLOCK(ix,iz,T_HEIGHT-1)=TYPE_GRASS;
+            else if(biome==2)
+                BLOCK(ix,iz,T_HEIGHT-1)=TYPE_WATER;
+            COLOR(ix,iz,T_HEIGHT-1)=0;
+        
+            for(int y=T_HEIGHT-1;y>0;y--){
                
                 if(BLOCK(ix,iz,y)==0)continue;
                 
@@ -1924,14 +1915,15 @@ void tg2_render(){
                     }else{
                         color=colorTable[icolor];
                     }
-                    glColor4f(color.x,color.y,color.z,1.0f);
+                //color=colorTable[10];
+                    glColor4f(color.x,color.y,color.z,value);
                     [Graphics drawRect:sx:sz:sx+1:sz+1];
                     
                     
                     break;
                     
                
-           }*/
+           }
         }
         
         

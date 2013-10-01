@@ -57,6 +57,7 @@
 		19DE2CAC16D83C2C00BA6380 /* Icon_72.png in Resources */ = {isa = PBXBuildFile; fileRef = 19DE2CAB16D83C2C00BA6380 /* Icon_72.png */; };
 		19DE2CAE16D83C3300BA6380 /* Icon_144.png in Resources */ = {isa = PBXBuildFile; fileRef = 19DE2CAD16D83C3300BA6380 /* Icon_144.png */; };
 		19E6AC9D1635EBC400772AB3 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 19E6AC9C1635EBC400772AB3 /* Default-568h@2x.png */; };
+		19FD78F917F7B7430023DD80 /* test.png in Resources */ = {isa = PBXBuildFile; fileRef = 19FD78F817F7B7430023DD80 /* test.png */; };
 		1D13502E15C4AE2A0038CE4C /* uisave.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13502D15C4AE2A0038CE4C /* uisave.png */; };
 		1D13503615C58F000038CE4C /* uiexit.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13503315C58F000038CE4C /* uiexit.png */; };
 		1D13503715C58F000038CE4C /* uihome.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13503415C58F000038CE4C /* uihome.png */; };
@@ -802,6 +803,7 @@
 		19DE2CAB16D83C2C00BA6380 /* Icon_72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_72.png; sourceTree = "<group>"; };
 		19DE2CAD16D83C3300BA6380 /* Icon_144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_144.png; sourceTree = "<group>"; };
 		19E6AC9C1635EBC400772AB3 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		19FD78F817F7B7430023DD80 /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = SOURCE_ROOT; };
 		1D13502D15C4AE2A0038CE4C /* uisave.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uisave.png; path = uitext/uisave.png; sourceTree = "<group>"; };
 		1D13503315C58F000038CE4C /* uiexit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uiexit.png; path = uitext/uiexit.png; sourceTree = "<group>"; };
 		1D13503415C58F000038CE4C /* uihome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uihome.png; path = uitext/uihome.png; sourceTree = "<group>"; };
@@ -2216,6 +2218,7 @@
 		C62C95A012713E1900379390 /* media */ = {
 			isa = PBXGroup;
 			children = (
+				19FD78F817F7B7430023DD80 /* test.png */,
 				19B3B12316A07D4D00E86E8D /* portal_twirl2.png */,
 				19D3339E167D6E2A0082ACE7 /* Batty_BlinkMASK.png */,
 				19D3339F167D6E2A0082ACE7 /* Batty_DefaultMASK.png */,
@@ -3393,6 +3396,7 @@
 				19DE2CAE16D83C3300BA6380 /* Icon_144.png in Resources */,
 				193E4E8D17AB598600ADF103 /* ipad~treelayerright.png in Resources */,
 				193E4E8E17AB598600ADF103 /* ipad~treelayerleft.png in Resources */,
+				19FD78F917F7B7430023DD80 /* test.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
