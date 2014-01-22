@@ -1862,7 +1862,33 @@ int tg2_init(){
           
       //genflat=TRUE;
       }
-   
+    int sx=0;
+    int sz=0;
+    int increment=1;
+    for(float x=0;x<1024;x+=increment){
+        sx++;
+        sz=0;
+        for(float z=0;z<1024;z+=increment){
+            sz++;
+            int ix=x;
+            int iz=z;
+            
+            
+            // glColor4f(value,value,value,1.0f);
+            // [Graphics drawRect:sx:sz:sx+1:sz+1];
+           // float value=(TEMP(ix,iz)+128.0f)/255.0f;
+            
+            int biome=BIOME(ix,iz);
+            if(biome==1)
+                BLOCK(ix,iz,T_HEIGHT-1)=TYPE_GRASS;
+            else if(biome==2)
+                BLOCK(ix,iz,T_HEIGHT-1)=TYPE_WATER;
+            COLOR(ix,iz,T_HEIGHT-1)=0;
+
+            
+        }
+        
+    }
    
 
     return 0;
@@ -1887,14 +1913,14 @@ void tg2_render(){
            // glColor4f(value,value,value,1.0f);
            // [Graphics drawRect:sx:sz:sx+1:sz+1];
              float value=(TEMP(ix,iz)+128.0f)/255.0f;
-            
+         /*
             int biome=BIOME(ix,iz);
             if(biome==1)
                 BLOCK(ix,iz,T_HEIGHT-1)=TYPE_GRASS;
             else if(biome==2)
                 BLOCK(ix,iz,T_HEIGHT-1)=TYPE_WATER;
             COLOR(ix,iz,T_HEIGHT-1)=0;
-        
+        */
             for(int y=T_HEIGHT-1;y>0;y--){
                
                 if(BLOCK(ix,iz,y)==0)continue;

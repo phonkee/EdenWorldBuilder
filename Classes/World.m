@@ -13,7 +13,7 @@
 #import "Globals.h"
 #import "TerrainGen2.h"
 
-#define JUST_TERRAIN_GEN 1
+#define JUST_TERRAIN_GEN 0
 
 static	World* singleton;
 @implementation World
@@ -28,8 +28,9 @@ extern EAGLView* G_EAGL_VIEW;
         printf("Terrain gen started\n");
         fm=[[FileManager alloc] init];
         [Hud genColorTable];
-        tg2_init();
         [[World getWorld].fm loadGenFromDisk];
+        tg2_init();
+        
         printf("Terrain gen finished %f\n",(CFAbsoluteTimeGetCurrent()-start));
         start=CFAbsoluteTimeGetCurrent();
          [[World getWorld].fm writeGenToDisk];
