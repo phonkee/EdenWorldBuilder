@@ -1317,7 +1317,7 @@ static int lastsongplayed=-1;
                 songisplaying=TRUE;
             }
         }
-        if([[SimpleAudioEngine sharedEngine] backgroundMusicVolume]!=bkgvolume)
+        if([[SimpleAudioEngine sharedEngine] backgroundMusicVolume]!=bkgvolume)  //crash tally: 1
           [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:bkgvolume];
         
     }

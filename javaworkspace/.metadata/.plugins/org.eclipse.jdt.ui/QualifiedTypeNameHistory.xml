@@ -21,10 +21,11 @@
 <fullyQualifiedTypeName name="java.awt.Event"/>
 <fullyQualifiedTypeName name="Main"/>
 <fullyQualifiedTypeName name="java.awt.image.AffineTransformOp"/>
-<fullyQualifiedTypeName name="java.lang.Math"/>
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="java.lang.Integer"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
 <fullyQualifiedTypeName name="java.util.Scanner"/>
 <fullyQualifiedTypeName name="java.util.Map.Entry"/>
+<fullyQualifiedTypeName name="javax.xml.stream.events.Namespace"/>
+<fullyQualifiedTypeName name="java.lang.Math"/>
 </qualifiedTypeNameHistroy>

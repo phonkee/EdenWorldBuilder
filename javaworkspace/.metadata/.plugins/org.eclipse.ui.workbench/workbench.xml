@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="28" version="2.0">
+<workbench progressCount="32" version="2.0">
 <workbenchAdvisor/>
 <window height="825" maximized="true" width="1440" x="31" y="400">
 <fastViewData fastViewLocation="1024"/>
@@ -34,17 +34,32 @@
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
 <part id="0"/>
 <part id="1"/>
+<part id="2"/>
+<part id="3"/>
+<part id="4"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
 <editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="List2.java" partName="List2.java" path="/Users/arironen/Documents/Eden/javaworkspace/eden2/src/List2.java" title="List2.java" tooltip="eden2/src/List2.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/eden2/src/List2.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="9" selectionOffset="5527" selectionTopPixel="2776"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="5876" selectionTopPixel="2835"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UploadMap2.java" partName="UploadMap2.java" path="/Users/arironen/Documents/Eden/javaworkspace/eden2/src/UploadMap2.java" title="UploadMap2.java" tooltip="eden2/src/UploadMap2.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/eden2/src/UploadMap2.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="766"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="1122"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Stats.java" partName="Stats.java" path="/Users/arironen/Documents/Eden/javaworkspace/stats/src/Stats.java" title="Stats.java" tooltip="stats/src/Stats.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/stats/src/Stats.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="887" selectionTopPixel="112"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.ClassFileEditor" name="NumberFormatException.class" partName="NumberFormatException.class" title="NumberFormatException.class" tooltip="java.lang.NumberFormatException" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" org.eclipse.jdt.ui.ClassFileIdentifier="=AtlasTool/\/System\/Library\/Java\/JavaVirtualMachines\/1.6.0.jdk\/Contents\/Classes\/classes.jar&lt;java.lang(NumberFormatException.class"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.ClassFileEditor" name="Long.class" partName="Long.class" title="Long.class" tooltip="java.lang.Long" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" org.eclipse.jdt.ui.ClassFileIdentifier="=AtlasTool/\/System\/Library\/Java\/JavaVirtualMachines\/1.6.0.jdk\/Contents\/Classes\/classes.jar&lt;java.lang(Long.class"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
 </editor>
 </editors>
 <views>
@@ -101,7 +116,7 @@
 <viewState/>
 </view>
 </views>
-<perspectives activePart="org.eclipse.jdt.ui.CompilationUnitEditor" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
+<perspectives activePart="org.eclipse.jdt.ui.PackageExplorer" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.jdt.internal.ui.JavaPerspectiveFactory" id="org.eclipse.jdt.ui.JavaPerspective" label="Java"/>
 <alwaysOnActionSet id="org.eclipse.mylyn.context.ui.actionSet"/>
@@ -191,7 +206,7 @@
 </info>
 <info part="org.eclipse.ui.editorss" ratio="0.23652904" ratioLeft="338" ratioRight="1091" relationship="2" relative="left"/>
 <info folder="true" part="bottom" ratio="0.74626863" ratioLeft="550" ratioRight="187" relationship="4" relative="org.eclipse.ui.editorss">
-<folder activePageID="org.eclipse.ui.views.ProblemView" appearance="2" expanded="2">
+<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
 <page content="org.eclipse.jdt.ui.JavadocView" label="Javadoc"/>
 <page content="org.eclipse.jdt.ui.SourceView" label="Declaration"/>
@@ -235,6 +250,12 @@
 <editors>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/List2.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/UploadMap2.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/UploadMap2.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/stats/src/Stats.java"/>
+<editor factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" org.eclipse.jdt.ui.ClassFileIdentifier="=AtlasTool/\/System\/Library\/Java\/JavaVirtualMachines\/1.6.0.jdk\/Contents\/Classes\/classes.jar&lt;java.lang(NumberFormatException.class"/>
+<editor factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" org.eclipse.jdt.ui.ClassFileIdentifier="=AtlasTool/\/System\/Library\/Java\/JavaVirtualMachines\/1.6.0.jdk\/Contents\/Classes\/classes.jar&lt;java.lang(Long.class"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/List2.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/eden2/src/UploadMap2.java"/>
 </editors>
 <item historyLabel="List2.java" index="0">
 <position info="not_deleted" x="5527" y="9"/>
@@ -248,8 +269,104 @@
 <item historyLabel="List2.java" index="0">
 <position info="not_deleted" x="8675" y="0"/>
 </item>
-<item active="true" historyLabel="List2.java" index="0">
+<item historyLabel="List2.java" index="0">
 <position info="not_deleted" x="8683" y="0"/>
+</item>
+<item historyLabel="UploadMap2.java" index="2">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="37" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="1487" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="395" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="438" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="455" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="456" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="297" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="1195" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="682" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="685" y="0"/>
+</item>
+<item historyLabel="NumberFormatException.class" index="4">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="919" y="0"/>
+</item>
+<item historyLabel="Long.class" index="5">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="919" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="1072" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="362" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="179" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="903" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="845" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="1297" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="1347" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="1349" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="231" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="362" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="340" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="357" y="0"/>
+</item>
+<item historyLabel="Stats.java" index="3">
+<position info="not_deleted" x="329" y="0"/>
+</item>
+<item historyLabel="List2.java" index="6">
+<position info="not_deleted" x="5529" y="9"/>
+</item>
+<item historyLabel="UploadMap2.java" index="7">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item active="true" historyLabel="List2.java" index="6">
+<position info="not_deleted" x="5529" y="9"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -269,6 +386,15 @@
 </trimLayout>
 </window>
 <mruList>
+<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="Long.class" tooltip="java.lang.Long">
+<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=AtlasTool/\/System\/Library\/Java\/JavaVirtualMachines\/1.6.0.jdk\/Contents\/Classes\/classes.jar&lt;java.lang(Long.class"/>
+</file>
+<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="NumberFormatException.class" tooltip="java.lang.NumberFormatException">
+<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=AtlasTool/\/System\/Library\/Java\/JavaVirtualMachines\/1.6.0.jdk\/Contents\/Classes\/classes.jar&lt;java.lang(NumberFormatException.class"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Stats.java" tooltip="stats/src/Stats.java">
+<persistable path="/stats/src/Stats.java"/>
+</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UploadMap2.java" tooltip="eden2/src/UploadMap2.java">
 <persistable path="/eden2/src/UploadMap2.java"/>
 </file>
@@ -304,15 +430,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="BenfordsLaw.java" tooltip="benfordslaw-java/BenfordsLaw.java">
 <persistable path="/benfordslaw-java/BenfordsLaw.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AutoLoan.java" tooltip="autoloan-java/AutoLoan.java">
-<persistable path="/autoloan-java/AutoLoan.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TheBasketballDivOne.java" tooltip="thebasketballdivone-java/TheBasketballDivOne.java">
-<persistable path="/thebasketballdivone-java/TheBasketballDivOne.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SkiResorts.java" tooltip="skiresorts-java/SkiResorts.java">
-<persistable path="/skiresorts-java/SkiResorts.java"/>
 </file>
 </mruList>
 </workbench>

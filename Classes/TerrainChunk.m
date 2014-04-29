@@ -161,9 +161,9 @@ extern map_t wetmap;
 extern bool isRampFaceSolid[4][6];
 extern bool isSideFaceSolid[4][6];
 
-const static int dx[6]={-1,1,0,0,0,0};
-const static int dy[6]={0,0,-1,1,0,0};
-const static int dz[6]={0,0,0,0,-1,1};
+//const static int dx[6]={-1,1,0,0,0,0};
+//const static int dy[6]={0,0,-1,1,0,0};
+//const static int dz[6]={0,0,0,0,-1,1};
 const static int dz2[6]={-1,1,0,0,0,0};
 const static int dx2[6]={0,0,-1,1,0,0};
 const static int dy2[6]={0,0,0,0,-1,1};
@@ -394,7 +394,9 @@ extern int g_offcz;
                     int isvisible=0;            
                     
                     if((IS_NOTSOLID&blockinfo[blockarray[((gx+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((gz+g_offcz)%T_SIZE)*T_HEIGHT+(gy+1)]]))isvisible|=FACE_TOP; 
-                    if((IS_NOTSOLID&blockinfo[blockarray[((gx+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((gz+g_offcz)%T_SIZE)*T_HEIGHT+(gy-1)]]))isvisible|=FACE_BOTTOM;                   
+                    if((IS_NOTSOLID&blockinfo[blockarray[((gx+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((gz+g_offcz)%T_SIZE)*T_HEIGHT+(gy-1)]]))isvisible|=FACE_BOTTOM;
+                    
+                    // crash count 3
                     if(
                        (IS_NOTSOLID&blockinfo[
                                               blockarray[((gx+1+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((gz+g_offcz)%T_SIZE)*T_HEIGHT+(gy)]
@@ -1302,7 +1304,7 @@ extern int g_offcz;
                         
                     }else if(coord==mergeAxis){
                         
-                        vert_array[vert_c].position[coord]=4*cubeVertices[sv+coord]*size+4*offsets[coord];
+                        vert_array[vert_c].position[coord]=4*cubeVertices[sv+coord]*size+4*offsets[coord];  //crash count 1
                         
                     }
                     else{

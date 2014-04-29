@@ -197,15 +197,15 @@ static int count=0;
         int x=0;
         int y=0;
         int byteIndex = (bytesPerRow * yy) + xx * bytesPerPixel;
-        BOOL onetime=false;
+        //BOOL onetime=false;
         int waterc=0;
         int landc=0;
         for (int ii = 0 ; ii < count ; ++ii)
         {
-            int red   = (rawData[byteIndex]     * 1.0);
+           // int red   = (rawData[byteIndex]     * 1.0);
             int green = (rawData[byteIndex + 1] * 1.0);
             int blue  = (rawData[byteIndex + 2] * 1.0);
-            int alpha = (rawData[byteIndex + 3] * 1.0);
+           // int alpha = (rawData[byteIndex + 3] * 1.0);
             byteIndex += 4;
             x++;
             if(x==width){

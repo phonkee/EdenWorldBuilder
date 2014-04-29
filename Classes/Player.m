@@ -29,6 +29,10 @@ static int nest_count;
 static bool onground;
 static bool onramp;
 static bool jumpandbuild;
+
+bool FLY_MODE=TRUE;
+bool FLY_UP=false;
+bool FLY_DOWN=false;
 static Point3D buildpoint;
 float yawanimation;
 - (id)initWithWorld:(World*) lworld{
@@ -795,9 +799,7 @@ static BOOL lastOnIce;
         speed*=1.38f;
         
             
-        }  else{
-        
-        if(inLiquid){
+    } else if(inLiquid){
             float f=speed;
             speed=f*cos(D2R(pitch));
             vspeed=f*sin(D2R(pitch));
@@ -805,8 +807,11 @@ static BOOL lastOnIce;
             hspeed*=.66f;
 
             vspeed*=.66f;
-        }
+    }else if(FLY_MODE){
+        speed*=10;
+        hspeed*=10;
     }
+    
 	
 	/*if([World getWorld].hud.mode==MODE_BURN){
 	speed=MOVE_SPEED*10;
@@ -908,6 +913,9 @@ static BOOL lastOnIce;
         vel.x+=flowdir.x*FLOW_SPEED*etime;
         vel.z+=flowdir.z*FLOW_SPEED*etime;
         
+    }else if(FLY_MODE){
+        vel.x*=.995;
+        vel.z*=.995;
     }
     
 	//if(sinPitch*speed>0)vy=sinPitch*speed;
@@ -952,7 +960,17 @@ static BOOL lastOnIce;
         vel.y=JUMP_SPEED/4;
         if(vel.y<-JUMP_SPEED*2)
             vel.y=-JUMP_SPEED*2;
-    }else{
+    }else if(FLY_MODE){
+        vel.y=0;
+        if(FLY_UP){
+            vel.y+=JUMP_SPEED*3;
+            
+        }if (FLY_DOWN) {
+            vel.y+=-JUMP_SPEED*3;
+            
+        }
+    }
+    else{
         if(onground)
             accel.y+=-gravity/2;
         else

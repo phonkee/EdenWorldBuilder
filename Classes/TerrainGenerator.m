@@ -92,7 +92,7 @@ extern int g_offcx,g_offcz;
 		bounds[4]=(cy+1)*CHUNK_SIZE;
 		bounds[5]=(ocz+1)*CHUNK_SIZE;
         TerrainChunk* chunk;
-        TerrainChunk* old=ter.chunkTable[threeToOne(ocx,cy,ocz)];
+        TerrainChunk* old=ter.chunkTable[threeToOne(ocx,cy,ocz)];  //crash count: 1
         if(old){chunk=old;
            [chunk resetForReuse];
             [chunk setBounds:bounds];

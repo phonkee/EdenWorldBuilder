@@ -558,7 +558,9 @@ int flamecount=0;
                 touches[i].inuse=usage_id2;
 			}*/
         
-        
+            extern bool FLY_UP;
+            extern bool FLY_DOWN;
+            extern BOOL FLY_MODE;
         
 			BOOL handled=FALSE;
             if(inbox2(touches[i].mx,touches[i].my,&rburn)){	
@@ -571,7 +573,12 @@ int flamecount=0;
                 if(mode==MODE_BURN)mode=MODE_NONE;
                 else
                     mode=MODE_BURN;
-				handled=TRUE;
+                
+                if(FLY_MODE){
+                FLY_UP=!FLY_UP;
+				
+                }
+                    handled=TRUE;
 			}
             if(inbox2(touches[i].mx,touches[i].my,&rbuild)){
                 if(mode==MODE_PAINT){
@@ -605,7 +612,11 @@ int flamecount=0;
                 if(mode==MODE_MINE)mode=MODE_NONE;
                 else
                     mode=MODE_MINE;
-				handled=TRUE;
+                 if(FLY_MODE){
+                FLY_DOWN=!FLY_DOWN;
+				
+                 }
+                handled=TRUE;
 			}
 
 			if(mode==MODE_PICK_BLOCK){

@@ -70,7 +70,7 @@ public class List2 extends HttpServlet
         			n++;
         		}
         	}
-        	listBuffers[sort]=buff.toString();
+        	//listBuffers[sort]=buff.toString();
         }
     }
 	public void parseLine(String line){
@@ -311,7 +311,7 @@ public class List2 extends HttpServlet
         	 return;
         }
         if(sort>=0&&sort<3){ 
-        	if(listBuffers[sort])
+        	if(listBuffers[sort]!=null)
             outp.write(listBuffers[sort]);
         }else      	
         	outp.write("");

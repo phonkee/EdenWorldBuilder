@@ -70,7 +70,7 @@ public class List2 extends HttpServlet
         			n++;
         		}
         	}
-        	listBuffers[sort]=buff.toString();
+        	//listBuffers[sort]=buff.toString();
         }
     }
 	public void parseLine(String line){
@@ -213,7 +213,7 @@ public class List2 extends HttpServlet
 				buff.append(sc.nextLine()+"\n");
 			}
 			sc.close();
-			listBuffers[2]=buff.toString();
+			listBuffers[2]=listBuffers[0]=listBuffers[1]=buff.toString();
 			
 			
 			System.out.println("Finished loading "+searchTable.size());

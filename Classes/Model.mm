@@ -28,7 +28,7 @@ const char stumpyFile[]	= "Stumpy.pod";
 const char chargerFile[]= "Charger.pod";
 const char stalkerFile[]= "Stalker.pod";
 
-const static int n_states[NUM_CREATURES]={
+/*const static int n_states[NUM_CREATURES]={
     [M_GREEN]=6,
     [M_MOOF]=6,
     [M_NERGLE]=6,
@@ -36,7 +36,7 @@ const static int n_states[NUM_CREATURES]={
     [M_STUMPY]=6,
     [M_CHARGER]=6,
     [M_STALKER]=6,
-};
+};*/
 const static float shadow_size[NUM_CREATURES]={
     [M_GREEN]=.8f,
     [M_MOOF]=1.0f,

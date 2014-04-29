@@ -1779,11 +1779,11 @@ void genTemperatureMap(){
             
             float px=fx-(int)fx;
             float pz=fz-(int)fz;
-            
+         /*
             float d00=sqrtf((1-px)*(1-px)+(1-pz)*(1-pz));
             float d10=sqrtf(px*px+(1-pz)*(1-pz));
             float d01=sqrtf((1-px)*(1-px)+pz*pz);
-            float d11=sqrtf(px*px+pz*pz);
+            float d11=sqrtf(px*px+pz*pz);*/
             
            // float r=(f00*d00+f10*d10)/(d00+d10);//+f10*d10+f11*d11+f01*d01)/(d00+d01+d10+d11);
             

@@ -20,7 +20,7 @@ enum PlaneBit
 };
 
 
-static const float mElement[4][4];
+//static const float mElement[4][4];
 
 
 
