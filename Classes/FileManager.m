@@ -12,6 +12,8 @@
 #import "Terrain.h"
 #import "Model.h"
 #import "TerrainGen2.h"
+#import "FileArchive.h"
+
 //#import "TestFlight.h"
 #define FILE_VERSION 3
 
@@ -29,9 +31,10 @@ typedef struct{
     
     //below here is post 1.1.1 stuff
     int version;
-    char hash[35];
+    char hash[36];
     int skycolor;
-	char reserved[100-sizeof(int)-33-sizeof(Vector)];	 //subtract new stuff from reserve bytes
+	char reserved[100-sizeof(int)-36-sizeof(int)];	 //subtract new stuff from reserve bytes,
+    //192 bytes(including padding is the correct size, be careful modifying this to not corrupt old maps
 }WorldFileHeader;
 typedef struct{
 	int x, z;
@@ -68,14 +71,14 @@ EntityData creatureData[MAX_CREATURES_SAVED];
 	
 	return self;
 }
--(BOOL)worldExists:(NSString*)name{
-	NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
+-(BOOL)worldExists:(NSString*)name:(BOOL)appendArchive{
+	NSString* file_name=appendArchive?[NSString stringWithFormat:@"%@/%@.archive",documents,name]:[NSString stringWithFormat:@"%@/%@",documents,name];
 	NSFileManager* fm=[NSFileManager defaultManager];
 	if(![fm fileExistsAtPath:file_name]){
-		NSLog(@"%@ doesn't exist",file_name);
+	//	NSLog(@"%@ doesn't exist",file_name);
 		return FALSE;	
 	}else{	
-		NSLog(@"%@ exists",file_name);
+	//	NSLog(@"%@ exists",file_name);
 		return TRUE;
 	}
 }
@@ -88,8 +91,8 @@ static int count=0;
     if([fm fileExistsAtPath:img_name]){
         [fm removeItemAtPath:img_name error:NULL];
     }
-    
-	NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
+    removeFromIndex(name);
+	NSString* file_name=[NSString stringWithFormat:@"%@/%@.archive",documents,name];
 	
 	
 	if([fm fileExistsAtPath:file_name]){
@@ -115,8 +118,8 @@ static int count=0;
             NSData* data=[saveFile readDataOfLength:sizeof(EntityData)];
             
             [data getBytes:&creatureData[i] length:sizeof(EntityData)];
-            creatureData[i].pos.x-=CHUNK_SIZE*chunkOffsetX;
-            creatureData[i].pos.z-=CHUNK_SIZE*chunkOffsetZ;
+          //  creatureData[i].pos.x-=CHUNK_SIZE*chunkOffsetX;
+           // creatureData[i].pos.z-=CHUNK_SIZE*chunkOffsetZ;
             //  printf("type: %d\n  pos(%f,%f,%f)",creatureData[i].type,creatureData[i].pos.x,creatureData[i].pos.z,creatureData[i].pos.y);
         }
     }
@@ -126,7 +129,7 @@ static int count=0;
      printf("end load:%d\n",2);
 }
 -(void)saveCreatures{
-    printf("start save:%d\n",sfh->version);
+  //  printf("start save:%d\n",sfh->version);
     if(sfh->version<3){
     [saveFile seekToFileOffset:sfh->directory_offset];
         sfh->directory_offset+=sizeof(EntityData)*MAX_CREATURES_SAVED;
@@ -137,20 +140,26 @@ static int count=0;
     SaveModels();
     for(int i=0;i<MAX_CREATURES_SAVED;i++){
         EntityData data=creatureData[i];
-        data.pos.x+=CHUNK_SIZE*chunkOffsetX;
-        data.pos.z+=CHUNK_SIZE*chunkOffsetZ;
+        //data.pos.x+=CHUNK_SIZE*chunkOffsetX;
+       // data.pos.z+=CHUNK_SIZE*chunkOffsetZ;
         NSData* dh=[NSData dataWithBytesNoCopy:&data length:sizeof(EntityData)
                                   freeWhenDone:FALSE];
         [saveFile writeData:dh];
 
     }
      
-	 printf("end save:%d\n",sfh->version);
+//	 printf("end save:%d\n",sfh->version);
 }
 
 -(void)saveWorld{
     [self saveWorld:[World getWorld].player.pos];
     
+    
+}
+-(void)compressLastPlayed{
+    NSString* name=[World getWorld].terrain.world_name;
+	//NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
+    CompressWorld([name cStringUsingEncoding:NSUTF8StringEncoding]);
     
 }
 -(void)loadGenFromDisk{
@@ -187,22 +196,36 @@ static int count=0;
         
         CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef);
         CGContextRelease(context);
-        
+       
+        extern block8* biomez;
+        biomez=malloc(height*width*sizeof(block8));
+        memset(biomez,0,height*width*sizeof(block8));
+        /*
         int xx=0;
         int yy=0;
         int count=width*height;
-        extern block8* biomez;
-        biomez=malloc(height*width*sizeof(block8));
+        
         // Now your rawData contains the image data in the RGBA8888 pixel format.
         int x=0;
         int y=0;
         int byteIndex = (bytesPerRow * yy) + xx * bytesPerPixel;
         //BOOL onetime=false;
-        int waterc=0;
-        int landc=0;
+        //int waterc=0;
+        //int landc=0;
+
+    int marker_colors[NUM_TERRAIN_MARKERS][3]={
+            [TM_WATER]={0,0,255},
+            [TM_GRASS]={0,255,0},
+            [TM_BEACH]={255,255,0},
+            [TM_MOUNTAINS]={255,255,255},
+            [TM_MARS]={255,0,0},
+            [TM_RIVERS]={0,255,255},
+            [TM_UNICORN]={255,0,255}
+            
+        };
         for (int ii = 0 ; ii < count ; ++ii)
         {
-           // int red   = (rawData[byteIndex]     * 1.0);
+            int red   = (rawData[byteIndex]     * 1.0);
             int green = (rawData[byteIndex + 1] * 1.0);
             int blue  = (rawData[byteIndex + 2] * 1.0);
            // int alpha = (rawData[byteIndex + 3] * 1.0);
@@ -212,17 +235,15 @@ static int count=0;
                 x=0;
                 y++;
             }
-            if(green==255){
-                BIOME(x,y)=1;
-                landc++;
-                
-            }else if(blue==255){
-                BIOME(x,y)=2;
-                waterc++;
+            for(int i=0;i<NUM_TERRAIN_MARKERS;i++){
+                if(red==marker_colors[i][0]&&green==marker_colors[i][1]&&blue==marker_colors[i][2]){
+                    TM(x,y)=i;
+                    break;
+                }
             }
             
-        }
-        printf("landc:%d waterc:%d total:%d\n",landc,waterc, count);
+        }*/
+        //printf("landc:%d waterc:%d total:%d\n",landc,waterc, count);
         free(rawData);
         
        
@@ -322,9 +343,10 @@ static int count=0;
 	[self readDirectory];
 	free(sfh);
 	[saveFile closeFile];
+    printf("finished writing gen to disk\n");
 
 }
--(void)saveWorld:(Vector)warp{   
+-(void)saveWorld:(Vector)warp{
     //[TestFlight passCheckpoint:[NSString stringWithFormat:@"header_size:%d",(int)sizeof(WorldFileHeader)]];
     //printf("sizeof(WFH)=%d",(int)sizeof(WorldFileHeader));
 	[[World getWorld].terrain endDynamics:TRUE];
@@ -344,6 +366,7 @@ static int count=0;
 	//sfh->pos.z/=BLOCK_SIZE;
 	//sfh->pos.x+=CHUNK_SIZE*chunkOffsetX;
 	//sfh->pos.z+=CHUNK_SIZE*chunkOffsetZ;
+    printf("saving at player pos: %f,%f   co: %d,%d\n",sfh->pos.x,sfh->pos.z,chunkOffsetX,chunkOffsetZ);
 	sfh->yaw=[World getWorld].player.yaw;
     sfh->version=file_version;
     sfh->skycolor=lookupColor([World getWorld].terrain.final_skycolor);
@@ -364,34 +387,50 @@ static int count=0;
 					contents:[NSData dataWithBytesNoCopy:sfh 
 						length:sizeof(WorldFileHeader) freeWhenDone:FALSE]
 			attributes:nil];
+        writeDirectory=TRUE;
 	
 	}
 	
-    [[World getWorld].sf_lock lock];
+   
 	saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];	
 	
     
 	count=0;
 	[self readDirectory];
 	NSLog(@"read %d colidx's",count);
-    Player* player=[World getWorld].player;
-    int scox=player.pos.x/CHUNK_SIZE-T_RADIUS;
-    int scoz=player.pos.z/CHUNK_SIZE-T_RADIUS;
+ //   Player* player=[World getWorld].player;
+  //  int scox=player.pos.x/CHUNK_SIZE-T_RADIUS;
+   // int scoz=player.pos.z/CHUNK_SIZE-T_RADIUS;
    
     sfh->pos=warp;
     
     
     //NSLog(@"player pos load: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
-    int r=T_RADIUS;
+    //int r=T_RADIUS;
 	//	int asdf=0;
-    printf("saving at co(%d,%d)",scox,scoz);
-    printf("save player pos(%d,%d)\n",(int)warp.x,(int)warp.z);
-    for(int x=scox;x<scox+2*r;x++){
-        for(int z=scoz;z<scoz+2*r;z++){
+   // printf("saving at co(%d,%d)",scox,scoz);
+   // printf("save player pos(%d,%d)\n",(int)warp.x,(int)warp.z);
+ //   for(int x=scox;x<scox+2*r;x++){
+  //      for(int z=scoz;z<scoz+2*r;z++){
 			//	NSLog(@"lch:%d",asdf++);
-            [[World getWorld].fm saveColumn:x:z];
+        //   [[World getWorld].fm saveColumn:x:z];
+//        }
+ //   }
+    
+    for(int x=0;x<CHUNKS_PER_SIDE;x++){
+        for(int z=0;z<CHUNKS_PER_SIDE;z++)
+        {
+            TerrainChunk* chunk=ter.chunkTable[threeToOne(x,0,z)];
+            if(chunk.pbounds[1]==0){
+                [single saveColumn:chunk.pbounds[0]/CHUNK_SIZE
+                                  :chunk.pbounds[2]/CHUNK_SIZE];
+                
+            }else{
+                printf("trying to save column with unexpected chunk bound[1]: %d\n",chunk.pbounds[1]);
+            }
         }
     }
+   
 
   
 	//hashmap_iterate(ter.chunkMap, saveChunk, NULL);
@@ -415,7 +454,7 @@ static int count=0;
 	[self readDirectory];
 	free(sfh);
 	[saveFile closeFile];
-     [[World getWorld].sf_lock unlock];
+   
 	//[file writeData:[[NSData 
 		
 }
@@ -477,7 +516,7 @@ int saveColIdx(any_t passedIn,any_t colToSave){
  – writeData:
  */
 
--(void)saveGenColumn:(int)cx:(int)cz:(int)origin{
+/*-(void)saveGenColumn:(int)cx:(int)cz:(int)origin{  // NO RUN LENGTH ENCODING VERSION
     
 	
 	ColumnIndex* colIndex=NULL;
@@ -503,9 +542,7 @@ int saveColIdx(any_t passedIn,any_t colToSave){
     
     int xoffset=CHUNK_SIZE*(cx-origin);
     int zoffset=CHUNK_SIZE*(cz-origin);
-    /*if(xoffset<0||xoffset>T_SIZE-CHUNK_SIZE||zoffset<0||zoffset>T_SIZE-CHUNK_SIZE){
-        printf("offests (%d,%d)\n chunk: (%d,%d)",xoffset,zoffset,cx-CHUNK_SIZE);
-    }*/
+   
     for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
         int yoffset=cy*CHUNK_SIZE;
         
@@ -516,31 +553,9 @@ int saveColIdx(any_t passedIn,any_t colToSave){
                 colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=COLOR(x+xoffset,z+zoffset,y+yoffset);
             }}}
       
-             /*   for(int y=0;y<CHUNK_SIZE;y++){
-                    if((y+1)%10==0){
-                        for(int x=0;x<CHUNK_SIZE;x++){
-                            for(int z=0;z<CHUNK_SIZE;z++){
-                                blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=TYPE_STONE;
-                                 colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=y-1;
-                            }
-                        }
-                        
-                    }else{
-                        for(int x=0;x<CHUNK_SIZE;x++){
-                            for(int z=0;z<CHUNK_SIZE;z++){
-                                blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=0;
-                                colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=0;
-                            }
-                        }
-
-                    }
-                }
-            */
-            
         
-            
 			NSData* data=[NSData dataWithBytesNoCopy:blocks
-											  length:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(block8))
+											  length:(CHUNK_SIZE3*sizeof(block8))
 										freeWhenDone:FALSE];
 			[saveFile writeData:data];
             data=[NSData dataWithBytesNoCopy:colors
@@ -550,12 +565,138 @@ int saveColIdx(any_t passedIn,any_t colToSave){
 		
 	}
 	
+}*/
+
+-(void)saveGenColumn:(int)cx:(int)cz:(int)origin{
+    
+	
+	ColumnIndex* colIndex=NULL;
+	
+    
+	
+    colIndex=malloc(sizeof(ColumnIndex));
+    colIndex->chunk_offset=sfh->directory_offset-sizeof(EntityData)*MAX_CREATURES_SAVED;
+    
+    writeDirectory=TRUE;
+    colIndex->x=cx;
+    colIndex->z=cz;
+    int n=twoToOneTest(cx,cz);
+	hashmap_put(indexes, n, colIndex);
+    
+	
+	[saveFile seekToFileOffset:colIndex->chunk_offset];
+    block8 blocks[CHUNK_SIZE3];
+    color8 colors[CHUNK_SIZE3];
+	
+    extern block8* blockz;
+    extern color8* colorz;
+    
+    int xoffset=CHUNK_SIZE*(cx-origin);
+    int zoffset=CHUNK_SIZE*(cz-origin);
+ 
+    for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
+        int yoffset=cy*CHUNK_SIZE;
+        
+        for(int x=0;x<CHUNK_SIZE;x++){
+            for(int y=0;y<CHUNK_SIZE;y++){
+                for(int z=0;z<CHUNK_SIZE;z++){
+                    //unusual coordinate order to maximize compression
+                   /* blocks[y*CHUNK_SIZE*CHUNK_SIZE+x*CHUNK_SIZE+z]=BLOCK(x+xoffset,z+zoffset,y+yoffset);
+                    colors[y*CHUNK_SIZE*CHUNK_SIZE+x*CHUNK_SIZE+z]=COLOR(x+xoffset,z+zoffset,y+yoffset);*/
+                    
+                    blocks[y*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+x]=BLOCK(x+xoffset,z+zoffset,y+yoffset);
+                    colors[y*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+x]=COLOR(x+xoffset,z+zoffset,y+yoffset);
+                    
+                    
+                
+                }}}
+        
+       // memset(blocks,0,CHUNK_SIZE3);
+       // memset(colors,0,CHUNK_SIZE3);
+        
+        /*int y=arc4random()%CHUNK_SIZE;
+        for(int x=0;x<CHUNK_SIZE;x++){
+
+                for(int z=0;z<CHUNK_SIZE;z++){
+                    //if(y%2==0){
+                    if(arc4random()%2==0){
+                        blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=TYPE_BRICK;
+                        
+                        colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=y%NUM_COLORS;
+                    }
+                        // }
+                }
+        }*/
+       
+        
+        color8 rledata[CHUNK_SIZE3*3+2];
+        int marker=-1;
+        int marker_color=-1;
+        int count =0;
+        int dataidx=2;
+        for(int i=0;i<CHUNK_SIZE3;i++){
+            int t=blocks[i];
+            int c=colors[i];
+            if(t<0||c<0)printf("wtf mate");
+            if(t==marker&&c==marker_color&&count!=127){
+                count++;
+                
+            }else{
+                if(count>0){
+ 
+                   // printf("count: %d\n",count);
+                    rledata[dataidx++]=marker;
+                    rledata[dataidx++]=marker_color;
+                    rledata[dataidx++]=count;
+                    count=0;
+                    marker=-1;
+                    marker_color=-1;
+                }
+                marker_color=c;
+                marker=t;
+                count++;
+                
+                
+            }
+        }
+        if(count>0){
+            //printf("count: %d\n",count);
+            rledata[dataidx++]=marker;
+            rledata[dataidx++]=marker_color;
+            rledata[dataidx++]=count;
+            count=0;
+            marker=-1;
+            marker_color=-1;
+        }
+        
+       
+        if(dataidx>CHUNK_SIZE3*3){
+            printf("dataidx overflow\n");
+        }else{
+            rledata[0]=dataidx/256;
+            rledata[1]=dataidx%256;
+            
+            
+           
+            
+            sfh->directory_offset+=dataidx;
+        }
+        
+        NSData* data=[NSData dataWithBytesNoCopy:rledata
+                                          length:(dataidx*sizeof(color8))
+                                    freeWhenDone:FALSE];
+        [saveFile writeData:data];
+               //[saveFile writeData:data];
+		
+	}
+	
 }
 -(void)saveColumn:(int)cx:(int)cz{
     
 	Terrain* ter=[[World getWorld] terrain];
 	ColumnIndex* colIndex=NULL;
 	
+    //printf("saving column: %d,%d\n",cx,cz);
 	int n=twoToOneTest(cx,cz);
 	if(n==0){
 		return;
@@ -578,13 +719,17 @@ int saveColIdx(any_t passedIn,any_t colToSave){
        
 	}
 	if((colIndex->chunk_offset-192)%SIZEOF_COLUMN!=0||colIndex->chunk_offset>=sfh->directory_offset){
-		NSLog(@"BAD BAD OFFSET!!");
+        if((colIndex->chunk_offset-192)%SIZEOF_COLUMN!=0)
+		printf("BAD BAD OFFSET!! %d\n",(int)sizeof(WorldFileHeader));
+        else if(colIndex->chunk_offset>=sfh->directory_offset)
+        NSLog(@"OFFSET OVERFLOWS DIRECTORY!");
 	}
 	[saveFile seekToFileOffset:colIndex->chunk_offset];
     
 	for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
 		TerrainChunk* chunk;
-        chunk=ter.chunkTable[threeToOne(cx-chunkOffsetX, cy, cz-chunkOffsetZ)];
+         //issue #3 continued
+        chunk=ter.chunkTable[threeToOne(cx, cy, cz)];
 		//hashmap_get(ter.chunkMap, threeToOne(cx-chunkOffsetX, cy, cz-chunkOffsetZ), (any_t)&chunk);
         //co(16316,16395),co(16316,16395)
 		if(chunk!=NULL){
@@ -638,7 +783,7 @@ extern int g_offcz;
      //   int cx2=cx-chunkOffsetX;
       //  int cz2=cz-chunkOffsetZ;
      //   if(rcfile==saveFile){
-      //   printf("loading column from gen\n");
+        //printf("loading column from gen %d,%d \n",cx,cz);
          [ter.tgen generateColumn:cx:cz:FALSE];
       //   }else{
              // printf("loading column from gen for bgthread\n");
@@ -717,7 +862,7 @@ extern int g_offcz;
             bounds[5]=(cz+1)*CHUNK_SIZE;
             
             TerrainChunk* chunk;
-            
+             //issue #3 continued
             TerrainChunk* old=ter.chunkTable[threeToOne(cx,cy,cz)];
             if(old){chunk=old;
                 [chunk setBounds:bounds];
@@ -728,24 +873,78 @@ extern int g_offcz;
                                                               bounds:cx:cz:ter:TRUE];
             columns[cy]=chunk;
             
-            /*ChunkHeader ch;
-             NSData* data=[saveFile readDataOfLength:sizeof(ChunkHeader)];
-             [data getBytes:&ch length:sizeof(ChunkHeader)];		
-             int mesh_bytes=ch.n_vertices*sizeof(vertexStruct);
-             data=[saveFile readDataOfLength:mesh_bytes];
-             vertexStruct* mesh=malloc(mesh_bytes);
-             [data getBytes:mesh length:mesh_bytes];
-             [chunk setVertices:mesh :ch.n_vertices];
-             */	
+           
+             BOOL rle=true;
+             if(rle){
+                 
+                 block8 tblocks[CHUNK_SIZE3];
+                 color8 tcolors[CHUNK_SIZE3];
+                 color8 buf[CHUNK_SIZE3*3];
+                 //too much read
+                 NSData* datat=[rcfile readDataOfLength:2];
+                 color8 buft[2];
+                 [datat getBytes:buft length:2];
+                 int chunk_data_length= buft[0]*256+buft[1]-2;
+                 NSData* data=[rcfile readDataOfLength:chunk_data_length];
+                 int n=[data length];
+                 if(n<chunk_data_length){
+                     printf("not enough file left, only read %d bytes\n",n);
+                 }//else
+                  //   printf("all good %d, %d  sizeofcolor8:%d\n",(int)n,(int)chunk_data_length,(int)sizeof(color8));
+                 [data getBytes:buf length:n];
+                 
+                 int idx=0;
+                 int idx2=0;
+                 while(idx<n){
+                     int marker=(block8)buf[idx++];
+                     int marker_color=(color8)buf[idx++];
+                     int count=(color8)buf[idx++];
+                    // printf("count: %d\n",count);
+                     if(count<0||count>127)printf("strange count %d\n ",count);
+                     for(int i=0;i<count;i++){
+                         if(idx2>CHUNK_SIZE3){
+                            // printf("data overflow1 %d  n:%d\n",idx2,n);
+                             break;
+                         }
+                         tblocks[idx2]=marker;
+                         tcolors[idx2]=marker_color;
+                         idx2++;
+                        
+                         
+                     }
+                     if(idx2>=CHUNK_SIZE3){
+                         
+                         break;
+                         
+                     }
+                 }
+                 if(idx2>CHUNK_SIZE3)putchar('>');
+                 else if(idx2<CHUNK_SIZE3)putchar('<');
+                 else if(idx2==CHUNK_SIZE3){
+                     putchar('=');
+                     for(int z=0;z<CHUNK_SIZE;z++)
+                     for(int x=0;x<CHUNK_SIZE;x++)
+                         for(int y=0;y<CHUNK_SIZE;y++){
+                             chunk.pblocks[CC(x,z,y)]=tblocks[CC(y,z,x)];
+                             chunk.pcolors[CC(x,z,y)]=tcolors[CC(y,z,x)];
+                         }
+                             
+                     
+                 }
+                
+                 
+             }else{
+                 NSData* data=[rcfile readDataOfLength:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(block8))];
+                 [data getBytes:chunk.pblocks length:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(block8))];
+                 
+                 NSData* data2=[rcfile readDataOfLength:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(color8))];
+                 [data2 getBytes:chunk.pcolors length:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(color8))];
+             }
             
-            NSData* data=[rcfile readDataOfLength:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(block8))];
-       		[data getBytes:chunk.pblocks length:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(block8))];
+           /*
+            chunk.needsGen=TRUE;*/
             
-            NSData* data2=[rcfile readDataOfLength:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(color8))];
-            [data2 getBytes:chunk.pcolors length:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(color8))];
-            chunk.needsGen=TRUE;
-            
-           // if(rcfile==saveFile){
+           
                 for(int x=0;x<CHUNK_SIZE;x++){
                     for(int z=0;z<CHUNK_SIZE;z++){
                         if((x+bounds[0]+g_offcx)<0||(z+bounds[0]+g_offcz)<0){
@@ -764,10 +963,7 @@ extern int g_offcz;
                 
                   
                 [ter addChunk:chunk:cx:cy:cz:TRUE];	
-           /* }else{
-                [ter readdChunk:chunk:cx:cy:cz];
-            }*/
-            
+             
         }
         
 	}
@@ -777,9 +973,19 @@ extern int g_offcz;
 	
 }
 -(void)setName:(NSString*)file_name:(NSString*)display_name{
-	file_name=[NSString stringWithFormat:@"%@/%@",documents,file_name];	
-	 [[World getWorld].sf_lock lock];
-	saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];		
+    file_name=[file_name stringByDeletingPathExtension];
+    NSLog(@"set name request on:%@",file_name);
+    NSString* nofp=file_name;
+    file_name=[NSString stringWithFormat:@"%@/%@",documents,file_name];
+    DecompressWorld([file_name cStringUsingEncoding:NSUTF8StringEncoding]);
+  
+	
+	
+	saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];
+    if(saveFile==NULL){
+        NSLog(@"file to rename not found\n");
+        return;
+    }
 	WorldFileHeader* fh=(WorldFileHeader*)[[saveFile readDataOfLength:sizeof(WorldFileHeader)] bytes];
 	WorldFileHeader* fh2=malloc(sizeof(WorldFileHeader));
 	memcpy(fh2,fh,sizeof(WorldFileHeader));
@@ -791,7 +997,9 @@ extern int g_offcz;
 	[saveFile writeData:dh];
 	
 	[saveFile closeFile];
-	 [[World getWorld].sf_lock unlock];
+	 
+    
+    CompressWorld([nofp cStringUsingEncoding:NSUTF8StringEncoding]);
 	
 }
 -(void)setImageHash:(NSString*)hash{
@@ -802,7 +1010,7 @@ extern int g_offcz;
         imgHash=NULL;
     }
     imgHash=hash;
-     [[World getWorld].sf_lock lock];
+   
     saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];
     if(!saveFile){
         printf("err gettin save file: %s\n",[file_name cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -825,19 +1033,29 @@ extern int g_offcz;
 	[saveFile writeData:dh];
 	
 	[saveFile closeFile];	
-     [[World getWorld].sf_lock unlock];
+   
 }
+-(NSString*)getArchiveName:(NSString*)name{
+	if(![[World getWorld].fm worldExists:name:FALSE]) return @"error~";
+    return getArchiveName(name);
+	//NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
+    
+	//return fname;
+	
+	
+}
+
 -(NSString*)getName:(NSString*)name{
-	if(![[World getWorld].fm worldExists:name]) return @"error1~";
+	if(![[World getWorld].fm worldExists:name:FALSE]) return @"error~";
 	NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];	
-	 [[World getWorld].sf_lock lock];
+	
 	saveFile=[NSFileHandle fileHandleForReadingAtPath:file_name];		
     NSData* data=[saveFile readDataOfLength:sizeof(WorldFileHeader)];
                   if([data length]<sizeof(WorldFileHeader)){
                     
                       [saveFile closeFile];
-                      [[World getWorld].sf_lock unlock];
-                       return @"error2~";
+                     
+                       return @"error~";
                   }
 	WorldFileHeader* fh=(WorldFileHeader*)[data bytes];
   
@@ -851,7 +1069,7 @@ extern int g_offcz;
         //return @"error3~";
     }
 	[saveFile closeFile];
-     [[World getWorld].sf_lock unlock];
+    
 	return fname;
 	
 	
@@ -1039,8 +1257,9 @@ int convertColumnIdx(any_t passedIn,any_t colToConvert){
 }
 extern bool SUPPORTS_OGL2;
 extern float P_ZFAR;
--(void)loadWorld:(NSString*)name{
-
+-(void)loadWorld:(NSString*)name:(BOOL)fromArchive{
+    
+   
 	Terrain* ter=[[World getWorld] terrain];
 		[ter clearBlocks];
 	Player* player=[[World getWorld] player];
@@ -1049,12 +1268,12 @@ extern float P_ZFAR;
         imgHash=NULL;
     }
     [[World getWorld].player reset];
-	if(![[World getWorld].fm worldExists:name]){
-        printf("world file doesn't exist!\n");
+	if(![[World getWorld].fm worldExists:name:fromArchive]){
+     
         
         extern int g_terrain_type;
         
-        printf("loading sup2: %d\n",g_terrain_type);
+        printf("making new world : %d\n",g_terrain_type);
         
       //  clear();
         
@@ -1129,21 +1348,26 @@ extern float P_ZFAR;
 		//[ter unloadTerrain:FALSE];
 		//[self loadWorld:name];
 	}else{
-               printf("world file exists\n!");
-		NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];	
-        [[World getWorld].sf_lock lock];
+              
+		NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
+        
+        if(fromArchive){
+            DecompressWorld([file_name cStringUsingEncoding:NSUTF8StringEncoding]);
+        }
+
+       
 		saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];		
 		sfh=(WorldFileHeader*)[[saveFile readDataOfLength:sizeof(WorldFileHeader)] bytes];
         file_version=sfh->version;
         if(sfh->version!=1&&sfh->version!=2&&sfh->version!=3){
             [saveFile closeFile];
-            [[World getWorld].sf_lock unlock];
+           
             NSLog(@"converting file");
             convertingWorld=TRUE;
             [self convertFile:file_name];
             
             NSLog(@"done converting file");
-            [[World getWorld].sf_lock lock];
+          
             saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];		
             sfh=(WorldFileHeader*)[[saveFile readDataOfLength:sizeof(WorldFileHeader)] bytes];
             convertingWorld=FALSE;
@@ -1183,9 +1407,8 @@ extern float P_ZFAR;
           
 		*/player.pos=sfh->pos;
        
-        printf("reading at co(%d,%d)\n",chunkOffsetX,chunkOffsetZ);
-        printf("player pos(%d,%d)\n",(int)player.pos.x,(int)player.pos.z);
-		//NSLog(@"player pos load: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
+        printf("reading at co %d, %d    player pos %d, %d)\n",chunkOffsetX,chunkOffsetZ,(int)player.pos.x,(int)player.pos.z);
+        		//NSLog(@"player pos load: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
 		int r=T_RADIUS;
 	//	int asdf=0;
         
@@ -1199,7 +1422,7 @@ extern float P_ZFAR;
 		//[ter updateAllImportantChunks];
 		NSLog(@"done");
 		[saveFile closeFile];
-         [[World getWorld].sf_lock unlock];
+        
 		
 		
 	}

@@ -17,6 +17,11 @@ typedef struct {
 	float    z;
 }Vector;
 typedef struct {
+	unsigned char    x;
+	unsigned char    y;
+	unsigned char    z;
+}Vector8;
+typedef struct {
 	float    x;
 	float    y;
 	float    z;

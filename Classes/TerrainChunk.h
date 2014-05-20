@@ -41,15 +41,15 @@ typedef struct _small_block{
     
     block8* blocks;
     block8 blocks1[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
-    block8 blocks2[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
+    //block8 blocks2[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
     color8 colors[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
-    float lightsf[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
+    //float lightsf[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
     
     block8* pblocks;
   //  block8* pblocks2;
     color8* pcolors;
-    SmallBlock* sblocks[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
-    SmallBlock** psblocks;
+   // SmallBlock* sblocks[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
+   // SmallBlock** psblocks;
     
     
     vertexStructSmall* verticesbg;
@@ -69,6 +69,7 @@ typedef struct _small_block{
     int face_idx2[7];
     bool visibleFaces[7];
     int vis_vertices;
+    int rebuildCounter;
     
     int idxn;
     int rtnum_objects;
@@ -90,7 +91,7 @@ typedef struct _small_block{
     GLuint query
     ;
 	GLuint    vertexBuffer,vertexBuffer2,elementBuffer;
-    BOOL needsRebuild;
+   // BOOL needsRebuild;
 @public
 	int bounds[6];
     int rtbounds[6];
@@ -117,6 +118,7 @@ typedef struct bnode{
 
 @property(nonatomic,assign) StaticObject* rtobjects;
 @property(nonatomic,assign) int idxn;
+@property(nonatomic,assign) int rebuildCounter;
 @property(nonatomic,readonly) int rtn_vertices,rtn_vertices2,rtnum_objects;
 @property(nonatomic,readonly) float* prbounds;
 @property(nonatomic,assign) TreeNode* m_treenode;
@@ -129,9 +131,9 @@ typedef struct bnode{
 - (void)setLand:(int)x:(int)z:(int)y:(int)type;
 -(void) resetForReuse;
 
-- (int)getCustom:(int)x:(int)z:(int)y;
-- (int)getCustomColor:(int)x:(int)z:(int)y;
-- (int) setCustom:(int)x:(int)z:(int)y:(int)type:(int)color;
+//- (int)getCustom:(int)x:(int)z:(int)y;
+//- (int)getCustomColor:(int)x:(int)z:(int)y;
+//- (int) setCustom:(int)x:(int)z:(int)y:(int)type:(int)color;
 - (int)rebuild2;
 -(void)setBounds:(int*) boundz;
 - (void)clearMeshes;

@@ -30,7 +30,7 @@ static bool onground;
 static bool onramp;
 static bool jumpandbuild;
 
-bool FLY_MODE=TRUE;
+bool FLY_MODE=FALSE;
 bool FLY_UP=false;
 bool FLY_DOWN=false;
 static Point3D buildpoint;
@@ -185,7 +185,7 @@ extern bool hitCustom;
                     [[Resources getResources] playSound:S_BUILD_GENERIC];
                 }
                 if([World getWorld].hud.build_size==0){
-                    [[World getWorld].terrain buildCustom:buildpoint.x:buildpoint.z:buildpoint.y];
+                   // [[World getWorld].terrain buildCustom:buildpoint.x:buildpoint.z:buildpoint.y];
                 } else if([World getWorld].hud.build_size==2){
                     [[World getWorld].terrain buildBlock:buildpoint.x:buildpoint.z:buildpoint.y];
                     [[World getWorld].terrain buildBlock:buildpoint.x+1:buildpoint.z:buildpoint.y];
@@ -246,7 +246,7 @@ extern bool hitCustom;
             if(mode==MODE_PAINT||mode==MODE_MINE||mode==MODE_BURN){
                 Point3D point=findWorldCoords(touches[i].my,touches[i].mx,FC_DESTROY);
                 if(point.x==-1)continue;
-                if(hitCustom){
+                /*if(hitCustom){
                     if(getCustomc(point.x,point.z,point.y)==TYPE_NONE)continue;
                     touches[i].preview=point;
                     touches[i].previewtype=TYPE_CLOUD;
@@ -254,14 +254,14 @@ extern bool hitCustom;
                     touches[i].build_size=0;
 
                     
-                }else{
+                }else{*/
                     if([[World getWorld].terrain getLand:point.x:point.z:point.y]==TYPE_NONE)continue;
                     
                     touches[i].preview=point;
                     touches[i].previewtype=TYPE_CLOUD;
                     touches[i].etime=0;
                     touches[i].build_size=1;
-                }
+              // }
                
                
             }
@@ -373,7 +373,7 @@ extern bool hitCustom;
                         type=[[World getWorld].terrain getLand:point.x:point.z:point.y];
                     }else{
                         if(hitCustom){
-                            type=getCustomc(point.x,point.z,point.y);
+                           // type=getCustomc(point.x,point.z,point.y);
                             
                         }else
                             type=getLandc(point.x,point.z,point.y);
@@ -433,7 +433,7 @@ extern bool hitCustom;
                                     
                                 }else if([World getWorld].hud.build_size==0){
                                    
-                                    [[World getWorld].terrain buildCustom:point.x:point.z:point.y];
+                                //    [[World getWorld].terrain buildCustom:point.x:point.z:point.y];
                                    
                                 }
 							}else{
@@ -446,7 +446,7 @@ extern bool hitCustom;
                                     doublejump=TRUE;
                                     jumpandbuild=TRUE;
                                     buildpoint=point;
-                                    printf("jumping to build\n");
+                                   // printf("jumping to build\n");
                                 }
                             }
 							
@@ -488,7 +488,7 @@ extern bool hitCustom;
                                  [[Resources getResources] playSound:S_BREAK_GENERIC];	
 							//NSLog(@"point: %d %d %d %d",point.x,point.z,point.y,type);
                             if(hitCustom){
-                               [[World getWorld].terrain destroyCustom:point.x:point.z:point.y]; 
+                               //[[World getWorld].terrain destroyCustom:point.x:point.z:point.y];
                             }else
                             {
                                 printf("removing block: %d %d %d %d\n",point.x,point.z,point.y,type);
@@ -501,7 +501,7 @@ extern bool hitCustom;
                         [[Resources getResources] playSound:S_PAINT_BLOCK];	
                         
                         if(hitCustom){
-                            [[World getWorld].terrain paintCustom:point.x:point.z:point.y:[World getWorld].hud.paintColor];
+                           // [[World getWorld].terrain paintCustom:point.x:point.z:point.y:[World getWorld].hud.paintColor];
                         }else
                         {
                             [[World getWorld].terrain paintBlock:point.x:point.z:point.y:[World getWorld].hud.paintColor]; 
@@ -580,11 +580,11 @@ extern bool hitCustom;
                         touches[i].etime=0;
                             touches[i].build_size=1;
                         }else{
-                            if(getCustomc(point.x,point.z,point.y)==TYPE_NONE)continue;
+                           /* if(getCustomc(point.x,point.z,point.y)==TYPE_NONE)continue;
                             touches[i].preview=point;
                             touches[i].previewtype=TYPE_CLOUD;
                             touches[i].etime=0; 
-                            touches[i].build_size=0;
+                            touches[i].build_size=0;*/
                             
                         }
                         
@@ -709,7 +709,7 @@ static BOOL lastOnIce;
         return TRUE;
 }
 - (BOOL)update:(float)etime{
-    
+  
 	//if(etime>1.0f/30.0f)etime=1.0f/30.0f;
     float displacement=etime*sqrt(v_length2(vel));
     if(displacement>.1f&&1.0f/etime<500/*180*/){
@@ -976,12 +976,17 @@ static BOOL lastOnIce;
         else
             accel.y+=-gravity;
     }
-    
+    //if(!v_equals(pos,lpos)){
+        //player pos log
+    //    printf("player pos: %f, %f, %f\n",pos.x,pos.z,pos.y);
+    //}
 	
 	lpos.x=pos.x;
 	lpos.y=pos.y;
 	lpos.z=pos.z;
 	[self move:etime];
+    
+    
 	//NSLog(@"%f %f %f",pos.x,pos.y,pos.z);
 	
 	Camera* cam=world.cam;

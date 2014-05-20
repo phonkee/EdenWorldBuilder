@@ -12,6 +12,7 @@
 #import "Util.h"
 #import "World.h"
 #import "zpipe.h"
+#import "FileArchive.h"
 
 @implementation Menu
 @synthesize loading,showsettings,sbar,is_sharing,
@@ -245,8 +246,28 @@ UIAlertView *alertWorldType;
 	NSArray* dirContents = [[NSFileManager defaultManager] 
 							
 							contentsOfDirectoryAtPath:[World getWorld].fm.documents error:&err];
+    
+    
+    readIndex();
 	world_list_end=world_list;
-	for(int i=0;i<[dirContents count];i++){
+    int dirc=[dirContents count];
+    BOOL reloadDir=FALSE;
+    for(int i=0;i<dirc;i++){
+		NSString* file_name=[dirContents objectAtIndex:i];
+        if([file_name hasSuffix:@".eden"]){
+            CompressWorld([file_name cStringUsingEncoding:NSUTF8StringEncoding]);
+            reloadDir=TRUE;
+        }
+        
+    }
+    if(reloadDir){
+        dirContents=[[NSFileManager defaultManager]
+         
+         contentsOfDirectoryAtPath:[World getWorld].fm.documents error:&err];
+        dirc=[dirContents count];
+    }
+    
+	for(int i=0;i<dirc;i++){
 		NSString* file_name=[dirContents objectAtIndex:i];
         NSLog(@"%@",file_name);
 		//NSString* real_name=[NSString stringWithFormat:@"test%d",i];
@@ -256,16 +277,20 @@ UIAlertView *alertWorldType;
         if([wut isEqualToString:@"PNG"]){
             continue;
         }
+        if(![wut isEqualToString:@"ARCHIVE"])
+            continue;
         
-		NSString* real_name=[[World getWorld].fm getName:file_name];
+		NSString* real_name=[[World getWorld].fm getArchiveName:file_name];
+        if(real_name==NULL){
+            real_name=@"Unknown World";
+        }
         
 		NSLog(@"'%@'",real_name);
         if([real_name isEqualToString:@"error~"]){
             continue;
         }
-        if(![wut isEqualToString:@"EDEN"])
-            continue;
-       
+        
+        file_name=[file_name stringByDeletingPathExtension];
 		WorldNode* node=malloc(sizeof(WorldNode));
 		memset(node, 0, sizeof(WorldNode));
 		node->display_name=real_name;
@@ -469,7 +494,7 @@ static const int usage_id=7;
 							share_mode=FALSE;
 							
 							
-							if([[World getWorld].fm worldExists:node->file_name]){
+							if([[World getWorld].fm worldExists:node->file_name:TRUE]){
 								[sbar setStatus:@"Sharing world..." :2];
 								is_sharing=TRUE;
 								[share_menu beginShare:node];
@@ -572,6 +597,7 @@ static const int usage_id=7;
             if([[World getWorld].fm deleteWorld:wname])
                 [sbar setStatus:@"World deleted" :2];
             else{
+                NSLog(@"delete failed\n");
                 [sbar setStatus:@"World deleted"  :2];							
             }
 
@@ -605,10 +631,10 @@ static const int usage_id=7;
     }
 }
 -(BOOL)loadShared:(SharedListNode*)sharedNode{
-    NSString* rfile_name=[NSString stringWithFormat:@"%@/%@",[World getWorld].fm.documents,sharedNode->file_name];
+   // NSString* rfile_name=[NSString stringWithFormat:@"%@/%@",[World getWorld].fm.documents,sharedNode->file_name];
 
-    const char* fname=[rfile_name cStringUsingEncoding:NSUTF8StringEncoding];
-    NSString* temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents];
+ //   const char* fname=[rfile_name cStringUsingEncoding:NSUTF8StringEncoding];
+  /*  NSString* temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents];
     const char* tname=[temp_name cStringUsingEncoding:NSUTF8StringEncoding];
     
     FILE* fsource = fopen(fname, "rb");
@@ -636,7 +662,7 @@ static const int usage_id=7;
         zerr(ret);
         remove(fname);
         return FALSE;
-    }
+    }*/
     
     
 	WorldNode* new_world;
@@ -648,6 +674,11 @@ static const int usage_id=7;
 	[new_world->display_name retain];
 	[self addWorld:new_world];		
 	selected_world=new_world;
+    //etodo make sure downloaded files are setting the right file names, and updating the index correctly
+    //currently i think the download file needs to be renamed to end with a .archive, since we no longer decompress on dl
+    //but i'm not gonna bother making this work right till i have internet
+
+    addToIndex([selected_world->file_name cStringUsingEncoding:NSUTF8StringEncoding],selected_world->display_name);
 	[fnbar setStatus:selected_world->display_name :9999];
    
     
@@ -784,7 +815,7 @@ static const int usage_id=7;
 			if(selected_world!=NULL){
 				
 				NSString* wname=selected_world->file_name;
-                if([[World getWorld].fm worldExists:selected_world->file_name]){
+                if([[World getWorld].fm worldExists:selected_world->file_name:TRUE]){
 				[[World getWorld] loadWorld:wname];	
                     loading=4;
                 }

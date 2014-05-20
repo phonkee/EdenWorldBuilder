@@ -8,7 +8,7 @@
 
 #import "Lighting.h"
 #import "Terrain.h"
-extern Vector* lightarray;
+extern Vector8* lightarray;
 extern block8* blockarray;
 @implementation Lighting
 
@@ -29,12 +29,14 @@ void addlight(int xx,int zz,int yy,float brightness,Vector color){
                 if(inten!=0){
             //        printf("%f ",inten);
                 }
-                lightarray[lidx].x+=inten*brightness*color.x;
-                lightarray[lidx].y+=inten*brightness*color.y;
-                lightarray[lidx].z+=inten*brightness*color.z;
-                if(lightarray[lidx].x<0)lightarray[lidx].x=0;
-                if(lightarray[lidx].y<0)lightarray[lidx].y=0;
-                if(lightarray[lidx].z<0)lightarray[lidx].z=0;
+               
+                lightarray[lidx].x=MAX(0,MIN(255,lightarray[lidx].x+255.0f*inten*brightness*color.x));
+                lightarray[lidx].y=MAX(0,MIN(255,lightarray[lidx].y+255.0f*inten*brightness*color.y));
+                lightarray[lidx].z=MAX(0,MIN(255,lightarray[lidx].z+255.0f*inten*brightness*color.z));
+                
+
+               
+               
                
             }
         }

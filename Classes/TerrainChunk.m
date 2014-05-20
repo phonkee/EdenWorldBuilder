@@ -13,7 +13,7 @@
 #import "Geometry.h"
 
 @implementation TerrainChunk
-@synthesize pbounds,prbounds,rtn_vertices,rtn_vertices2,pblocks,needsRebuild,needsGen,rtobjects,rtnum_objects,idxn,loaded,m_treenode,m_listnode,in_view,psblocks,needsVBO;
+@synthesize pbounds,prbounds,rtn_vertices,rtn_vertices2,pblocks,needsGen,rtobjects,rtnum_objects,idxn,loaded,m_treenode,m_listnode,in_view,psblocks,needsVBO,rebuildCounter;
 @synthesize pcolors;
 
 extern Vector colorTable[256];
@@ -53,16 +53,17 @@ extern GLfloat cubeNormals[3*6*6];
     
     memset(blocks,0,sizeof(block8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
    // printf("leaking memory freeing small blocks\n");
-    memset(sblocks,0,sizeof(SmallBlock*)*CHUNK_SIZE3);
+ //   memset(sblocks,0,sizeof(SmallBlock*)*CHUNK_SIZE3);
     memset(colors,0,sizeof(color8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);    
     
 }
 -(id) initWithBlocks:(const int*)boundz:(int)rrcx:(int)rrcz:(Terrain*)terrain:(BOOL)genblocks{
+    rebuildCounter=0;
 	if(genblocks){
         blocks=blocks1;
 		pblocks=blocks;
         
-        psblocks=sblocks;
+     //   psblocks=sblocks;
 		memset(blocks,0,sizeof(block8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
        
         
@@ -73,7 +74,7 @@ extern GLfloat cubeNormals[3*6*6];
     rtobjects=NULL;
     objects=NULL;
     needsVBO=FALSE;
-    memset(sblocks,0,sizeof(SmallBlock*)*CHUNK_SIZE3);
+ //   memset(sblocks,0,sizeof(SmallBlock*)*CHUNK_SIZE3);
     pcolors=colors;
     memset(colors,0,sizeof(color8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
     indices=NULL;
@@ -90,14 +91,14 @@ extern GLfloat cubeNormals[3*6*6];
 		rbounds[i]=(float)bounds[i]*BLOCK_SIZE;
 		
 	}
-    for(int i=0;i<CHUNK_SIZE3;i++){
+    /*for(int i=0;i<CHUNK_SIZE3;i++){
         lightsf[i]=randf(.1f)+.9f;
-    }
+    }*/
 
     isTesting=0;
 	n_vertices=0;
     n_vertices2=0;
-    needsRebuild=FALSE;//just a flag for terrain to use right now, not used internally
+  //  needsRebuild=FALSE;//just a flag for terrain to use right now, not used internally
     
     loaded=TRUE;
 	return self;
@@ -182,13 +183,14 @@ extern int getBaseType(int type);
 extern int g_offcx;
 extern int g_offcz;
 - (int)rebuild2{   //here be dragons//
+    rebuildCounter++;
     
-    if(needsVBO||pblocks==blocks2){
-      //  printf("not ready to rebuild chunk yet\n");
+    if(needsVBO){
+        printf("not ready to rebuild chunk yet rbc: %d\n",rebuildCounter);
         return -1;
     }
     needsVBO=TRUE;
-    pblocks=blocks2;
+    pblocks=blocks1;
     
    /* if(flip){
     if(blocks==blocks2){
@@ -248,7 +250,7 @@ extern int g_offcz;
                     hasAnything=TRUE;
                     hasBlocky[y]=TRUE;
                 }else if(type==TYPE_CUSTOM){
-                    
+                  /*
                     SmallBlock* sb=sblocks[CC(x,z,y)];
                     if(sb==NULL){
                         sblocks[CC(x,z,y)]=sb=malloc(sizeof(SmallBlock));
@@ -270,7 +272,7 @@ extern int g_offcz;
                     
                     hasSeeThrough=TRUE;
                     hasAnything=TRUE;
-                    hasBlocky[y]=TRUE;
+                    hasBlocky[y]=TRUE;*/
                 }else if(type==TYPE_LIGHTBOX){
                     /*Vector color=colorTable[colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]];
                     if(colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]==0){
@@ -330,14 +332,15 @@ extern int g_offcz;
     int ez=bounds[2]+CHUNK_SIZE;
     int ey=bounds[1]+CHUNK_SIZE;
     
-    
+   
     if(hasSeeThrough){
         for(int gy=bounds[1];gy<ey;gy++){
             if(!hasBlocky[gy-bounds[1]])continue;
             for(int gx=bounds[0];gx<ex;gx++){
                 
                 for(int gz=bounds[2];gz<ez;gz++){
-                    int idx1=((gx+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((gz+g_offcz)%T_SIZE)*T_HEIGHT+(gy);
+                   
+                    int idx1= GBLOCKIDX(gx,gz,gy);
                     if(!blockarray[idx1])continue;       
                     if((blockinfo[blockarray[idx1]]&IS_RAMPORSIDE)){
                         hasAnything=TRUE;
@@ -350,20 +353,22 @@ extern int g_offcz;
                     int isvisible=0;            
                     for(int f=0;f<6;f++){
                         int type;
-                        type=blockarray[(((gx+dx2[f]+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((gz+dz2[f]+g_offcz)%T_SIZE)*T_HEIGHT+(gy+dy2[f]))%T_BLOCKS];
+                       
+                        
+                        type=GBLOCK_SAFE(gx+dx2[f],gz+dz2[f],gy+dy2[f]);
                         if((gx==0&&dx2[f]>0)||(gz==0&&dz2[f]>0)||(gy==0&&dy2[f]<0))continue;
                         if(blockinfo[type]&IS_NOTSOLID||(f==5&&blockinfo[blockarray[idx1]]&IS_LIQUID&&getLevel(blockarray[idx1])<4)){
                             isvisible|=1<<f;
                             if(blockinfo[type]&IS_ATLAS2){
                                 if(blockinfo[type]&IS_LIQUID){
                                     if(blockinfo[type]==blockinfo[blockarray[idx1]]) 
-                                        if((f==4||f==5||getLevel(type)>=getLevel(blockarray[idx1]))&&[[World getWorld].terrain getColor:gx :gz :gy]==[[World getWorld].terrain getColor:gx+dx2[f] :gz+dz2[f] :gy+dy2[f]]){
+                                        if((f==4||f==5||getLevel(type)>=getLevel(blockarray[idx1]))&&pcolors[(gx-bounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-bounds[2])*(CHUNK_SIZE)+(gy-bounds[1])]==getColorc(gx+dx2[f] ,gz+dz2[f] ,gy+dy2[f])){
                                             isvisible&=~(1<<f);
                                         }
                                     
                                 }else 
                                     if(type==blockarray[idx1]){
-                                        if([[World getWorld].terrain getColor:gx :gz :gy]==[[World getWorld].terrain getColor:gx+dx2[f] :gz+dz2[f] :gy+dy2[f]]){
+                                        if(pcolors[(gx-bounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-bounds[2])*(CHUNK_SIZE)+(gy-bounds[1])]==getColorc(gx+dx2[f],gz+dz2[f],gy+dy2[f])){
                                             
                                             
                                             isvisible&=~(1<<f);
@@ -388,23 +393,30 @@ extern int g_offcz;
             for(int gx=bounds[0];gx<ex;gx++){
                 
                 for(int gz=bounds[2];gz<ez;gz++){
+                    
+
+                    
+                   
+                    
+                    
+                    
                     //if(!gx||!gy||!gz||gx+1==T_HEIGHT||gz+1==T_HEIGHT||gy+1==T_HEIGHT)continue;
                     
-                    if(!blockarray[((gx+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((gz+g_offcz)%T_SIZE)*T_HEIGHT+(gy)])continue;                 
+                    if(!GBLOCK(gx,gz,gy))continue;
                     int isvisible=0;            
                     
-                    if((IS_NOTSOLID&blockinfo[blockarray[((gx+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((gz+g_offcz)%T_SIZE)*T_HEIGHT+(gy+1)]]))isvisible|=FACE_TOP; 
-                    if((IS_NOTSOLID&blockinfo[blockarray[((gx+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((gz+g_offcz)%T_SIZE)*T_HEIGHT+(gy-1)]]))isvisible|=FACE_BOTTOM;
+                    if((IS_NOTSOLID&blockinfo[GBLOCK(gx,gz,gy+1)]))isvisible|=FACE_TOP;
+                    if((IS_NOTSOLID&blockinfo[GBLOCK_SAFE(gx,gz,gy-1)]))isvisible|=FACE_BOTTOM;
                     
-                    // crash count 3
+                    // crash count 9  are we not bounds checking when we do these border checks??? 
                     if(
                        (IS_NOTSOLID&blockinfo[
-                                              blockarray[((gx+1+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((gz+g_offcz)%T_SIZE)*T_HEIGHT+(gy)]
+                                              GBLOCK(gx+1,gz,gy)
                                               ]
                         ) )isvisible|=FACE_RIGHT;
-                    if((IS_NOTSOLID&blockinfo[blockarray[((gx-1+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((gz+g_offcz)%T_SIZE)*T_HEIGHT+(gy)]]))isvisible|=FACE_LEFT;
-                    if((IS_NOTSOLID&blockinfo[blockarray[((gx+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((gz+1+g_offcz)%T_SIZE)*T_HEIGHT+(gy)]]))isvisible|=FACE_BACK;
-                    if((IS_NOTSOLID&blockinfo[blockarray[((gx+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((gz-1+g_offcz)%T_SIZE)*T_HEIGHT+(gy)]]))isvisible|=FACE_FRONT;                
+                    if((IS_NOTSOLID&blockinfo[GBLOCK(gx-1,gz,gy)]))isvisible|=FACE_LEFT;
+                    if((IS_NOTSOLID&blockinfo[GBLOCK(gx,gz+1,gy)]))isvisible|=FACE_BACK;
+                    if((IS_NOTSOLID&blockinfo[GBLOCK(gx,gz-1,gy)]))isvisible|=FACE_FRONT;
                     
                     if(isvisible){hasAnything=TRUE;
                         hasVisy[gy-bounds[1]]=TRUE;
@@ -592,7 +604,7 @@ extern int g_offcz;
                             
                         } else if(type==TYPE_CUSTOM)       {
                             //printf("bad count3\n");
-
+                            /*
                             face_visibility[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]=FACE_ALL;
                             SmallBlock* sb=sblocks[ x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
                             for(int i=0;i<8;i++){
@@ -620,7 +632,7 @@ extern int g_offcz;
                                         
                                     }
                                 }
-                            }
+                            }*/
                         }else{
                             if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_SIDE4){
                                 isvisible|=(1<<angledFace[type-TYPE_STONE_RAMP1]);
@@ -695,7 +707,7 @@ extern int g_offcz;
         offsets[1]=y;
         offsets[2]=z;	
         
-        if(type==TYPE_CUSTOM){
+       /* if(type==TYPE_CUSTOM){
             //custom start
             SmallBlock* sb=sblocks[idx];
             for(int ci=0;ci<8;ci++){
@@ -1028,7 +1040,7 @@ extern int g_offcz;
             //custom end
             continue;
              
-        }
+        }*/
         float paint[3];
         float light[3];
         color8 clr=colors[idx];
@@ -1393,7 +1405,7 @@ extern int g_offcz;
 	
 }
 - (void)prepareVBO{
-    
+    rebuildCounter=0;
     if(clearOldVerticesOnly){
        // printf("clearing some old vertices\n");
        
@@ -1447,7 +1459,7 @@ extern int g_offcz;
         needsVBO=FALSE;
        
     }
-    if(!needsVBO)return;
+    if(!needsVBO){return;}
    
    	rtn_vertices=n_vertices;
     rtn_vertices2=n_vertices2;
@@ -1533,8 +1545,8 @@ extern int g_offcz;
 	
 }
 
-- (int)getCustom:(int)x:(int)z:(int)y{
-    int rx=x/2;
+ /*- (int)getCustom:(int)x:(int)z:(int)y{
+   int rx=x/2;
     int rz=z/2;
     int ry=y/2;
     
@@ -1558,11 +1570,11 @@ extern int g_offcz;
     z=1-z;
     y=1-y;
     return sb->blocks[x*2*2+z*2+y];
-  
+ 
     
-}
+} */
 
-- (int)getCustomColor:(int)x:(int)z:(int)y{
+/*- (int)getCustomColor:(int)x:(int)z:(int)y{
     int rx=x/2;
     int rz=z/2;
     int ry=y/2;
@@ -1638,9 +1650,9 @@ extern int g_offcz;
     
     
     return -1;
+ 
     
-    
-}
+}*/
 - (void)setLand:(int)x:(int)z:(int)y:(int)type{
 	if(x<0||x>=CHUNK_SIZE||y<0||y>=CHUNK_SIZE||z<0||z>=CHUNK_SIZE){
 		//NSLog(@"setting out of bounds chunks");

@@ -126,6 +126,8 @@ const GLubyte creatureColor[NUM_CREATURES+1][3]={
     [M_NERGLE]={255,70,255},
     [M_BATTY]={255,70,255},
     [M_STUMPY]={255,165,0},
+    [M_STALKER]={235,20,0},
+    [M_CHARGER]={235,20,0},
    
     
 };

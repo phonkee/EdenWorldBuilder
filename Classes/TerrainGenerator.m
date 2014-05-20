@@ -129,7 +129,7 @@ extern int g_offcx,g_offcz;
         for(int x=0;x<CHUNK_SIZE;x++){
             for(int z=0;z<CHUNK_SIZE;z++){
                 for(int y=0;y<T_HEIGHT;y++){
-                    blockarray[((x+boundx+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((g_offcz+z+boundz)%T_SIZE)*T_HEIGHT+y]=column[(int)y/CHUNK_SIZE].pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
+                    GBLOCK(x+boundx,z+boundz,y)=column[(int)y/CHUNK_SIZE].pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
                     
                     
                 }
@@ -154,6 +154,22 @@ extern int g_offcx,g_offcz;
                 for(int y=T_HEIGHT/4;y<T_HEIGHT/2;y++){
                     setLandt(x,z,y,TYPE_DIRT);
                 }
+              /*  int interval=4;
+                if((x/interval)%2==0){
+                    if((z/interval)%2==0){
+                        setColort(x,z,T_HEIGHT/2,8);
+
+                    }else
+                        setColort(x,z,T_HEIGHT/2,44);
+
+                }else{
+                    if((z/interval)%2!=0){
+                        setColort(x,z,T_HEIGHT/2,8);
+                        
+                    }else
+                        setColort(x,z,T_HEIGHT/2,44);
+                }*/
+              //  setColort(x,z,T_HEIGHT/2,8);
                 setLandt(x,z,T_HEIGHT/2,TYPE_GRASS);
                 
             }
@@ -244,8 +260,7 @@ extern int g_offcx,g_offcz;
               for(int x=0;x<CHUNK_SIZE;x++){
             for(int z=0;z<CHUNK_SIZE;z++){
                 for(int y=0;y<T_HEIGHT;y++)
-                    blockarray[((x+boundx+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+
-                               ((g_offcz+z+boundz)%T_SIZE)*T_HEIGHT+y]=
+                    GBLOCK(x+boundx,z+boundz,y)=
                     
                     column[(int)y/CHUNK_SIZE].pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
                 
@@ -433,7 +448,7 @@ extern int g_offcx,g_offcz;
         for(int x=0;x<CHUNK_SIZE;x++){
             for(int z=0;z<CHUNK_SIZE;z++){
                 for(int y=0;y<T_HEIGHT;y++){
-                 blockarray[((x+boundx+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((g_offcz+z+boundz)%T_SIZE)*T_HEIGHT+y]=column[(int)y/CHUNK_SIZE].pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
+                 GBLOCK(x+boundx,z+boundz,y)=column[(int)y/CHUNK_SIZE].pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
                                
           
                 }

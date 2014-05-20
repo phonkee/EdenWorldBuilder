@@ -148,12 +148,15 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
 	}
 	[node->display_name release];
 	node->display_name=[NSString stringWithString:name];
+    
 	[node->display_name retain];
 	[name release];
     name=NULL;
-	[[World getWorld].fm setName:node->file_name:node->display_name];
+    //etodo: verify file uploading/fix any issue
+    NSString* archive_name=[NSString stringWithFormat:@"%@.archive",node->file_name];
+	[[World getWorld].fm setName:archive_name:node->display_name];
 	NSString* file_name=[NSString stringWithFormat:@"%@/%@",
-						 [World getWorld].fm.documents,node->file_name];
+						 [World getWorld].fm.documents,archive_name];
     NSString* image_file_name=[NSString stringWithFormat:@"%@/%@.png",
 						 [World getWorld].fm.documents,node->file_name];
     NSFileManager* fm=[NSFileManager defaultManager];

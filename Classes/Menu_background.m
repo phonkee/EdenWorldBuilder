@@ -150,7 +150,9 @@ extern BOOL IS_WIDESCREEN;
     // for(int i=0;i<3;i++){
     //    [[[Resources getResources] getMenuTex:MENU_CLOUD] drawText:clouds[i]];
     //}
-    cloud* node=cloud_list;
+    
+    
+    /*cloud* node=cloud_list;
 	if(node)
         
         while(node!=NULL){
@@ -163,7 +165,7 @@ extern BOOL IS_WIDESCREEN;
             
             [tex drawText:node->rect];
             node=node->next;
-        }
+        }*/
     
     CGRect mountain;
 	mountain.origin.x=mountainx;

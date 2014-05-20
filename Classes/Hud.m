@@ -510,7 +510,7 @@ int flamecount=0;
                     }
                     pressed=-1;
                 }
-                printf("menu touched\n");
+              //  printf("menu touched\n");
                 handled=TRUE;
             }
                        if(handled){
@@ -622,7 +622,7 @@ int flamecount=0;
 			if(mode==MODE_PICK_BLOCK){
 				if([self handlePickBlock:touches[i].mx:touches[i].my]){
 					handled=TRUE;
-                    printf("handled\n");
+                    //printf("handled\n");
 				}				
 			}
             if(mode==MODE_PICK_COLOR){
@@ -784,7 +784,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         rsave.pressed=rtSave.pressed=FALSE;
 		[[World getWorld].fm saveWorld];
         //[[World getWorld].terrain updateAllImportantChunks];
-        NSLog(@"saving..");
+      //  NSLog(@"saving..");
         [[Input getInput] clearAll];
         [[World getWorld].terrain startDynamics];
 		[sb setStatus:@"World Saved" :3];
@@ -815,7 +815,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                 printf("no custom\n");
             }else{
                 pressed=i;
-                 printf("set pressed: %d\n",i);
+                // printf("set pressed: %d\n",i);
             }
            
 			 handled=TRUE;
@@ -1900,7 +1900,7 @@ static int lmode=MODE_NONE;
                 [World getWorld].terrain.home=thome;
                 [[World getWorld].fm saveWorld];
                 //[[World getWorld].terrain updateAllImportantChunks];
-                NSLog(@"saving..");
+                //NSLog(@"saving..");
                 [[Input getInput] clearAll];
                 [[World getWorld].terrain startDynamics];
                 [sb setStatus:@"World Saved" :3];

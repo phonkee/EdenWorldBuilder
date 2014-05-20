@@ -17,13 +17,143 @@
 
 static	World* singleton;
 @implementation World
-@synthesize cam, terrain, player, hud,fm/*,FLIPPED*/,effects,realtime,bestGraphics,sf_lock,rebuild_lock;
+@synthesize cam, terrain, player, hud,fm/*,FLIPPED*/,effects,realtime,bestGraphics;
 @synthesize game_mode,menu;
 extern EAGLView* G_EAGL_VIEW;
  BOOL exit_to_menu=FALSE;
+
+void RLETEST(){
+    
+    BOOL passed=TRUE;
+    printf("rleTest started\n");
+    //rand init data;
+    for(int test=0;test<100;test++){
+    block8 blocks[CHUNK_SIZE3];
+    color8 colors[CHUNK_SIZE3];
+    
+    for(int i=0;i<CHUNK_SIZE3;i++){
+        blocks[i]=arc4random()%2;
+        colors[i]=arc4random()%2;
+    }
+    
+    //compress
+    
+    color8 rledata[CHUNK_SIZE3*3];
+    int marker=-1;
+    int marker_color=-1;
+    int count =0;
+    int dataidx=0;
+    for(int i=0;i<CHUNK_SIZE3;i++){
+        int t=blocks[i];
+        int c=colors[i];
+        if(t==marker&&c==marker_color&&count!=127){
+            count++;
+            
+        }else{
+            if(count>0){
+                
+                
+                rledata[dataidx++]=marker;
+                rledata[dataidx++]=marker_color;
+               
+                rledata[dataidx++]=count;
+                count=0;
+                marker=-1;
+                marker_color=-1;
+            }
+            marker_color=c;
+            marker=t;
+            count++;
+            
+            
+        }
+    }
+    if(count>0){
+        rledata[dataidx++]=marker;
+        rledata[dataidx++]=marker_color;
+        rledata[dataidx++]=count;
+        count=0;
+        marker=-1;
+        marker_color=-1;
+    }
+    
+    if(dataidx>CHUNK_SIZE3*3){
+        printf("dataidx overflow\n");
+    }
+    else {
+      /*  if(dataidx/CHUNK_SIZE3>1)
+            putchar('!');
+        else putchar('.');*/
+        
+        
+      //  sfh->directory_offset+=dataidx;
+    }
+    
+    
+    ///DECOMPRESS
+    
+    color8* buf=rledata;
+    
+    block8 rblocks[CHUNK_SIZE3];
+    color8 rcolors[CHUNK_SIZE3];
+    
+        memset(rblocks,-1,CHUNK_SIZE3*sizeof(block8));
+        memset(rcolors,-1,CHUNK_SIZE3*sizeof(block8));
+   // NSData* data=[rcfile readDataOfLength:(CHUNK_SIZE3*3*sizeof(block8))];
+    int n=CHUNK_SIZE3*3;
+    //[data getBytes:buf length:n];
+    
+    int idx=0;
+    int idx2=0;
+    while(idx<n){
+        int marker=buf[idx++];
+        int marker_color=buf[idx++];
+        int count=buf[idx++];
+        //printf("count %d\n",count);
+        for(int i=0;i<count;i++){
+            if(idx2>CHUNK_SIZE3){
+                printf("data overflow %d\n",idx2);
+                //break;
+            }
+            rblocks[idx2]=marker;
+            rcolors[idx2]=marker_color;
+            idx2++;
+           
+            
+        }
+        if(idx2>=CHUNK_SIZE3){
+            
+            break;
+            
+        }
+    }
+        
+        if(idx2>CHUNK_SIZE3)printf("data overflow %d\n",idx2);
+    else if(idx2<CHUNK_SIZE3)printf("data underflow\n");
+    
+    
+    for(int i=0;i<CHUNK_SIZE3;i++){
+        if(rblocks[i]!=blocks[i]){
+            passed=false;
+        }
+        if(rcolors[i]!=colors[i]){
+            passed=FALSE;
+        }
+    }
+   
+    
+    }
+    if(passed)printf("RLE passed\n");
+    else printf("rle failed\n");
+    
+    
+}
+
 - (World*)init{
+   
     singleton=self;
     if(JUST_TERRAIN_GEN){
+        RLETEST();
         double start=CFAbsoluteTimeGetCurrent();
         printf("Terrain gen started\n");
         fm=[[FileManager alloc] init];
@@ -54,8 +184,7 @@ extern EAGLView* G_EAGL_VIEW;
     fm=[[FileManager alloc] init];
     effects=[[SpecialEffects alloc] init];
     menu=[[Menu alloc] init];
-    sf_lock=[[NSLock alloc] init];
-    rebuild_lock=[[NSLock alloc] init];
+   
           
     [NSThread detachNewThreadSelector:@selector(loadWorldThread2:) toTarget:self withObject:self];
     [terrain startLoadingThread];
@@ -77,7 +206,8 @@ extern EAGLView* G_EAGL_VIEW;
 	//NSLog(@"glerr:%s",gluErrorString(glGetError()));	
 	return self;
 }
-- (void)loadWorldThread2:(id)object{    
+- (void)loadWorldThread2:(id)object{
+    return;
     World* world=object;
     
     [NSThread setThreadPriority:0.1f];
@@ -130,7 +260,7 @@ extern EAGLView* G_EAGL_VIEW;
             // printf("chunks to load:%d\n",count);
             NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm.documents,world.terrain.world_name];		
             
-            [sf_lock lock];
+           
             NSFileHandle* saveFile=[NSFileHandle fileHandleForReadingAtPath:file_name];
             
             for(int x=0;x<2*r;x++){
@@ -142,7 +272,7 @@ extern EAGLView* G_EAGL_VIEW;
             }
              
             [saveFile closeFile];
-            [sf_lock unlock];
+           
             
             /*for(int x=0;x<2*r;x++){
                 for(int z=0;z<2*r;z++){
@@ -196,7 +326,7 @@ extern EAGLView* G_EAGL_VIEW;
     
  
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-   [terrain loadTerrain:object];
+    [terrain loadTerrain:object:TRUE];
     doneLoading=2;
     [pool release];
     
@@ -277,6 +407,9 @@ extern int chunk_load_count;
 	[[Resources getResources] playMenuTune];
 	target_game_mode=GAME_MODE_WAIT;
     game_mode=GAME_MODE_WAIT;
+    
+    [fm compressLastPlayed];
+   
 //printf("hi\n");
 	
 	
@@ -344,7 +477,11 @@ extern int chunk_load_count;
 		[player preupdate:etime];
          if(![World getWorld].player.dead)
 		[effects update:etime];
+        
+        
+        [terrain prepareAndLoadGeometry];
         [terrain updateAllImportantChunks];
+       
 		
 	}
 	return FALSE;

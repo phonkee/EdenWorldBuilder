@@ -9,7 +9,7 @@
 #ifndef Eden_TerrainGen2_h
 #define Eden_TerrainGen2_h
 
-#define GSIZE (T_SIZE*4)
+#define GSIZE (T_SIZE*12)
 #define GEN_CWIDTH (GSIZE/CHUNK_SIZE)
 #define GEN_CDEPTH (GSIZE/CHUNK_SIZE)
 
@@ -18,8 +18,27 @@
 #define BLOCK(x,z,y) blockz[((int)(x)*(GSIZE*T_HEIGHT)+(int)(z)*(T_HEIGHT)+(int)(y))]
 #define COLOR(x,z,y) colorz[((int)(x)*(GSIZE*T_HEIGHT)+(int)(z)*(T_HEIGHT)+(int)(y))]
 #define TEMP(x,z) elevation[((int)(x)*(GSIZE)+(int)(z))]
-#define BIOME(x,z) biomez[((int)(x)*(1024)+(int)(z))]
+#define TM(x,z) biomez[((int)((x)*1024/GSIZE)*(1024)+(int)((z)*1024/GSIZE))]
 
+/*#define TM_WATER 0
+#define TM_GRASS 1
+#define TM_BEACH 2
+#define TM_MOUNTAINS 3
+#define TM_MARS 4
+#define TM_RIVERS 5
+#define TM_UNICORN 6
+#define NUM_TERRAIN_MARKERS 7
+*/
+
+//no terrain markers
+#define TM_WATER 0
+#define TM_GRASS 0
+#define TM_BEACH 0
+#define TM_MOUNTAINS 0
+#define TM_MARS 0
+#define TM_RIVERS 0
+#define TM_UNICORN 0
+#define NUM_TERRAIN_MARKERS 1
 
 #define NOBLOCKGEN 0
 

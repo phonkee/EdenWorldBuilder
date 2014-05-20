@@ -513,7 +513,7 @@ int SimpleCollision(Entity* e){
     
 }
 void ResetModel(int i){
-    guys[i].model_type=0;
+    guys[i].model_type=-1;
     guys[i].angle=0;
     guys[i].pos=PVRTVec3(0,0,0);    
     guys[i].alive=TRUE;
@@ -547,6 +547,7 @@ void LoadModels2(){
             ResetModel(gc);
             
             guys[gc].model_type=creatureData[i].type;
+            if(guys[gc].model_type==-1)continue;
             guys[gc].pos=vpv(creatureData[i].pos);
             guys[gc].vel=vpv(creatureData[i].vel);
             guys[gc].color=creatureData[i].color;
@@ -557,11 +558,17 @@ void LoadModels2(){
             else 
                 guys[gc].touched=FALSE;
             guys[gc].life=START_LIFE;
-            if(creatureData[i].pos.x>0&&creatureData[i].pos.z>0&&creatureData[i].pos.x<T_SIZE&&creatureData[i].pos.z<T_SIZE ){
+            
+            float adjx=creatureData[i].pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
+            float adjz=creatureData[i].pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+            if(adjx>0&&adjx<T_SIZE&&adjz>0&&adjz<T_SIZE ){
+                
+               
                 totalactive++;
                  guys[gc].update=TRUE;
             }else {
-               
+               // totalactive++;
+                //guys[gc].update=TRUE;
                 guys[gc].update=FALSE;
             }
             
@@ -576,15 +583,15 @@ void LoadModels2(){
         }
         
     }
-
+    //printf("loaded")
    // Vector player_pos=[World getWorld].player.pos;
     while(totalactive<40&&gc<nguys){
         ResetModel(gc);
         guys[gc].targetangle=randf(3.14f*2);
         //guys[gc].pos=PVRTVec3(arc4random()%25+90,arc4random()%5+32,T_HEIGHT);
-        guys[gc].pos=PVRTVec3(arc4random()%T_SIZE,T_HEIGHT-15,arc4random()%T_SIZE);
-     //   printf("player_pos: %f,%f\n",player_pos.x,player_pos.z);
-        int breakout=50;
+        guys[gc].pos=PVRTVec3(arc4random()%T_SIZE+[World getWorld].fm.chunkOffsetX*CHUNK_SIZE,T_HEIGHT-15,arc4random()%T_SIZE+[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE);
+       
+        int breakout=30;
         while(!SimpleCollision(&guys[gc])&&guys[gc].pos.y>=0&&breakout>0){
             guys[gc].pos.y-=1;
             breakout--;
@@ -598,6 +605,7 @@ void LoadModels2(){
             if(type==0)break;
             guys[gc].pos.y+=1;
         }
+        printf("creature_pos: %f,%f,%f\n",guys[gc].pos.x,guys[gc].pos.z,guys[gc].pos.y);
       /*  if(ltype!=TYPE_GRASS&&ltype!=TYPE_GRASS2&&ltype!=TYPE_GRASS3&&ltype!=TYPE_DIRT){
             totalactive++;
             guys[gc].alive=FALSE;
@@ -637,23 +645,29 @@ void setState(int idx,int state){
     
 }
 float wrapx(float x){
-    int ggx=((int)x+g_offcx)%T_SIZE;
-    return (x-(int)x)+ggx;
+    return x;
+   // int ggx=((int)x+g_offcx)%T_SIZE;
+   // return (x-(int)x)+ggx;
 }
 float wrapz(float z){
-    int ggz=((int)z+g_offcz)%T_SIZE;
-    return (z-(int)z)+ggz;
+  //  int ggz=((int)z+g_offcz)%T_SIZE;
+ //   return (z-(int)z)+ggz;
+    
+    return z;
 }
 int PointTestModels(float x,float y,float z){
+    
+   // printf("point testing models: %f,%f   %f,%f  global_offs: %d,%d\n" ,x,z,wrapx(x),wrapz(z),g_offcx,g_offcz);
     for(int i=0;i<nguys;i++){
         if(!guys[i].alive||!guys[i].update)continue;
         Entity* e=&guys[i];
         
      /*   int ggx=((int)x+g_offcx)%T_SIZE;
         int ggz=((int)z+g_offcz)%T_SIZE;
-        
+      
         float xx=(x-(int)x)+ggx;
         float zz=(z-(int)z)+ggz;*/
+       // printf("creature: %f, %f\n", e->pos.x,e->pos.y);
         float ax=e->pos.x-wrapx(x);
         float az=e->pos.z-wrapz(z);
         
@@ -832,8 +846,8 @@ bool CheckCollision(Entity* e){
                 
                 
                 
-                int ggx=(x+g_offcx)%T_SIZE;
-                int ggz=(z+g_offcz)%T_SIZE;
+               // int ggx=(x+g_offcx)%T_SIZE;
+             //   int ggz=(z+g_offcz)%T_SIZE;
                 
                 
                 if(collidePolyhedra(e->box,pbox2)){
@@ -850,14 +864,15 @@ bool CheckCollision(Entity* e){
                         if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){                            
                           
                         }
-                       
+                       //paint trails
+                        /*
                         for(int yy=0;yy<T_HEIGHT;yy++){
-                            if(getLandc(ggx,ggz,yy)==TYPE_CLOUD&&[[World getWorld].terrain getColor:ggx:ggz:yy]!=e->idx){
+                            if(getLandc(x,z,yy)==TYPE_GRASS&&[[World getWorld].terrain getColor:x:z:yy]!=e->idx){
                                 //    printf("setting color: %d,%d,%d local:(%d,%d)\n",ggx,ggz,y,x,z);
-                                [[World getWorld].terrain paintBlock:ggx:ggz:yy:e->idx];
+                                [[World getWorld].terrain paintBlock:x:z:yy:e->idx];
                             }
                             
-                        }
+                        }*/
                         collided=type;
                         minminTranDist=minTranDist;
                     }            
@@ -992,9 +1007,9 @@ int nestmove=0;
 void Move(Entity* e,float etime){
    
    
-    if(ABS(e->vel.y)*etime>.3f||ABS(e->vel.x)*etime>.3f||ABS(e->vel.z)*etime>.3f){
+    if(ABS(e->vel.y)*etime>.4f||ABS(e->vel.x)*etime>.4f||ABS(e->vel.z)*etime>.4f){
         nestmove++;
-        if(nestmove<3){
+        if(nestmove<2){
         Move(e,etime/2);
         Move(e,etime/2);
         nestmove--;
@@ -1164,6 +1179,8 @@ void Move(Entity* e,float etime){
 }
 
 float xtimer=0;
+int model_update_count=0;
+int model_render_count=0;
 void UpdateModels(float etime){
   
     xtimer+=etime;
@@ -1174,22 +1191,32 @@ void UpdateModels(float etime){
        // printf("\n");
         xtimer=0;
     }
-    
+   model_update_count=0;
     for(int i=0;i<nguys;i++){     
         if(!guys[i].alive||!guys[i].update)continue;
         
+        float adjx=guys[i].pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
+        float adjz=guys[i].pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+        
+        
+        if(adjx>0&&adjx<T_SIZE&&adjz>0&&adjz<T_SIZE ){
+            
+             model_update_count++;
+            //guys[i].update=TRUE;
+        }else {
+            guys[i].update=FALSE;
+            continue;
+           
+        }
         nestmove=0;
         if(guys[i].insideView||(!guys[i].onground||guys[i].onIce||guys[i].ragetimer>0||guys[i].onfire))
         Move(&guys[i],etime);
-        if(guys[i].pos.x>0&&guys[i].pos.z>0&&guys[i].pos.x<T_SIZE  &&guys[i].pos.z<T_SIZE ){
-           
-           
-        }else {
-         // printf("")
-         //   guys[i].update=FALSE;
-        }
+        
+        
+        
         if(guys[i].model_type<0||guys[i].model_type>NUM_CREATURES)guys[i].alive=FALSE;
     }
+    
     
     for(int i=0;i<nguys;i++){  
         if(!guys[i].alive||!guys[i].update)continue;
@@ -1545,9 +1572,10 @@ bool LoadModels(const char* pszReadPath)
     
     
  //   printf("succeeded load model!!\n");
-    for(int i=0;i<nguys;i++){
-       // guys[i].alive=FALSE;
-    }
+ //  for(int i=0;i<nguys;i++){
+      //  ResetModel(i);
+  //     // guys[i].alive=FALSE;
+//    }
        /* ResetModel(i);
         guys[i].targetangle=randf(3.14f*2);
         guys[i].pos=PVRTVec3(arc4random()%25+90,arc4random()%5+32,arc4random()%25+90);
@@ -1913,10 +1941,10 @@ void DrawShadows(){
         }else{
             if(!guys[i].alive||!guys[i].update||!guys[i].insideView)continue;
        	}
-        Vector vpos=MakeVector(guys[i].pos.x-16,guys[i].pos.y,guys[i].pos.z-16);
+        Vector vpos=MakeVector(guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
         //if(guys[i].model_type==M_GREEN)vpos.x-=.5f;
-        float x=vpos.x;
-        float z=vpos.z;       
+        float x=vpos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
+        float z=vpos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
         float y=(int)(min[guys[i].model_type].y*scale+vpos.y+.01)+.01f;
          Vector point;
         point.x=x;
@@ -2095,7 +2123,7 @@ bool RenderModels()
     glDisableClientState(GL_COLOR_ARRAY);
     float bounds[6];
     int renderidx=0;
-   
+    model_render_count=0;
     for(int i=0;i<nguys;i++){
         if(!guys[i].alive)continue;
         if(!guys[i].update){
@@ -2115,16 +2143,22 @@ bool RenderModels()
         bounds[3]=guys[i].pos.x+BB.x*scale;
         bounds[4]=guys[i].pos.y+BB.y*scale;
         bounds[5]=guys[i].pos.z+BB.z*scale;
+        
+        
         if(!(ViewTestAABB(bounds,VT_INSIDE)&VT_OUTSIDE)){
             guys[i].insideView=TRUE;
             renderlistc[renderidx++]=i;
+             model_render_count++;
+            
             //printf("model in view[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
            
         }else{
-             guys[i].insideView=TRUE;
-            renderlistc[renderidx++]=i;
+             guys[i].insideView=FALSE;
+            //renderlistc[renderidx++]=i;
             //printf("model out of view(but active/alive)[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
         }
+        
+       
     }
    // printf("rendering: %d\n",max_render);
      qsort (renderlistc, renderidx, sizeof (int), compare_creatures);
@@ -2136,6 +2170,10 @@ bool RenderModels()
     for(int j=0;j<max_render;j++){
           
         int i=renderlistc[j];
+        
+        guys[i].pos.x-=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
+        guys[i].pos.z-=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+        
      //   printf("rendering model: (%f,%f,%f)\n",guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
         if(guys[i].color==0||guys[i].ragetimer>0){
             if(guys[i].flash!=0){
@@ -2173,6 +2211,9 @@ bool RenderModels()
             DrawModel(i);
             glColor4f(1,1,1,1);
         }
+        
+        guys[i].pos.x+=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
+        guys[i].pos.z+=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
     
     }
     if(guys[nguys].model_type!=-1){
@@ -2233,6 +2274,8 @@ bool RenderModels()
     glDisable(GL_NORMALIZE);
     DrawShadows();
     glEnableClientState(GL_COLOR_ARRAY);
+    
+    printf("Models updated:%d   models rendered:%d\n",model_update_count,model_render_count);
 		return true;
 }
 
@@ -2248,8 +2291,8 @@ void DrawModel(int mi)
    // if(guys[mi].model_type==M_GREEN){
    //     position.x+=.35f;
    // }
-    position.x-=16;
-    position.z-=16;
+   // position.x-=16;
+   // position.z-=16;
     //position.y-=64;
     int modelType=guys[mi].model_type;
 	//Set the frame number

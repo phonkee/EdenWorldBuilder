@@ -28,6 +28,8 @@ color8* colorz;
 block8* elevation;
 
 
+
+
 extern Vector colorTable[256];
 void makeHill(int x,int z,int y, int size,int type);
 int BC(int i){
@@ -511,6 +513,7 @@ void makeCave(int xs,int zs,int ys,int sizex,int sizez,int sizey,int colorScheme
     
     for(int x=xs;x<sizex;x++){
         for(int z=zs;z<sizez;z++){
+            if(TM(x,z)!=TM_UNICORN)continue;
             for(int y=ys;y<sizey;y++){
                 float n3=0;
                 float FREQ3=4.0f;
@@ -576,6 +579,7 @@ void makeDirt(){
 	const int offsety=T_HEIGHT/2;
     for(int x=0;x<GSIZE;x++){ //Heightmap
 		for(int z=0;z<GSIZE;z++){
+            if(TM(x,z)!=TM_GRASS)continue;
             int h;
             
             float n=offsety;
@@ -669,6 +673,7 @@ void makeDirt(){
     
     for(int x=0;x<GSIZE;x++){
 		for(int z=0;z<GSIZE;z++){
+            if(TM(x,z)!=TM_GRASS)continue;
             BLOCK(x ,z ,0)=TYPE_SAND;
 			
 			for(int y=0;y<T_HEIGHT;y++){
@@ -698,6 +703,7 @@ void makeDirt(){
     
     for(int x=2;x<CHUNK_SIZE-2;x++){ //Trees
 		for(int z=2;z<CHUNK_SIZE-2;z++){
+            if(TM(x,z)!=TM_GRASS)continue;
 			for(int y=1;y<T_HEIGHT-1;y++){
 				if(BLOCK(x ,z ,y)==TYPE_GRASS||BLOCK(x ,z ,y)==TYPE_GRASS2){
 					//[self placeTree:x :z :y+1];
@@ -716,6 +722,7 @@ void makeMars(int x1,int z1,int x2,int z2){
 	const int offsety=T_HEIGHT/8;
     for(int x=x1;x<x2;x++){ //Heightmap
 		for(int z=z1;z<z2;z++){
+            if(TM(x,z)!=TM_MARS)continue;
             int h;
             
             float n=offsety;
@@ -783,6 +790,7 @@ void makeMars(int x1,int z1,int x2,int z2){
     
     for(int x=x1;x<x2;x++){
 		for(int z=z1;z<z2;z++){
+            if(TM(x,z)!=TM_MARS)continue;
             BLOCK(x ,z ,0)=TYPE_SAND;
 			
 			for(int y=0;y<5;y++){
@@ -800,7 +808,7 @@ void makeMars(int x1,int z1,int x2,int z2){
 		}
 	}
     
-    for(int i=0;i<20;i++){
+    for(int i=0;i<80;i++){
         int x=randi(GSIZE-10)+5;
         int z=randi(GSIZE-10)+5;
         // int color=randi(53);
@@ -923,6 +931,7 @@ void makeBeach(){
 	const int offsety=T_HEIGHT/2;
     for(int x=0;x<GSIZE;x++){ //Heightmap
 		for(int z=0;z<GSIZE;z++){
+            if(TM(x,z)!=TM_BEACH)continue;
             int h;
             
             float n=offsety;
@@ -981,6 +990,7 @@ void makeBeach(){
     
     for(int x=0;x<GSIZE;x++){
 		for(int z=0;z<GSIZE;z++){
+            if(TM(x,z)!=TM_BEACH)continue;
             //BLOCK(x ,z ,0)=TYPE_SAND;
 			
 			for(int y=4;y<sealevel;y++){
@@ -1007,6 +1017,7 @@ void makeBeach(){
 	}
     for(int x=4;x<GSIZE-4;x++){ //Trees
         for(int z=4;z<GSIZE-4;z++){
+            if(TM(x,z)!=TM_BEACH)continue;
             for(int y=sealevel;y<T_HEIGHT-10;y++){
                 if((BLOCK(x ,z ,y)==TYPE_GRASS)&&BLOCK(x ,z ,y+1)==TYPE_NONE){
                     if(randi(90)==0){
@@ -1184,6 +1195,7 @@ void makePonies(){
 	const int offsety=T_HEIGHT/2;
     for(int x=0;x<GSIZE;x++){ //Heightmap
 		for(int z=0;z<GSIZE;z++){
+            if(TM(x,z)!=TM_UNICORN)continue;
             int h;
             
             float n=offsety;
@@ -1358,6 +1370,7 @@ void makeRiverTrees(int sx,int sz,int ex,int ez,int SEED){
 	const int offsety=T_HEIGHT/2-10;
     for(int x=sx;x<ex;x++){
 		for(int z=sz;z<ez;z++){
+            if(TM(x,z)!=TM_RIVERS)continue;
             int h;
             
             float n=offsety;
@@ -1405,6 +1418,7 @@ void makeRiverTrees(int sx,int sz,int ex,int ez,int SEED){
     
     for(int x=sx;x<ex;x++){
 		for(int z=sz;z<ez;z++){
+             if(TM(x,z)!=TM_RIVERS)continue;
            // BLOCK(x ,z ,0)=TYPE_SAND;
 			int dirtlevel=25;
 			for(int y=0;y<T_HEIGHT-dirtlevel;y++){
@@ -1427,6 +1441,7 @@ void makeRiverTrees(int sx,int sz,int ex,int ez,int SEED){
     int sea_level=-8;
     for(int x=sx;x<ex;x++){
 		for(int z=sz;z<ez;z++){
+             if(TM(x,z)!=TM_RIVERS)continue;
             //BLOCK(x ,z ,0)=TYPE_SAND;
 			
 			for(int y=6;y<23+sea_level;y++){
@@ -1463,6 +1478,7 @@ void makeRiverTrees(int sx,int sz,int ex,int ez,int SEED){
     
      for(int x=sx+4;x<ex-4;x++){ //Trees
      for(int z=sz+4;z<ez-4;z++){
+          if(TM(x,z)!=TM_RIVERS)continue;
      for(int y=4;y<T_HEIGHT-10;y++){
      if(BLOCK(x ,z ,y)==TYPE_DIRT&&BLOCK(x ,z ,y+1)==TYPE_NONE){
          if(randi(70)==0){
@@ -1566,6 +1582,7 @@ void makeMountains(int sx,int sz,int ex,int ez,int SEED){
 	const int offsety=T_HEIGHT/2-10;
     for(int x=sx;x<ex;x++){
 		for(int z=sz;z<ez;z++){
+            if(TM(x,z)!=TM_MOUNTAINS)continue;
             int h;
             
             float n=offsety;
@@ -1611,6 +1628,7 @@ void makeMountains(int sx,int sz,int ex,int ez,int SEED){
     
     for(int x=sx;x<ex;x++){ 
 		for(int z=sz;z<ez;z++){
+            if(TM(x,z)!=TM_MOUNTAINS)continue;
          //   BLOCK(x ,z ,0)=TYPE_SAND;
 			int snowlevel=34;
 			for(int y=snowlevel;y<T_HEIGHT;y++){
@@ -1643,6 +1661,7 @@ void makeMountains(int sx,int sz,int ex,int ez,int SEED){
   //  int sea_level=-14;
     for(int x=sx;x<ex;x++){ 
 		for(int z=sz;z<ez;z++){
+            if(TM(x,z)!=TM_MOUNTAINS)continue;
             //BLOCK(x ,z ,0)=TYPE_SAND;
 			
 			for(int y=3;y<6;y++){
@@ -1804,6 +1823,28 @@ void genTemperatureMap(){
     }
     
 }
+void makeOcean(){
+    int sealevel=33;
+    for(int x=0;x<GSIZE;x++){
+		for(int z=0;z<GSIZE;z++){
+            if(TM(x,z)!=TM_WATER)continue;
+            for(int y=1;y<sealevel;y++){
+				if(BLOCK(x ,z ,y)==TYPE_NONE){
+                    
+                    
+                    BLOCK(x,z,y)=TYPE_WATER;
+                    COLOR(x,z,y)=0;
+                    
+                    
+                	
+				}
+				
+			}
+			
+		}
+        
+    }
+}
 int tg2_init(){
     //clear();
     elevation=malloc(sizeof(block8)*GSIZE*GSIZE);
@@ -1839,6 +1880,23 @@ int tg2_init(){
         return 0;
         
     }
+   /* for(int i=0;i<NUM_TERRAIN_MARKERS;i++){
+        if(i==TM_BEACH){
+            makeBeach();
+        }else if(i==TM_MARS){
+            makeMars(0,0,GSIZE,GSIZE);
+        }else if(i==TM_GRASS){
+            makeDirt();
+        }else if(i==TM_UNICORN){
+            makePonies();
+        }else if(i==TM_RIVERS){
+            makeRiverTrees(0,0,GSIZE,GSIZE,550);
+        }else if(i==TM_MOUNTAINS){
+            makeMountains(0,0,GSIZE,GSIZE,550);
+        }else if(i==TM_WATER){
+            makeOcean();
+        }
+    }*/
       g_terrain_type=7;
       if(g_terrain_type==0){
       makeDirt();
@@ -1862,7 +1920,7 @@ int tg2_init(){
           
       //genflat=TRUE;
       }
-    int sx=0;
+   /* int sx=0;
     int sz=0;
     int increment=1;
     for(float x=0;x<1024;x+=increment){
@@ -1878,18 +1936,29 @@ int tg2_init(){
             // [Graphics drawRect:sx:sz:sx+1:sz+1];
            // float value=(TEMP(ix,iz)+128.0f)/255.0f;
             
-            int biome=BIOME(ix,iz);
-            if(biome==1)
-                BLOCK(ix,iz,T_HEIGHT-1)=TYPE_GRASS;
-            else if(biome==2)
-                BLOCK(ix,iz,T_HEIGHT-1)=TYPE_WATER;
-            COLOR(ix,iz,T_HEIGHT-1)=0;
+            int biome=TM(ix,iz);
+            if(biome==TM_GRASS){
+                for(int y=0;y<T_HEIGHT;y++){
+                    if(BLOCK(ix,iz,y)){
+                        BLOCK(ix,iz,y)=TYPE_GRASS;
+                        COLOR(ix,iz,y)=0;
+                    }
+                }
+            }else if(biome==TM_WATER){
+                for(int y=0;y<T_HEIGHT;y++){
+                    if(BLOCK(ix,iz,y)){
+                        BLOCK(ix,iz,y)=TYPE_WATER;
+                        COLOR(ix,iz,y)=0;
+                    }
+                }
+            }
+            //COLOR(ix,iz,T_HEIGHT-1)=0;
 
             
         }
         
-    }
-   
+    }*/
+   //printf("creating biome: %d\n",g_terrain_type);
 
     return 0;
     
@@ -1912,7 +1981,7 @@ void tg2_render(){
            
            // glColor4f(value,value,value,1.0f);
            // [Graphics drawRect:sx:sz:sx+1:sz+1];
-             float value=(TEMP(ix,iz)+128.0f)/255.0f;
+             //float value=(TEMP(ix,iz)+128.0f)/255.0f;
          /*
             int biome=BIOME(ix,iz);
             if(biome==1)
@@ -1942,8 +2011,8 @@ void tg2_render(){
                         color=colorTable[icolor];
                     }
                 //color=colorTable[10];
-                    glColor4f(color.x,color.y,color.z,value);
-                    [Graphics drawRect:sx:sz:sx+1:sz+1];
+                    glColor4f(color.x,color.y,color.z,1.0f);
+                    [Graphics drawRect:sx:GSIZE/increment-sz:sx+1:GSIZE/increment-sz+1];
                     
                     
                     break;

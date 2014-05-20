@@ -16,7 +16,7 @@
 #define n_particles 17
 #define max_fparticles 1000
 #define max_bb 500
-#define SMOKE_SIZER 140
+#define SMOKE_SIZER 80
 
 static unsigned short pindices[max_fparticles];
 typedef struct{
@@ -94,7 +94,7 @@ extern vertexpStruct pbuffer[pbuffer_size];
 				}*/
 				int dx=(arc4random()%200-100);
 				int dz=(arc4random()%200-100);
-				int dy=(arc4random()%50)+50;
+				int dy=(arc4random()%50)+80;
 				node->particles[i].vx=dx/100.0f*SPEED;
 				node->particles[i].vz=dz/100.0f*SPEED;
 				node->particles[i].vy=dy/100.0f*SPEEDY;
@@ -115,7 +115,7 @@ extern vertexpStruct pbuffer[pbuffer_size];
                          if(size>SMOKE_SIZER*3){
                              size=SMOKE_SIZER*3;
                          }*/
-                         pbuffer[node->particles[i].pvbi].size[0]+=3;
+                         pbuffer[node->particles[i].pvbi].size[0]+=1;
                          
                      }
                      //pbuffer[node->particles[i].pvbi].size[0]=SMOKE_SIZER*node->particles[i].life/node->particles[i].slife;

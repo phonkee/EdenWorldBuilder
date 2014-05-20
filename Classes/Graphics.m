@@ -22,7 +22,7 @@ extern float P_ASPECT_RATIO;
 extern const GLshort cubeTexture[CUBE_VERTICES*2] ;
 
 extern const GLshort cubeShortVertices[CUBE_VERTICES*3] ;
-
+/*
 const static GLfloat skyboxVertices[]={
 	// Render the front quad	
 	0, 0,   0.5f, -0.5f, -0.5f ,
@@ -138,7 +138,7 @@ const static GLfloat cubeNormals12[] = {
 	0, 0, -1 ,		//2  K back
 	0, 0, -1		//1  L back
 	
-};
+};*/
 static vertexStruct vertices[CUBE_VERTICES];
 
 
@@ -697,7 +697,7 @@ extern const GLfloat cubeNormals[36*3];
         coloring=TRUE;
     }
     int btype=[[World getWorld].terrain getLand:x:z:y];
-    if(buildsize==0)btype=getCustomc(x,z,y);
+  //  if(buildsize==0)btype=getCustomc(x,z,y);
     if(btype!=TYPE_NONE){
        
        // type=btype;

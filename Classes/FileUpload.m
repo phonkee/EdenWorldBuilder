@@ -98,8 +98,8 @@ progressSelector: (SEL)aProgressSelector
 {
     
     const char* fname=[filePath cStringUsingEncoding:NSUTF8StringEncoding];
-    NSString* temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents];
-    const char* tname=[temp_name cStringUsingEncoding:NSUTF8StringEncoding];
+   /* NSString* temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents];
+   const char* tname=[temp_name cStringUsingEncoding:NSUTF8StringEncoding];
     
     FILE* fsource = fopen(fname, "rb");
     if(!fsource){
@@ -127,8 +127,8 @@ progressSelector: (SEL)aProgressSelector
         [self uploadSucceeded:NO];
         remove(tname);
         return;
-    }
-    
+    }*/
+    NSString* temp_name=[NSString stringWithUTF8String:fname];
     NSData *compressedData = [NSData dataWithContentsOfFile:temp_name];
 	  if (!compressedData || [compressedData length] == 0) {
 	     [self uploadSucceeded:NO];
@@ -148,7 +148,7 @@ progressSelector: (SEL)aProgressSelector
         [self uploadSucceeded:NO];
         return;
     }
-	remove(tname);
+	//remove(tname);
     NSURLConnection * connection =
     [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
     if (!connection) {
@@ -227,6 +227,8 @@ progressSelector: (SEL)aProgressSelector
     return urlRequest;
 }
 
+
+//unused
 - (NSData *)gzipDeflate:(NSData*) data
 {
 	if ([data length] == 0) return data;

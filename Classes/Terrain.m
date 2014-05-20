@@ -18,6 +18,10 @@
 @synthesize home,loaded,world_name,level_seed,tgen,counter,skycolor,final_skycolor,chunkTable,portals,fireworks;
 
 #define BEDROCK_LEVEL 3;
+
+
+
+
 int vertices_rendered=0;
 int max_vertices=100000;
 static int faces_rendered=0;
@@ -28,13 +32,13 @@ static Terrain* singleton;
 
 static BOOL* columnsToUpdate;
 static BOOL* chunksToUpdate;
-static BOOL* chunksToUpdatefg;
+//static BOOL* chunksToUpdatefg;
 
 static BOOL* chunksToUpdateImmediatley;
 
 block8* blockarray;
 static color8* shadowarray;
-Vector* lightarray;
+Vector8* lightarray;
 //static map_t chunkMapc;
 static TerrainChunk** chunkTablec;
 static BOOL secondPass;
@@ -191,7 +195,7 @@ void initTree(TreeNode* node){
 	
 	memset(blockarray,0,sizeof(block8)*T_SIZE*T_SIZE*T_HEIGHT);
     memset(shadowarray,0,sizeof(color8)*T_SIZE*T_SIZE);
-    memset(lightarray,0,sizeof(Vector)*T_SIZE*T_SIZE*T_HEIGHT);
+    memset(lightarray,0,sizeof(Vector8)*T_SIZE*T_SIZE*T_HEIGHT);
 }
 
 
@@ -212,16 +216,18 @@ extern int g_offcz;
     //int s=(int)sizeof(TerrainChunk);
     printf("sizeofTerrainChunk: %d\n",(int)sizeof(TerrainChunk*));
 	chunksToUpdate=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
-    chunksToUpdatefg=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+    //chunksToUpdatefg=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
     columnsToUpdate=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE);
    	//oldChunkMap=NULL;
 	chunksToUpdateImmediatley=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+    memset(chunksToUpdateImmediatley,0,sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
     liquids=[[Liquids alloc] init];
     portals=[[Portal alloc] init];
     fireworks=[[Firework alloc] init];
 	 initTree(&troot);
 	blockarray=malloc(sizeof(block8)*(T_SIZE+1)*(T_SIZE+1)*(T_HEIGHT+1));
-    lightarray=malloc(sizeof(Vector)*T_SIZE*T_SIZE*T_HEIGHT);
+    lightarray=malloc(sizeof(Vector8)*T_SIZE*T_SIZE*T_HEIGHT);
+    printf("size of lightarray: %d bytes\n",(int)(sizeof(Vector)*T_SIZE*T_SIZE*T_HEIGHT));
     shadowarray=malloc(sizeof(block8)*T_SIZE*T_SIZE);
 	singleton=self;
 	loaded=FALSE;
@@ -276,7 +282,7 @@ int extraGeneration(any_t passedIn,any_t chunkToGen){
 	
 	return MAP_OK;
 }
-- (void)loadTerrain:(NSString*)name{
+- (void)loadTerrain:(NSString*)name:(BOOL)fromArchive{
     
     double start_time=-[start timeIntervalSinceNow];
 	if(loaded)[self unloadTerrain:FALSE];
@@ -296,7 +302,7 @@ int extraGeneration(any_t passedIn,any_t chunkToGen){
     
 	world_name=name;
 	[world_name retain];
-	[[World getWorld].fm loadWorld:name];
+	[[World getWorld].fm loadWorld:name:fromArchive];
    
     firstframe=TRUE;
     //hashmap_iterate(chunkMap,extraGeneration,NULL);
@@ -328,19 +334,19 @@ int extraGeneration(any_t passedIn,any_t chunkToGen){
 	[[World getWorld].fm saveWorld:pp];
 	[self unloadTerrain:FALSE];
     
-	[self loadTerrain:world_name];
+	[self loadTerrain:world_name:FALSE];
     //[[World getWorld].player reset];
 
     [[World getWorld].player groundPlayer];	
 }
 - (void)addToUpdateList:(int)cx:(int)cy:(int)cz{
-    
+     //issue #1 continued
     chunksToUpdate[threeToOne(cx,cy,cz)]=TRUE;
     columnsToUpdate[getColIndex(cx,cz)]=TRUE;
     }
 
 - (void)addToUpdateList2:(int)cx:(int)cy:(int)cz{
-    
+     //issue #1 continued
     chunksToUpdate[threeToOne(cx,cy,cz)]=TRUE;
     columnsToUpdate[getColIndex(cx,cz)]=TRUE;
 }
@@ -351,8 +357,10 @@ int compare_back2front (const void *a, const void *b);
 
  int idxrl=0;
 TerrainChunk* rebuildList[13000];
-static int sanity_test=0;
+//static int sanity_test=0;
 - (void)chunkBuildingThread:(id)object{
+    return;
+    /*
     //Terrain* ter=object;
     [NSThread setThreadPriority:.2];
     printf("Chunk Building thread started, priority: %f \n",[NSThread threadPriority]);
@@ -363,7 +371,7 @@ static int sanity_test=0;
         if([self loaded]){
             int num=0;
             int list[2000];
-            
+            //issue #1 chunksToUpdate and columnsToUpdate not synchronized, simultaneous data access from this thread, and loading thread
             if(idxrl<10000){
                 for(int x=0;x<CHUNKS_PER_SIDE;x++){
                     for(int z=0;z<CHUNKS_PER_SIDE;z++){
@@ -402,6 +410,7 @@ static int sanity_test=0;
                         printf("out of bounds access list[%d]=%d  num: %d idxrl: %d  max:%d\n",i,list[i],num,idxrl, CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
                         //  continue;
                     }
+                    //issue #3 continued
                     chunk=chunkTable[list[i]];
                     //=malloc(sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
                     if(chunk){
@@ -413,28 +422,28 @@ static int sanity_test=0;
             // printf("rebuild %d\n",idx);
             if(idxrl>0){
                 qsort (rebuildList, idxrl, sizeof (TerrainChunk*), compare_rebuild_order);
-                
-                /* for(int x=0;x<CHUNKS_PER_SIDE;x++){
-                 for(int z=0;z<CHUNKS_PER_SIDE;z++){
-                 // if(columnsToUpdate[getColIndex(x,z)]){
-                 for(int y=0;y<CHUNKS_PER_COLUMN;y++){
-                 if(chunksToUpdatefg[threeToOne(x,y,z)])
-                 {
-                 TerrainChunk* chunk;
-                 
-                 chunk=chunkTable[threeToOne(x,y,z)];
-                 [chunk rebuild2:FALSE];
-                 
-                 if(chunk){
-                 chunksToUpdateImmediatley[threeToOne(x,y,z)]=TRUE;
-                 }
-                 chunksToUpdatefg[threeToOne(x,y,z)]=FALSE;
-                 }
-                 }
-                 
-                 }
-                 }*/
-                
+//                
+//                 for(int x=0;x<CHUNKS_PER_SIDE;x++){
+//                 for(int z=0;z<CHUNKS_PER_SIDE;z++){
+//                 // if(columnsToUpdate[getColIndex(x,z)]){
+//                 for(int y=0;y<CHUNKS_PER_COLUMN;y++){
+//                 if(chunksToUpdatefg[threeToOne(x,y,z)])
+//                 {
+//                 TerrainChunk* chunk;
+//                 
+//                 chunk=chunkTable[threeToOne(x,y,z)];
+//                 [chunk rebuild2:FALSE];
+//                 
+//                 if(chunk){
+//                 chunksToUpdateImmediatley[threeToOne(x,y,z)]=TRUE;
+//                 }
+//                 chunksToUpdatefg[threeToOne(x,y,z)]=FALSE;
+//                 }
+//                 }
+//                 
+//                 }
+//                 }
+    
             }
             if(idxrl>0)
             for(int i=0;i<35;i++){
@@ -451,6 +460,8 @@ static int sanity_test=0;
                     if(sanity_test!=1){
                         printf("sanity test failed\n");
                     }
+                    
+                    //issue #1 continued
                     if([rebuildList[idxrl] rebuild2]==-1){
                         chunksToUpdate[rebuildList[idxrl].idxn]=TRUE;
                         columnsToUpdate[rebuildList[idxrl].idxn/CHUNKS_PER_COLUMN]=TRUE;
@@ -458,7 +469,7 @@ static int sanity_test=0;
                         
                         rebuildList[idxrl].needsRebuild=FALSE;
                         
-                        
+                        //issue #2 chunksToUpdateImmediatley shared data access with main thread, not synchronized
                         chunksToUpdateImmediatley[rebuildList[idxrl].idxn]=TRUE;
                     }
                     sanity_test--;
@@ -474,7 +485,7 @@ static int sanity_test=0;
     cleanup:
         [pool release];
         
-	}
+	}*/
 }
 
 /*-(void) initialGenChunks{
@@ -506,6 +517,7 @@ static int sanity_test=0;
 	
 	NSNumber* chunkIdx=[NSNumber numberWithInt:threeToOne(cx,cy,cz)];
 	
+     //issue #3 continued
     TerrainChunk* old=chunkTable[threeToOne(cx,cy,cz)];
     BOOL readdtree=TRUE;
     if(old){
@@ -545,7 +557,7 @@ static int sanity_test=0;
 	//}
 }
 
-- (BOOL)setCustom:(int)x :(int)z :(int)y :(int)type :(int)color{
+/*- (BOOL)setCustom:(int)x :(int)z :(int)y :(int)type :(int)color{
     if(type!=TYPE_NONE){
         if(getLandc(x/2,z/2,y/2)!=TYPE_CUSTOM){
             [self setLand:x/2:z/2:y/2:TYPE_CUSTOM:FALSE];
@@ -568,13 +580,13 @@ static int sanity_test=0;
     
     
     
-}
+}*/
 - (void)setLand:(int)x :(int)z :(int)y :(int)type :(BOOL)chunkToo{
 	
 	if(y<0||y>=T_HEIGHT)return;
    
-    
-	blockarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y]=type;
+    GBLOCK(x,z,y)=type;
+
 	if(chunkToo){
         int cx=x/CHUNK_SIZE;
         int cy=y/CHUNK_SIZE;
@@ -639,12 +651,12 @@ static int sanity_test=0;
     
     
 }
-- (void)destroyCustom:(int)x :(int)z :(int)y{
+/*- (void)destroyCustom:(int)x :(int)z :(int)y{
     [[World getWorld].effects addBlockBreak:x/2.0f :z/2.0f :y/2.0f :getCustomc(x ,z ,y) :0];
 	[self updateCustom: x: z: y: TYPE_NONE :0];
     
 
-}
+}*/
 - (void)destroyBlock:(int)x :(int)z :(int)y{
     NSLog(@"%d, %d, %d",x,z,y);
     int cur=getLandc(x,z,y);
@@ -819,7 +831,7 @@ int getRampType(int x,int z,int y, int t){
     type+=r;
     return type;
 }
-- (void)buildCustom:(int)x :(int)z :(int)y{
+/*- (void)buildCustom:(int)x :(int)z :(int)y{
     int build=[World getWorld].hud.blocktype;
    // int type=getLandc(x,z,y);
     [self updateCustom:x :z :y :build :[World getWorld].hud.block_paintcolor];
@@ -829,7 +841,7 @@ int getRampType(int x,int z,int y, int t){
 - (void)paintCustom:(int)x :(int)z :(int)y :(int)color{
      [self updateCustom:x :z :y :getCustomc(x,z,y) :color];
     
-}
+}*/
 - (void)buildBlock:(int)x :(int)z :(int)y{
     if([World getWorld].hud.blocktype==TYPE_GOLDEN_CUBE){
         if([World getWorld].hud.goldencubes<=0)return;
@@ -1000,6 +1012,7 @@ int getRampType(int x,int z,int y, int t){
     int pos[3]={x,y,z};
 	int cx,cy,cz;
 	int radius2=radius*2;
+    
    
 	cx=pos[0]/CHUNK_SIZE;
 	cy=pos[1]/CHUNK_SIZE;
@@ -1210,7 +1223,7 @@ int getRampType(int x,int z,int y, int t){
 		
 	}
 }
-- (void)updateCustom:(int)x :(int)z :(int)y:(int)type:(int)color{
+/*- (void)updateCustom:(int)x :(int)z :(int)y:(int)type:(int)color{
    	int pos[3]={x/2,y/2,z/2};
 	int cx,cy,cz;
 	
@@ -1247,7 +1260,7 @@ int getRampType(int x,int z,int y, int t){
 	
 	
 	
-}
+}*/
 
 float getShadow(int x,int z,int y){
    // return .5f;
@@ -1283,11 +1296,11 @@ float getShadow(int x,int z,int y){
 }
 float calcLight(int x,int z,int y,float shadow,int coord){
     if(coord==0)
-        shadow+=lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].x;
+        shadow+=(float)lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].x/255.0f;
     else if(coord==1)
-        shadow+=lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].y;
+        shadow+=(float)lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].y/255.0f;
     else if(coord==2)
-        shadow+=lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].z;
+        shadow+=(float)lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].z/255.0f;
     
     
     
@@ -1297,11 +1310,11 @@ float calcLight(int x,int z,int y,float shadow,int coord){
 }
 inline int getLandc2(int x,int z,int y){	
     if(y<0||y>=T_HEIGHT)return -1;
-    return blockarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y];
+    return GBLOCK(x,z,y);
     
     
 }
-int getCustomc(int x,int z,int y){
+/*int getCustomc(int x,int z,int y){
    
         if(getLandc(x/2,z/2,y/2)!=TYPE_CUSTOM){
             int n=getLandc(x/2,z/2,y/2);
@@ -1319,11 +1332,11 @@ int getCustomc(int x,int z,int y){
     if(!chunk)return FALSE;
     
     return [chunk getCustom:x-cx*CHUNK_SIZE*2:z-cz*CHUNK_SIZE*2:y-cy*CHUNK_SIZE*2];
-}
+}*/
 inline int getLandc(int x,int z,int y){	
 	//if(x<0||z<0||y<0||x>=T_SIZE||z>=T_SIZE||y>=T_HEIGHT)return -1;	
    
-	return blockarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y];
+	return GBLOCK(x,z,y);
 	/*int cx=x/CHUNK_SIZE;
 	int cy=y/CHUNK_SIZE;
 	int cz=z/CHUNK_SIZE;
@@ -1337,7 +1350,20 @@ inline int getLandc(int x,int z,int y){
 	
 }
 int getColorc(int x,int z,int y){
-    return [[World getWorld].terrain getColor:x:z:y];
+    if(y<0||y>=T_HEIGHT)return 0;
+	
+	int cx=x/CHUNK_SIZE;
+	int cy=y/CHUNK_SIZE;
+	int cz=z/CHUNK_SIZE;
+	TerrainChunk* chunk;
+    chunk=chunkTablec[threeToOne(cx,cy,cz)];
+	//hashmap_get(chunkMap,threeToOne(cx,cy,cz),(any_t)&chunk);
+	if(!chunk)return 0;
+	x-=cx*CHUNK_SIZE;
+	y-=cy*CHUNK_SIZE;
+	z-=cz*CHUNK_SIZE;
+	return chunk.pcolors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];
+   
 }
 - (int)getLand:(int)x :(int)z :(int)y{
 	//return -1;
@@ -1346,7 +1372,7 @@ int getColorc(int x,int z,int y){
     if(x+g_offcx<0||z+g_offcz<0){
         printf("under/overflow (%d,%d)\n",x,z);
     }
-	return blockarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y];
+	return GBLOCK(x,z,y);
 	int cx=x/CHUNK_SIZE;
 	int cy=y/CHUNK_SIZE;
 	int cz=z/CHUNK_SIZE;
@@ -1472,7 +1498,7 @@ int getColorc(int x,int z,int y){
 }*/
 extern float P_ZFAR;
 -(void)reloadIfNeeded{
-    return;
+    return;  //disabled?
 	float radius=T_SIZE/8;//(P_ZFAR/2)/BLOCK_SIZE;
 	Player* player=[World getWorld].player;
 	if(player.pos.x/BLOCK_SIZE-radius<0||player.pos.x/BLOCK_SIZE+radius>T_SIZE||
@@ -1582,7 +1608,7 @@ float last_etime;
 		//oldChunkMap=chunkMap;	
 		//chunkMapc=chunkMap=hashmap_new();
        
-        [self loadTerrain:world_name];
+        [self loadTerrain:world_name:FALSE];
         //hashmap_iterate(oldChunkMap,freeOldChunks,NULL);
 		//iterate oldchunkmap and release chunks that arent reused
 		//hashmap_remove_all(oldChunkMap, FALSE);
@@ -1632,10 +1658,217 @@ float last_etime;
     }*/
                
 }
+static double time1,time2,time3,time4;
+- (void)prepareAndLoadGeometry{
+    time1=time2=-[start timeIntervalSinceNow];
+    World* world=[World getWorld];
+    Player* player=world.player;
+    
+    
+    
+    int m_chunkOffsetX;
+    int m_chunkOffsetZ;
+    
+    ///////////load geom from file or gen
+    if(world.terrain.loaded){
+        m_chunkOffsetX=player.pos.x/CHUNK_SIZE-T_RADIUS;
+       m_chunkOffsetZ=player.pos.z/CHUNK_SIZE-T_RADIUS;
 
+                int r=T_RADIUS;
+        bool isloaded[T_RADIUS*2][T_RADIUS*2];
+        int count=0;
+        //NSLog(@"player p
+        for(int x=0;x<2*r;x++){
+            for(int z=0;z<2*r;z++){
+                //	NSLog(@"lch:%d",asdf++);
+                TerrainChunk* chunk;
+                chunk=world.terrain.chunkTable[threeToOne(x+m_chunkOffsetX,0,z+m_chunkOffsetZ)];
+                // hashmap_get(world.terrain.chunkMap, threeToOne(x+chunkOffsetX, 0, z+chunkOffsetZ), (any_t)&chunk);
+                if(chunk){
+                    
+                    
+                    if( chunk.pbounds[0]!=(x+m_chunkOffsetX)*CHUNK_SIZE||
+                       chunk.pbounds[2]!=(z+m_chunkOffsetZ)*CHUNK_SIZE)
+                        
+                        
+                    {
+                        
+                        //   printf("(%d,%d)=?=(%d,%d)\n",chunk.pbounds[0],chunk.pbounds[2],(x+chunkOffsetX)*CHUNK_SIZE,(z+chunkOffsetZ)*CHUNK_SIZE);
+                        
+                        count++;
+                        isloaded[x][z]=FALSE;
+                        //  printf("overwriting a chunk\n");
+                        
+                    }
+                    else
+                        isloaded[x][z]=TRUE;
+                    
+                }
+                else{
+                    count++;
+                    isloaded[x][z]=FALSE;
+                }
+                
+            }
+        }
+        if(count>140) {
+            [[World getWorld].fm saveWorld];
+            
+            [World getWorld].fm.chunkOffsetX=m_chunkOffsetX;
+            [World getWorld].fm.chunkOffsetZ=m_chunkOffsetZ;
+
+            
+         printf("chunks to load:%d\n",count);
+        NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm.documents,world.terrain.world_name];
+        
+        //[sf_lock lock];
+        NSFileHandle* saveFile=[NSFileHandle fileHandleForReadingAtPath:file_name];
+        
+        for(int x=0;x<2*r;x++){
+            for(int z=0;z<2*r;z++){
+                if(!isloaded[x][z]){
+                    [world.fm readColumn: x+m_chunkOffsetX:z+m_chunkOffsetZ:saveFile];
+                }
+            }
+        }
+        
+        [saveFile closeFile];
+        }
+            time2=-[start timeIntervalSinceNow];
+        //[sf_lock unlock];
+        
+        
+        /*for(int x=0;x<2*r;x++){
+         for(int z=0;z<2*r;z++){
+         if(!isloaded[x][z]){
+         int dirx=-T_RADIUS*2;
+         int dirz=-T_RADIUS*2;
+         if(x<r)dirx=-dirx;
+         if(z<r)dirz=-dirz;
+         TerrainChunk* chunk;
+         hashmap_get(world.terrain.chunkMap, threeToOne(x+chunkOffsetX+dirx, 0, z+chunkOffsetZ), (any_t)&chunk);
+         if(chunk){
+         
+         for(int i=0;i<CHUNKS_PER_COLUMN;i++)
+         [terrain addToDeleteList:x+chunkOffsetX+dirx:i:z+chunkOffsetZ];
+         
+         }
+         
+         hashmap_get(world.terrain.chunkMap, threeToOne(x+chunkOffsetX, 0, z+chunkOffsetZ+dirz), (any_t)&chunk);
+         if(chunk){
+         
+         for(int i=0;i<CHUNKS_PER_COLUMN;i++)
+         [terrain addToDeleteList:x+chunkOffsetX+dirx:i:z+chunkOffsetZ+dirz];
+         
+         }
+         
+         //  [rebuild_lock lock];
+         //  [NSThread sleepForTimeInterval:0.10f];
+         
+         //  [rebuild_lock unlock];
+         }
+         }
+         }*/
+        
+        
+        
+    }
+   
+    
+    
+    
+    //////////////////build geom
+    if([self loaded]){
+        int num=0;
+        int list[2000];
+        
+        idxrl=0;
+        
+            for(int x=0;x<CHUNKS_PER_SIDE;x++){
+                for(int z=0;z<CHUNKS_PER_SIDE;z++){
+                    if(columnsToUpdate[getColIndex(x,z)]){
+                        for(int y=0;y<CHUNKS_PER_COLUMN;y++){
+                            if(chunksToUpdate[threeToOne(x,y,z)]){
+                                
+                                int n=threeToOne(x,y,z);
+                                
+                                if(n>=CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN||n<0){
+                                    printf("out of bounds index: %d\n",n);
+                                }
+                                list[num++]=n;
+                                
+                                chunksToUpdate[threeToOne(x,y,z)]=FALSE;
+                            }
+                            
+                        }
+                        columnsToUpdate[getColIndex(x,z)]=FALSE;
+                        // if(num>=1000){printf("1234overflow\n");break;}
+                        
+                    }
+                }
+            }
+            
+            
+            
+            
+            // goto cleanup;
+            
+            
+            
+            for(int i=0;i<num;i++){
+                TerrainChunk* chunk=NULL;
+                if(list[i]<0||list[i]>=CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN){
+                    printf("out of bounds access list[%d]=%d  num: %d idxrl: %d  max:%d\n",i,list[i],num,idxrl, CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+                    //  continue;
+                }
+                //issue #3 continued
+                chunk=chunkTable[list[i]];
+                //=malloc(sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+                if(chunk){
+                    rebuildList[idxrl++]=chunk;
+                    chunk.idxn=list[i];
+                }else{
+                    printf("null chunk marked for updating??\n");
+                }
+            }
+        
+      
+    
+
+        for(int i=0;i<idxrl;i++){
+            
+                
+              
+                   if([rebuildList[i] rebuild2]==-1){
+                    //    chunksToUpdate[rebuildList[i].idxn]=TRUE;
+                     //   columnsToUpdate[rebuildList[i].idxn/CHUNKS_PER_COLUMN]=TRUE;
+                       printf("fail update on chunk: %d    bounds %d %d %d   rebuildCounter: %d\n",i,rebuildList[i].pbounds[0],rebuildList[i].pbounds[1],rebuildList[i].pbounds[2],rebuildList[i].rebuildCounter);
+                    }else{
+                        
+                        rebuildList[i].needsRebuild=FALSE;
+                        
+                        //issue #2 chunksToUpdateImmediatley shared data access with main thread, not synchronized
+                        chunksToUpdateImmediatley[rebuildList[i].idxn]=TRUE;
+                    }
+              
+                
+               // if(idxrl==0)break;
+                
+            }
+         //printf("idxrl:%d\n",idxrl);
+        idxrl=0;
+        
+        
+    }
+        
+        time3=-[start timeIntervalSinceNow];
+    
+    
+    
+}
 - (void)updateAllImportantChunks{
 	double start_time=-[start timeIntervalSinceNow];
-        
+    
     
    
    
@@ -1645,9 +1878,11 @@ float last_etime;
         for(int z=0;z<CHUNKS_PER_SIDE;z++){
             // if(columnsToUpdate[getColIndex(x,z)]){
             for(int y=0;y<CHUNKS_PER_COLUMN;y++){
+                
+                //issue #2 continued
                 if(chunksToUpdateImmediatley[threeToOne(x,y,z)]){
                     TerrainChunk* chunk;
-                    
+                    //issue #3 chunk data unsychronized shared access, main thread, building thread AND loading thread
                     chunk=chunkTable[threeToOne(x,y,z)];
                     
                     
@@ -1675,6 +1910,22 @@ float last_etime;
         double end_time=-[start timeIntervalSinceNow];
         float etime=end_time-start_time;
         etime+=.0001f;
+        
+        time4=-[start timeIntervalSinceNow];
+        if(time1!=time2){
+            double fr=time2-time1;
+            double mg=time3-time2;
+            double ml=time4-time3;
+            int frp=fr/(fr+mg+ml)*100;
+            int mgp=mg/(fr+mg+ml)*100;
+            int mlp=ml/(fr+mg+ml)*100;
+           
+            //frp=mgp+mlp+frp;//<---delete
+            if(count>50){
+            printf("File read: %f(%d%%)    Mesh gen: %f(%d%%)     Mesh load: %f(%d%%)\n ",fr,frp,mg,mgp,ml,mlp);
+            printf("Chunks loaded: %d     Mesh gen time per chunk: %f ms\n",count,1000*mg/(double)count);
+            }
+        }
   //  NSLog(@"chunk updates: %d  etime: %f  etime/count: %f\n",count,etime,etime/count);
 	
     }
@@ -1884,7 +2135,7 @@ int lolc=0;
 	renderTree(&troot,0);
    //printf("--------x--x--x----end----x--x--x--------\n");
     
-    qsort (renderList, chunks_rendered, sizeof (TerrainChunk*), compare_front2back);
+   // qsort (renderList, chunks_rendered, sizeof (TerrainChunk*), compare_front2back);
   //  glDisable(GL_TEXTURE_2D);
     int chunksr=chunks_rendered;
     for(int i=0;i<chunks_rendered;i++){

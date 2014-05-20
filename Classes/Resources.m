@@ -239,7 +239,30 @@ static NSString* voFiles[NUM_CREATURES][NUM_VO_ACTIONS][MAX_VARIATIONS]={
     [M_BATTY][VO_IDLE]={@"Batty_Idle_1.caf",@"Batty_Idle_2.caf",@"Batty_Idle_3.caf",@"Batty_Idle_4.caf",@"Batty_Idle_5.caf"},
     [M_BATTY][VO_HIT]={@"Batty_Hit_1.caf",@"Batty_Hit_2.caf",@"Batty_Hit_3.caf",@"Batty_Hit_4.caf",@"Batty_Hit_5.caf"},
     [M_BATTY][VO_EXCITED]={@"Batty_Excited_1.caf",@"Batty_Excited_2.caf",@"Batty_Excited_3.caf",@"Batty_Excited_4.caf",@"Batty_Excited_5.caf"},
-    [M_BATTY][VO_ANGRY]={@"Batty_Angry_1.caf",@"Batty_Angry_2.caf",@"Batty_Angry_3.caf",@"Batty_Angry_4.caf",@"Batty_Angry_5.caf"},  
+    [M_BATTY][VO_ANGRY]={@"Batty_Angry_1.caf",@"Batty_Angry_2.caf",@"Batty_Angry_3.caf",@"Batty_Angry_4.caf",@"Batty_Angry_5.caf"},
+    
+    
+    [M_STALKER][VO_WALKING]={@"Batty_Walking_1.caf",@"Batty_Walking_2.caf",@"Batty_Walking_3.caf",@"Batty_Walking_4.caf",@"Batty_Walking_5.caf"},
+    [M_STALKER][VO_STRETCHING]={@"Batty_Stretching_1.caf",@"Batty_Stretching_2.caf",@"Batty_Stretching_3.caf",@"Batty_Stretching_4.caf",@"Batty_Stretching_5.caf"},
+    [M_STALKER][VO_SCARED]={@"Batty_Scared_1.caf",@"Batty_Scared_2.caf",@"Batty_Scared_3.caf",@"Batty_Scared_4.caf",@"Batty_Scared_5.caf"},
+    [M_STALKER][VO_RELIEVED]={@"Batty_Relieved_1.caf",@"Batty_Relieved_2.caf",@"Batty_Relieved_3.caf",@"Batty_Relieved_4.caf",@"Batty_Relieved_5.caf"},
+    [M_STALKER][VO_APPROACH]={@"Batty_PlayerApproaches_1.caf",@"Batty_PlayerApproaches_2.caf",@"Batty_PlayerApproaches_3.caf",@"Batty_PlayerApproaches_4.caf",@"Batty_PlayerApproaches_5.caf"},
+    [M_STALKER][VO_ONFIRE]={@"Batty_OnFire_1.caf",@"Batty_OnFire_2.caf",@"Batty_OnFire_3.caf",@"Batty_OnFire_4.caf",@"Batty_OnFire_5.caf"},
+    [M_STALKER][VO_IDLE]={@"Batty_Idle_1.caf",@"Batty_Idle_2.caf",@"Batty_Idle_3.caf",@"Batty_Idle_4.caf",@"Batty_Idle_5.caf"},
+    [M_STALKER][VO_HIT]={@"Batty_Hit_1.caf",@"Batty_Hit_2.caf",@"Batty_Hit_3.caf",@"Batty_Hit_4.caf",@"Batty_Hit_5.caf"},
+    [M_STALKER][VO_EXCITED]={@"Batty_Excited_1.caf",@"Batty_Excited_2.caf",@"Batty_Excited_3.caf",@"Batty_Excited_4.caf",@"Batty_Excited_5.caf"},
+    [M_STALKER][VO_ANGRY]={@"Batty_Angry_1.caf",@"Batty_Angry_2.caf",@"Batty_Angry_3.caf",@"Batty_Angry_4.caf",@"Batty_Angry_5.caf"},
+    
+    [M_CHARGER][VO_WALKING]={@"Batty_Walking_1.caf",@"Batty_Walking_2.caf",@"Batty_Walking_3.caf",@"Batty_Walking_4.caf",@"Batty_Walking_5.caf"},
+    [M_CHARGER][VO_STRETCHING]={@"Batty_Stretching_1.caf",@"Batty_Stretching_2.caf",@"Batty_Stretching_3.caf",@"Batty_Stretching_4.caf",@"Batty_Stretching_5.caf"},
+    [M_CHARGER][VO_SCARED]={@"Batty_Scared_1.caf",@"Batty_Scared_2.caf",@"Batty_Scared_3.caf",@"Batty_Scared_4.caf",@"Batty_Scared_5.caf"},
+    [M_CHARGER][VO_RELIEVED]={@"Batty_Relieved_1.caf",@"Batty_Relieved_2.caf",@"Batty_Relieved_3.caf",@"Batty_Relieved_4.caf",@"Batty_Relieved_5.caf"},
+    [M_CHARGER][VO_APPROACH]={@"Batty_PlayerApproaches_1.caf",@"Batty_PlayerApproaches_2.caf",@"Batty_PlayerApproaches_3.caf",@"Batty_PlayerApproaches_4.caf",@"Batty_PlayerApproaches_5.caf"},
+    [M_CHARGER][VO_ONFIRE]={@"Batty_OnFire_1.caf",@"Batty_OnFire_2.caf",@"Batty_OnFire_3.caf",@"Batty_OnFire_4.caf",@"Batty_OnFire_5.caf"},
+    [M_CHARGER][VO_IDLE]={@"Batty_Idle_1.caf",@"Batty_Idle_2.caf",@"Batty_Idle_3.caf",@"Batty_Idle_4.caf",@"Batty_Idle_5.caf"},
+    [M_CHARGER][VO_HIT]={@"Batty_Hit_1.caf",@"Batty_Hit_2.caf",@"Batty_Hit_3.caf",@"Batty_Hit_4.caf",@"Batty_Hit_5.caf"},
+    [M_CHARGER][VO_EXCITED]={@"Batty_Excited_1.caf",@"Batty_Excited_2.caf",@"Batty_Excited_3.caf",@"Batty_Excited_4.caf",@"Batty_Excited_5.caf"},
+    [M_CHARGER][VO_ANGRY]={@"Batty_Angry_1.caf",@"Batty_Angry_2.caf",@"Batty_Angry_3.caf",@"Batty_Angry_4.caf",@"Batty_Angry_5.caf"},
 };
 static int voNumVariations[NUM_CREATURES][NUM_VO_ACTIONS]={  
         [M_STUMPY][VO_WALKING]=5,
@@ -295,8 +318,32 @@ static int voNumVariations[NUM_CREATURES][NUM_VO_ACTIONS]={
     [M_BATTY][VO_IDLE]=5,
     [M_BATTY][VO_HIT]=5,
     [M_BATTY][VO_EXCITED]=5,
-    [M_BATTY][VO_ANGRY]=5,  
-};
+    [M_BATTY][VO_ANGRY]=5,
+    
+    [M_CHARGER][VO_WALKING]=3,
+    [M_CHARGER][VO_STRETCHING]=2,
+    [M_CHARGER][VO_SCARED]=5,
+    [M_CHARGER][VO_RELIEVED]=5,
+    [M_CHARGER][VO_APPROACH]=5,
+    [M_CHARGER][VO_ONFIRE]=5,
+    [M_CHARGER][VO_IDLE]=5,
+    [M_CHARGER][VO_HIT]=5,
+    [M_CHARGER][VO_EXCITED]=5,
+    [M_CHARGER][VO_ANGRY]=5,
+    
+    [M_STALKER][VO_WALKING]=3,
+    [M_STALKER][VO_STRETCHING]=2,
+    [M_STALKER][VO_SCARED]=5,
+    [M_STALKER][VO_RELIEVED]=5,
+    [M_STALKER][VO_APPROACH]=5,
+    [M_STALKER][VO_ONFIRE]=5,
+    [M_STALKER][VO_IDLE]=5,
+    [M_STALKER][VO_HIT]=5,
+    [M_STALKER][VO_EXCITED]=5,
+    [M_STALKER][VO_ANGRY]=5,
+}
+
+;
 
 static int voLastVariation[NUM_CREATURES][NUM_VO_ACTIONS];
 static int sfxLastVariation[NUM_SOUNDS];

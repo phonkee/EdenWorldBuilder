@@ -20,12 +20,18 @@
 #import "Liquids.h"
 #import "Portal.h"
 #import "Firework.h"
+//#import "Constants.h"
 @class Player;
 @class TerrainChunk;
 @class TerrainGenerator;
 @class Portal;
 @class Firework;
 
+#define GBLOCKIDXCLEAN(x,z,y)  ((x+g_offcx)%T_SIZE)*(T_SIZE*T_HEIGHT) + ((z+g_offcz)%T_SIZE)*T_HEIGHT + y
+#define GBLOCKIDX(x,z,y) GBLOCKIDXCLEAN((x),(z),(y))
+#define GBLOCK(x,z,y) blockarray[GBLOCKIDX(x,z,y)]
+#define GBLOCK_SAFE(x,z,y) blockarray[(GBLOCKIDX(x,z,y)+T_BLOCKS)%T_BLOCKS]
+#define GBLOCKR(x,z,y) GBLOCK((int)(x),(int)(z),(int)(y))
 
 @interface Terrain : NSObject {
 	TerrainGenerator* tgen;
@@ -43,17 +49,17 @@
     Firework* fireworks;
     int counter;
 }
-- (void)loadTerrain:(NSString*)name;
+- (void)loadTerrain:(NSString*)name:(BOOL)fromArchive;
 - (BOOL)update:(float)etime;
 - (void)setLand:(int)x :(int)z :(int)y :(int)type :(BOOL)chunkToo;
 - (BOOL)setColor:(int)x :(int)z :(int)y :(color8)color;
 - (void)buildBlock:(int)x :(int)z :(int)y;
-- (void)buildCustom:(int)x :(int)z :(int)y;
+//- (void)buildCustom:(int)x :(int)z :(int)y;
 - (void)paintBlock:(int)x :(int)z :(int)y: (int)color;
 - (void)destroyBlock:(int)x :(int)z :(int)y;
 - (void)burnBlock:(int)x :(int)z :(int)y;
 - (void)updateChunks:(int)x :(int)z :(int)y:(int)type;
-- (void)updateCustom:(int)x :(int)z :(int)y:(int)type:(int)color;
+//- (void)updateCustom:(int)x :(int)z :(int)y:(int)type:(int)color;
 - (int)getLand:(int)x :(int)z :(int)y;
 - (int)getColor:(int)x :(int)z :(int)y;
 - (void)refreshChunksInRadius:(int)x:(int)z:(int)y:(int)radius;
@@ -64,6 +70,7 @@
 
 //- (void)initialGenChunks;
 - (void)updateAllImportantChunks;
+- (void)prepareAndLoadGeometry;
 - (void)chunkBuildingThread:(id)object;
 
 - (void)addChunk:(TerrainChunk*)chunk:(int)cx:(int)cy:(int)cz:(BOOL)rebuild;
@@ -76,9 +83,9 @@
 - (void)destroyBlock:(int)x :(int)z :(int)y;
 - (void)clearBlocks;
 - (void)colort:(float)r :(float)g :(float)b;
-- (void)destroyCustom:(int)x :(int)z :(int)y;
+//- (void)destroyCustom:(int)x :(int)z :(int)y;
 - (void)endDynamics:(BOOL)endLiquids;
-- (void)paintCustom:(int)x :(int)z :(int)y :(int)color;
+//- (void)paintCustom:(int)x :(int)z :(int)y :(int)color;
 -(void) startLoadingThread;
 -(void)startDynamics;
 
@@ -89,7 +96,7 @@ int getLandc2(int x,int z,int y);
 int getColorc(int x,int z,int y);
 bool isOnFire(int x ,int z, int y);
 int getRampType(int x,int z,int y, int t);
-int getCustomc(int x,int z,int y);
+//int getCustomc(int x,int z,int y);
 
 @property(nonatomic, assign) NSString* world_name;
 @property(nonatomic, assign) Vector home,skycolor,final_skycolor;

@@ -642,7 +642,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
                                    
                                    fpoint.z+.001,fpoint.z,
                                    fpoint.y,fpoint.y+.001);
-            if(type==TYPE_CUSTOM){
+            if(FALSE){/*type==TYPE_CUSTOM){
                 
                 if(([World getWorld].hud.build_size==0&&mode==FC_PLACE)||mode==FC_DESTROY){
                    
@@ -671,11 +671,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
                        
                     }else{
                        //  printf("Collided with custom block: %d\n",typec);
-                       /* point.x=(((float)tx*2));
-                        point.y=(((float)ty*2));
-                        point.z=(((float)tz*2));
-                        printf("building custom block(%d,%d,%d), (%f,%f,%f)\n",tx*2,tz*2,ty*2,ftx,ftz,fty);
-                        break;*/  
+            
                     }
                                   
                     ftx/=2.0f;
@@ -702,9 +698,10 @@ Point3D findWorldCoords(int mx,int my,int mode){
                     if(!collidePolyhedra(pbox,pbox2))
                         continue;
                 }
-                    
+                    */
             }else{
-                if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
+                
+            if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
                     
                     pbox2=makeRamp(tx,tx+1,tz+1,tz,ty,ty+1,type%4);
                     // NSLog(@"yop");
@@ -971,6 +968,7 @@ BOOL inbox2(float x,float y,Button* rect){
 	
 	return FALSE;
 }
+
 int getColIndex(int cx,int cz){
     cx+=CHUNKS_PER_SIDE*50;
     cz+=CHUNKS_PER_SIDE*50;

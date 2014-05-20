@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1918F522191EA67D00DA261A /* FileArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 1918F521191EA67D00DA261A /* FileArchive.m */; };
 		192FD75E167AB593003F02FF /* flower_tex.png in Resources */ = {isa = PBXBuildFile; fileRef = 192FD75D167AB593003F02FF /* flower_tex.png */; };
 		193E4E8D17AB598600ADF103 /* ipad~treelayerright.png in Resources */ = {isa = PBXBuildFile; fileRef = 193E4E8B17AB598600ADF103 /* ipad~treelayerright.png */; };
 		193E4E8E17AB598600ADF103 /* ipad~treelayerleft.png in Resources */ = {isa = PBXBuildFile; fileRef = 193E4E8C17AB598600ADF103 /* ipad~treelayerleft.png */; };
@@ -750,6 +751,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1918F521191EA67D00DA261A /* FileArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileArchive.m; sourceTree = "<group>"; };
+		1918F523191EA69500DA261A /* FileArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileArchive.h; sourceTree = "<group>"; };
 		192FD75D167AB593003F02FF /* flower_tex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flower_tex.png; sourceTree = "<group>"; };
 		193E4E8B17AB598600ADF103 /* ipad~treelayerright.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ipad~treelayerright.png"; path = "ipad_menu/ipad~treelayerright.png"; sourceTree = "<group>"; };
 		193E4E8C17AB598600ADF103 /* ipad~treelayerleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ipad~treelayerleft.png"; path = "ipad_menu/ipad~treelayerleft.png"; sourceTree = "<group>"; };
@@ -1622,6 +1625,8 @@
 				C6B192361283232400A48E22 /* Effects */,
 				C6F1B797127561D10080BD97 /* FileManager.h */,
 				C6F1B798127561D10080BD97 /* FileManager.m */,
+				1918F521191EA67D00DA261A /* FileArchive.m */,
+				1918F523191EA69500DA261A /* FileArchive.h */,
 				1DC93AF1156C29B30015616C /* Firework.h */,
 				1DC93AF2156C29B30015616C /* Firework.m */,
 				C62C2CE312862AA500C84AD7 /* Gamepad.h */,
@@ -3486,6 +3491,7 @@
 				C6B5A079144797590065FBD4 /* PVRTPrint3D.cpp in Sources */,
 				C6B5A07A144797590065FBD4 /* PVRTModelPOD.cpp in Sources */,
 				C6B5A07B144797590065FBD4 /* PVRTMisc.cpp in Sources */,
+				1918F522191EA67D00DA261A /* FileArchive.m in Sources */,
 				C6B5A07C144797590065FBD4 /* PVRTMatrixX.cpp in Sources */,
 				C6B5A07D144797590065FBD4 /* PVRTMatrixF.cpp in Sources */,
 				C6B5A07E144797590065FBD4 /* PVRTGeometry.cpp in Sources */,

@@ -43,8 +43,8 @@
     float realtime;
     BOOL bestGraphics;
     BOOL sanityCheck;
-    NSLock* sf_lock;
-    NSLock* rebuild_lock;
+   
+   
     
 }
 - (World*)init;
