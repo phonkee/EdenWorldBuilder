@@ -13,7 +13,7 @@
 #import "Globals.h"
 #import "TerrainGen2.h"
 
-#define JUST_TERRAIN_GEN 0
+
 
 static	World* singleton;
 @implementation World

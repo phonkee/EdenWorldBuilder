@@ -18,6 +18,34 @@
     BOOL convertingWorld;
     BOOL genflat;
 }
+
+#define FILE_VERSION 3
+#define SIZEOF_COLUMN CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*CHUNKS_PER_COLUMN*(sizeof(block8)+sizeof(color8))
+typedef struct{
+	int level_seed;
+	Vector pos;
+	Vector home;
+	float yaw;
+	unsigned long long directory_offset;
+	char name[50];
+    
+    //below here is post 1.1.1 stuff
+    int version;
+    char hash[36];
+    int skycolor;
+	char reserved[100-sizeof(int)-36-sizeof(int)];	 //subtract new stuff from reserve bytes,
+    //192 bytes(including padding is the correct size, be careful modifying this to not corrupt old maps
+}WorldFileHeader;
+typedef struct{
+	int x, z;
+	unsigned long long chunk_offset;
+}ColumnIndex;
+typedef struct{
+	int n_vertices;
+	
+}ChunkHeader;
+
+
 -(BOOL)worldExists:(NSString*)name:(BOOL)appendArchive;
 -(void)saveColumn:(int)cx:(int)cz;
 -(void)saveGenColumn:(int)cx:(int)cz:(int)origin;

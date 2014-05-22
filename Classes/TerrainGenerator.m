@@ -113,6 +113,7 @@ extern int g_offcx,g_offcz;
 	}
     extern block8* blockz;
     extern color8* colorz;
+   
    	if(LEVEL_SEED!=0){
         
         for(int x=0;x<CHUNK_SIZE;x++){

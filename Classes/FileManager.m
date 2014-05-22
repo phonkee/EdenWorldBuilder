@@ -13,40 +13,18 @@
 #import "Model.h"
 #import "TerrainGen2.h"
 #import "FileArchive.h"
+#import "FileManagerHelper.h"
 
 //#import "TestFlight.h"
-#define FILE_VERSION 3
 
-#define SIZEOF_COLUMN CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*CHUNKS_PER_COLUMN*(sizeof(block8)+sizeof(color8))
+
+
 @implementation FileManager
 @synthesize chunkOffsetX,chunkOffsetZ,documents,convertingWorld,genflat;
 
-typedef struct{
-	int level_seed;
-	Vector pos;
-	Vector home;
-	float yaw;	
-	unsigned long long directory_offset;
-	char name[50];
-    
-    //below here is post 1.1.1 stuff
-    int version;
-    char hash[36];
-    int skycolor;
-	char reserved[100-sizeof(int)-36-sizeof(int)];	 //subtract new stuff from reserve bytes,
-    //192 bytes(including padding is the correct size, be careful modifying this to not corrupt old maps
-}WorldFileHeader;
-typedef struct{
-	int x, z;
-	unsigned long long chunk_offset;
-}ColumnIndex;
-typedef struct{
-	int n_vertices;
-	
-}ChunkHeader;
 
 static map_t indexes;
-unsigned long long cur_dir_offset;
+static unsigned long long cur_dir_offset;
 static map_t indexes_hmm;
 static FileManager* single;
 
@@ -55,6 +33,8 @@ static WorldFileHeader* sfh;
 static BOOL writeDirectory;
 static NSString* imgHash;
 static int file_version;
+
+
 EntityData creatureData[MAX_CREATURES_SAVED];
 -(id)init{
 	single=self;
@@ -68,6 +48,8 @@ EntityData creatureData[MAX_CREATURES_SAVED];
 	oldOffsetX=oldOffsetZ=chunkOffsetX=chunkOffsetZ=-1;
 	indexes=hashmap_new();
     indexes_hmm=indexes;
+    
+    fmh_init(self);
 	
 	return self;
 }
@@ -774,7 +756,7 @@ extern int g_offcz;
 		NSLog(@"mm");
 		return;	
 	}
-    if(indexes_hmm!=indexes)printf("indexes pointer corrupted!!!!\n");
+    if(indexes_hmm!=indexes)printf("FATAL ERROR: indexes pointer corrupted!!!!\n");
 	hashmap_get(indexes,n, (any_t)&colIndex);
    
 	if(colIndex==NULL){
@@ -784,12 +766,14 @@ extern int g_offcz;
       //  int cz2=cz-chunkOffsetZ;
      //   if(rcfile==saveFile){
         //printf("loading column from gen %d,%d \n",cx,cz);
+     if(ter.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
+         fmh_readColumnFromDefault(cx,cz);
+            
+            return;
+     }else{
          [ter.tgen generateColumn:cx:cz:FALSE];
-      //   }else{
-             // printf("loading column from gen for bgthread\n");
-        //     [ter.tgen generateColumn:cx:cz:TRUE];
-       //  }
-		return;
+      		return;
+     }
 	}
 	//NSLog(@"reading col: %d, %d, %d",cx,cz,colIndex->chunk_offset);
 		
@@ -874,7 +858,7 @@ extern int g_offcz;
             columns[cy]=chunk;
             
            
-             BOOL rle=true;
+             BOOL rle=false;
              if(rle){
                  
                  block8 tblocks[CHUNK_SIZE3];
@@ -921,7 +905,7 @@ extern int g_offcz;
                  if(idx2>CHUNK_SIZE3)putchar('>');
                  else if(idx2<CHUNK_SIZE3)putchar('<');
                  else if(idx2==CHUNK_SIZE3){
-                     putchar('=');
+                   //  putchar('=');
                      for(int z=0;z<CHUNK_SIZE;z++)
                      for(int x=0;x<CHUNK_SIZE;x++)
                          for(int y=0;y<CHUNK_SIZE;y++){
@@ -1276,8 +1260,8 @@ extern float P_ZFAR;
         printf("making new world : %d\n",g_terrain_type);
         
       //  clear();
-        
-       g_terrain_type=8;
+        BOOL gen_default=FALSE;
+       g_terrain_type=9;
         if(g_terrain_type==0){
             makeDirt();
         }else if(g_terrain_type==1){
@@ -1298,14 +1282,24 @@ extern float P_ZFAR;
             makeMix();
         }else if(g_terrain_type==8){
             genflat=TRUE;
+        }else if(g_terrain_type==9){
+            gen_default=TRUE;
         }
-        
+
 		[self clearDirectory];
         if(genflat)ter.tgen.LEVEL_SEED= 0;
-        else
-		ter.tgen.LEVEL_SEED=arc4random()%300000;
+        else if(gen_default){
+           
+            
+            ter.tgen.LEVEL_SEED=DEFAULT_LEVEL_SEED;
+            
+        }else{
+             ter.tgen.LEVEL_SEED=arc4random()%300000;
+            
+            
+        }
 		int centerChunk=4096;
-		int r=T_SIZE/CHUNK_SIZE/2;
+        int r=T_SIZE/CHUNK_SIZE/2;
 
 		chunkOffsetX=centerChunk-r;
 		chunkOffsetZ=centerChunk-r;

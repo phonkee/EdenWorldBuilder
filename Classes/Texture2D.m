@@ -698,11 +698,11 @@ int realStoredSkinCounter=0;
         isMask=TRUE;
         storeImage=TRUE;
     }else if([path isEqualToString:@"goldcube_icon.png"]){
-        printf("stored cube path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
+       // printf("stored cube path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
         isGoldcubeico=TRUE;
         storeImage=TRUE;
     }else if([path isEqualToString:@"goldcube_icon_mask.png"]){
-        printf("stored cube mask path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
+       // printf("stored cube mask path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
         isGoldcubeico=TRUE;
         isMask=TRUE;
         storeImage=TRUE;

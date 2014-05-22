@@ -13,6 +13,8 @@
 #define GEN_CWIDTH (GSIZE/CHUNK_SIZE)
 #define GEN_CDEPTH (GSIZE/CHUNK_SIZE)
 
+#define DEFAULT_LEVEL_SEED 333333
+
 #define BLOCKZ_SIZE (T_HEIGHT)*(GSIZE)*(GSIZE)
 #define CAP(y,max) ((y)>=(max)?(max):(y))
 #define BLOCK(x,z,y) blockz[((int)(x)*(GSIZE*T_HEIGHT)+(int)(z)*(T_HEIGHT)+(int)(y))]

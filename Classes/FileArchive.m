@@ -82,10 +82,10 @@ BOOL removeFromIndex(NSString* name){
 
 BOOL readIndex(){
     
-    printf("Reading index...\n");
+  //  printf("Reading index...\n");
     FILE* file = fopen([[NSString stringWithFormat:@"%@/%s",[World getWorld].fm.documents,archive_idx_file] cStringUsingEncoding:NSUTF8StringEncoding], "rb");
     if(!file){
-        NSLog(@"can't open  archive file");
+        NSLog(@"can't find or open  archive index file");
         return FALSE;
     }
     char buffer[1000];
@@ -107,7 +107,7 @@ BOOL readIndex(){
     }
      fclose(file);
     
-    printf("Done index...\n");
+   // printf("Done index...\n");
     return FALSE;
 }
 

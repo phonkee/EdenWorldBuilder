@@ -605,7 +605,7 @@ void LoadModels2(){
             if(type==0)break;
             guys[gc].pos.y+=1;
         }
-        printf("creature_pos: %f,%f,%f\n",guys[gc].pos.x,guys[gc].pos.z,guys[gc].pos.y);
+     //   printf("creature_pos: %f,%f,%f\n",guys[gc].pos.x,guys[gc].pos.z,guys[gc].pos.y);
       /*  if(ltype!=TYPE_GRASS&&ltype!=TYPE_GRASS2&&ltype!=TYPE_GRASS3&&ltype!=TYPE_DIRT){
             totalactive++;
             guys[gc].alive=FALSE;

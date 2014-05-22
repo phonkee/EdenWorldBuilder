@@ -255,6 +255,7 @@ UIAlertView *alertWorldType;
     for(int i=0;i<dirc;i++){
 		NSString* file_name=[dirContents objectAtIndex:i];
         if([file_name hasSuffix:@".eden"]){
+            if([file_name isEqualToString:@"Eden.eden"])continue;
             CompressWorld([file_name cStringUsingEncoding:NSUTF8StringEncoding]);
             reloadDir=TRUE;
         }
@@ -270,6 +271,7 @@ UIAlertView *alertWorldType;
 	for(int i=0;i<dirc;i++){
 		NSString* file_name=[dirContents objectAtIndex:i];
         NSLog(@"%@",file_name);
+        if([file_name isEqualToString:@"Eden.eden.archive"])continue;
 		//NSString* real_name=[NSString stringWithFormat:@"test%d",i];
         
         NSString* wut=[file_name pathExtension];
