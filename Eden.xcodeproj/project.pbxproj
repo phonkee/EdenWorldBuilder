@@ -19,7 +19,9 @@
 		1967D0161639F80000C03DF0 /* TerrainGen2.m in Sources */ = {isa = PBXBuildFile; fileRef = 1967D0151639F80000C03DF0 /* TerrainGen2.m */; };
 		199017EF16C1D07D008EDCA7 /* icontest.png in Resources */ = {isa = PBXBuildFile; fileRef = 199017EE16C1D07D008EDCA7 /* icontest.png */; };
 		19AECD11192C0CFC00F8DD91 /* FileManagerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 19AECD10192C0CFC00F8DD91 /* FileManagerHelper.m */; };
-		19AECD13192D8C8100F8DD91 /* Eden.eden in Resources */ = {isa = PBXBuildFile; fileRef = 19AECD12192D8C8100F8DD91 /* Eden.eden */; };
+		19AECD15192EA99F00F8DD91 /* Eden.eden in Resources */ = {isa = PBXBuildFile; fileRef = 19AECD14192EA99F00F8DD91 /* Eden.eden */; };
+		19AECD17192EDAD900F8DD91 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19AECD16192EDAD900F8DD91 /* Images.xcassets */; };
+		19AECD19192EDBAA00F8DD91 /* Default~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 19AECD18192EDBAA00F8DD91 /* Default~ipad.png */; };
 		19B3B12416A07D4D00E86E8D /* portal_twirl2.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B12316A07D4D00E86E8D /* portal_twirl2.png */; };
 		19B3B12A16A1CF5900E86E8D /* ColorUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19B3B12916A1CF5900E86E8D /* ColorUtil.cpp */; };
 		19B3B13116A3398B00E86E8D /* ipad~menu_health.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B13016A3398B00E86E8D /* ipad~menu_health.png */; };
@@ -768,7 +770,9 @@
 		199017EE16C1D07D008EDCA7 /* icontest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icontest.png; sourceTree = "<group>"; };
 		19AECD0F192C0CFC00F8DD91 /* FileManagerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManagerHelper.h; sourceTree = "<group>"; };
 		19AECD10192C0CFC00F8DD91 /* FileManagerHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManagerHelper.m; sourceTree = "<group>"; };
-		19AECD12192D8C8100F8DD91 /* Eden.eden */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eden.eden; sourceTree = "<group>"; };
+		19AECD14192EA99F00F8DD91 /* Eden.eden */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eden.eden; sourceTree = "<group>"; };
+		19AECD16192EDAD900F8DD91 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Eden/Images.xcassets; sourceTree = "<group>"; };
+		19AECD18192EDBAA00F8DD91 /* Default~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default~ipad.png"; sourceTree = "<group>"; };
 		19B3B12316A07D4D00E86E8D /* portal_twirl2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portal_twirl2.png; sourceTree = SOURCE_ROOT; };
 		19B3B12616A1CD2100E86E8D /* ColorUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorUtil.h; sourceTree = "<group>"; };
 		19B3B12916A1CF5900E86E8D /* ColorUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorUtil.cpp; sourceTree = "<group>"; };
@@ -2153,7 +2157,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				19AECD12192D8C8100F8DD91 /* Eden.eden */,
+				19AECD18192EDBAA00F8DD91 /* Default~ipad.png */,
+				19AECD14192EA99F00F8DD91 /* Eden.eden */,
 				19DE2CAD16D83C3300BA6380 /* Icon_144.png */,
 				19DE2CAB16D83C2C00BA6380 /* Icon_72.png */,
 				19DE2CA916D83C1E00BA6380 /* Icon_114.png */,
@@ -2190,6 +2195,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				19AECD16192EDAD900F8DD91 /* Images.xcassets */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Eden-Info.plist */,
 			);
@@ -2994,6 +3000,7 @@
 				1D8CEA7C14AD757700A1861D /* Nergle_Idle_1.caf in Resources */,
 				1D8CEA7D14AD757700A1861D /* Nergle_Hit_5.caf in Resources */,
 				1D8CEA7E14AD757700A1861D /* Nergle_Hit_4.caf in Resources */,
+				19AECD17192EDAD900F8DD91 /* Images.xcassets in Resources */,
 				1D8CEA7F14AD757700A1861D /* Nergle_Hit_3.caf in Resources */,
 				1D8CEA8014AD757700A1861D /* Nergle_Hit_2.caf in Resources */,
 				1D8CEA8114AD757700A1861D /* Nergle_Hit_1.caf in Resources */,
@@ -3025,6 +3032,7 @@
 				1D8CEA9B14AD757700A1861D /* Moof_Relieved_2.caf in Resources */,
 				1D8CEA9C14AD757700A1861D /* Moof_Relieved_1.caf in Resources */,
 				1D8CEA9D14AD757700A1861D /* Moof_PlayerApproaches_5.caf in Resources */,
+				19AECD19192EDBAA00F8DD91 /* Default~ipad.png in Resources */,
 				1D8CEA9E14AD757700A1861D /* Moof_PlayerApproaches_4.caf in Resources */,
 				1D8CEA9F14AD757700A1861D /* Moof_PlayerApproaches_3.caf in Resources */,
 				1D8CEAA014AD757700A1861D /* Moof_PlayerApproaches_2.caf in Resources */,
@@ -3362,7 +3370,7 @@
 				1DA0EDB115D89511007A9E9B /* ipad~build2_active2.png in Resources */,
 				1DA0EDB315D99FBA007A9E9B /* ipad~build2_under2.png in Resources */,
 				1DA0EDB515D9A4A0007A9E9B /* ipad~build3_top2.png in Resources */,
-				19AECD13192D8C8100F8DD91 /* Eden.eden in Resources */,
+				19AECD15192EA99F00F8DD91 /* Eden.eden in Resources */,
 				1DA0EDB715D9A806007A9E9B /* ipad~build3_active2.png in Resources */,
 				1DA0EDB915D9AB0B007A9E9B /* digits.png in Resources */,
 				1DA9791915E614AB00B050C0 /* goldcube_icon.png in Resources */,

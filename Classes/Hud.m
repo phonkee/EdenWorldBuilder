@@ -509,6 +509,12 @@ int flamecount=0;
                         
                     }
                     pressed=-1;
+                }else{
+                    
+                    extern BOOL FLY_MODE;
+                    FLY_MODE=!FLY_MODE;
+                    printf("Fly mode set to %d\n",FLY_MODE);
+                    
                 }
               //  printf("menu touched\n");
                 handled=TRUE;

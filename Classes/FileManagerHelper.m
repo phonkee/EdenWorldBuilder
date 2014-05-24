@@ -18,7 +18,6 @@ FileManager* fm;
 //All file handles refer to the default world gen, NOT the currently active world, even though the names are the same as FileManager
 static NSFileHandle* saveFile;
 static WorldFileHeader* sfh;
-//static unsigned long long cur_dir_offset;
 static map_t indexes;
 
 static void fmh_read_directory();
@@ -33,9 +32,10 @@ void fmh_init(FileManager* t_fm){
    
     indexes=hashmap_new();
      
-    // NSString* file_name=[NSString stringWithFormat:@"%@/Eden.eden",fm.documents];
+   //  NSString* file_name=[NSString stringWithFormat:@"%@/Eden.eden",fm.documents];
     
-     NSString* file_name=[[NSBundle mainBundle] pathForResource:@"Eden.eden" ofType:nil];
+    NSString* file_name=[[NSBundle mainBundle] pathForResource:@"Eden.eden" ofType:nil];
+    
     /* if(TRUE){
      DecompressWorld([file_name cStringUsingEncoding:NSUTF8StringEncoding]);
      }*/
@@ -46,7 +46,7 @@ void fmh_init(FileManager* t_fm){
      sfh=(WorldFileHeader*)[[saveFile readDataOfLength:sizeof(WorldFileHeader)] bytes];
     //[sfh retain];
     
-    // cur_dir_offset=sfh->directory_offset;
+   
     
     fmh_read_directory();
     
@@ -88,7 +88,11 @@ void fmh_readColumnFromDefault(int cx,int cz){
 	hashmap_get(indexes,n, (any_t)&colIndex);
     
 	if(colIndex==NULL){
-        printf("can't find column in default gen file, reached bounds?\n");
+        [ter.tgen generateColumn:cx:cz:FALSE];
+        return;
+       // printf("can't find column in default gen file, reached bounds?\n");
+        
+        
     }
     
     [saveFile seekToFileOffset:colIndex->chunk_offset];

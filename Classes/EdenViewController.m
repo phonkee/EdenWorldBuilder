@@ -23,7 +23,7 @@
 
 - (void)awakeFromNib
 {
-	[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
+	//[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
 	
 	EAGLContext *aContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
     

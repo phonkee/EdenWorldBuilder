@@ -19,7 +19,7 @@ static void init(void);
 static float noiseFast(float x, float y, float z);
 static Terrain* ter;
 extern block8* blockarray;
-const int TREE_SPACING=50;
+static const int TREE_SPACING=50;
 int boundx;
 int boundz;
 block8 tblocks[(CHUNKS_PER_COLUMN*CHUNK_SIZE*2)*(CHUNK_SIZE*2)*(CHUNK_SIZE*2)];
@@ -114,7 +114,7 @@ extern int g_offcx,g_offcz;
     extern block8* blockz;
     extern color8* colorz;
    
-   	if(LEVEL_SEED!=0){
+   	if(FALSE&&LEVEL_SEED!=0){
         
         for(int x=0;x<CHUNK_SIZE;x++){
             for(int z=0;z<CHUNK_SIZE;z++){
@@ -145,7 +145,7 @@ extern int g_offcx,g_offcz;
         return;
         
     }else
-    if(LEVEL_SEED==0){
+    if(TRUE||LEVEL_SEED==0){
        for(int x=0;x<CHUNK_SIZE;x++){
             for(int z=0;z<CHUNK_SIZE;z++){
                  setLandt(x ,z ,0,TYPE_BEDROCK);
@@ -303,7 +303,7 @@ extern int g_offcx,g_offcz;
             }		
             h=(int)roundf(n);
             if(h-1>=T_HEIGHT){
-                NSLog(@"NONONO");
+                NSLog(@"NONONO9");
             }
             
 			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply

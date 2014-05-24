@@ -30,7 +30,7 @@ static bool onground;
 static bool onramp;
 static bool jumpandbuild;
 
-bool FLY_MODE=FALSE;
+bool FLY_MODE=TRUE;
 bool FLY_UP=false;
 bool FLY_DOWN=false;
 static Point3D buildpoint;

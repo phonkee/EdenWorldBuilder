@@ -595,7 +595,7 @@ void makeDirt(){
             }
             h=(int)roundf(n);
             if(h-1>=T_HEIGHT){
-                NSLog(@"NONONO");
+                NSLog(@"NONONO1");
             }
             
 			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply
@@ -738,7 +738,7 @@ void makeMars(int x1,int z1,int x2,int z2){
             }
             h=(int)roundf(n);
             if(h-1>=T_HEIGHT){
-                NSLog(@"NONONO");
+                NSLog(@"NONONO2");
             }
             
 			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply
@@ -808,7 +808,7 @@ void makeMars(int x1,int z1,int x2,int z2){
 		}
 	}
     
-    for(int i=0;i<80;i++){
+    for(int i=0;i<120;i++){
         int x=randi(GSIZE-10)+5;
         int z=randi(GSIZE-10)+5;
         // int color=randi(53);
@@ -823,7 +823,7 @@ void makeMars(int x1,int z1,int x2,int z2){
  
     [World getWorld].terrain.final_skycolor=  colorTable[10];
    
-    printf("sky %f,%f,%f\n",  [World getWorld].terrain.final_skycolor.x,  [World getWorld].terrain.final_skycolor.y,  [World getWorld].terrain.final_skycolor.z);
+   // printf("sky %f,%f,%f\n",  [World getWorld].terrain.final_skycolor.x,  [World getWorld].terrain.final_skycolor.y,  [World getWorld].terrain.final_skycolor.z);
 	
 }
 int clampy(int h){
@@ -840,14 +840,19 @@ void makeMix(){
 	
 	int offsety=T_HEIGHT/2-10;
    
-    for(int x=0;x<GSIZE;x++){ //Heightmap
+   
 		for(int z=0;z<GSIZE;z++){
+             for(int x=0;x<GSIZE;x++){ //Heightmap
             //float value=((TEMP(x,z)+128.0f)/255.0f);
             int h;
-            if(x>GSIZE/2+10)break;
-            if(x>GSIZE/2-10){
-                offsety=(T_HEIGHT/2-10)-(20-((GSIZE/2+10)-x));
-            }
+                 if(x<GSIZE/4&&z>=GSIZE/4&&z<GSIZE/2){
+                    offsety=T_HEIGHT/2-10;
+                 }else{
+                     if(z>GSIZE/4+10)continue;
+                     if(z>GSIZE/4-10){
+                         offsety=(T_HEIGHT/2-10)-(20-((GSIZE/4+10)-z));
+                     }
+                 }
             float n=offsety;
             float FREQ=1.0f;
             //float FREQ3=4.0f;
@@ -885,8 +890,10 @@ void makeMix(){
     
     
     //  int sea_level=-14;
-    for(int x=0;x<GSIZE;x++){
-		for(int z=0;z<GSIZE;z++){
+    for(int x=3*GSIZE/4;x<GSIZE;x++){
+		for(int z=0;z<3*GSIZE/4;z++){
+           
+           
             //BLOCK(x ,z ,0)=TYPE_SAND;
 			
 			for(int y=3;y<6;y++){
@@ -918,6 +925,12 @@ void makeMix(){
         }
     }
     makeMars(GSIZE*3/4,0,GSIZE,GSIZE);
+    makeBeach();
+    
+    makePonies();
+    makeDesert();
+    makeMountains(0,0,GSIZE/4,GSIZE/4,LEVEL_SEED);
+    makeClassicGen();
     
 }
 void makeBeach(){
@@ -926,11 +939,11 @@ void makeBeach(){
     [World getWorld].terrain.final_skycolor=colorTable[17];
     //LEVEL_SEED=0;
 	
-	int sealevel=33;
+	int sealevel=19;
     int slideh;
-	const int offsety=T_HEIGHT/2;
-    for(int x=0;x<GSIZE;x++){ //Heightmap
-		for(int z=0;z<GSIZE;z++){
+	const int offsety=T_HEIGHT/2-14;
+    for(int x=GSIZE/4;x<3*GSIZE/4;x++){ //Heightmap
+		for(int z=3*GSIZE/4;z<GSIZE;z++){
             if(TM(x,z)!=TM_BEACH)continue;
             int h;
             
@@ -951,7 +964,7 @@ void makeBeach(){
             }
             h=(int)roundf(n);
             if(h-1>=T_HEIGHT){
-                NSLog(@"NONONO");
+                NSLog(@"NONONO3");
             }
             
 			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply
@@ -963,6 +976,7 @@ void makeBeach(){
                // if(h<=31)
                 //    h-=2;
             }
+            if(h<2)h=2;
 			for(int y=0;y<h;y++){
 				
                 
@@ -972,7 +986,7 @@ void makeBeach(){
                 }else{
                 BLOCK(x,z,y)=TYPE_SAND;
                     
-                COLOR(x,z,y)=colorCycle6(h-1,1);
+                COLOR(x,z,y)=colorCycle6(h-1+14,1);
                 }
                 
                 
@@ -988,8 +1002,8 @@ void makeBeach(){
 		
 	}
     
-    for(int x=0;x<GSIZE;x++){
-		for(int z=0;z<GSIZE;z++){
+    for(int x=GSIZE/4;x<3*GSIZE/4;x++){
+		for(int z=3*GSIZE/4;z<GSIZE;z++){
             if(TM(x,z)!=TM_BEACH)continue;
             //BLOCK(x ,z ,0)=TYPE_SAND;
 			
@@ -1015,8 +1029,13 @@ void makeBeach(){
 			
 		}
 	}
-    for(int x=4;x<GSIZE-4;x++){ //Trees
-        for(int z=4;z<GSIZE-4;z++){
+#define AREALOOP(left,right,top,bot) for(int x(left);x<(right);x++)   for(int z=(top);z<(bot);z++)
+
+        
+   
+    for(int x=GSIZE/4+4;x<3*GSIZE/4-4;x++){ //trees
+		for(int z=3*GSIZE/4+4;z<GSIZE-4;z++){
+
             if(TM(x,z)!=TM_BEACH)continue;
             for(int y=sealevel;y<T_HEIGHT-10;y++){
                 if((BLOCK(x ,z ,y)==TYPE_GRASS)&&BLOCK(x ,z ,y+1)==TYPE_NONE){
@@ -1031,7 +1050,225 @@ void makeBeach(){
     [World getWorld].terrain.final_skycolor=colorTable[9];
 }
 
-
+void makeClassicGen(){
+    int sx=0;
+    int endx=GSIZE/4;
+    int sz=GSIZE/2;
+    int endz=3*GSIZE/4;
+    const int offsety=T_HEIGHT/2-10;
+    float var=3;
+    BOOL genCaves=FALSE;
+    for(int x=sx;x<endx;x++){ //Heightmap
+		for(int z=sz;z<endz;z++){
+            int h;
+            
+            float n=offsety;
+            float FREQ=2.0f;
+            float AMPLITUDE=4.0f;
+            for(int i=0;i<10;i++){
+                float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT,
+                    (float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
+                n+=noise2(vec)*(AMPLITUDE)*var;
+                FREQ*=2;
+                AMPLITUDE/=2;
+            }
+            h=(int)roundf(n);
+            if(h-1>=T_HEIGHT){
+                NSLog(@"NONONO9");
+            }
+            
+			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply
+            //The deeper the 3D noise and the more variance in heightmap,
+            //The more intense the terrain is
+			
+			for(int y=0;y<h;y++){
+				if(y<FORMATION_HEIGHT){
+					if(y>(h%2+1)&&y<FORMATION_HEIGHT-16){
+                        if(!genCaves){
+                            BLOCK(x ,z ,y )=TYPE_STONE;
+                            continue;
+                        }
+						float n3=0;
+						float FREQ3=4.0f;
+						float AMPLITUDE3=0.25f;
+						for(int i=0;i<3;i++){
+							float vec[3]={(float)FREQ3*(x+LEVEL_SEED)/NOISE_CONSTANT
+								,(float)FREQ3*(z+LEVEL_SEED)/NOISE_CONSTANT,
+								(float)FREQ3*(y+LEVEL_SEED)/NOISE_CONSTANT};
+							n3+=noise3(vec)*(AMPLITUDE3);
+							FREQ3*=2;
+							AMPLITUDE3/=2;
+						}
+						
+						if(n3>0){
+							if(n3<=0.01f)
+                                BLOCK(x ,z ,y )=TYPE_DARK_STONE;
+								
+							else
+								BLOCK(x ,z ,y )=TYPE_STONE;
+							
+						}else {
+                            
+							BLOCK(x ,z ,y)=TYPE_NONE;
+						}
+						
+                        
+					}else{
+						BLOCK(x ,z ,y)=TYPE_STONE;
+					}
+				}else{
+                    float n3=0;
+                    
+					
+					float FREQ3=3.0f;
+					float AMPLITUDE3=0.5f;
+					for(int i=0;i<3;i++){
+						float vec[3]={(float)FREQ3*(x+LEVEL_SEED)/NOISE_CONSTANT
+							,(float)FREQ3*(z+LEVEL_SEED)/NOISE_CONSTANT,
+							(float)FREQ3*(y+LEVEL_SEED)/NOISE_CONSTANT};
+						n3+=noise3(vec)*(AMPLITUDE3);
+						FREQ3*=2;
+						AMPLITUDE3/=2;
+                        
+                    }
+					if(n3<0.07f){
+						BLOCK(x ,z ,y)=TYPE_DIRT;;
+					}
+				}
+                
+                //	setLandt(x :z :y :TYPE_DIRT];
+				
+				
+			}
+			
+			//if(self getLandc(<#int x#>, <#int z#>, <#int y#>)
+			//setLandt(x :z :h-1 :TYPE_GRASS];
+            
+		}
+		
+	}
+	
+	
+	/*
+     for(int x=0;x<ter.width;x++){
+     for(int z=0;z<ter.depth;z++){
+     for(int y=0;y<ter.height;y++){
+     float n=0;
+     float FREQ=4.0f;
+     float AMPLITUDE=0.5f;
+     for(int i=0;i<3;i++){
+     float vec[3]={(float)FREQ*x/(ter.width),(float)FREQ*z/(ter.depth),(float)FREQ*y/(ter.height)};
+     n+=noise3(vec)*(AMPLITUDE);
+     FREQ*=2;
+     AMPLITUDE/=2;
+     }
+     if(n<0.0f){
+     e	[ter setLand:x :z :y :TYPE_DIRT];
+     }
+     }
+     }
+     }*/
+	
+	for(int x=sx;x<endx;x++){
+		for(int z=sz;z<endz;z++){
+            BLOCK(x ,z ,0)=TYPE_BEDROCK;
+			
+			for(int y=0;y<T_HEIGHT;y++){
+				if(BLOCK(x ,z ,y)==TYPE_NONE){
+					if(BLOCK(x ,z ,y-1)==TYPE_DIRT){
+                        if(arc4random()%2==0&&(x+x%10)%20<4&&(z+z%10)%20<4){
+							BLOCK(x ,z ,y)=TYPE_FLOWER;
+							BLOCK(x ,z ,y-1)=TYPE_GRASS;
+						}else if(arc4random()%2==0){
+							BLOCK(x ,z ,y-1)=TYPE_GRASS;
+						}else{
+							BLOCK(x ,z ,y-1)=TYPE_GRASS2;
+						}
+                        //setColort(x ,z ,y-1 ,22+18);
+                        //setLandt(x ,z ,y-1 ,TYPE_GRASS);
+					}
+				}else{
+					
+					
+					
+				}
+				
+			}
+			
+		}
+	}
+    void placeTree(int x,int z,int y);
+    for(int x=sx+2;x<endx-2;x++){ 
+		for(int z=sz+2;z<endz-2;z++){
+			for(int y=1;y<T_HEIGHT-1;y++){
+				if(BLOCK(x ,z ,y)==TYPE_GRASS||BLOCK(x ,z ,y)==TYPE_GRASS2){
+                    
+                    placeTree(x,z,y+1);
+					//[self placeTree:x :z :y+1];
+				}
+			}
+		}
+	}
+}
+static const int TREE_SPACING=50;
+void placeTree(int x,int z,int y){
+	
+	if(arc4random()%TREE_SPACING!=0)return;
+	int tree_height=arc4random()%3+6;
+	if(y+tree_height>=T_HEIGHT) return;
+	for(int i=x-1;i<=x+1;i++){
+		for(int j=z-1;j<=z+1;j++){
+			int type=BLOCK(i ,j ,y-1);
+			if(!(type==TYPE_GRASS||type==TYPE_GRASS2||type==TYPE_DIRT))
+				return;
+            if(BLOCK(i ,j ,y)!=TYPE_NONE)return;
+		}
+	}
+	for(int i=x-1;i<=x+1;i++){
+		for(int j=z-1;j<=z+1;j++){
+			for(int k=y;k<y+tree_height;k++){
+				int type=BLOCK(i ,j ,k);
+				if(type==TYPE_NONE||type==TYPE_LEAVES)
+					continue;
+				break;
+                
+				
+			}
+		}
+		
+	}
+	
+	//NSLog(@"placing tree %d %d %d",x,z,y+i);
+	for(int i=0;i<3*tree_height/4;i++){
+		BLOCK(x ,z ,y+i)=TYPE_TREE;
+	}
+	int color=arc4random()%4;
+	int ct[4]={0,19,20,21};
+    int type=TYPE_LEAVES;
+	
+	for(int i=x-2;i<=x+2;i++){
+		for(int j=z-2;j<=z+2;j++){
+			for(int k=y+2*tree_height/3;k<tree_height+y;k++){
+				if(BLOCK(i ,j ,k)!=TYPE_TREE){
+					if(i==x-2||i==x+2||j==z-2||j==z+2){
+                        if((i==x-2||i==x+2)&&(j==z-2||j==z+2)&&(k==y+2*tree_height/3||k==y+tree_height-1)){
+                        }else
+                            if(arc4random()%2==0){
+                                BLOCK(i ,j ,k)=type;
+                                COLOR(i ,j ,k)=ct[color];
+                            }
+					}
+					else {
+						BLOCK(i ,j ,k)=type;
+                        COLOR(i ,j ,k)=ct[color];
+					}
+					
+				}
+			}
+		}
+	}
+	
+}
 
 void makeDesert(){
     float var=3;  //how much variance in heightmap?
@@ -1041,9 +1278,17 @@ void makeDesert(){
 	
 	
     int slideh;
-	const int offsety=T_HEIGHT/2;
-    for(int x=0;x<GSIZE;x++){ //Heightmap
-		for(int z=0;z<GSIZE;z++){
+	int offsety=T_HEIGHT/2-10;
+    for(int x=0;x<GSIZE/4+20;x++){ //Heightmap
+		for(int z=GSIZE/4-20;z<GSIZE/2+20;z++){
+            
+            if(z<GSIZE/4){
+                offsety=T_HEIGHT/2-10-ABS(GSIZE/4-z);
+            }else if(x>GSIZE/4){
+                 offsety=T_HEIGHT/2-10-ABS(GSIZE/4-x);
+            }else{
+                offsety=T_HEIGHT/2-10;
+            }
             int h;
             
             float n=offsety;
@@ -1059,7 +1304,7 @@ void makeDesert(){
             }
             h=(int)roundf(n);
             if(h-1>=T_HEIGHT){
-                NSLog(@"NONONO");
+                NSLog(@"NONONO4");
             }
             
 			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply
@@ -1071,10 +1316,10 @@ void makeDesert(){
 			for(int y=0;y<h;y++){
 				
                
-                    
+                if(BLOCK(x,z,y)==TYPE_NONE){
                 BLOCK(x,z,y)=TYPE_SAND;
                 COLOR(x,z,y)=11;//colorCycle2(h,2);
-                    
+                }
                
                 
 				
@@ -1087,8 +1332,8 @@ void makeDesert(){
         
 		
 	}
-    int sx=GSIZE/2;
-    int sz=GSIZE/2;
+   /* int sx=GSIZE/8;
+    int sz=GSIZE/4+GSIZE/8;
     Vector sv=MakeVector(sx,slideh,sz);
     Vector dv=MakeVector(1,0,0);
     int sc=0;
@@ -1180,7 +1425,7 @@ void makeDesert(){
        //   }
         
     }
-    
+    */
     [World getWorld].terrain.final_skycolor=colorTable[9];
 }
 
@@ -1192,9 +1437,9 @@ void makePonies(){
     //LEVEL_SEED=0;
 	
 	
-	const int offsety=T_HEIGHT/2;
-    for(int x=0;x<GSIZE;x++){ //Heightmap
-		for(int z=0;z<GSIZE;z++){
+	const int offsety=T_HEIGHT/2-10;
+    for(int x=0;x<GSIZE/4;x++){
+		for(int z=3*GSIZE/4;z<GSIZE;z++){
             if(TM(x,z)!=TM_UNICORN)continue;
             int h;
             
@@ -1211,7 +1456,7 @@ void makePonies(){
             }
             h=(int)roundf(n);
             if(h-1>=T_HEIGHT){
-                NSLog(@"NONONO");
+                NSLog(@"NONONO5");
             }
             
 			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply
@@ -1240,7 +1485,9 @@ void makePonies(){
 		}
 		
 	}
-    makeCave(0,0,2,GSIZE,GSIZE,T_HEIGHT/2,1);
+   
+    
+    makeCave(0,3*GSIZE/4,2,GSIZE/4,GSIZE,T_HEIGHT/2-15,1);
         [World getWorld].terrain.final_skycolor=colorTable[17];
 }
 void makeGreenHills(int height){
@@ -1250,15 +1497,17 @@ void makeGreenHills(int height){
 	
 	int offsety=height;;
     for(int x=0;x<GSIZE;x++){ //Heightmap
-        if(x<100){
-            offsety=height-(100-x);
+        if(x<GSIZE/4)continue;
+        if(x<GSIZE/4+10){
+            offsety=height-(GSIZE/4+10-x);
             offsety=clampy(offsety);
         }
         if(x>GSIZE*3/4){
             offsety=height-(x-GSIZE*3/4);
             offsety=clampy(offsety);
         }
-		for(int z=0;z<GSIZE;z++){
+		for(int z=0;z<3*GSIZE/4;z++){
+            if(z>GSIZE/2&&x>=3*GSIZE/4+35)continue;
             int h;
             
             float n=offsety;
@@ -1274,7 +1523,7 @@ void makeGreenHills(int height){
             }
             h=(int)roundf(n);
             if(h-1>=T_HEIGHT){
-                NSLog(@"NONONO");
+                NSLog(@"NONONO6");
             }
             
 			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply
@@ -1326,18 +1575,23 @@ void makeGreenHills(int height){
 		}
 	}
     int sea_level=0;
-    for(int x=0;x<GSIZE;x++){
-		for(int z=0;z<GSIZE;z++){
+    for(int x=GSIZE/4;x<GSIZE/2;x++){
+		for(int z=0;z<3*GSIZE/4;z++){
             //BLOCK(x ,z ,0)=TYPE_SAND;
-            if(x>GSIZE*3/4){
-               sea_level=(GSIZE*3/4-x);
-                if(sea_level<-19)sea_level=-19;
-                           }
+            //if(x<GSIZE/2&&z<GSIZE/4)continue;
+           
+            if(x>GSIZE/2-20){
+                sea_level=(GSIZE/2-20)-x;
+            }else sea_level=0;
+            
 			for(int y=6;y<20+sea_level;y++){
 				if(BLOCK(x ,z ,y)==TYPE_NONE){
                     for(int iy=1;iy<6;iy++){
                     BLOCK(x,z,y-iy)=TYPE_WATER;
-                    COLOR(x,z,y-iy)=0;
+                        if(z<GSIZE/2&&z>GSIZE/4)
+                             COLOR(x,z,y-iy)=0;
+                            else
+                    COLOR(x,z,y-iy)=15;
                     }
                 }else{
 					
@@ -1386,7 +1640,7 @@ void makeRiverTrees(int sx,int sz,int ex,int ez,int SEED){
             }
             h=(int)roundf(n);
             if(h-1>=T_HEIGHT){
-                NSLog(@"NONONO");
+                NSLog(@"NONONO bad height river trees gen");
             }
             
 			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply
@@ -1579,6 +1833,8 @@ void makeMountains(int sx,int sz,int ex,int ez,int SEED){
     //LEVEL_SEED=0;
 	[World getWorld].terrain.final_skycolor=colorTable[6];
 	
+    
+    
 	const int offsety=T_HEIGHT/2-10;
     for(int x=sx;x<ex;x++){
 		for(int z=sz;z<ez;z++){
@@ -1598,7 +1854,8 @@ void makeMountains(int sx,int sz,int ex,int ez,int SEED){
             }
             h=(int)roundf(n);
             if(h-1>=T_HEIGHT){
-                NSLog(@"NONONO");
+                //NSLog(@"NONONO7");
+                h=T_HEIGHT-1;
             }
             
 			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply
@@ -1667,9 +1924,26 @@ void makeMountains(int sx,int sz,int ex,int ez,int SEED){
 			for(int y=3;y<6;y++){
 				if(BLOCK(x ,z ,y)==TYPE_NONE){
                     for(int iy=1;iy<3;iy++){
-                        BLOCK(x,z,y-iy)=TYPE_WATER;
-                        COLOR(x,z,y-iy)=6;
-                    }
+                        if(x<=GSIZE/4-(GSIZE/4/4)&&z<=GSIZE/4-(GSIZE/4/4))
+                        {
+                            if(x==GSIZE/4-(GSIZE/4/4)||z==GSIZE/4-(GSIZE/4/4)){
+                                
+                                if(arc4random()%2==0){
+                                    BLOCK(x,z,y-iy)=TYPE_ICE;
+                                    COLOR(x,z,y-iy)=6;
+                                }else{
+                                    BLOCK(x,z,y-iy)=TYPE_WATER;
+                                    COLOR(x,z,y-iy)=6;
+                                }
+                            }else{
+                                BLOCK(x,z,y-iy)=TYPE_ICE;
+                                COLOR(x,z,y-iy)=6;
+                            }
+                            
+                        } else{
+                            BLOCK(x,z,y-iy)=TYPE_WATER;
+                            COLOR(x,z,y-iy)=6;
+                        }                    }
                 }else{
 					
 					
@@ -1767,7 +2041,7 @@ void genTemperatureMap(){
             }
             h=(int)roundf(n)+offset;
             if(h-1>=T_HEIGHT){
-                NSLog(@"NONONO");
+                NSLog(@"NONONO8");
             }
            
 			

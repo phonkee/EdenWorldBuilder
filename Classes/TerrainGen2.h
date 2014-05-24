@@ -9,7 +9,7 @@
 #ifndef Eden_TerrainGen2_h
 #define Eden_TerrainGen2_h
 
-#define GSIZE (T_SIZE*12)
+#define GSIZE (T_SIZE*12)  //12 norm
 #define GEN_CWIDTH (GSIZE/CHUNK_SIZE)
 #define GEN_CDEPTH (GSIZE/CHUNK_SIZE)
 
@@ -60,6 +60,7 @@ void makePonies();
 void makeMix();
 void makeVolcano();
 void makeGreenHills(int height);
+void makeClassicGen();
 void clear();
 void makeCave(int xs,int zs,int ys,int sizex,int sizez,int sizey,int colorScheme);
 

@@ -1281,7 +1281,7 @@ float getShadow(int x,int z,int y){
       //  printf("lightarray at box:%f\n",lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].x);
     }
     
-    return ret;
+    return 1.0f;
     //if(x<=0||z<=0||y<0||x>=T_SIZE-1||z>=T_SIZE-1||y>=T_HEIGHT)return 0;
     
     
