@@ -73,6 +73,7 @@
 	float ttime;
 	int use_joystick;
 }
+
 @property(nonatomic,readonly) int fps;
 @property(nonatomic,assign) BOOL m_jump,m_left,m_right,m_fwd,m_back,m_joy,underLiquid,heartbeat;
 @property(nonatomic,assign) int mode,build_size;

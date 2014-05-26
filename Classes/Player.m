@@ -10,6 +10,7 @@
 #import "Util.h"
 #import "Globals.h"
 #import "Model.h"
+#import "TerrainGen2.h" //for sky color change
 #define MOVE_SPEED 120.0f
 #define CLIMB_SPEED 3.0f
 //#define SPEED_M 4.5f
@@ -986,7 +987,7 @@ static BOOL lastOnIce;
 	lpos.z=pos.z;
 	[self move:etime];
     
-    
+    updateSkyColor(self);
 	//NSLog(@"%f %f %f",pos.x,pos.y,pos.z);
 	
 	Camera* cam=world.cam;

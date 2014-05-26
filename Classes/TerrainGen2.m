@@ -18,8 +18,8 @@
 #import "Constants.h"
 #import "Globals.h"
 
-#define LEVEL_SEED 400
-#define LEVEL_SEED2 123
+#define TG_SEED 400
+#define TG_SEED2 123
 
 block8* biomez;
 block8* blockz;
@@ -519,9 +519,9 @@ void makeCave(int xs,int zs,int ys,int sizex,int sizez,int sizey,int colorScheme
                 float FREQ3=4.0f;
                 float AMPLITUDE3=0.25f;
                 for(int i=0;i<3;i++){
-                    float vec[3]={(float)FREQ3*(x+LEVEL_SEED)/NOISE_CONSTANT
-                        ,(float)FREQ3*(z+LEVEL_SEED)/NOISE_CONSTANT,
-                        (float)FREQ3*(y+LEVEL_SEED)/NOISE_CONSTANT};
+                    float vec[3]={(float)FREQ3*(x+TG_SEED)/NOISE_CONSTANT
+                        ,(float)FREQ3*(z+TG_SEED)/NOISE_CONSTANT,
+                        (float)FREQ3*(y+TG_SEED)/NOISE_CONSTANT};
                     n3+=noise3(vec)*(AMPLITUDE3);
                     FREQ3*=2;
                     AMPLITUDE3/=2;
@@ -573,7 +573,7 @@ void makeHill(int x,int z,int y, int size,int type){
 }
 void makeDirt(){
     float var=3;  //how much variance in heightmap?
-    //LEVEL_SEED=0;
+    //TG_SEED=0;
 	
 	
 	const int offsety=T_HEIGHT/2;
@@ -587,8 +587,8 @@ void makeDirt(){
             //float FREQ3=4.0f;
             float AMPLITUDE=4.0f;
             for(int i=0;i<10;i++){
-                float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT
-                    ,(float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
+                float vec[2]={(float)FREQ*(x+TG_SEED)/NOISE_CONSTANT
+                    ,(float)FREQ*(z+TG_SEED)/NOISE_CONSTANT};
                 n+=noise2(vec)*(AMPLITUDE)*var;
                 FREQ*=2;
                 AMPLITUDE/=2;
@@ -615,9 +615,9 @@ void makeDirt(){
 						float FREQ3=4.0f;
 						float AMPLITUDE3=0.25f;
 						for(int i=0;i<3;i++){
-							float vec[3]={(float)FREQ3*(x+LEVEL_SEED)/NOISE_CONSTANT
-                                ,(float)FREQ3*(z+LEVEL_SEED)/NOISE_CONSTANT,
-                                (float)FREQ3*(y+LEVEL_SEED)/NOISE_CONSTANT};
+							float vec[3]={(float)FREQ3*(x+TG_SEED)/NOISE_CONSTANT
+                                ,(float)FREQ3*(z+TG_SEED)/NOISE_CONSTANT,
+                                (float)FREQ3*(y+TG_SEED)/NOISE_CONSTANT};
 							n3+=noise3(vec)*(AMPLITUDE3);
 							FREQ3*=2;
 							AMPLITUDE3/=2;
@@ -646,9 +646,9 @@ void makeDirt(){
 					float FREQ3=3.0f;
 					float AMPLITUDE3=0.5f;
 					for(int i=0;i<3;i++){
-						float vec[3]={(float)FREQ3*(x+LEVEL_SEED)/NOISE_CONSTANT
-                            ,(float)FREQ3*(z+LEVEL_SEED)/NOISE_CONSTANT,
-                            (float)FREQ3*(y+LEVEL_SEED)/NOISE_CONSTANT};
+						float vec[3]={(float)FREQ3*(x+TG_SEED)/NOISE_CONSTANT
+                            ,(float)FREQ3*(z+TG_SEED)/NOISE_CONSTANT,
+                            (float)FREQ3*(y+TG_SEED)/NOISE_CONSTANT};
 						n3+=noise3(vec)*(AMPLITUDE3);
 						FREQ3*=2;
 						AMPLITUDE3/=2;
@@ -716,7 +716,7 @@ void makeDirt(){
 
 void makeMars(int x1,int z1,int x2,int z2){
     float var=3;  //how much variance in heightmap?
-    //LEVEL_SEED=0;
+    //TG_SEED=0;
 	
 	
 	const int offsety=T_HEIGHT/8;
@@ -730,8 +730,8 @@ void makeMars(int x1,int z1,int x2,int z2){
             //float FREQ3=4.0f;
             float AMPLITUDE=4.0f;
             for(int i=0;i<10;i++){
-                float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT
-                    ,(float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
+                float vec[2]={(float)FREQ*(x+TG_SEED)/NOISE_CONSTANT
+                    ,(float)FREQ*(z+TG_SEED)/NOISE_CONSTANT};
                 n+=noise2(vec)*(AMPLITUDE)*var;
                 FREQ*=2;
                 AMPLITUDE/=2;
@@ -765,9 +765,9 @@ void makeMars(int x1,int z1,int x2,int z2){
 					float FREQ3=3.0f;
 					float AMPLITUDE3=0.5f;
 					for(int i=0;i<3;i++){
-						float vec[3]={(float)FREQ3*(x+LEVEL_SEED)/NOISE_CONSTANT
-                            ,(float)FREQ3*(z+LEVEL_SEED)/NOISE_CONSTANT,
-                            (float)FREQ3*(y+LEVEL_SEED)/NOISE_CONSTANT};
+						float vec[3]={(float)FREQ3*(x+TG_SEED)/NOISE_CONSTANT
+                            ,(float)FREQ3*(z+TG_SEED)/NOISE_CONSTANT,
+                            (float)FREQ3*(y+TG_SEED)/NOISE_CONSTANT};
 						n3+=noise3(vec)*(AMPLITUDE3);
 						FREQ3*=2;
 						AMPLITUDE3/=2;
@@ -835,7 +835,7 @@ void makeMix(){
     makeGreenHills(T_HEIGHT/3);
     
     float var=3;  //how much variance in heightmap?
-    //LEVEL_SEED=0;
+    //TG_SEED=0;
 	[World getWorld].terrain.final_skycolor=colorTable[6];
 	
 	int offsety=T_HEIGHT/2-10;
@@ -858,8 +858,8 @@ void makeMix(){
             //float FREQ3=4.0f;
             float AMPLITUDE=20.0f;
             for(int i=0;i<10;i++){
-                float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT
-                    ,(float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
+                float vec[2]={(float)FREQ*(x+TG_SEED)/NOISE_CONSTANT
+                    ,(float)FREQ*(z+TG_SEED)/NOISE_CONSTANT};
                 n+=noise2(vec)*(AMPLITUDE)*var;
                 FREQ*=2;
                 AMPLITUDE/=2;
@@ -929,15 +929,35 @@ void makeMix(){
     
     makePonies();
     makeDesert();
-    makeMountains(0,0,GSIZE/4,GSIZE/4,LEVEL_SEED);
+    makeMountains(0,0,GSIZE/4,GSIZE/4,TG_SEED);
     makeClassicGen();
+    for(int i=0;i<1030;i++){//38 oj, 45 black
+        int rh=arc4random()%30+15;
+        int rx=arc4random()%(GSIZE/4-(rh+3)/2)+(rh+3);
+        int rz=arc4random()%(GSIZE/2+GSIZE/4-(rh+3)/2)+(rh+3);
+        int rc;
+        if(rx<GSIZE/4&&rz<3*GSIZE/4&&rz>GSIZE/4){}else{ continue;}
+         
+            rc=45;
+        makePyramid(rx,rz,rh,rc);
+    }
+    makePyramid(GSIZE/2+100,GSIZE/2,25,22);
     
+    for(int i=0;i<40;i++){
+        int rs=arc4random()%20+5;
+        int rx=arc4random()%(GSIZE/2-rs)+rs+GSIZE/4;
+        int rz=arc4random()%(GSIZE/8-rs)+rs+3*GSIZE/4+GSIZE/8;
+        
+        makeSkyIsland(rx,rz,55-arc4random()%10,rs);
+    }
+   
+    //makeSkyIsland(GSIZE/2,3*GSIZE/4+GSIZE/8,50,35);
 }
 void makeBeach(){
     float var=3;  //how much variance in heightmap?
     
     [World getWorld].terrain.final_skycolor=colorTable[17];
-    //LEVEL_SEED=0;
+    //TG_SEED=0;
 	
 	int sealevel=19;
     int slideh;
@@ -952,8 +972,8 @@ void makeBeach(){
             //float FREQ3=4.0f;
             float AMPLITUDE=18.0f;
             for(int i=0;i<10;i++){
-                float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT
-                    ,(float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
+                float vec[2]={(float)FREQ*(x+TG_SEED)/NOISE_CONSTANT
+                    ,(float)FREQ*(z+TG_SEED)/NOISE_CONSTANT};
                 n+=noise2(vec)*(AMPLITUDE)*var;
                 
                 FREQ*=2;
@@ -1066,8 +1086,8 @@ void makeClassicGen(){
             float FREQ=2.0f;
             float AMPLITUDE=4.0f;
             for(int i=0;i<10;i++){
-                float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT,
-                    (float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
+                float vec[2]={(float)FREQ*(x+TG_SEED)/NOISE_CONSTANT,
+                    (float)FREQ*(z+TG_SEED)/NOISE_CONSTANT};
                 n+=noise2(vec)*(AMPLITUDE)*var;
                 FREQ*=2;
                 AMPLITUDE/=2;
@@ -1092,9 +1112,9 @@ void makeClassicGen(){
 						float FREQ3=4.0f;
 						float AMPLITUDE3=0.25f;
 						for(int i=0;i<3;i++){
-							float vec[3]={(float)FREQ3*(x+LEVEL_SEED)/NOISE_CONSTANT
-								,(float)FREQ3*(z+LEVEL_SEED)/NOISE_CONSTANT,
-								(float)FREQ3*(y+LEVEL_SEED)/NOISE_CONSTANT};
+							float vec[3]={(float)FREQ3*(x+TG_SEED)/NOISE_CONSTANT
+								,(float)FREQ3*(z+TG_SEED)/NOISE_CONSTANT,
+								(float)FREQ3*(y+TG_SEED)/NOISE_CONSTANT};
 							n3+=noise3(vec)*(AMPLITUDE3);
 							FREQ3*=2;
 							AMPLITUDE3/=2;
@@ -1123,9 +1143,9 @@ void makeClassicGen(){
 					float FREQ3=3.0f;
 					float AMPLITUDE3=0.5f;
 					for(int i=0;i<3;i++){
-						float vec[3]={(float)FREQ3*(x+LEVEL_SEED)/NOISE_CONSTANT
-							,(float)FREQ3*(z+LEVEL_SEED)/NOISE_CONSTANT,
-							(float)FREQ3*(y+LEVEL_SEED)/NOISE_CONSTANT};
+						float vec[3]={(float)FREQ3*(x+TG_SEED)/NOISE_CONSTANT
+							,(float)FREQ3*(z+TG_SEED)/NOISE_CONSTANT,
+							(float)FREQ3*(y+TG_SEED)/NOISE_CONSTANT};
 						n3+=noise3(vec)*(AMPLITUDE3);
 						FREQ3*=2;
 						AMPLITUDE3/=2;
@@ -1274,13 +1294,13 @@ void makeDesert(){
     float var=3;  //how much variance in heightmap?
     
     [World getWorld].terrain.final_skycolor=colorTable[17];
-    //LEVEL_SEED=0;
+    //TG_SEED=0;
 	
 	
     int slideh;
 	int offsety=T_HEIGHT/2-10;
     for(int x=0;x<GSIZE/4+20;x++){ //Heightmap
-		for(int z=GSIZE/4-20;z<GSIZE/2+20;z++){
+		for(int z=GSIZE/4-20;z<3*GSIZE/4+20;z++){
             
             if(z<GSIZE/4){
                 offsety=T_HEIGHT/2-10-ABS(GSIZE/4-z);
@@ -1296,8 +1316,8 @@ void makeDesert(){
             //float FREQ3=4.0f;
             float AMPLITUDE=0.0f;
             for(int i=0;i<10;i++){
-                float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT
-                    ,(float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
+                float vec[2]={(float)FREQ*(x+TG_SEED)/NOISE_CONSTANT
+                    ,(float)FREQ*(z+TG_SEED)/NOISE_CONSTANT};
                 n+=noise2(vec)*(AMPLITUDE)*var;
                 FREQ*=2;
                 AMPLITUDE/=2;
@@ -1434,7 +1454,7 @@ void makePonies(){
     float var=3;  //how much variance in heightmap?
     
      [World getWorld].terrain.final_skycolor=colorTable[17];
-    //LEVEL_SEED=0;
+    //TG_SEED=0;
 	
 	
 	const int offsety=T_HEIGHT/2-10;
@@ -1448,8 +1468,8 @@ void makePonies(){
             //float FREQ3=4.0f;
             float AMPLITUDE=4.0f;
             for(int i=0;i<10;i++){
-                float vec[2]={(float)FREQ*(x+LEVEL_SEED)/NOISE_CONSTANT
-                    ,(float)FREQ*(z+LEVEL_SEED)/NOISE_CONSTANT};
+                float vec[2]={(float)FREQ*(x+TG_SEED)/NOISE_CONSTANT
+                    ,(float)FREQ*(z+TG_SEED)/NOISE_CONSTANT};
                 n+=noise2(vec)*(AMPLITUDE)*var;
                 FREQ*=2;
                 AMPLITUDE/=2;
@@ -1489,10 +1509,100 @@ void makePonies(){
     
     makeCave(0,3*GSIZE/4,2,GSIZE/4,GSIZE,T_HEIGHT/2-15,1);
         [World getWorld].terrain.final_skycolor=colorTable[17];
+    
+    for(int x=0;x<GSIZE/4;x++){
+		for(int z=3*GSIZE/4;z<GSIZE;z++){
+            for(int y=1;y<T_HEIGHT/5;y++){
+                if(BLOCK(x,z,y)==TYPE_NONE){
+                    BLOCK(x,z,y)=TYPE_WATER;
+                    COLOR(x,z,y)=6;
+                }
+            }
+        }
+    }
+}
+void makeSkyIsland(int cx,int cz,int cy,int r){
+  //  int grasslevel=cy-r/2;
+    
+    for(int x=-r;x<=r;x++)
+        for(int z=-r;z<=r;z++){
+           int  y=-r/2;
+            if(x*x+z*z+y*y<=r*r){
+                //sealevel
+                if(BLOCK(cx+x,cz+z,18)!=TYPE_WATER)return;
+            }
+                
+            
+        }
+    cy=18+r-r/4-r/8;
+    for(int x=-r;x<=r;x++)
+        for(int z=-r;z<=r;z++){
+            for(int y=-r;y<=-r/2;y++){
+                
+                if(x*x+z*z+y*y<=r*r){
+                    if(cy+y>=T_HEIGHT){printf("skyisland hit upper bound\n");}
+                    if(cy+y<=1)printf("skyisland hit lower bound)\n");
+                    if(y==-r/2){
+                        BLOCK(cx+x,cz+z,cy+y)=TYPE_GRASS;
+                        COLOR(cx+x,cz+z,cy+y)=0;
+                        
+                            if((x*x+z*z+y*y)<(r-1)*(r-1)&&randi(90)==0){
+                                // printf("making a tree\n");
+                                makePalmTree(cx+x,cz+z,cy+y,4);
+                            }
+                        
+                    } else{
+                    BLOCK(cx+x,cz+z,cy+y)=TYPE_SAND;
+                    COLOR(cx+x,cz+z,cy+y)=colorCycle3(cy+y,1);;
+                    }
+                }
+            }
+        }
+    
+
+    
+}
+void makePyramid(int x,int z,int h,int color){
+    int r=h;
+    int starty=T_HEIGHT-1;
+    BOOL solidground=FALSE;
+    for(;starty>5;starty--){
+        solidground=TRUE;
+        for(int sx=x-r;sx<x+r;sx++){
+            
+            for(int sz=z-r;sz<z+r;sz++){
+                //if(BLOCK(sx,sz,starty)==TYPE_NONE||(blockinfo[BLOCK(sx,sz,starty)]&IS_LIQUID)){
+                if(BLOCK(sx,sz,starty)!=TYPE_SAND){
+                    if(BLOCK(sx,sz,starty)!=TYPE_NONE)return;
+                    solidground=FALSE;
+                    break;
+                }
+            }
+            if(!solidground)break;
+            
+        }
+        if(solidground)break;
+    }
+    if(!solidground)return;
+   // printf("making pyramid\n");
+    for(int y=starty;y<starty+h;y++){
+        if(y>T_HEIGHT-8)continue;
+        for(int sx=x-r;sx<x+r;sx++){
+            for(int sz=z-r;sz<z+r;sz++){
+                BLOCK(sx,sz,y)=TYPE_DARK_STONE;
+                
+                
+                COLOR(sx,sz,y)=0;
+            }
+        }
+        r--;
+    }
+    
+    
 }
 void makeGreenHills(int height){
     float var=3;  //how much variance in heightmap?
-    //LEVEL_SEED=0;
+    //TG_SEED=0;
 	[World getWorld].terrain.final_skycolor=colorTable[15];
 	
 	int offsety=height;;
@@ -1515,8 +1625,8 @@ void makeGreenHills(int height){
             //float FREQ3=4.0f;
             float AMPLITUDE=8.0f;
             for(int i=0;i<10;i++){
-                float vec[2]={(float)FREQ*(x+LEVEL_SEED2)/NOISE_CONSTANT
-                    ,(float)FREQ*(z+LEVEL_SEED2)/NOISE_CONSTANT};
+                float vec[2]={(float)FREQ*(x+TG_SEED2)/NOISE_CONSTANT
+                    ,(float)FREQ*(z+TG_SEED2)/NOISE_CONSTANT};
                 n+=noise2(vec)*(AMPLITUDE)*var;
                 FREQ*=2;
                 AMPLITUDE/=2;
@@ -1618,7 +1728,7 @@ void makeGreenHills(int height){
 }
 void makeRiverTrees(int sx,int sz,int ex,int ez,int SEED){
     float var=3;  //how much variance in heightmap?
-    //LEVEL_SEED=0;
+    //TG_SEED=0;
 	[World getWorld].terrain.final_skycolor=colorTable[9];
 	
 	const int offsety=T_HEIGHT/2-10;
@@ -1830,7 +1940,7 @@ void makeTransition(int sx,int sz,int ex,int ez){
 }
 void makeMountains(int sx,int sz,int ex,int ez,int SEED){
     float var=3;  //how much variance in heightmap?
-    //LEVEL_SEED=0;
+    //TG_SEED=0;
 	[World getWorld].terrain.final_skycolor=colorTable[6];
 	
     
@@ -2033,8 +2143,8 @@ void genTemperatureMap(){
             //float FREQ3=4.0f;
             float AMPLITUDE=16.0f;
             for(int i=0;i<10;i++){
-                float vec[2]={(float)FREQ*(x+LEVEL_SEED2)/NOISE_CONSTANT
-                    ,(float)FREQ*(z+LEVEL_SEED2)/NOISE_CONSTANT};
+                float vec[2]={(float)FREQ*(x+TG_SEED2)/NOISE_CONSTANT
+                    ,(float)FREQ*(z+TG_SEED2)/NOISE_CONSTANT};
                 n+=noise2(vec)*(AMPLITUDE)*var;
                 FREQ*=2;
                 AMPLITUDE/=2;
@@ -2235,6 +2345,88 @@ int tg2_init(){
    //printf("creating biome: %d\n",g_terrain_type);
 
     return 0;
+    
+}
+
+#define COLOR_RED1 1
+#define COLOR_ORANGE1 2
+#define COLOR_YELLOW1 3
+#define COLOR_GREEN1 4
+#define COLOR_CYAN1 5
+#define COLOR_BLUE1 6
+#define COLOR_PURPLE1  7
+#define COLOR_PINK1  8
+#define COLOR_BWG1  9
+#define COLOR_RED2 10
+#define COLOR_ORANGE2  11
+#define COLOR_YELLOW2  12
+#define COLOR_GREEN2  13
+#define COLOR_CYAN2  14
+#define COLOR_BLUE2  15
+#define COLOR_PURPLE2  16
+#define COLOR_PINK2  17
+#define COLOR_BWG2  18
+#define COLOR_RED3  19
+#define COLOR_ORANGE3  20
+#define COLOR_YELLOW3  21
+#define COLOR_GREEN3  22
+#define COLOR_CYAN3  23
+#define COLOR_BLUE3  24
+#define COLOR_PURPLE3  25
+#define COLOR_PINK3  26
+#define COLOR_BWG3  27
+#define COLOR_RED4 28
+#define COLOR_ORANGE4  29
+#define COLOR_YELLOW4  30
+#define COLOR_GREEN4  31
+#define COLOR_CYAN4  32
+#define COLOR_BLUE4  33
+#define COLOR_PURPLE4  34
+#define COLOR_PINK4  35
+#define COLOR_BWG4  36
+#define COLOR_RED5 37
+#define COLOR_ORANGE5  38
+#define COLOR_YELLOW5  39
+#define COLOR_GREEN5  40
+#define COLOR_CYAN5  41
+#define COLOR_BLUE5  42
+#define COLOR_PURPLE5  43
+#define COLOR_PINK5  44
+#define COLOR_BWG5  45
+#define COLOR_RED6 46
+#define COLOR_ORANGE6  47
+#define COLOR_YELLOW6  48
+#define COLOR_GREEN6  49
+#define COLOR_CYAN6  50
+#define COLOR_BLUE6  51
+#define COLOR_PURPLE6  52
+#define COLOR_PINK6  53
+#define COLOR_BWG6  54
+void updateSkyColor(Player* player){
+    extern int g_offcx;
+    
+    if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
+        
+        float ppx=player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
+        int ppz=player.pos.z-4096*CHUNK_SIZE+GSIZE/2;
+        ppx=(float)ppx/(GSIZE/4);
+        ppz=(float)ppz/(GSIZE/4);
+        const int regionSkyColors[4][4]={
+            {COLOR_BWG1,COLOR_BLUE1,COLOR_BLUE1,COLOR_RED2},
+            {COLOR_ORANGE2,COLOR_BLUE2,COLOR_GREEN1,COLOR_ORANGE1},
+            {COLOR_YELLOW1,COLOR_BLUE1,COLOR_BLUE1,COLOR_ORANGE1},
+            {COLOR_PURPLE1,COLOR_YELLOW1,COLOR_CYAN1,COLOR_RED5}};
+            
+        
+        //printf("region: %d,%d\n",(int)ppx,(int)ppz);
+        
+        
+        [World getWorld].terrain.final_skycolor=colorTable[regionSkyColors[(int)ppz][(int)ppx]];
+    }
+
+
+
+    
     
 }
 void tg2_render(){
