@@ -1590,7 +1590,7 @@ float last_etime;
 	}
     [liquids update:etime];
     [fireworks update:etime];
-    if(interpolatev(&skycolor,final_skycolor,1.0,etime)){
+    if(interpolatev(&skycolor,final_skycolor,.25f,etime)){
          
         Vector v=[World getWorld].terrain.skycolor;
         float clr[4]={v.x-.2f, v.y-.2f, v.z-.2f, 1.0f};

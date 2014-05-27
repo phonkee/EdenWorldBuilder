@@ -531,7 +531,9 @@ extern int chunk_load_count;
        
        // [Graphics setLighting];	
        // glShadeModel(GL_SMOOTH);
+      //  glDisable(GL_TEXTURE_2D);
 		[terrain render];
+       // glEnable(GL_TEXTURE_2D);
         if(CREATURES_ON)
             RenderModels();
         [terrain render2];

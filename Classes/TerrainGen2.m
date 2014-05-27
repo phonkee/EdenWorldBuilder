@@ -216,7 +216,7 @@ void makeVolcano(int x,int z,int y,int start_radius){
     
     
     int h=1;
-    for(int radius=start_radius;radius>2;radius--){
+    for(int radius=start_radius;radius>0;radius--){
         h++;
         
         int waves=5;
@@ -226,11 +226,18 @@ void makeVolcano(int x,int z,int y,int start_radius){
             float radius_here=radius2;
             float angle=atan2f(i,j);
             radius_here+=3*sinf(12*angle);
+            int lava_radius=radius2;
             if(radius_here<0)radius_here=0;
-            if(i*i+j*j<radius_here*radius_here){
+          
+            if(radius>2&&i*i+j*j<radius_here*radius_here){
                 BLOCK(x+i,z+j,y+h)=TYPE_STONE;
                 COLOR(x+i,z+j,y+h)=36;
+            }else if(i*i+j*j<lava_radius*lava_radius){
+                BLOCK(x+i,z+j,y+h)=TYPE_LAVA;
+                COLOR(x+i,z+j,y+h)=0;
+
             }
+            
         }
     }
     }
@@ -248,7 +255,7 @@ void makeVolcano(int x,int z,int y,int start_radius){
         }
     }
     
-    Vector pos=MakeVector(x,y+h+1,z);
+   /* Vector pos=MakeVector(x,y+h+1,z);
     int look;
     for(int i=0;i<405;i++){
         BLOCK(pos.x,pos.z,pos.y)=TYPE_LAVA;
@@ -287,7 +294,7 @@ void makeVolcano(int x,int z,int y,int start_radius){
         
         look++;
 
-    }
+    }*/
 
 
     
@@ -362,6 +369,8 @@ void makeTree2(int x,int z,int y,int hheight){
 	}
 	int color=arc4random()%4;
 	int ct[4]={0,31,40,40};
+    
+    int ct2[4]={0,31,40,40};
     int type=TYPE_LEAVES;
 	
 	for(int i=x-2;i<=x+2;i++){
@@ -373,11 +382,17 @@ void makeTree2(int x,int z,int y,int hheight){
                         }else
                             if(arc4random()%2==0){
                                 BLOCK(i ,j ,k )=type;
+                                if(z>GSIZE/2){
+                                    COLOR(i ,j ,k )=ct2[color];
+                                }else
                                 COLOR(i ,j ,k )=ct[color];
                             }
 					}
 					else {
 						BLOCK(i ,j ,k)=type;
+                        if(z>GSIZE/2){
+                            COLOR(i ,j ,k )=ct2[color];
+                        }else
                         COLOR(i ,j ,k)=ct[color];
 					}
 					
@@ -843,14 +858,31 @@ void makeMix(){
    
 		for(int z=0;z<GSIZE;z++){
              for(int x=0;x<GSIZE;x++){ //Heightmap
+                 offsety=T_HEIGHT/2-10;
             //float value=((TEMP(x,z)+128.0f)/255.0f);
             int h;
-                 if(x<GSIZE/4&&z>=GSIZE/4&&z<GSIZE/2){
+                 if(x<(GSIZE/4+10)&&z>=GSIZE/4&&z<(GSIZE/2+10)){
                     offsety=T_HEIGHT/2-10;
+                     
+                     if(z>GSIZE/2+10)continue;
+                     if(z>GSIZE/2-10){
+                         offsety=(T_HEIGHT/2-10)-(20-((GSIZE/2+10)-z));
+                     }
+                     
+                     if(x>GSIZE/4-10){
+                         offsety=(T_HEIGHT/2-10)-(20-((GSIZE/4+10)-x));
+                     }
+                     
+                     
+
                  }else{
                      if(z>GSIZE/4+10)continue;
                      if(z>GSIZE/4-10){
                          offsety=(T_HEIGHT/2-10)-(20-((GSIZE/4+10)-z));
+                     }
+                     if(x>3*GSIZE/4-10){
+                          offsety=(T_HEIGHT/2-10)-(20-((GSIZE/4+10)-x));
+                         if(offsety<T_HEIGHT/12)offsety=T_HEIGHT/12;
                      }
                  }
             float n=offsety;
@@ -1027,7 +1059,7 @@ void makeBeach(){
             if(TM(x,z)!=TM_BEACH)continue;
             //BLOCK(x ,z ,0)=TYPE_SAND;
 			
-			for(int y=4;y<sealevel;y++){
+			for(int y=1;y<sealevel;y++){
 				if(BLOCK(x ,z ,y)==TYPE_NONE){
                    
                         
@@ -1607,17 +1639,39 @@ void makeGreenHills(int height){
 	
 	int offsety=height;;
     for(int x=0;x<GSIZE;x++){ //Heightmap
-        if(x<GSIZE/4)continue;
-        if(x<GSIZE/4+10){
-            offsety=height-(GSIZE/4+10-x);
-            offsety=clampy(offsety);
-        }
-        if(x>GSIZE*3/4){
-            offsety=height-(x-GSIZE*3/4);
-            offsety=clampy(offsety);
-        }
-		for(int z=0;z<3*GSIZE/4;z++){
+        if(x<GSIZE/4-15)continue;
+       
+		for(int z=0;z<3*GSIZE/4+15;z++){
+            
+            offsety=height;
+            
+            if(x<GSIZE/4+15){
+                offsety=height+ABS(GSIZE/4+15-x);
+                
+                offsety=clampy(offsety);
+            }
+            if(x<GSIZE/4) {
+                offsety=height-(ABS(GSIZE/4-x))+15;
+                offsety=clampy(offsety);
+            }
+            if(x>GSIZE*3/4){
+                offsety=height-(x-GSIZE*3/4);
+                offsety=clampy(offsety);
+            }
+            
             if(z>GSIZE/2&&x>=3*GSIZE/4+35)continue;
+            
+            if(z>3*GSIZE/4-7){
+                offsety=height+ABS(3*GSIZE/4-7-z);
+                
+                offsety=clampy(offsety);
+            }
+            if(z>3*GSIZE/4){
+                offsety=height-ABS(3*GSIZE/4-z)+7;
+                
+                offsety=clampy(offsety);
+            }
+            
             int h;
             
             float n=offsety;
@@ -1632,6 +1686,7 @@ void makeGreenHills(int height){
                 AMPLITUDE/=2;
             }
             h=(int)roundf(n);
+            if(h>height+10)h=height+10;
             if(h-1>=T_HEIGHT){
                 NSLog(@"NONONO6");
             }
@@ -2361,7 +2416,7 @@ int tg2_init(){
 #define COLOR_ORANGE2  11
 #define COLOR_YELLOW2  12
 #define COLOR_GREEN2  13
-#define COLOR_CYAN2  14
+#define COLOR_NORMAL_BLUE  14
 #define COLOR_BLUE2  15
 #define COLOR_PURPLE2  16
 #define COLOR_PINK2  17
@@ -2402,26 +2457,35 @@ int tg2_init(){
 #define COLOR_PURPLE6  52
 #define COLOR_PINK6  53
 #define COLOR_BWG6  54
+
+int lrx=-1;
+int lrz=-1;
 void updateSkyColor(Player* player){
     extern int g_offcx;
     
     if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
         
-        float ppx=player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
+        int ppx=player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
         int ppz=player.pos.z-4096*CHUNK_SIZE+GSIZE/2;
-        ppx=(float)ppx/(GSIZE/4);
-        ppz=(float)ppz/(GSIZE/4);
+        ppx=ppx/(GSIZE/4);
+        ppz=ppz/(GSIZE/4);
         const int regionSkyColors[4][4]={
-            {COLOR_BWG1,COLOR_BLUE1,COLOR_BLUE1,COLOR_RED2},
-            {COLOR_ORANGE2,COLOR_BLUE2,COLOR_GREEN1,COLOR_ORANGE1},
-            {COLOR_YELLOW1,COLOR_BLUE1,COLOR_BLUE1,COLOR_ORANGE1},
-            {COLOR_PURPLE1,COLOR_YELLOW1,COLOR_CYAN1,COLOR_RED5}};
+            {COLOR_BWG1,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE},
+            {COLOR_ORANGE2,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE},
+            {COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE},
+            {COLOR_PURPLE1,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_RED5}};
             
         
         //printf("region: %d,%d\n",(int)ppx,(int)ppz);
         
+        if(lrx!=ppx||lrz!=ppz){
+            if(lrx==-1||regionSkyColors[ppz][ppx]!=regionSkyColors[lrz][lrx]){
+                [World getWorld].terrain.final_skycolor=colorTable[regionSkyColors[(int)ppz][(int)ppx]];
+            }
+            lrx=ppx;
+            lrz=ppz;
+        }
         
-        [World getWorld].terrain.final_skycolor=colorTable[regionSkyColors[(int)ppz][(int)ppx]];
     }
 
 
