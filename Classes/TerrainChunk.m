@@ -13,7 +13,7 @@
 #import "Geometry.h"
 
 @implementation TerrainChunk
-@synthesize pbounds,prbounds,rtn_vertices,rtn_vertices2,pblocks,needsGen,rtobjects,rtnum_objects,idxn,loaded,m_treenode,m_listnode,in_view,psblocks,needsVBO,rebuildCounter;
+@synthesize pbounds,prbounds,rtn_vertices,rtn_vertices2,pblocks,needsGen,rtobjects,rtnum_objects,idxn,loaded,m_treenode,m_listnode,in_view,psblocks,needsVBO,rebuildCounter,modified;
 @synthesize pcolors;
 
 extern Vector colorTable[256];
@@ -74,6 +74,7 @@ extern GLfloat cubeNormals[3*6*6];
     rtobjects=NULL;
     objects=NULL;
     needsVBO=FALSE;
+    modified=FALSE;
  //   memset(sblocks,0,sizeof(SmallBlock*)*CHUNK_SIZE3);
     pcolors=colors;
     memset(colors,0,sizeof(color8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
@@ -110,6 +111,7 @@ extern GLfloat cubeNormals[3*6*6];
    	return [self initWithBlocks:boundz:rrcx:rrcz:terrain:TRUE];
 }
 -(void)setBounds:(int*) boundz{
+    modified=FALSE;
 	for(int i=0;i<6;i++){
 		bounds[i]=boundz[i];
        
@@ -1654,6 +1656,7 @@ extern int g_offcz;
     
 }*/
 - (void)setLand:(int)x:(int)z:(int)y:(int)type{
+    
 	if(x<0||x>=CHUNK_SIZE||y<0||y>=CHUNK_SIZE||z<0||z>=CHUNK_SIZE){
 		//NSLog(@"setting out of bounds chunks");
         [ter setLand:x+bounds[0] :z+bounds[2] :y+bounds[1] :type :TRUE];
@@ -1900,8 +1903,16 @@ extern int g_offcz;
     if(totalvert>rtn_vertices||rtface_idx[6]+rtnum_vertices[6]>rtn_vertices||rtvis_vertices>rtn_vertices){
         printf("Great\n");
     }
-    if(rtvis_vertices!=0)
-    glDrawElements(GL_TRIANGLES,rtvis_vertices,GL_UNSIGNED_SHORT,0);
+    if(rtvis_vertices!=0){
+    
+       /* if(modified==TRUE){
+            glDisable(GL_TEXTURE_2D);
+        }*/
+        glDrawElements(GL_TRIANGLES,rtvis_vertices,GL_UNSIGNED_SHORT,0);
+        //if(modified==TRUE){
+        //    glEnable(GL_TEXTURE_2D);
+        //}
+    }
    
    
     

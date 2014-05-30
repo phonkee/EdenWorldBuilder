@@ -34,7 +34,7 @@ void fmh_init(FileManager* t_fm){
      
     NSString* file_name=[NSString stringWithFormat:@"%@/Eden.eden",fm.documents];
     
-   // NSString* file_name=[[NSBundle mainBundle] pathForResource:@"Eden.eden" ofType:nil];
+  //  NSString* file_name=[[NSBundle mainBundle] pathForResource:@"Eden.eden" ofType:nil];
     
     /* if(TRUE){
      DecompressWorld([file_name cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -76,6 +76,7 @@ static void fmh_read_directory(){
 }
 void fmh_readColumnFromDefault(int cx,int cz){
     
+    
     Terrain* ter=[World getWorld].terrain;
     TerrainChunk* columns[CHUNKS_PER_COLUMN];
     ColumnIndex* colIndex=NULL;
@@ -87,10 +88,39 @@ void fmh_readColumnFromDefault(int cx,int cz){
   
 	hashmap_get(indexes,n, (any_t)&colIndex);
     
+    
 	if(colIndex==NULL){
-        [ter.tgen generateColumn:cx:cz:FALSE];
+        [ter.tgen generateEmptyColumn:cx:cz];
         return;
-       // printf("can't find column in default gen file, reached bounds?\n");
+     /*   int fcx=cx;
+        if(fcx<=4041||fcx>=4150||){
+            fcx-=4042;
+            
+            fcx+=108*1000;
+            fcx%=108;
+            fcx+=4042;
+        }
+        int fcz=cz;
+        if(fcz<=4041||fcz>=4150){
+            fcz-=4042;
+            
+            fcz+=108*1000;
+            fcz%=108;
+            fcz+=4042;
+        }
+        hashmap_get(indexes,twoToOne(fcx,fcz), (any_t)&colIndex);
+        */
+        
+        
+        if(colIndex==NULL){
+       // printf("col index null at (%d,%d) converted to: (%d,%d) \n",cx, cz, fcx,fcz);
+        
+        //4150
+        //4041
+        
+        return;
+        }
+       //
         
         
     }

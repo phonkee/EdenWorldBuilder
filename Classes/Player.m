@@ -986,7 +986,19 @@ static BOOL lastOnIce;
 	lpos.y=pos.y;
 	lpos.z=pos.z;
 	[self move:etime];
-    
+    if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
+        if(pos.x<4096*CHUNK_SIZE-GSIZE/2){
+           pos.x=4096*CHUNK_SIZE-GSIZE/2;
+        }else if(pos.x>=4096*CHUNK_SIZE+GSIZE/2){
+            pos.x=4096*CHUNK_SIZE+GSIZE/2;
+        }
+        
+        if(pos.z<4096*CHUNK_SIZE-GSIZE/2){
+            pos.z=4096*CHUNK_SIZE-GSIZE/2;
+        }else if(pos.z>=4096*CHUNK_SIZE+GSIZE/2){
+            pos.z=4096*CHUNK_SIZE+GSIZE/2;
+        }
+    }
     updateSkyColor(self);
 	//NSLog(@"%f %f %f",pos.x,pos.y,pos.z);
 	

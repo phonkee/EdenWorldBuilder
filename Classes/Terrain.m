@@ -616,8 +616,10 @@ TerrainChunk* rebuildList[13000];
                 
             }
         }
-        if(![chunk needsVBO])
+       
             chunk.pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]=type;
+        chunk.modified=TRUE;
+        
 		
 	}
 	
@@ -643,6 +645,7 @@ TerrainChunk* rebuildList[13000];
     z-=cz*CHUNK_SIZE;
     color8 c1=chunk.pcolors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];
     if(c1==color) return FALSE;
+    chunk.modified=TRUE;
     chunk.pcolors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]=color;
 		
 	// NSLog(@"hi! %f,%f,%f",color.x,color.y,color.z);

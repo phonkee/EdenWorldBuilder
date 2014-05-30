@@ -27,7 +27,7 @@
 #define GAME_MODE_MENU 0
 #define GAME_MODE_WAIT 2
 #define GAME_MODE_PLAY 1
-#define JUST_TERRAIN_GEN 0
+#define JUST_TERRAIN_GEN 1
 @interface World : NSObject {
 	Terrain* terrain;
 	Camera* cam;

@@ -76,6 +76,66 @@ inline static void setColort(int x,int z,int y,int color){
 	
 }
 extern int g_offcx,g_offcz;
+
+- (void)generateEmptyColumn:(int)cx:(int)cz{
+    int ocx=cx;
+	int ocz=cz;
+    boundx=ocx*CHUNK_SIZE;
+    boundz=ocz*CHUNK_SIZE;
+    //memset(tblocks,0,sizeof(block8)*(CHUNKS_PER_COLUMN*CHUNK_SIZE*2)*(CHUNK_SIZE*2)*(CHUNK_SIZE*2));
+   // memset(tcolors,0,sizeof(block8)*(CHUNKS_PER_COLUMN*CHUNK_SIZE*2)*(CHUNK_SIZE*2)*(CHUNK_SIZE*2));
+	for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
+		int bounds[6];
+		bounds[0]=ocx*CHUNK_SIZE;
+		bounds[1]=cy*CHUNK_SIZE;
+		bounds[2]=ocz*CHUNK_SIZE;
+		bounds[3]=(ocx+1)*CHUNK_SIZE;
+		bounds[4]=(cy+1)*CHUNK_SIZE;
+		bounds[5]=(ocz+1)*CHUNK_SIZE;
+        TerrainChunk* chunk;
+        TerrainChunk* old=ter.chunkTable[threeToOne(ocx,cy,ocz)];  //crash count: 1
+        if(old){chunk=old;
+            [chunk resetForReuse];
+            [chunk setBounds:bounds];
+            
+        }
+        else
+            chunk=[[TerrainChunk alloc] init:bounds:ocx:ocz:ter];
+        
+        chunk.needsGen=TRUE;
+		column[cy]=chunk;
+        /*  if(bgthread){
+         if(cy==0){
+         // printf("adding from bgthread to chunkmap\n");
+         }
+         [ter readdChunk:chunk:ocx:cy:ocz];
+         }else*/
+		//[ter addChunk:chunk:ocx:cy:ocz:TRUE];
+        
+    }
+   
+    for(int x=0;x<CHUNK_SIZE;x++){
+        for(int z=0;z<CHUNK_SIZE;z++){
+            for(int y=0;y<T_HEIGHT;y++)
+                GBLOCK(x+boundx,z+boundz,y)=
+                
+                column[(int)y/CHUNK_SIZE].pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
+            
+        }
+    }
+
+    for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
+        
+        
+        /*  if(bgthread){
+         if(cy==0){
+         // printf("adding from bgthread to chunkmap\n");
+         }
+         [ter readdChunk:chunk:ocx:cy:ocz];
+         }else*/
+        [ter addChunk:column[cy]:ocx:cy:ocz:TRUE];
+    }
+}
 - (void)generateColumn:(int)cx:(int)cz:(BOOL)bgthread{
 	int ocx=cx;
 	int ocz=cz;

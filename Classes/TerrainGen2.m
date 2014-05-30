@@ -450,10 +450,10 @@ void makePalmTree(int x,int z,int y,int hheight){
 }
 Vector makeWorm(int x,int z,int yy,int size){
     int h=-1;
-    for(int i=2;i<T_HEIGHT;i++){
+    for(int i=2;i<T_HEIGHT-1;i++){
         BOOL valid_spot=FALSE;
       
-              if(BLOCK(x,z,i)==TYPE_NONE){
+              if(BLOCK(x,z,i)==TYPE_NONE||blockinfo[BLOCK(x,z,i)]&IS_LIQUID||BLOCK(x,z,i+1)==TYPE_NONE){
                     
                     valid_spot=TRUE;
                  //   break;
@@ -467,7 +467,7 @@ Vector makeWorm(int x,int z,int yy,int size){
     }
    // h=15;
     
-    if(h==-1)   {  printf("no valid spot %d, %d,%d\n",h,x,z);
+    if(h==-1)   {  //printf("no valid spot %d, %d,%d\n",h,x,z);
     return MakeVector(-1,-1,-1);
     }
   
@@ -734,12 +734,23 @@ void makeMars(int x1,int z1,int x2,int z2){
     //TG_SEED=0;
 	
 	
-	const int offsety=T_HEIGHT/8;
+	int offsety=T_HEIGHT/8;
     for(int x=x1;x<x2;x++){ //Heightmap
 		for(int z=z1;z<z2;z++){
             if(TM(x,z)!=TM_MARS)continue;
             int h;
-            
+            offsety=T_HEIGHT/8;
+            if(z>3*GSIZE/4){
+                if(x<3*GSIZE/4+20){
+                    //offsety=T_HEIGHT/8;
+                    //offsety+=ABS(3*GSIZE/4-x);
+                }else
+                if(x<3*GSIZE/4+35){
+                    //offsety+=ABS(3*GSIZE/4+10-x);
+                    
+                }
+                
+            }
             float n=offsety;
             float FREQ=2.0f;
             //float FREQ3=4.0f;
@@ -755,7 +766,13 @@ void makeMars(int x1,int z1,int x2,int z2){
             if(h-1>=T_HEIGHT){
                 NSLog(@"NONONO2");
             }
-            
+            if(z>3*GSIZE/4){
+                if(x<3*GSIZE/4+35){
+                    if(h>=22){
+                        h=22;
+                    }
+                }
+            }
 			int FORMATION_HEIGHT=h-6;//how deep should the 3D noise apply
             //The deeper the 3D noise and the more variance in heightmap,
             //The more intense the terrain is
@@ -810,8 +827,10 @@ void makeMars(int x1,int z1,int x2,int z2){
 			
 			for(int y=0;y<5;y++){
 				if(BLOCK(x ,z ,y)==TYPE_NONE){
+                    if(BLOCK(x,z,y)!=TYPE_WATER){
                     BLOCK(x,z,y)=TYPE_LAVA;
                     COLOR(x,z,y)=0;
+                    }
 									}else{
 					
 					
@@ -823,9 +842,10 @@ void makeMars(int x1,int z1,int x2,int z2){
 		}
 	}
     
-    for(int i=0;i<120;i++){
-        int x=randi(GSIZE-10)+5;
-        int z=randi(GSIZE-10)+5;
+   
+    for(int i=0;i<80;i++){
+        int x=randi(GSIZE/4-10)+5+3*GSIZE/4;
+        int z=randi(GSIZE/4-10)+5+3*GSIZE/4;
         // int color=randi(53);
         
         Vector pos;
@@ -834,7 +854,8 @@ void makeMars(int x1,int z1,int x2,int z2){
         }while(pos.x==-1);
         
     }
-    makeVolcano((x1+x2)/2,(z1+z2)/2,1,30);
+
+  //  makeVolcano((x1+x2)/2,(z1+z2)/2,1,30);
  
     [World getWorld].terrain.final_skycolor=  colorTable[10];
    
@@ -881,7 +902,7 @@ void makeMix(){
                          offsety=(T_HEIGHT/2-10)-(20-((GSIZE/4+10)-z));
                      }
                      if(x>3*GSIZE/4-10){
-                          offsety=(T_HEIGHT/2-10)-(20-((GSIZE/4+10)-x));
+                          offsety=(T_HEIGHT/2-10)-ABS((3*GSIZE/4-10)-x);
                          if(offsety<T_HEIGHT/12)offsety=T_HEIGHT/12;
                      }
                  }
@@ -923,7 +944,7 @@ void makeMix(){
     
     //  int sea_level=-14;
     for(int x=3*GSIZE/4;x<GSIZE;x++){
-		for(int z=0;z<3*GSIZE/4;z++){
+		for(int z=0;z<=3*GSIZE/4;z++){
            
            
             //BLOCK(x ,z ,0)=TYPE_SAND;
@@ -931,8 +952,17 @@ void makeMix(){
 			for(int y=3;y<6;y++){
 				if(BLOCK(x ,z ,y)==TYPE_NONE){
                     for(int iy=1;iy<3;iy++){
+                        if(z==3*GSIZE/4){
+                            for(int zz=z;zz<z+150;zz++){
+                                if(BLOCK(x,zz,y-iy)==TYPE_NONE){
+                                    BLOCK(x,zz,y-iy)=TYPE_WATER;
+                                    COLOR(x,zz,y-iy)=0;
+                                }else break;
+                            }
+                        }else{
                         BLOCK(x,z,y-iy)=TYPE_WATER;
                         COLOR(x,z,y-iy)=0;
+                        }
                     }
                 }else{
 					
@@ -956,24 +986,52 @@ void makeMix(){
             }
         }
     }
-    makeMars(GSIZE*3/4,0,GSIZE,GSIZE);
     makeBeach();
+    makeMars(GSIZE*3/4,0,GSIZE,GSIZE);
+    ;
     
     makePonies();
-    makeDesert();
-    makeMountains(0,0,GSIZE/4,GSIZE/4,TG_SEED);
     makeClassicGen();
-    for(int i=0;i<1030;i++){//38 oj, 45 black
+    makeDesert();
+    
+    
+    
+    makeMountains(0,0,GSIZE/4,GSIZE/4,TG_SEED);
+    for(int i=0;i<PYRAMID_FREQ;i++){//38 oj, 45 black
         int rh=arc4random()%30+15;
         int rx=arc4random()%(GSIZE/4-(rh+3)/2)+(rh+3);
         int rz=arc4random()%(GSIZE/2+GSIZE/4-(rh+3)/2)+(rh+3);
         int rc;
         if(rx<GSIZE/4&&rz<3*GSIZE/4&&rz>GSIZE/4){}else{ continue;}
-         
-            rc=45;
-        makePyramid(rx,rz,rh,rc);
+        
+        rc=45;
+        makePyramid2(rx,rz,rh,rc,-1);
     }
-    makePyramid(GSIZE/2+100,GSIZE/2,25,22);
+  
+    makePyramid2(GSIZE/4,3*GSIZE/4,25,22,17);
+     makePyramid2(3*GSIZE/4+15,3*GSIZE/4,35,55,6);
+    
+     makePyramid2(GSIZE/4-15,GSIZE/4,35,55,16);
+    
+    
+    int sx=0;
+    int endx=GSIZE/4;
+    int sz=GSIZE/2;
+    int endz=3*GSIZE/4;
+    void placeTree(int x,int z,int y);
+    for(int x=sx+2;x<endx-2;x++){
+		for(int z=sz+2;z<endz-2;z++){
+			for(int y=1;y<T_HEIGHT-1;y++){
+				if(BLOCK(x ,z ,y)==TYPE_GRASS||BLOCK(x ,z ,y)==TYPE_GRASS2){
+                    
+                    placeTree(x,z,y+1);
+					//[self placeTree:x :z :y+1];
+				}
+			}
+		}
+	}
+    
+    
     
     for(int i=0;i<40;i++){
         int rs=arc4random()%20+5;
@@ -982,7 +1040,55 @@ void makeMix(){
         
         makeSkyIsland(rx,rz,55-arc4random()%10,rs);
     }
+    for(int i=0;i<WORM_FREQ;i++){
+        int x=randi(GSIZE-10)+5;
+        int z=randi(GSIZE-10)+5;
+        // int color=randi(53);
+        
+        Vector pos;
+        do{
+            pos= makeWorm(x,z,15,randi(2)+3);
+        }while(pos.x==-1);
+        
+    }
+    for(int i=0;i<VOLCANO_FREQ;i++){
+        int rh=arc4random()%10+25;
+        int x=randi(GSIZE/4-rh*2-50)+3*GSIZE/4+50;
+        int z=randi(3*GSIZE/4-rh*2)+rh*2+GSIZE/4;
+        
+         makeVolcano(x,z,1,rh);
+    }
    
+    for(int x=0;x<GSIZE;x++){
+        for(int z=0;z<GSIZE;z++){
+            BLOCK(x,z,0)=TYPE_BEDROCK;
+            
+           /* int d=MAX(ABS(x-GSIZE/2),ABS(z-GSIZE/2));
+            
+            if(d>GSIZE/2-10){
+                
+                for(int y=1;y<T_HEIGHT-3*ABS(GSIZE/2-d);y++){
+                    if( BLOCK(x,z,y)==TYPE_NONE||(blockinfo[BLOCK(x,z,y)]&IS_LIQUID) ){
+                        BLOCK(x,z,y)=TYPE_DARK_STONE;
+                        COLOR(x,z,y)=0;
+                    }
+                }
+            }*/
+        }
+    }
+    for(int x=0;x<GSIZE/2;x++){
+        for(int z=0;z<GSIZE;z++){
+            for(int y=0;y<T_HEIGHT;y++){
+                if(BLOCK(x,z,y)==TYPE_NONE)COLOR(x,z,y)=0;
+              /*  int t=BLOCK(GSIZE-x-1,z,y);
+                int c=COLOR(GSIZE-x-1,z,y);
+                BLOCK(GSIZE-x-1,z,y)=BLOCK(x,z,y);
+               // COLOR(GSIZE-x-1,z,y)=COLOR(x,z,y);
+                BLOCK(x,z,y)=t;
+               // COLOR(x,z,y)=c;*/
+            }
+        }
+    }
     //makeSkyIsland(GSIZE/2,3*GSIZE/4+GSIZE/8,50,35);
 }
 void makeBeach(){
@@ -993,8 +1099,15 @@ void makeBeach(){
 	
 	int sealevel=19;
     int slideh;
-	const int offsety=T_HEIGHT/2-14;
-    for(int x=GSIZE/4;x<3*GSIZE/4;x++){ //Heightmap
+	 int offsety=T_HEIGHT/2-14;
+    for(int x=GSIZE/4;x<3*GSIZE/4+65;x++){ //Heightmap
+        if(x>=3*GSIZE/4-35){
+            
+            offsety++;
+        }
+        if(x>=3*GSIZE/4){
+            offsety-=2;
+        }
 		for(int z=3*GSIZE/4;z<GSIZE;z++){
             if(TM(x,z)!=TM_BEACH)continue;
             int h;
@@ -1028,11 +1141,14 @@ void makeBeach(){
                // if(h<=31)
                 //    h-=2;
             }
+            if(h>sealevel+2){
+                h=sealevel+2;
+            }
             if(h<2)h=2;
 			for(int y=0;y<h;y++){
 				
                 
-                if(h>=sealevel+2){
+                if(h>=sealevel+2&&x<3*GSIZE/4-35){
                     BLOCK(x,z,y)=TYPE_GRASS;
                     COLOR(x,z,y)=0;//colorCycle2(h,2);
                 }else{
@@ -1053,13 +1169,15 @@ void makeBeach(){
         
 		
 	}
-    
+    int tsealevel=sealevel;
     for(int x=GSIZE/4;x<3*GSIZE/4;x++){
+        
 		for(int z=3*GSIZE/4;z<GSIZE;z++){
             if(TM(x,z)!=TM_BEACH)continue;
             //BLOCK(x ,z ,0)=TYPE_SAND;
 			
-			for(int y=1;y<sealevel;y++){
+            
+			for(int y=1;y<tsealevel;y++){
 				if(BLOCK(x ,z ,y)==TYPE_NONE){
                    
                         
@@ -1249,18 +1367,7 @@ void makeClassicGen(){
 			
 		}
 	}
-    void placeTree(int x,int z,int y);
-    for(int x=sx+2;x<endx-2;x++){ 
-		for(int z=sz+2;z<endz-2;z++){
-			for(int y=1;y<T_HEIGHT-1;y++){
-				if(BLOCK(x ,z ,y)==TYPE_GRASS||BLOCK(x ,z ,y)==TYPE_GRASS2){
-                    
-                    placeTree(x,z,y+1);
-					//[self placeTree:x :z :y+1];
-				}
-			}
-		}
-	}
+    
 }
 static const int TREE_SPACING=50;
 void placeTree(int x,int z,int y){
@@ -1332,7 +1439,7 @@ void makeDesert(){
     int slideh;
 	int offsety=T_HEIGHT/2-10;
     for(int x=0;x<GSIZE/4+20;x++){ //Heightmap
-		for(int z=GSIZE/4-20;z<3*GSIZE/4+20;z++){
+		for(int z=GSIZE/4-20;z<3*GSIZE/4;z++){
             
             if(z<GSIZE/4){
                 offsety=T_HEIGHT/2-10-ABS(GSIZE/4-z);
@@ -1368,12 +1475,15 @@ void makeDesert(){
 			for(int y=0;y<h;y++){
 				
                
-                if(BLOCK(x,z,y)==TYPE_NONE){
+                if(z<GSIZE/2&&BLOCK(x,z,y)==TYPE_NONE){
                 BLOCK(x,z,y)=TYPE_SAND;
                 COLOR(x,z,y)=11;//colorCycle2(h,2);
-                }
+                }else
                
-                
+                if(BLOCK(x,z,y)!=TYPE_NONE){
+                    BLOCK(x,z,y)=TYPE_SAND;
+                    COLOR(x,z,y)=colorCycle6(y-1+14,1);
+                }
 				
 			}
             slideh=h;
@@ -1383,6 +1493,36 @@ void makeDesert(){
         
         
 		
+	}
+    int tsealevel=17;
+    for(int x=0;x<GSIZE/4;x++){
+        
+		for(int z=GSIZE/4;z<3*GSIZE/4;z++){
+            if(TM(x,z)!=TM_BEACH)continue;
+            //BLOCK(x ,z ,0)=TYPE_SAND;
+			
+            
+			for(int y=1;y<tsealevel;y++){
+				if(BLOCK(x ,z ,y)==TYPE_NONE){
+                    
+                    
+                    BOOL isSand=FALSE;
+                    if(BLOCK(x,z,y)==TYPE_SAND){
+                        
+                        isSand=TRUE;
+                    }
+                    BLOCK(x,z,y)=TYPE_WATER;
+                    COLOR(x,z,y)=23;
+                    
+                    if(isSand){
+                        break;
+                    }
+                	
+				}
+				
+			}
+			
+		}
 	}
    /* int sx=GSIZE/8;
     int sz=GSIZE/4+GSIZE/8;
@@ -1489,13 +1629,30 @@ void makePonies(){
     //TG_SEED=0;
 	
 	
-	const int offsety=T_HEIGHT/2-10;
-    for(int x=0;x<GSIZE/4;x++){
-		for(int z=3*GSIZE/4;z<GSIZE;z++){
+	int offsety=T_HEIGHT/2-10;
+    for(int x=0;x<GSIZE/4+15;x++){
+		for(int z=3*GSIZE/4-15;z<GSIZE;z++){
+            offsety=T_HEIGHT/2-10;
+            if(x>GSIZE/4-10){
+                offsety=T_HEIGHT/2-10+ABS(GSIZE/4-10-x);
+                if(x>GSIZE/4){
+                     offsety=T_HEIGHT/2-10+ABS(GSIZE/4-10-x)-2*ABS(GSIZE/4-x);;
+                }
+            }
+            if(z<3*GSIZE/4+10){
+                offsety=T_HEIGHT/2-10+ABS(3*GSIZE/4+10-z);
+                
+            }
+            if(z<3*GSIZE/4){
+                offsety=T_HEIGHT/2-10+ABS(3*GSIZE/4+10-z)-2*ABS(3*GSIZE/4-z);;
+               
+            }
             if(TM(x,z)!=TM_UNICORN)continue;
             int h;
             
             float n=offsety;
+            
+            
             float FREQ=2.0f;
             //float FREQ3=4.0f;
             float AMPLITUDE=4.0f;
@@ -1594,6 +1751,53 @@ void makeSkyIsland(int cx,int cz,int cy,int r){
 
     
 }
+void makePyramid2(int x,int z,int h,int color,int sy){
+    int r=h;
+    int starty=T_HEIGHT-1;
+    BOOL solidground=FALSE;
+    if(sy==-1){
+    for(;starty>5;starty--){
+        solidground=TRUE;
+        for(int sx=x-r;sx<=x+r;sx++){
+            
+            for(int sz=z-r;sz<=z+r;sz++){
+                if(ABS(sx-x)+ABS(sz-z)<=r){
+                    
+                
+                //if(BLOCK(sx,sz,starty)==TYPE_NONE||(blockinfo[BLOCK(sx,sz,starty)]&IS_LIQUID)){
+                if(BLOCK(sx,sz,starty)!=TYPE_SAND){
+                    if(BLOCK(sx,sz,starty)!=TYPE_NONE)return;
+                    solidground=FALSE;
+                    break;
+                }
+                }
+            }
+            if(!solidground)break;
+            
+        }
+        if(solidground)break;
+    }
+    if(!solidground)return;
+    }else starty=sy;
+   // printf("making pyramid\n");
+    for(int y=starty;y<=starty+h;y++){
+        if(y>T_HEIGHT-4)continue;
+        for(int sx=x-r;sx<=x+r;sx++){
+            for(int sz=z-r;sz<=z+r;sz++){
+                if(ABS(sx-x)+ABS(sz-z)<=r){
+                BLOCK(sx,sz,y)=TYPE_DARK_STONE;
+                
+                
+                COLOR(sx,sz,y)=0;
+                }
+            }
+        }
+        r--;
+    }
+    
+    
+}
+
 void makePyramid(int x,int z,int h,int color){
     int r=h;
     int starty=T_HEIGHT-1;
@@ -1645,14 +1849,19 @@ void makeGreenHills(int height){
             
             offsety=height;
             
-            if(x<GSIZE/4+15){
+            if(x<GSIZE/4+15&&z>GSIZE/4){
                 offsety=height+ABS(GSIZE/4+15-x);
                 
                 offsety=clampy(offsety);
             }
-            if(x<GSIZE/4) {
+            if(x<GSIZE/4&&z>GSIZE/4) {
                 offsety=height-(ABS(GSIZE/4-x))+15;
                 offsety=clampy(offsety);
+            }
+            if(x<GSIZE/4&&z<=GSIZE/4) {
+                offsety=height-(ABS(GSIZE/4-x));
+                offsety=clampy(offsety);
+                
             }
             if(x>GSIZE*3/4){
                 offsety=height-(x-GSIZE*3/4);
@@ -1661,12 +1870,12 @@ void makeGreenHills(int height){
             
             if(z>GSIZE/2&&x>=3*GSIZE/4+35)continue;
             
-            if(z>3*GSIZE/4-7){
+            if(z>3*GSIZE/4-7&&x<3*GSIZE/4){
                 offsety=height+ABS(3*GSIZE/4-7-z);
                 
                 offsety=clampy(offsety);
             }
-            if(z>3*GSIZE/4){
+            if(z>3*GSIZE/4&&x<3*GSIZE/4){
                 offsety=height-ABS(3*GSIZE/4-z)+7;
                 
                 offsety=clampy(offsety);
@@ -1754,7 +1963,7 @@ void makeGreenHills(int height){
                     for(int iy=1;iy<6;iy++){
                     BLOCK(x,z,y-iy)=TYPE_WATER;
                         if(z<GSIZE/2&&z>GSIZE/4)
-                             COLOR(x,z,y-iy)=0;
+                             COLOR(x,z,y-iy)=15;//0
                             else
                     COLOR(x,z,y-iy)=15;
                     }
@@ -2464,11 +2673,15 @@ void updateSkyColor(Player* player){
     extern int g_offcx;
     
     if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
-        
+       
         int ppx=player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
         int ppz=player.pos.z-4096*CHUNK_SIZE+GSIZE/2;
         ppx=ppx/(GSIZE/4);
         ppz=ppz/(GSIZE/4);
+        if(ppx>4)ppx=4;
+        if(ppz>4)ppz=4;
+        if(ppx<0)ppx=0;
+        if(ppz<0)ppz=0;
         const int regionSkyColors[4][4]={
             {COLOR_BWG1,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE},
             {COLOR_ORANGE2,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE},
@@ -2480,7 +2693,7 @@ void updateSkyColor(Player* player){
         
         if(lrx!=ppx||lrz!=ppz){
             if(lrx==-1||regionSkyColors[ppz][ppx]!=regionSkyColors[lrz][lrx]){
-                [World getWorld].terrain.final_skycolor=colorTable[regionSkyColors[(int)ppz][(int)ppx]];
+                [World getWorld].terrain.final_skycolor=colorTable[regionSkyColors[(int)(ppz+64)%4][(int)(ppx+64)%4]];
             }
             lrx=ppx;
             lrz=ppz;

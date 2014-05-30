@@ -9,7 +9,18 @@
 #ifndef Eden_TerrainGen2_h
 #define Eden_TerrainGen2_h
 
-#define GSIZE (T_SIZE*6)  //12 norm
+#define GSIZE (T_SIZE*10)  //12 norm
+#define WORM_FREQ 300
+#define PYRAMID_FREQ 175
+#define VOLCANO_FREQ 20
+ 
+
+/*#define GSIZE (T_SIZE*6)  //12 norm
+#define WORM_FREQ 80
+#define PYRAMID_FREQ 80
+ #define VOLCANO_FREQ 8*/
+
+
 #define GEN_CWIDTH (GSIZE/CHUNK_SIZE)
 #define GEN_CDEPTH (GSIZE/CHUNK_SIZE)
 
@@ -61,6 +72,7 @@ void makeMix();
 void makeVolcano();
 void makeGreenHills(int height);
 void makeClassicGen();
+void makePyramid2(int x,int z,int h,int color, int sy);
 void makePyramid(int x,int z,int h,int color);
 void makeSkyIsland(int cx,int cz,int cy,int r);
 void updateSkyColor(Player* player);

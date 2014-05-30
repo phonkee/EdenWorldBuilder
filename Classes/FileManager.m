@@ -678,6 +678,15 @@ int saveColIdx(any_t passedIn,any_t colToSave){
 	Terrain* ter=[[World getWorld] terrain];
 	ColumnIndex* colIndex=NULL;
 	
+    BOOL needsSave=FALSE;
+    for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
+		TerrainChunk* chunk;
+        //issue #3 continued
+        chunk=ter.chunkTable[threeToOne(cx, cy, cz)];
+        if(chunk.modified){needsSave=TRUE; chunk.modified=FALSE;}
+    }
+    if(!needsSave)return;
+    
     //printf("saving column: %d,%d\n",cx,cz);
 	int n=twoToOneTest(cx,cz);
 	if(n==0){
