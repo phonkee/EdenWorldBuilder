@@ -783,6 +783,7 @@ void makeMars(int x1,int z1,int x2,int z2){
 					if(y>(h%2+1)&&y<FORMATION_HEIGHT-16){
                         //if(!genCaves){
                         BLOCK(x,z,y)=TYPE_STONE;
+                        //COLOR(x,z,y)=colorCycle6(y,COLOR_BWG3-1);
                         COLOR(x,z,y)=colorCycle2(h,0);
                         continue;
                         
@@ -2273,10 +2274,10 @@ void makeMountains(int sx,int sz,int ex,int ez,int SEED){
 					if(BLOCK(x ,z ,y-1)==TYPE_STONE){
                         
                         BLOCK(x ,z ,y-1 )=TYPE_CLOUD;
-                        COLOR(x ,z ,y-1 )=9;
+                        COLOR(x ,z ,y-1 )=0;
                         if(BLOCK(x,z,y-2)==TYPE_STONE){
                             BLOCK(x,z,y-2)=TYPE_CLOUD;
-                            COLOR(x,z,y-2)=9;
+                            COLOR(x,z,y-2)=0;
                         }
 					}
 				}else{
@@ -2612,60 +2613,7 @@ int tg2_init(){
     
 }
 
-#define COLOR_RED1 1
-#define COLOR_ORANGE1 2
-#define COLOR_YELLOW1 3
-#define COLOR_GREEN1 4
-#define COLOR_CYAN1 5
-#define COLOR_BLUE1 6
-#define COLOR_PURPLE1  7
-#define COLOR_PINK1  8
-#define COLOR_BWG1  9
-#define COLOR_RED2 10
-#define COLOR_ORANGE2  11
-#define COLOR_YELLOW2  12
-#define COLOR_GREEN2  13
-#define COLOR_NORMAL_BLUE  14
-#define COLOR_BLUE2  15
-#define COLOR_PURPLE2  16
-#define COLOR_PINK2  17
-#define COLOR_BWG2  18
-#define COLOR_RED3  19
-#define COLOR_ORANGE3  20
-#define COLOR_YELLOW3  21
-#define COLOR_GREEN3  22
-#define COLOR_CYAN3  23
-#define COLOR_BLUE3  24
-#define COLOR_PURPLE3  25
-#define COLOR_PINK3  26
-#define COLOR_BWG3  27
-#define COLOR_RED4 28
-#define COLOR_ORANGE4  29
-#define COLOR_YELLOW4  30
-#define COLOR_GREEN4  31
-#define COLOR_CYAN4  32
-#define COLOR_BLUE4  33
-#define COLOR_PURPLE4  34
-#define COLOR_PINK4  35
-#define COLOR_BWG4  36
-#define COLOR_RED5 37
-#define COLOR_ORANGE5  38
-#define COLOR_YELLOW5  39
-#define COLOR_GREEN5  40
-#define COLOR_CYAN5  41
-#define COLOR_BLUE5  42
-#define COLOR_PURPLE5  43
-#define COLOR_PINK5  44
-#define COLOR_BWG5  45
-#define COLOR_RED6 46
-#define COLOR_ORANGE6  47
-#define COLOR_YELLOW6  48
-#define COLOR_GREEN6  49
-#define COLOR_CYAN6  50
-#define COLOR_BLUE6  51
-#define COLOR_PURPLE6  52
-#define COLOR_PINK6  53
-#define COLOR_BWG6  54
+
 
 int lrx=-1;
 int lrz=-1;

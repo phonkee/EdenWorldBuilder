@@ -1325,7 +1325,7 @@ extern int g_offcz;
                         vert_array[vert_c].position[coord]=4*cubeVertices[sv+coord]+4*offsets[coord];                    
                     }
                     int color;
-                    if(type==TYPE_CLOUD&&f==4)
+                    if(type==TYPE_CLOUD&&f==4&&FALSE)
                         color=light[coord]*paint[coord]*180;
                     else if(f==5){                      
                         color=light[coord]*paint[coord]*(float)cubeColors[f*3+coord];//*top_shadow;
