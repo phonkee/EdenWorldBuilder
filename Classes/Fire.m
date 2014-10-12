@@ -13,8 +13,8 @@
 
 @implementation Fire
 
-#define n_particles 17
-#define max_fparticles 1000
+#define n_particles 50
+#define max_fparticles 3000
 #define max_bb 500
 #define SMOKE_SIZER 80
 
@@ -69,9 +69,14 @@ extern vertexpStruct pbuffer[pbuffer_size];
 	for(int k=0;k<list_size;k++){
         bnode* node=&list[k];
         
-		
+		int n_dead=0;
 		for(int i=0;i<n_particles;i++){
 			if(node->particles[i].life<0){
+                if(node->life<=0){
+                 pbuffer[node->particles[i].pvbi].size[0]=0;
+                    n_dead++;
+                    continue;
+                }
 				node->particles[i].pos.x=node->x;
 				node->particles[i].pos.y=node->y-.3f;
 				node->particles[i].pos.z=node->z;
@@ -102,7 +107,9 @@ extern vertexpStruct pbuffer[pbuffer_size];
 				node->particles[i].life=dlife/60.0f*1+1;
 				node->particles[i].slife=node->particles[i].life+1;
                 pbuffer[node->particles[i].pvbi].size[0]=SMOKE_SIZER;
-			}else{
+                updateIndexes=TRUE;
+			}
+            if(node->particles[i].life>0){
 				//pbuffer[node->particles[i].pvbi].colors[3]=255;
                  if(IS_RETINA||IS_IPAD){
                      if(node->particles[i].life<node->particles[i].slife/2){
@@ -133,7 +140,7 @@ extern vertexpStruct pbuffer[pbuffer_size];
 			}
 		}
 		node->life-=etime;
-		if(node->life<=0){
+		if(node->life<=0&&n_dead==n_particles){
 			[self removeNode:k];
 			
 		}
@@ -146,24 +153,30 @@ extern vertexpStruct pbuffer[pbuffer_size];
 		num_particles=0;
 		 for(int k=0;k<list_size;k++){	
              bnode* node=&list[k];
+            // if(node->life>0)
 			for(int i=0;i<n_particles;i++){
+                if(node->particles[i].life>0)
 				pindices[num_particles++]=node->particles[i].pvbi;
 				
 			}			
 			
-		}		
+		}
+        if(num_particles>max_fparticles){
+            printf("real particle overflow\n");
+        }
 
 		updateIndexes=FALSE;
 	}
 	return FALSE;
 }
 //#define NUM_COLORS 2
-const GLubyte colors[2][3]={
-	//{255,0,0},
-	//{255,100,0},
+const GLubyte colors[4][3]={
+	
     
     {255,255,255},
      {255,255,255},
+    {255,0,0},
+	{255,100,0},
 /*	{80,80,80},
 	{40,40,40},
 	{170,185,40},
@@ -180,6 +193,7 @@ const GLubyte colors[2][3]={
     
 }
 -(void)updateFire:(int)idx:(Vector)pos{
+     //printf("fire updated to model %f,%f%f,\n",pos.x,pos.z,pos.y);
     for(int k=0;k<list_size;k++)
 		if(list[k].pid==idx){
 			list[k].x=pos.x;
@@ -192,8 +206,13 @@ const GLubyte colors[2][3]={
 
 static int pid=0;
 - (int)addFire:(float)x:(float)z:(float)y:(int)type:(float)life{
-	
+   // if(type==1)
+    //printf("fire added to model %f,%f,%f,\n",x,z,y);
+	if(list_size>=max_bb){
+        printf("alert: list_size overflow\n");
+    }
 	while(num_particles+n_particles>max_fparticles){
+        printf("alert: particle overflow\n");
 		[self removeNode:arc4random()%list_size];
 	}
 	num_particles+=n_particles;
@@ -207,6 +226,9 @@ static int pid=0;
 		p->particles[i].pvbi=pvbi;
 		
 		int color=arc4random()%2;
+        //if(type==1){
+            color=arc4random()%4;
+       // }
 		pbuffer[pvbi].colors[0]=colors[color][0];
 		pbuffer[pvbi].colors[1]=colors[color][1];
 		pbuffer[pvbi].colors[2]=colors[color][2];
@@ -226,6 +248,9 @@ static int pid=0;
 	p->y=y*BLOCK_SIZE+BLOCK_SIZE/2;
 	p->z=z*BLOCK_SIZE+BLOCK_SIZE/2;
     }else{
+        p->x=x;
+        p->y=y;
+        p->z=z;
         p->type=0;
     }
 	p->pid=pid++;
@@ -240,6 +265,7 @@ static int pid=0;
 - (int)addSmoke:(float)x:(float)z:(float)y{
     
     while(num_particles+n_particles>max_fparticles){
+        printf("alert: particle overflow\n");
 		[self removeNode:arc4random()%list_size];
 	}
 	num_particles+=n_particles;
@@ -340,13 +366,18 @@ static int frame=0,frame2=0;
     poof=1.1;
     float epoof=1.0f;
     vert=0;
+    Vector  camp=[World getWorld].player.pos;
+    
     for(int i=0;i<list_size;i++){
         bnode* node=&list[i];
-        if(node->type==2){
+        if(node->type==2||node->type==0){
            
             continue;}
-        if(node->life>0)
-            for(int k=0;k<6*6;k++){
+        if(node->life>0){
+            float dist=sqrtf((node->x - camp.x)*(node->x - camp.x) + (node->z-camp.z)*(node->z-camp.z) + (node->y - camp.y)*(node->y-camp.y));
+            
+            float poof=1.05f+dist*0.035f;
+                       for(int k=0;k<6*6;k++){
                 Vector vc;
                 
                 vc=MakeVector((cubeVertices[k*3]-.5f)*poof,(cubeVertices[k*3+1]-.5f)*poof,(cubeVertices[k*3+2]-.5f)*poof);
@@ -375,11 +406,14 @@ static int frame=0,frame2=0;
                 
                 vert++;
             }
-        
+        }
         // node->
         
     }
     //  glDepthMask(TRUE);
+   // glPolygonOffset(-30.0f,1.0f);
+    //glEnable(GL_POLYGON_OFFSET_FILL);
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
     
@@ -390,11 +424,11 @@ static int frame=0,frame2=0;
 	
     glColor4f(0,0,0,1.0f);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDrawArrays(GL_TRIANGLES, 0,vert);
+      glDrawArrays(GL_TRIANGLES, 0,vert);
     
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     glColor4f(1.0,1.0,1,1);
-    glDrawArrays(GL_TRIANGLES, 0,vert);
+   glDrawArrays(GL_TRIANGLES, 0,vert);
     
     glMatrixMode(GL_TEXTURE);
     glPopMatrix();
@@ -423,14 +457,20 @@ static int frame=0,frame2=0;
     for(int i=0;i<list_size;i++){
         
         bnode* node=&list[i];
-        if(node->type==2){
+        if(node->type==2||node->type==0){
             
             continue;}
-        if(node->life>0)
+        
+        if(node->life>0){
+            
+            float dist=sqrtf((node->x - camp.x)*(node->x - camp.x) + (node->z-camp.z)*(node->z-camp.z) + (node->y - camp.y)*(node->y-camp.y));
+       // printf("dist:%f\n",dist);
+        float poof=1.1+dist*0.035f;
+            
         for(int k=0;k<6*6;k++){
             Vector vc;
          
-            vc=MakeVector((cubeVertices[k*3]-.5f)*poof,(cubeVertices[k*3+1]-.5f)*1.3f*1.2f+.44f,(cubeVertices[k*3+2]-.5f)*poof);
+            vc=MakeVector((cubeVertices[k*3]-.5f)*poof,(cubeVertices[k*3+1]-.5f)*1.3f*poof+.44f,(cubeVertices[k*3+2]-.5f)*poof);
             
             if(k<12){
                 vc.x*=epoofx;
@@ -459,11 +499,12 @@ static int frame=0,frame2=0;
             
             vert++;
         }
-        
+        }
        // node->
         
     }
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+     //glPolygonOffset(-3000000.0f,1.0f);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
     
     glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SPRITE_FLAME].name);
@@ -492,7 +533,7 @@ static int frame=0,frame2=0;
     
     glMatrixMode(GL_MODELVIEW);
     
-  
+  //glDisable(GL_POLYGON_OFFSET_FILL);
     
     
 }

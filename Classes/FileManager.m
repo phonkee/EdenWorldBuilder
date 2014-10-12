@@ -34,6 +34,16 @@ static BOOL writeDirectory;
 static NSString* imgHash;
 static int file_version;
 
+const int defaultRegionSkyColors[4][4]={
+     {COLOR_BWG1,COLOR_BLUE1,COLOR_GREEN1,COLOR_RED1},
+    {COLOR_ORANGE2,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE},
+    {COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_ORANGE1},
+    {COLOR_PURPLE1,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_RED5}};
+int regionSkyColors[4][4]={
+    {COLOR_BWG1,COLOR_BLUE1,COLOR_GREEN1,COLOR_RED1},
+    {COLOR_ORANGE2,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE},
+    {COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_ORANGE1},
+    {COLOR_PURPLE1,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_RED5}};
 
 EntityData creatureData[MAX_CREATURES_SAVED];
 -(id)init{
@@ -276,7 +286,20 @@ static int count=0;
     
 	sfh->yaw=90;
     sfh->version=FILE_VERSION;
-    sfh->skycolor=lookupColor([World getWorld].terrain.final_skycolor);
+    
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            regionSkyColors[i][j]=defaultRegionSkyColors[i][j];
+        }
+    }
+    
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            sfh->skycolors[i*4+j]=regionSkyColors[i][j];
+        }
+    }
+    
+   
 	strcpy(sfh->name,"Eden");
     
     [fm createFileAtPath:file_name
@@ -348,10 +371,16 @@ static int count=0;
 	//sfh->pos.z/=BLOCK_SIZE;
 	//sfh->pos.x+=CHUNK_SIZE*chunkOffsetX;
 	//sfh->pos.z+=CHUNK_SIZE*chunkOffsetZ;
-    printf("saving at player pos: %f,%f   co: %d,%d\n",sfh->pos.x,sfh->pos.z,chunkOffsetX,chunkOffsetZ);
+    printf("saving at player pos: %f,%f   co: %d,%d wfh_size:%d\n",sfh->pos.x,sfh->pos.z,chunkOffsetX,chunkOffsetZ,(int)sizeof(WorldFileHeader));
 	sfh->yaw=[World getWorld].player.yaw;
     sfh->version=file_version;
-    sfh->skycolor=lookupColor([World getWorld].terrain.final_skycolor);
+    
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            sfh->skycolors[i*4+j]=regionSkyColors[i][j];
+        }
+    }
+    
 	[[World getWorld].menu.selected_world->display_name getCString:sfh->name
 														 maxLength:49
 														  encoding:NSUTF8StringEncoding];
@@ -1318,7 +1347,7 @@ extern float P_ZFAR;
 			for(int z=centerChunk-r;z<centerChunk+r;z++){
 				
 				[[World getWorld].fm readColumn:x:z:saveFile];	
-				
+				[World getWorld].terrain.counter++;
 			}
 		}
 		
@@ -1389,10 +1418,22 @@ extern float P_ZFAR;
 		player.pos=sfh->pos;
 		player.yaw=sfh->yaw;
          extern Vector colorTable[256];
-        if(sfh->skycolor<=0||sfh->skycolor>NUM_COLORS)
+       /* if(sfh->skycolor<=0||sfh->skycolor>NUM_COLORS){
            [World getWorld].terrain.final_skycolor=colorTable[14];
-        else
-        [World getWorld].terrain.final_skycolor=colorTable[sfh->skycolor];
+            printf("skycolor oob setting sky color to beautiful blue\n");
+        }else{
+             printf("skycolor setting sky color to : %d\n",sfh->skycolor);
+        */
+       // [World getWorld].terrain.final_skycolor=colorTable[sfh->skycolor];
+        
+        for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+                regionSkyColors[i][j]=(int)(sfh->skycolors[i*4+j]);
+            }
+        }
+        
+        
+        
 		[self readDirectory];
 		//NSLog(@"indexes: %d",hashmap_length(indexes));
 		//NSLog(@"loading level_seed: %d",ter.level_seed);
@@ -1418,9 +1459,11 @@ extern float P_ZFAR;
 		for(int x=chunkOffsetX;x<chunkOffsetX+2*r;x++){
 			for(int z=chunkOffsetZ;z<chunkOffsetZ+2*r;z++){
 			//	NSLog(@"lch:%d",asdf++);
-				[[World getWorld].fm readColumn:x:z:saveFile];				
+				[[World getWorld].fm readColumn:x:z:saveFile];
+                [World getWorld].terrain.counter++;
 			}
 		}
+        if(CREATURES_ON)
         [self LoadCreatures];
 		//[ter updateAllImportantChunks];
 		NSLog(@"done");

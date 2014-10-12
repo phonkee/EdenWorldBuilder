@@ -352,6 +352,7 @@ extern int g_offcz;
                         
                         continue;
                     }
+                    
                     int isvisible=0;            
                     for(int f=0;f<6;f++){
                         int type;
@@ -405,7 +406,9 @@ extern int g_offcz;
                     //if(!gx||!gy||!gz||gx+1==T_HEIGHT||gz+1==T_HEIGHT||gy+1==T_HEIGHT)continue;
                     
                     if(!GBLOCK(gx,gz,gy))continue;
-                    int isvisible=0;            
+                    int isvisible=0;
+                    
+                    
                     
                     if((IS_NOTSOLID&blockinfo[GBLOCK(gx,gz,gy+1)]))isvisible|=FACE_TOP;
                     if((IS_NOTSOLID&blockinfo[GBLOCK_SAFE(gx,gz,gy-1)]))isvisible|=FACE_BOTTOM;
@@ -701,6 +704,7 @@ extern int g_offcz;
         BOOL burned=FALSE;
         if(IS_FLAMMABLE&blockinfo[type]&&isOnFire(x+bounds[0],z+bounds[2],y+bounds[1])){
             burned=TRUE;
+            
         }
         
         

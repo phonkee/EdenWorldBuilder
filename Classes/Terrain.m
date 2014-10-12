@@ -292,8 +292,10 @@ int extraGeneration(any_t passedIn,any_t chunkToGen){
 	//skycolor=MakeVector(-1,-1,-1);
     
     Vector v=[World getWorld].terrain.skycolor=MakeVector(1.0,1.0,1.0);
-    
-    float clr2[4]={v.x-.2f, v.y-.2f, v.z-.2f, 1.0f};
+     extern Vector colorTable[256];
+    if(v_equals([World getWorld].terrain.final_skycolor,colorTable[14]))
+        v=MakeVector(0.5,0.72,0.9);
+    float clr2[4]={v.x-.03f, v.y-.03f, v.z-.03f, 1.0f};
     glFogfv(GL_FOG_COLOR,clr2);
     
 	burnList=NULL;
@@ -730,7 +732,7 @@ bool isOnFire(int x ,int z, int y){
     
     return FALSE;
 }
-- (void)burnBlock:(int)x :(int)z :(int)y{
+- (void)burnBlock:(int)x :(int)z :(int)y: (BOOL)causedByExplosion{
 	int type=getLandc(x, z, y);
 	if(type<0)return;
 	if(blockinfo[type]&IS_FLAMMABLE){
@@ -748,16 +750,22 @@ bool isOnFire(int x ,int z, int y){
 		node->y=y;
 		node->z=z;
 		node->type=type;
-		if(type==TYPE_TNT||type==TYPE_FIREWORK)
-			node->life=4;
-		else
-			node->life=9;
+		if(type==TYPE_TNT||type==TYPE_FIREWORK){
+            if(type==TYPE_TNT&&causedByExplosion){
+                node->life=.5+randf(.3f);
+            }
+            else
+            node->life=4;
+		
+        }else
+			node->life=6;
 		node->sid=[[Resources getResources] startedBurn:node->life];
 		node->time=node->life;	
 		
 		node->pid=[[World getWorld].effects addFire:x :z :y :0 :node->life+.3];
 		node->next=NULL;
 		[self updateChunks:x :z :y :type];
+        
 		BurnNode* front=burnList;
 		if(front!=NULL)
 			node->next=front;
@@ -1375,7 +1383,7 @@ int getColorc(int x,int z,int y){
     if(x+g_offcx<0||z+g_offcz<0){
         printf("under/overflow (%d,%d)\n",x,z);
     }
-	return GBLOCK(x,z,y);
+	return GBLOCK_SAFE(x,z,y);
 	int cx=x/CHUNK_SIZE;
 	int cy=y/CHUNK_SIZE;
 	int cz=z/CHUNK_SIZE;
@@ -1453,23 +1461,23 @@ int getColorc(int x,int z,int y){
                             //if(type==TYPE_TNT)
                             //	[self explode:j:k:y-yy];
                             //else
-                            [self burnBlock:j :k :y-yy];
+                            [self burnBlock:j :k :y-yy :TRUE];
                         }else{
                             if(type!=TYPE_BEDROCK&&type!=TYPE_STEEL){
                                 [self explodeBlock:j :k :y-yy];
                             }
                         }
                     }
-				type=getLandc(j, k, y+yy);
-				
-				if(blockinfo[type]&IS_FLAMMABLE){
-                    if(isOnFire(j,k,y+yy))continue;
-					
-						[self burnBlock:j :k :y+yy];
-				}else{
-					if(type!=TYPE_BEDROCK&&type!=TYPE_STEEL)
-					[self explodeBlock:j :k :y+yy];
-				}
+                    type=getLandc(j, k, y+yy);
+                    
+                    if(blockinfo[type]&IS_FLAMMABLE){
+                        if(isOnFire(j,k,y+yy))continue;
+                        
+						[self burnBlock:j :k :y+yy :TRUE];
+                    }else{
+                        if(type!=TYPE_BEDROCK&&type!=TYPE_STEEL)
+                            [self explodeBlock:j :k :y+yy];
+                    }
                 }
 				
 			}
@@ -1515,7 +1523,7 @@ extern float P_ZFAR;
 }
 Vector gcrot={0};
 Vector portal_rot={0};
-const int BURN_SPREAD_TIME=1;
+const float BURN_SPREAD_TIME=1.0f;
 int chunk_load_count=0;
 BOOL doingsomeloading=FALSE;
 
@@ -1548,12 +1556,12 @@ float last_etime;
 	BurnNode* node=burnList;
 	while(node!=NULL){
 		if(node->time > node->life-BURN_SPREAD_TIME &&node->time-etime<=node->life-BURN_SPREAD_TIME){
-			[self burnBlock:node->x+1 :node->z :node->y];
-			[self burnBlock:node->x-1 :node->z :node->y];
-			[self burnBlock:node->x :node->z+1 :node->y];
-			[self burnBlock:node->x :node->z-1 :node->y];
-			[self burnBlock:node->x :node->z :node->y+1];
-			[self burnBlock:node->x :node->z :node->y-1];
+			[self burnBlock:node->x+1 :node->z :node->y :FALSE];
+			[self burnBlock:node->x-1 :node->z :node->y :FALSE];
+			[self burnBlock:node->x :node->z+1 :node->y :FALSE];
+			[self burnBlock:node->x :node->z-1 :node->y :FALSE];
+			[self burnBlock:node->x :node->z :node->y+1 :FALSE];
+			[self burnBlock:node->x :node->z :node->y-1 :FALSE];
 
 		}
 		
@@ -1593,12 +1601,29 @@ float last_etime;
 	}
     [liquids update:etime];
     [fireworks update:etime];
+    extern Vector colorTable[256];
     if(interpolatev(&skycolor,final_skycolor,.25f,etime)){
          
         Vector v=[World getWorld].terrain.skycolor;
-        float clr[4]={v.x-.2f, v.y-.2f, v.z-.2f, 1.0f};
+        if(v_equals([World getWorld].terrain.final_skycolor,colorTable[14]))
+        v=MakeVector(0.5,0.72,0.9);
+        float clr[4]={v.x-.03f, v.y-.03f, v.z-.03f, 1.0f};
+        
         glFogfv(GL_FOG_COLOR,clr);
        // printf("TRUE\n");
+    }
+    
+    if(v_equals([World getWorld].terrain.final_skycolor,colorTable[14])){
+       
+            blending_alpha-=.04f*etime*60;
+         
+    }else{
+       
+        //    extern Vector colorTable[256];
+        
+        if(blending){
+                       blending_alpha+=.04f*etime*60;
+                   }
     }
    if(do_reload==3){
        [[World getWorld].hud.sb clear];
@@ -1736,6 +1761,8 @@ static double time1,time2,time3,time4;
         }
         
         [saveFile closeFile];
+            
+            addMoreCreaturesIfNeeded();
         }
             time2=-[start timeIntervalSinceNow];
         //[sf_lock unlock];
@@ -2117,6 +2144,10 @@ extern BOOL SUPPORTS_OGL2;
 extern float SCREEN_HEIGHT;
 static int frame_counter=0;
 static int frame=0;
+static BOOL blending=false;
+static float blending_alpha;
+static BOOL last_skycolor_was_defaultblue=FALSE;
+
 int lolc=0;
 - (void)render{		
     if(do_reload==-1)return;
@@ -2591,18 +2622,73 @@ int lolc=0;
     //skycolor.x=0;
     extern Vector colorTable[256];
     if(v_equals([World getWorld].terrain.final_skycolor,colorTable[14])){
+        last_skycolor_was_defaultblue=TRUE;
         
-    
         glColor4f(1.0, 1.0, 1.0, 1.0);
         
         [[[Resources getResources] getTex:ICO_SKY_BOX] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
+        if(  blending_alpha>0&&
+           (blending||
+            !v_equals([World getWorld].terrain.final_skycolor,skycolor)  )
+           ){
+            if(!blending){
+                blending=TRUE;
+                blending_alpha=1.0f;
+            }
+            glEnable(GL_BLEND);
+            Vector v=skycolor;
+          //  Vector v2=[World getWorld].terrain.final_skycolor;
+            
+           
+            
+           // float alpha=1.0;
+            
+            glColor4f(v.x, v.y, v.z, blending_alpha);
+            
+            [[[Resources getResources] getTex:ICO_SKY_BOX_BW] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000004];
+            
+            
+            glDisable(GL_BLEND);
+           // blending_alpha-=.04f;
+            if(blending_alpha<0){
+                
+                blending=FALSE;
+            }
+        }else{
+            if(v_equals([World getWorld].terrain.final_skycolor,skycolor)){
+            blending_alpha=1.0f;
+            blending=FALSE;
+            }
+        }
     }else{
+        if( last_skycolor_was_defaultblue){
+            blending=TRUE;
+            blending_alpha=0.0f;
+            last_skycolor_was_defaultblue=FALSE;
+        }
         //    extern Vector colorTable[256];
+        
+        if(blending){
+            glColor4f(1.0, 1.0, 1.0, 1.0);
+            
+            [[[Resources getResources] getTex:ICO_SKY_BOX] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
+            glEnable(GL_BLEND);
+            Vector v=skycolor;
+            glColor4f(v.x, v.y, v.z, blending_alpha);
+           // blending_alpha+=.04f;
+            if(blending_alpha>1.0f){
+                blending=FALSE;
+            }
+            [[[Resources getResources] getTex:ICO_SKY_BOX_BW] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000004];
+            glColor4f(1.0, 1.0, 1.0, 1.0);
+            glDisable(GL_BLEND);
+        }else{
         Vector v=skycolor;
         glColor4f(v.x, v.y, v.z, 1.0);
         
         [[[Resources getResources] getTex:ICO_SKY_BOX_BW] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
         glColor4f(1.0, 1.0, 1.0, 1.0);
+        }
     }
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);

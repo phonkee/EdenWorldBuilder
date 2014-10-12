@@ -14,7 +14,7 @@
 #define MOVE_SPEED 120.0f
 #define CLIMB_SPEED 3.0f
 //#define SPEED_M 4.5f
-#define SPEED_M 8.0f
+#define SPEED_M 5.5f
 
 #define YAW_SPEED .4f
 #define PITCH_SPEED .4f
@@ -326,6 +326,7 @@ extern bool hitCustom;
                             printf("building REALLY?: %d,%d,%d\n",point.x,point.y,point.z);
                            // [[Resources getResources] playSound:S_];	
                             point.x=-1;
+                            
                         }
                     }
 					else{
@@ -356,9 +357,8 @@ extern bool hitCustom;
                             extern Vector colorTable[256];
                             [[Resources getResources] playSound:S_PAINT_BLOCK];
                             
-                            [World getWorld].terrain.final_skycolor=
-                             colorTable[[World getWorld].hud.paintColor];
-                            
+                            paintSky([World getWorld].hud.paintColor);
+                                                        
                             printf("painting sky %f,%f,%f\n",  [World getWorld].terrain.skycolor.x,  [World getWorld].terrain.skycolor.y,  [World getWorld].terrain.skycolor.z);
                             
 
@@ -367,6 +367,7 @@ extern bool hitCustom;
                         continue;
                     }
 					int type;
+                    if(point.x==-1)continue;
                     if(mode==MODE_BUILD){
                     if([World getWorld].hud.build_size==0)
                         type=[[World getWorld].terrain getLand:point.x/2:point.z/2:point.y/2];
@@ -459,7 +460,7 @@ extern bool hitCustom;
                         printf("burning: %d,%d,%d\n",point.x,point.y,point.z);
 						[[Resources getResources] playSound:S_ATTEMPT_FIRE];
                          
-						[[World getWorld].terrain burnBlock:point.x	:point.z :point.y];
+						[[World getWorld].terrain burnBlock:point.x	:point.z :point.y :FALSE];
 						if(blockinfo[type]&IS_FLAMMABLE){
 							[[Resources getResources] playSound:S_FIRE_SUCCEED];
 						}else{
@@ -797,7 +798,7 @@ static BOOL lastOnIce;
             //vel.z=-vel.z;
         }
     }else if(onramp){
-        speed*=1.38f;
+        speed*=1.18f;
         
             
     } else if(inLiquid){
@@ -813,7 +814,11 @@ static BOOL lastOnIce;
         hspeed*=10;
     }
     
-	
+	//static int mcc=0;
+    //mcc++;
+    //if(mcc%5==0)
+     // printf("onground:%d  climbing:%d  inLiquid:%d  onramp:%d  onIce:%d\n",onground,climbing,inLiquid,onramp,onIce);
+    
 	/*if([World getWorld].hud.mode==MODE_BURN){
 	speed=MOVE_SPEED*10;
 	vel.y=0;
@@ -880,9 +885,9 @@ static BOOL lastOnIce;
     lastjump=jumping;
 
     accel.y=0;
-    
-    if(v_length2(vel)>max_walk_speed*max_walk_speed){
-        if(jumping){
+    Vector vlateral=MakeVector(vel.x,0,vel.z);
+    if(v_length2(vlateral)>max_walk_speed*max_walk_speed){
+        if(jumping||(!onground&&!onIce)){
             if(sign(vel.x)==sign(accel.x))
             accel.x=0;
             if(sign(vel.z)==sign(vel.z))
@@ -1348,7 +1353,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                    collided==TYPE_TREE||collided==TYPE_TNT||
                    collided==TYPE_FIREWORK||collided==TYPE_BEDROCK||
                    (blockinfo[collided]&IS_RAMPORSIDE)) {
-                    if(!(blockinfo[collided]&IS_ICE)){
+                    if((blockinfo[collided]&IS_HARD)){
               [[Resources getResources] playSound:S_LAND_HARD];	
                     }else{
                      [[Resources getResources] playSound:S_LAND_SOFT];
@@ -1711,9 +1716,9 @@ static int icesound=0;
             if(collided==TYPE_STONE||collided==TYPE_DARK_STONE||
                collided==TYPE_WOOD||collided==TYPE_LADDER||
                collided==TYPE_VINE||collided==TYPE_CRYSTAL||
-               collided==TYPE_COBBLESTONE||collided==TYPE_BRICK||
+               collided==TYPE_COBBLESTONE||collided==TYPE_BRICK||collided==TYPE_LEAVES||
                collided==TYPE_TREE||collided==TYPE_TNT||collided==TYPE_FIREWORK||collided==TYPE_BEDROCK||(blockinfo[collided]&IS_RAMPORSIDE))    {
-                if(!blockinfo[collided]&IS_ICE)
+                if((blockinfo[collided]&IS_HARD))
                     [[Resources getResources] playSound:S_FOOTSTEPS_HARD];
                 else
                     [[Resources getResources] playSound:S_FOOTSTEPS_SOFT];

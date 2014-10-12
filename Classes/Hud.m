@@ -293,8 +293,14 @@ extern BOOL IS_WIDESCREEN;
 	rpaintframe.size.height=282;
     
     rmenuframe.origin.x=110;
+  
 	rmenuframe.origin.y=40;
 	rmenuframe.size.width=SCREEN_WIDTH-200;
+    
+    if(IS_WIDESCREEN){
+        rmenuframe.origin.x+=50;
+        rmenuframe.size.width=SCREEN_WIDTH-300;
+    }
 	rmenuframe.size.height=SCREEN_HEIGHT-80;
     rsave.origin.x=rmenuframe.origin.x+17;
     rhome.origin.x=rmenuframe.origin.x+17;
@@ -307,10 +313,10 @@ extern BOOL IS_WIDESCREEN;
     rcam.origin.y=rmenuframe.origin.y+rmenuframe.size.height-60-sep*2;
     
     
-    rtSave=ButtonMake(rsave.origin.x+57,rsave.origin.y+5,180/2,56/2);
-    rtHome=ButtonMake(rhome.origin.x+57,rhome.origin.y+5,180/2,56/2);
-    rtCam=ButtonMake(rcam.origin.x+57,rcam.origin.y+5,180/2,56/2);
-    rtExit=ButtonMake(rexit.origin.x+57,rexit.origin.y+5,180/2,56/2);
+    rtSave=ButtonMake(rsave.origin.x+57,rsave.origin.y+5,180,56/2+10);
+    rtHome=ButtonMake(rhome.origin.x+57,rhome.origin.y+5,180,56/2+10);
+    rtCam=ButtonMake(rcam.origin.x+57,rcam.origin.y+5,180,56/2+10);
+    rtExit=ButtonMake(rexit.origin.x+57,rexit.origin.y+5,180,56/2+10);
 
     test1r=CGRectMake(0,0,50,50);
     test2r=CGRectMake(0,0,100,100);
@@ -491,9 +497,11 @@ int flamecount=0;
         if(touches[i].inuse==usage_id2&&touches[i].down==M_RELEASE){
             BOOL handled;
             if(inmenu){
-                if([self handlePickMenu:touches[i].mx:touches[i].my]){  
+                if([self handlePickMenu:touches[i].mx:touches[i].my]){
+                    
                     handled=TRUE;
                 }
+                
             }
             if(inbox2(touches[i].mx,touches[i].my,&rmenu)){	
                 inmenu=!inmenu;
@@ -520,8 +528,11 @@ int flamecount=0;
                 handled=TRUE;
             }
                        if(handled){
+                           [[Input getInput] clearAll];
                 touches[i].down=M_NONE;
             }
+             touches[i].down=M_NONE;
+            touches[i].inuse=0;
         }
             
         
@@ -536,6 +547,7 @@ int flamecount=0;
                    inbox3(touches[i].mx,touches[i].my,&rtSave)||
                    inbox3(touches[i].mx,touches[i].my,&rtExit))
                 {
+                    printf("something touched in menu\n");
                     inbox3(touches[i].mx,touches[i].my,&rcam);
                     inbox3(touches[i].mx,touches[i].my,&rhome);
                     inbox3(touches[i].mx,touches[i].my,&rsave);
@@ -545,10 +557,12 @@ int flamecount=0;
                     inbox3(touches[i].mx,touches[i].my,&rtSave);
                     inbox3(touches[i].mx,touches[i].my,&rtExit);
                     touches[i].inuse=usage_id2;
+                    touches[i].down=M_NONE;
                 }
             }
             if(inbox3(touches[i].mx,touches[i].my,&rmenu)){	
                 touches[i].inuse=usage_id2;
+                touches[i].down=M_NONE;
             }
         /*    if(inbox3(touches[i].mx,touches[i].my,&rburn)){
                  touches[i].inuse=usage_id2;
@@ -584,6 +598,7 @@ int flamecount=0;
                 FLY_UP=!FLY_UP;
 				
                 }
+                inmenu=FALSE;
                     handled=TRUE;
 			}
             if(inbox2(touches[i].mx,touches[i].my,&rbuild)){
@@ -600,6 +615,7 @@ int flamecount=0;
                 pressed=-1;
                 [input clearAll];
                 break;
+                inmenu=FALSE;
 				handled=TRUE;
 			}
             
@@ -612,6 +628,7 @@ int flamecount=0;
                 pressed=-1;
                 [input clearAll];
                 break;
+                inmenu=FALSE;
 				handled=TRUE;
 			}
 			if(inbox2(touches[i].mx,touches[i].my,&rmine)){	
@@ -622,17 +639,21 @@ int flamecount=0;
                 FLY_DOWN=!FLY_DOWN;
 				
                  }
+                inmenu=FALSE;
                 handled=TRUE;
 			}
 
 			if(mode==MODE_PICK_BLOCK){
 				if([self handlePickBlock:touches[i].mx:touches[i].my]){
+                    inmenu=FALSE;
 					handled=TRUE;
                     //printf("handled\n");
 				}				
 			}
             if(mode==MODE_PICK_COLOR){
+                
 				if([self handlePickColor:touches[i].mx:touches[i].my]){
+                    inmenu=FALSE;
 					handled=TRUE;
 				}				
 			}
@@ -672,7 +693,8 @@ int flamecount=0;
 	for(int i=0;i<MAX_TOUCHES;i++){
 		if((touches[i].inuse==0||touches[i].inuse==usage_id)&&touches[i].down==M_DOWN){
 			if(inbox2(touches[i].mx,touches[i].my,&rjumphit)){			
-				m_jump=TRUE;		
+				m_jump=TRUE;
+                inmenu=FALSE;
 				//test_a+=.0001;
 				//if(test_a>.005)test_a=0;
 				//NSLog(@"attenuation: %f",test_a);
@@ -729,6 +751,7 @@ int flamecount=0;
                 pressed=-1;
                 
             }
+            touches[i].inuse=0;
 			touches[i].down=M_NONE;
 		}
 		
@@ -762,14 +785,15 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 }
 - (BOOL)handlePickMenu:(int)x:(int)y{
     BOOL handled=FALSE;
-    if(inbox2(x,y,&rcam)||inbox2(x,y,&rtCam)){	
+    if(inbox2(x,y,&rcam)||inbox2(x,y,&rtCam)){
+        
         rcam.pressed=rtCam.pressed=FALSE;
         
 		mode=MODE_CAMERA;
 		if(!SUPPORTS_OGL2){
             [Graphics setZFAR:75];
         }
-		else P_ZFAR=400.0f;
+		else P_ZFAR=200.0f;
         inmenu=false;
 		handled=TRUE;
 	}
@@ -1292,6 +1316,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     if(rexit.pressed||rtExit.pressed)rexit.pressed=rtExit.pressed=TRUE;
     if(rhome.pressed||rtHome.pressed)rhome.pressed=rtHome.pressed=TRUE;
     
+    //if(!IS_WIDESCREEN)
 	[[[Resources getResources] getTex:ICO_COLOR_SELECT_BACKGROUND] drawInRect:rmenuframe];
 	//
 	

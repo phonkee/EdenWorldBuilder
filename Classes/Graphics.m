@@ -192,13 +192,16 @@ extern BOOL SUPPORTS_OGL2;
 	
     Vector v=MakeVector(0.6,0.6,0.9);
     
-    float clr2[4]={v.x-.2f, v.y-.2f, v.z-.2f, 1.0f};
+    float clr2[4]={v.x-.03f, v.y-.03f, v.z-.03f, 1.0f};
+    extern Vector colorTable[256];
+    if(v_equals([World getWorld].terrain.final_skycolor,colorTable[14]))
+        v=MakeVector(0.5,0.72,0.9);
         glFogfv(GL_FOG_COLOR,clr2);
         
         P_ZFAR--;
         [Graphics setZFAR:P_ZFAR+1];
         //glHint(GL_FOG_HINT,GL_NICEST);
-        glFogf(GL_FOG_START, P_ZFAR-P_ZFAR/1.2f);
+        glFogf(GL_FOG_START, P_ZFAR-P_ZFAR/1.6f);
         glFogf(GL_FOG_END, P_ZFAR-30);
    // }
     
@@ -210,7 +213,7 @@ extern BOOL SUPPORTS_OGL2;
 	
 }
 +(void)setZFAR:(float)zfar{
-    zfar=400;
+    zfar=120;
     changedFog=TRUE;
     if(zfar!=P_ZFAR){
         
@@ -265,7 +268,7 @@ extern BOOL SUPPORTS_OGL2;
     glEnable(GL_FOG);
     //if(changedFog){
         changedFog=FALSE;
-    glFogf(GL_FOG_START, P_ZFAR-P_ZFAR/1.2f);
+    glFogf(GL_FOG_START, P_ZFAR-P_ZFAR/1.6f);
     glFogf(GL_FOG_END, P_ZFAR-30);
     
   //  }

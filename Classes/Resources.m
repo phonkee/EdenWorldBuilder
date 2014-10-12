@@ -467,6 +467,8 @@ extern Vector colorTable[256];
     //UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData2(img,rgba,1)];
     build_cache =
     [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
+    
+    //[uiImage2 release];
     printf("initing build texture ;o");
     return build_cache;
 }
@@ -488,7 +490,8 @@ extern Vector colorTable[256];
         //UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData2(img,rgba,1)];
         paint_cache =
         [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
-        printf("initing paint texture ;o");
+     //[uiImage2 release];
+    printf("initing paint texture ;o");
         return paint_cache;
     
     
@@ -510,6 +513,7 @@ extern Vector colorTable[256];
         //UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData2(img,rgba,1)];
         door_cache[color] =
         [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
+       //  [uiImage2 release];
         printf("initing texture ;o");
         return door_cache[color].name;
     }
@@ -545,6 +549,7 @@ extern Vector colorTable[256];
     UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData(img2,img,rgba)];
     skin_cache[cidx].tex =
     [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
+    // [uiImage2 release];
     skin_cache[cidx].model_type=model_type;
     skin_cache[cidx].color=color;
     skin_cache[cidx].state=state;

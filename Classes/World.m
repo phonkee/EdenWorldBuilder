@@ -339,13 +339,19 @@ extern int chunk_load_count;
         
         [NSThread detachNewThreadSelector:@selector(loadWorldThread:) toTarget:self withObject:name];  
     }else{
-        int pct=99*chunk_load_count/(2304/4)+terrain.counter/2;
+        int pct=100.0f*(float)(terrain.counter)/324.0f;
         
         if(pct>100)pct=100;
         if(fm.convertingWorld){
             [menu.sbar setStatus:@"Converting World...":100];
-        }else
-            [menu.sbar setStatus:[NSString stringWithFormat:@"Loading World... %d%%",pct]:20];
+        }else{
+            //if(pct==100){
+               // [menu.sbar setStatus:[NSString stringWithFormat:@"Reticulating Splines... "]:20];
+           // }else{
+                [menu.sbar setStatus:[NSString stringWithFormat:@"Loading World... %d%%",pct]:20];
+           // }
+        }
+        
         
         
         if(doneLoading==2){

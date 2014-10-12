@@ -868,6 +868,10 @@ int clampy(int h){
     if(h<1) return 1;
     return h;
 }
+void floodFill(int x,int z,int y);
+int ff_capy;
+int ff_type=TYPE_WATER;
+int ff_color=15;
 void makeMix(){
     makeGreenHills(T_HEIGHT/3);
     
@@ -944,27 +948,33 @@ void makeMix(){
     
     
     //  int sea_level=-14;
+ 
+   
+    makeBeach();
+   
+    makeMars(GSIZE*3/4,0,GSIZE,GSIZE);
     for(int x=3*GSIZE/4;x<GSIZE;x++){
 		for(int z=0;z<=3*GSIZE/4;z++){
-           
-           
+            
+            
             //BLOCK(x ,z ,0)=TYPE_SAND;
 			
 			for(int y=3;y<6;y++){
-				if(BLOCK(x ,z ,y)==TYPE_NONE){
+				if(BLOCK(x ,z ,y)==TYPE_NONE||BLOCK(x ,z ,y)==TYPE_LAVA){
                     for(int iy=1;iy<3;iy++){
                         if(z==3*GSIZE/4){
-                            for(int zz=z;zz<z+150;zz++){
-                                if(BLOCK(x,zz,y-iy)==TYPE_NONE){
-                                    BLOCK(x,zz,y-iy)=TYPE_WATER;
-                                    COLOR(x,zz,y-iy)=0;
-                                }else break;
-                            }
+                            ff_capy=4;
+                            ff_type=TYPE_WATER;
+                            ff_color=0;
+                            floodFill(x,z,4);
                         }else{
-                        BLOCK(x,z,y-iy)=TYPE_WATER;
-                        COLOR(x,z,y-iy)=0;
+                            
+                            BLOCK(x,z,y-iy)=TYPE_WATER;
+                            COLOR(x,z,y-iy)=0;
+                            
                         }
                     }
+                    
                 }else{
 					
 					
@@ -975,22 +985,38 @@ void makeMix(){
 			
 		}
 	}
-    for(int x=4;x<GSIZE-4;x++){ //Trees
-        for(int z=4;z<GSIZE-4;z++){
-            for(int y=4;y<T_HEIGHT-10;y++){
-                if(BLOCK(x ,z ,y)==TYPE_GRASS&&BLOCK(x ,z ,y+1)==TYPE_NONE){
-                    if(randi(300)==0){
-                        // printf("making a tree\n");
-                        makeTree2(x,z,y,12);
-                    }
-                }
-            }
-        }
-    }
-    makeBeach();
-    makeMars(GSIZE*3/4,0,GSIZE,GSIZE);
     ;
-    
+    makeBeach();
+   /* for(int x=3*GSIZE/4;x<GSIZE;x++){
+		int z=3*GSIZE/4;
+            
+            //BLOCK(x ,z ,0)=TYPE_SAND;
+			
+			for(int y=3;y<6;y++){
+				if(BLOCK(x ,z ,y)==TYPE_LAVA){
+                    for(int iy=1;iy<3;iy++){
+                        if(z==3*GSIZE/4){
+                            for(int zz=z;zz<z+550;zz++){
+                                if(BLOCK(x,zz,y-iy)==TYPE_NONE||BLOCK(x,zz,y-iy)==TYPE_LAVA||BLOCK(x,zz,y-iy)==TYPE_WATER){
+                                    BLOCK(x,zz,y-iy)=TYPE_WATER;
+                                    COLOR(x,zz,y-iy)=0;
+                                }else break;
+                            }
+                        }else{
+                           
+                        }
+                    }
+                }else{
+					
+					
+					
+				}
+				
+			}
+			
+		
+	}*/
+   
     makePonies();
     makeClassicGen();
     makeDesert();
@@ -1090,6 +1116,27 @@ void makeMix(){
             }
         }
     }
+    for(int x=3*GSIZE/4+GSIZE/8;x<GSIZE;x++){
+        for(int z=3*GSIZE/4+GSIZE/8;z<GSIZE;z++){
+            for(int y=1;y<T_HEIGHT;y++){
+                BLOCK(x,z,y)=0;
+            }
+        }
+    }
+    
+    for(int x=4;x<GSIZE-4;x++){ //Trees
+        for(int z=4;z<GSIZE-4;z++){
+            for(int y=4;y<T_HEIGHT-10;y++){
+                if(BLOCK(x ,z ,y)==TYPE_GRASS&&BLOCK(x ,z ,y+1)==TYPE_NONE){
+                    if(randi(300)==0){
+                        // printf("making a tree\n");
+                        makeTree2(x,z,y,12);
+                    }
+                }
+            }
+        }
+    }
+    
     //makeSkyIsland(GSIZE/2,3*GSIZE/4+GSIZE/8,50,35);
 }
 void makeBeach(){
@@ -1837,6 +1884,98 @@ void makePyramid(int x,int z,int h,int color){
     
     
 }
+int ff_depth=0;
+int max_depth=0;
+
+Point3D nodeList[5000];
+int nNodeList=0;
+
+void floodFill(int x,int z,int y){
+    
+    if(x>3*GSIZE/4&&z>7*GSIZE/8){
+        printf("node (%d,%d,%d)\n",x,z,y);
+    }
+
+    
+    BLOCK(x,z,y)=ff_type;
+    COLOR(x,z,y)=ff_color;
+    nodeList[0].x=x;
+    nodeList[0].y=y;
+    nodeList[0].z=z;
+    nNodeList=1;
+    int dx[]={-1,1,0,0,0,0,0};
+    int dy[]={0,0,-1,1,0,0};
+    int dz[]={0,0,0,0,-1,1};
+    while(nNodeList>0){
+        Point3D node=nodeList[0];
+        
+                for(int i=0;i<nNodeList-1;i++){
+            nodeList[i]=nodeList[i+1];
+           
+        }
+         nNodeList--;
+        if(node.x<0||node.x>=GSIZE||node.z<0||node.z>=GSIZE||node.y<=0||node.y>ff_capy||node.y>=T_HEIGHT)continue;
+      
+        
+        
+        for(int d=0;d<6;d++){
+            Point3D node2=node;
+            node2.x+=dx[d];
+            node2.y+=dy[d];
+            node2.z+=dz[d];
+            
+            if(node2.x<0||node2.x>=GSIZE||node2.z<0||node2.z>=GSIZE||node2.y<=0||node2.y>ff_capy||node2.y>=T_HEIGHT)continue;
+            if(BLOCK(node2.x,node2.z,node2.y)!=TYPE_NONE&&BLOCK(node2.x,node2.z,node2.y)!=TYPE_LAVA)continue;
+            
+            BLOCK(node2.x,node2.z,node2.y)=ff_type;
+            COLOR(node2.x,node2.z,node2.y)=ff_color;
+            if(BLOCK(node2.x,node2.z,node2.y-1)==TYPE_GRASS){
+                BLOCK(node2.x,node2.z,node2.y-1)=TYPE_DIRT;
+                COLOR(node2.x,node2.z,node2.y-1)=0;
+            }
+
+            if(nNodeList==5000){
+                printf("node List overflow");
+                return;
+            }
+            nodeList[nNodeList]=node2;
+            nNodeList++;
+            
+        }
+        
+        
+      
+       
+        
+        
+    }
+
+    /*if(x<0||x>=GSIZE||z<0||z>=GSIZE||y<=0||y>ff_capy||y>=T_HEIGHT)return;
+    if(BLOCK(x,z,y)!=TYPE_NONE)return;
+    else {
+        
+       
+       
+        if(ff_depth>5035){
+            return;
+         //   max_depth
+            //  ff_depth=0;
+          //  return;
+        }
+         ff_depth++;
+        floodFill(x,z,y-1);
+        floodFill(x,z,y+1);
+        floodFill(x+1,z,y);
+        floodFill(x-1,z,y);
+        floodFill(x,z+1,y);
+        floodFill(x,z-1,y);
+       
+         ff_depth--;
+        
+        
+    }*/
+    
+}
 void makeGreenHills(int height){
     float var=3;  //how much variance in heightmap?
     //TG_SEED=0;
@@ -1950,16 +2089,20 @@ void makeGreenHills(int height){
 		}
 	}
     int sea_level=0;
-    for(int x=GSIZE/4;x<GSIZE/2;x++){
+    for(int x=GSIZE/4;x<=GSIZE/2-60;x++){
 		for(int z=0;z<3*GSIZE/4;z++){
             //BLOCK(x ,z ,0)=TYPE_SAND;
             //if(x<GSIZE/2&&z<GSIZE/4)continue;
            
-            if(x>GSIZE/2-20){
-                sea_level=(GSIZE/2-20)-x;
+            if(x==GSIZE/2-60){
+                ff_capy=17;
+                floodFill(x,z,17);
+                continue;
+                //sea_level=((GSIZE/2-120)-x)/6.0f;
+               // floodFill(x,z,19,TYPE_WATER);
             }else sea_level=0;
             
-			for(int y=6;y<20+sea_level;y++){
+			for(int y=6;y<19+sea_level;y++){
 				if(BLOCK(x ,z ,y)==TYPE_NONE){
                     for(int iy=1;iy<6;iy++){
                     BLOCK(x,z,y-iy)=TYPE_WATER;
@@ -2617,6 +2760,7 @@ int tg2_init(){
 
 int lrx=-1;
 int lrz=-1;
+extern int regionSkyColors[4][4];
 void updateSkyColor(Player* player){
     extern int g_offcx;
     
@@ -2630,12 +2774,7 @@ void updateSkyColor(Player* player){
         if(ppz>4)ppz=4;
         if(ppx<0)ppx=0;
         if(ppz<0)ppz=0;
-        const int regionSkyColors[4][4]={
-            {COLOR_BWG1,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE},
-            {COLOR_ORANGE2,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE},
-            {COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE},
-            {COLOR_PURPLE1,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_RED5}};
-            
+                   
         
         //printf("region: %d,%d\n",(int)ppx,(int)ppz);
         
@@ -2652,6 +2791,11 @@ void updateSkyColor(Player* player){
 
 
     
+    
+}
+void paintSky(int color){
+    [World getWorld].terrain.final_skycolor=colorTable[color];
+    regionSkyColors[lrz][lrx]=color;
     
 }
 void tg2_render(){

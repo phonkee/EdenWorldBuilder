@@ -11,7 +11,7 @@
 
 #define P_FOVY 70.0f
 
-#define P_ZNEAR .1f
+#define P_ZNEAR .2f
 #define IPAD_WIDTH 1024
 #define IPAD_HEIGHT 768
 #define IPHONE_WIDTH 480
@@ -148,6 +148,7 @@ enum BLOCK_TYPES{
 #define IS_OBJECT          0b00000001000000000000
 #define IS_DOOR            0b00000010000000000000
 #define IS_PORTAL          0b00000100000000000000
+#define IS_HARD            0b00001000000000000000
 
 
 enum BLOCK_TEXTURES{

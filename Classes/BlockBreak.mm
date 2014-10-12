@@ -17,7 +17,7 @@ extern "C" {
 #define BREAKP 10
 #define VANISHP 60
 #define EXPP 1
-#define pbuffer_size2 4000
+#define pbuffer_size2 10000
 #define max_bparticles pbuffer_size2
 
 #define PT_GRAV 0
@@ -462,10 +462,21 @@ extern const int blockTypeFaces[NUM_BLOCKS+1][6];
             Vector clr=colorTable[ttc];
                 pbuffer2[pvbi+j].colors[0]=(int)(clr.x*255)%256;
                 pbuffer2[pvbi+j].colors[1]=(int)(clr.y*255)%256;
-                pbuffer2[pvbi+j].colors[2]=(int)(clr.z*255)%256;        
-            if(pbuffer2[pvbi+j].colors[0]<100)pbuffer2[pvbi+j].colors[0]=100;
-            if(pbuffer2[pvbi+j].colors[1]<100)pbuffer2[pvbi+j].colors[1]=100;
-             if(pbuffer2[pvbi+j].colors[2]<100)pbuffer2[pvbi+j].colors[2]=100;
+                pbuffer2[pvbi+j].colors[2]=(int)(clr.z*255)%256;
+            if(pbuffer2[pvbi+j].colors[0]<50)pbuffer2[pvbi+j].colors[0]=50;
+             if(pbuffer2[pvbi+j].colors[1]<50)pbuffer2[pvbi+j].colors[1]=50;
+             if(pbuffer2[pvbi+j].colors[2]<50)pbuffer2[pvbi+j].colors[2]=50;
+            
+                
+                
+            if(pbuffer2[pvbi+j].colors[0]<200&&pbuffer2[pvbi+j].colors[1]<200&&pbuffer2[pvbi+j].colors[2]<200){
+                int cmax=MAX(MAX(pbuffer2[pvbi+j].colors[0],pbuffer2[pvbi+j].colors[1]),pbuffer2[pvbi+j].colors[2]);
+                for(int i=0;i<3;i++){
+                    if(pbuffer2[pvbi+j].colors[i]==cmax){
+                        pbuffer2[pvbi+j].colors[i]=255;
+                    }
+                }
+            }
            
             
             pbuffer2[pvbi+j].colors[3]=255;		
@@ -543,7 +554,7 @@ extern const int blockTypeFaces[NUM_BLOCKS+1][6];
         }
         
         
-        if(type==TYPE_FIREWORK&&color==0){
+        if(type==TYPE_FIREWORK){
             int ttc=color;
             if(ttc==0)
                 ttc=arc4random()%53+1;
@@ -553,9 +564,21 @@ extern const int blockTypeFaces[NUM_BLOCKS+1][6];
                 pbuffer2[pvbi+j].colors[0]=(int)(clr.x*255)%256;
                 pbuffer2[pvbi+j].colors[1]=(int)(clr.y*255)%256;
                 pbuffer2[pvbi+j].colors[2]=(int)(clr.z*255)%256;
-                if(pbuffer2[pvbi+j].colors[0]<100)pbuffer2[pvbi+j].colors[0]=100;
-                if(pbuffer2[pvbi+j].colors[1]<100)pbuffer2[pvbi+j].colors[1]=100;
-                if(pbuffer2[pvbi+j].colors[2]<100)pbuffer2[pvbi+j].colors[2]=100;
+               
+                if(pbuffer2[pvbi+j].colors[0]<50)pbuffer2[pvbi+j].colors[0]=50;
+                if(pbuffer2[pvbi+j].colors[1]<50)pbuffer2[pvbi+j].colors[1]=50;
+                if(pbuffer2[pvbi+j].colors[2]<50)pbuffer2[pvbi+j].colors[2]=50;
+                
+                
+                
+                if(pbuffer2[pvbi+j].colors[0]<200&&pbuffer2[pvbi+j].colors[1]<200&&pbuffer2[pvbi+j].colors[2]<200){
+                    int cmax=MAX(MAX(pbuffer2[pvbi+j].colors[0],pbuffer2[pvbi+j].colors[1]),pbuffer2[pvbi+j].colors[2]);
+                    for(int i=0;i<3;i++){
+                        if(pbuffer2[pvbi+j].colors[i]==cmax){
+                            pbuffer2[pvbi+j].colors[i]=255;
+                        }
+                    }
+                }
                 
                 
                 pbuffer2[pvbi+j].colors[3]=255;
@@ -581,6 +604,8 @@ extern const int blockTypeFaces[NUM_BLOCKS+1][6];
                 pbuffer2[pvbi+j].colors[0]=(int)(clr.x*255)%256;
                 pbuffer2[pvbi+j].colors[1]=(int)(clr.y*255)%256;
                 pbuffer2[pvbi+j].colors[2]=(int)(clr.z*255)%256;
+                
+            
                 
             }
             

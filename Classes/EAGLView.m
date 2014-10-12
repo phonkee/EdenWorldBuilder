@@ -80,7 +80,7 @@ extern EAGLView* G_EAGL_VIEW;
     
 	EAGLContext *aContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     if (aContext){
-		P_ZFAR= 400;
+		P_ZFAR= 120;
         SUPPORTS_OGL2=TRUE;
 	}else{
 		P_ZFAR= 20;

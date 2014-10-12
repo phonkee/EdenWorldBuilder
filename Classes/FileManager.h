@@ -32,8 +32,8 @@ typedef struct{
     //below here is post 1.1.1 stuff
     int version;
     char hash[36];
-    int skycolor;
-	char reserved[100-sizeof(int)-36-sizeof(int)];	 //subtract new stuff from reserve bytes,
+    unsigned char skycolors[16];
+	char reserved[100-sizeof(int)-36-16];	 //subtract new stuff from reserve bytes,
     //192 bytes(including padding is the correct size, be careful modifying this to not corrupt old maps
 }WorldFileHeader;
 typedef struct{

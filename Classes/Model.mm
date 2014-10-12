@@ -17,6 +17,8 @@ extern "C" {
 
 }
 #import "Resources.h"
+#import "TerrainGen2.h"
+
 int compare_creatures2 (const void *a, const void *b);
 #define START_LIFE 5
 #define C_PI 3.14159f
@@ -485,12 +487,14 @@ void SaveModels(){
 }
 
 int SimpleCollision(Entity* e){
-    int bx=(int)roundf(e->pos.x/BLOCK_SIZE-.5f);
-	int bz=(int)roundf(e->pos.z/BLOCK_SIZE-.5f);
+  
+    
+    int bx=(int)roundf(e->pos.x-.5f);
+	int bz=(int)roundf(e->pos.z-.5f);
 	
     
 	float bot=e->pos.y-mradius[e->model_type]+centers[e->model_type].y;
-	int bh=(int)floorf(bot/BLOCK_SIZE);
+	int bh=(int)roundf(bot);
 	for(int k=0;k<2;k++){
 		int ih=bh+k;//[ter getHeight:bx :bz];
 		for(int i=0;i<3;i++){
@@ -538,6 +542,135 @@ void ResetModel(int i){
     guys[i].onground=guys[i].onIce=0;
     guys[i].onfire=FALSE;
 }
+void addMoreCreaturesIfNeeded(){
+    int totalactive=0;
+    int gc=0;
+    int nTouched=0;
+    while(totalactive<15&&gc<nguys){
+        if(guys[gc].update==TRUE||(guys[gc].touched==TRUE&&nTouched<150)){
+            if(guys[gc].touched==TRUE){
+                nTouched++;
+                gc++;
+            }else{
+            totalactive++;
+            gc++;
+            }
+            continue;
+        }
+        ResetModel(gc);
+        guys[gc].targetangle=randf(3.14f*2);
+        
+        int ly=-1;
+        //guys[gc].pos=PVRTVec3(arc4random()%25+90,arc4random()%5+32,T_HEIGHT);
+        for(int i=0;i<10;i++){
+        guys[gc].pos=PVRTVec3(arc4random()%T_SIZE+[World getWorld].fm.chunkOffsetX*CHUNK_SIZE,T_HEIGHT-15,arc4random()%T_SIZE+[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE);
+            for(int y=T_HEIGHT-1;y>0;y--){
+                int t=getLandc(guys[gc].pos.x,guys[gc].pos.z,y);
+                if(t>0){
+                    if((!(blockinfo[t]&IS_LIQUID))   &&  t!=TYPE_LEAVES){
+                        ly=y;
+                        goto escapenest;
+                    }
+                    break;
+                }
+            }
+        }
+    escapenest:
+        if(ly==-1){
+            printf("oob model gen\n");
+            continue;
+        }
+        guys[gc].pos.y=ly+2;
+       /* int breakout=45;
+        int lastType=-1;
+        while(true){
+            int t=SimpleCollision(&guys[gc]);
+            lastType=t;
+            if(t!=0)break;
+           
+            if(guys[gc].pos.y<0||breakout<=0){
+                break;
+            }
+            guys[gc].pos.y-=1;
+            breakout--;
+        }
+        int ltype=0,type=0;;
+        breakout=50;
+        while(guys[gc].pos.y<=T_HEIGHT-15&&breakout>0){
+            ltype=type;
+            breakout--;
+            type=SimpleCollision(&guys[gc]);
+            if(type==0)break;
+            guys[gc].pos.y+=1;
+        }*/
+       
+        //   printf("creature_pos: %f,%f,%f\n",guys[gc].pos.x,guys[gc].pos.z,guys[gc].pos.y);
+        /*  if(ltype!=TYPE_GRASS&&ltype!=TYPE_GRASS2&&ltype!=TYPE_GRASS3&&ltype!=TYPE_DIRT){
+         totalactive++;
+         guys[gc].alive=FALSE;
+         //printf("type:%d\n",ltype);
+         
+         continue;
+         }*/
+        //printf("creating creature:%d pos:(%f,%f,%f)\n",gc,guys[gc].pos.x,guys[gc].pos.y,guys[gc].pos.z);
+        
+        if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
+            
+            int ppx=guys[gc].pos.x-4096*CHUNK_SIZE+GSIZE/2;
+            int ppz=guys[gc].pos.z-4096*CHUNK_SIZE+GSIZE/2;
+            ppx=ppx/(GSIZE/4);
+            ppz=ppz/(GSIZE/4);
+            if(ppx>4)ppx=4;
+            if(ppz>4)ppz=4;
+            if(ppx<0)ppx=0;
+            if(ppz<0)ppz=0;
+           /* const int regionSkyColors[4][4]={
+                {COLOR_BWG1,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE},
+                {COLOR_ORANGE2,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE},
+                {COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE},
+                {COLOR_PURPLE1,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_RED5}};*/
+            if(ppx==0&&ppz==0){
+                guys[gc].model_type=M_MOOF;
+                guys[gc].color=COLOR_BWG1;
+            }else
+            if(ppx==3&&ppz!=0){
+                do{
+                 guys[gc].model_type=arc4random()%(NUM_CREATURES);
+                }while(guys[gc].model_type!=M_STALKER&&guys[gc].model_type!=M_CHARGER);
+            }else
+            {
+                 guys[gc].model_type=arc4random()%(NUM_CREATURES);
+            }
+            //printf("region: %d,%d\n",(int)ppx,(int)ppz);
+            
+           /* if(lrx!=ppx||lrz!=ppz){
+                if(lrx==-1||regionSkyColors[ppz][ppx]!=regionSkyColors[lrz][lrx]){
+                    [World getWorld].terrain.final_skycolor=colorTable[regionSkyColors[(int)(ppz+64)%4][(int)(ppx+64)%4]];
+                }
+                lrx=ppx;
+                lrz=ppz;
+            }*/
+            
+        }
+
+       
+        guys[gc].state=0;
+        guys[gc].touched=FALSE;
+        guys[gc].color=0;
+        guys[gc].life=START_LIFE;
+        guys[gc].timer=1;
+        guys[gc].frame=getFrame(guys[gc].model_type,guys[gc].state,0);
+        totalactive++;
+        guys[gc].update=TRUE;
+        
+        gc++;
+    }
+    
+    extern int g_offcx;
+    
+    
+    
+}
 void LoadModels2(){
     int gc=0;
     int totalactive=0;
@@ -547,7 +680,10 @@ void LoadModels2(){
             ResetModel(gc);
             
             guys[gc].model_type=creatureData[i].type;
-            if(guys[gc].model_type==-1)continue;
+            if(guys[gc].model_type==-1){
+                printf("-1 model type\n");
+                continue;
+            }
             guys[gc].pos=vpv(creatureData[i].pos);
             guys[gc].vel=vpv(creatureData[i].vel);
             guys[gc].color=creatureData[i].color;
@@ -583,9 +719,25 @@ void LoadModels2(){
         }
         
     }
-    //printf("loaded")
+    printf("LoadModels2  totalactive:%d   gc: %d \n",totalactive,gc);
    // Vector player_pos=[World getWorld].player.pos;
+    addMoreCreaturesIfNeeded();
     while(totalactive<40&&gc<nguys){
+        if(guys[gc].update==TRUE){
+            totalactive++;
+            gc++;   //infinite loop sometimes
+            continue;
+        }else if(guys[gc].update==FALSE){
+            if(!guys[gc].touched){
+            ResetModel(gc);
+            guys[gc].alive=false;
+                gc++;}
+            else{
+                gc++;
+            }
+        }
+    }
+   /* while(totalactive<40&&gc<nguys){
         ResetModel(gc);
         guys[gc].targetangle=randf(3.14f*2);
         //guys[gc].pos=PVRTVec3(arc4random()%25+90,arc4random()%5+32,T_HEIGHT);
@@ -605,14 +757,7 @@ void LoadModels2(){
             if(type==0)break;
             guys[gc].pos.y+=1;
         }
-     //   printf("creature_pos: %f,%f,%f\n",guys[gc].pos.x,guys[gc].pos.z,guys[gc].pos.y);
-      /*  if(ltype!=TYPE_GRASS&&ltype!=TYPE_GRASS2&&ltype!=TYPE_GRASS3&&ltype!=TYPE_DIRT){
-            totalactive++;
-            guys[gc].alive=FALSE;
-            //printf("type:%d\n",ltype);
-            
-            continue;
-        }*/
+    
          //printf("creating creature:%d pos:(%f,%f,%f)\n",gc,guys[gc].pos.x,guys[gc].pos.y,guys[gc].pos.z);
         guys[gc].model_type=arc4random()%(NUM_CREATURES);
         guys[gc].state=0;   
@@ -625,13 +770,13 @@ void LoadModels2(){
         guys[gc].update=TRUE;
 
         gc++;
-    }
+    }*/
    
-    while(gc<nguys){
+   /* while(gc<nguys){
         ResetModel(gc);
         guys[gc].alive=false;
         gc++;
-    }
+    }*/
 }
 
 void setState(int idx,int state){
@@ -1618,19 +1763,29 @@ extern Vector fpoint;
 extern int offsetdir;
 void PlaceModel(int idx,Vector pos){
     if(idx!=-1){
-        guys[idx].touched=TRUE;
+        //guys[idx].touched=TRUE;
         idx=0;
         for(int i=0;i<nguys;i++){
-            if(!guys[i].alive){
+            if(!guys[i].alive&&!guys[i].touched){
                 idx=i;
                 
-                
-                
+                 guys[idx].touched=TRUE;
+                printf("assigining new slot: %d\n",idx);
                 
                 break;
             }
         }
-        printf("couldn't find slot of model\n");
+        for(int i=0;i<nguys;i++){
+            if(!guys[i].alive){
+                idx=i;
+                
+                guys[idx].touched=TRUE;
+                printf("ran out of untouched slot spaces, assigining new slot: %d\n",idx);
+                
+                break;
+            }
+        }
+       
     }else{
         idx=nguys;
     }
@@ -1664,7 +1819,7 @@ void BurnModel(int idx){
     Entity* e=&guys[idx];
     if(e->onfire)return;
     PVRTVec3 upos=unwrap(e->pos);
-    e->fireidx=[[World getWorld].effects addFire:upos.x :e->pos.z :upos.y :1 :e->life*2];
+    e->fireidx=[[World getWorld].effects addFire:upos.x :e->pos.z :upos.y+centers[e->model_type].y :1 :e->life*2];
     e->onfire=TRUE;
     e->runaway= e->life*2;
     if(e->model_type==M_CHARGER||e->model_type==M_STALKER){
@@ -2085,7 +2240,7 @@ bool RenderModels()
 
 	// Set Z compare properties
 	glEnable(GL_DEPTH_TEST);
-
+     glEnable(GL_FOG);
 	// Disable Blending
 	//glDisable(GL_BLEND);
 
@@ -2183,7 +2338,7 @@ bool RenderModels()
             }else{
                 if(guys[i].onfire){
                     glColor4f(.5f,.5f,.5f,1);
-                    DrawModel(i); 
+                    DrawModel(i);
                     glColor4f(1,1,1,1);
                 }else
                     DrawModel(i); 
@@ -2202,7 +2357,11 @@ bool RenderModels()
                 
                 
             }else {
-                
+                if(guys[i].onfire){
+                    glColor4f(clr.x/2.0f,clr.y/2.0f,clr.z/2.0f,1);
+                    
+                }else
+                   
                 glColor4f(clr.x,clr.y,clr.z,1);
                 
             }
@@ -2265,7 +2424,7 @@ bool RenderModels()
     glEnable(GL_TEXTURE_2D);
     
     
-	
+	glDisable(GL_FOG);
     
 	
 	
@@ -2274,8 +2433,10 @@ bool RenderModels()
     glDisable(GL_NORMALIZE);
     DrawShadows();
     glEnableClientState(GL_COLOR_ARRAY);
-    
-    printf("Models updated:%d   models rendered:%d\n",model_update_count,model_render_count);
+    //static int mcc=0;
+    //mcc++;
+    //if(mcc%60==0)
+   // printf("Models updated:%d   models rendered:%d\n",model_update_count,model_render_count);
 		return true;
 }
 

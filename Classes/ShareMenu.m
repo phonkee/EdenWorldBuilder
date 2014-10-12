@@ -36,17 +36,23 @@ extern EAGLView* G_EAGL_VIEW;
 	[label_bar setStatus:@"Name your world: ":9999:UITextAlignmentLeft];
 	input_background=CGRectMake(SCREEN_WIDTH/2-15, SCREEN_HEIGHT-60, 200, 30);
 	rect_cancel.origin.x=100;
-	rect_cancel.origin.y=SCREEN_WIDTH/2-25;
+	rect_cancel.origin.y=SCREEN_HEIGHT/2+60;
 	rect_cancel.size.width=130;
 	rect_cancel.size.height=36;
 	rect_submit.origin.x=280;
-	rect_submit.origin.y=SCREEN_WIDTH/2-25;
+	rect_submit.origin.y=SCREEN_HEIGHT/2+60;
 	rect_submit.size.width=130;
 	rect_submit.size.height=36;
 	share_explain_rect.origin.x=50;
-	share_explain_rect.origin.y=SCREEN_WIDTH/2-65;
+	share_explain_rect.origin.y=SCREEN_HEIGHT/2+15;
 	share_explain_rect.size.height=40;
 	share_explain_rect.size.width=370;
+    extern BOOL IS_WIDESCREEN;
+    if(IS_WIDESCREEN){
+        rect_submit.origin.x+=45;
+        rect_cancel.origin.x+=45;
+        share_explain_rect.origin.x+=45;
+    }
 	share_explain_lbl=[[statusbar alloc] initWithRect:share_explain_rect:15];
 	[share_explain_lbl setStatus:@"Note: Players will spawn where you last saved.  The last picture you took is used as a preview picture." :9999];
 	//starto=FALSE;

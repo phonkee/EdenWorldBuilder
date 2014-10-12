@@ -57,7 +57,7 @@
 //- (void)buildCustom:(int)x :(int)z :(int)y;
 - (void)paintBlock:(int)x :(int)z :(int)y: (int)color;
 - (void)destroyBlock:(int)x :(int)z :(int)y;
-- (void)burnBlock:(int)x :(int)z :(int)y;
+- (void)burnBlock:(int)x :(int)z :(int)y :(BOOL)causedByExplosion;
 - (void)updateChunks:(int)x :(int)z :(int)y:(int)type;
 //- (void)updateCustom:(int)x :(int)z :(int)y:(int)type:(int)color;
 - (int)getLand:(int)x :(int)z :(int)y;

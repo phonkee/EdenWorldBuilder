@@ -32,14 +32,14 @@ void fmh_init(FileManager* t_fm){
    
     indexes=hashmap_new();
      
-    NSString* file_name=[NSString stringWithFormat:@"%@/Eden.eden",fm.documents];
+ //  NSString* file_name=[NSString stringWithFormat:@"%@/Eden.eden",fm.documents];
     
-  //  NSString* file_name=[[NSBundle mainBundle] pathForResource:@"Eden.eden" ofType:nil];
+    NSString* file_name=[[NSBundle mainBundle] pathForResource:@"Eden.eden" ofType:nil];
     
-    /* if(TRUE){
+   /*  if(TRUE){
      DecompressWorld([file_name cStringUsingEncoding:NSUTF8StringEncoding]);
-     }*/
-     
+     }
+     */
     
      saveFile=[NSFileHandle fileHandleForReadingAtPath:file_name];
     [saveFile retain];

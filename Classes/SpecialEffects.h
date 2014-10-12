@@ -13,7 +13,7 @@
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
 #import "Util.h"
-#define pbuffer_size 6000
+#define pbuffer_size 10000
 
 @interface SpecialEffects : NSObject {
 	BlockBreak* bb;

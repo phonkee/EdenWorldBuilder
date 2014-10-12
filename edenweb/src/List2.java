@@ -1,6 +1,8 @@
 import java.io.*;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -13,20 +15,33 @@ import javax.servlet.http.HttpServletResponse;
 public class List2 extends HttpServlet
 {
 	static List2 singleton;
-	HashSet<String> badwords=new HashSet<String>();
-	Map<Long,String> filesByDate=Collections.synchronizedMap(new TreeMap<Long,String>());
-	Map<String,String> filesByName=Collections.synchronizedMap(new TreeMap<String,String>());
-	Vector<String> nameList=new Vector<String>();
-	Map<Integer,String> filesByPopular=Collections.synchronizedMap(new TreeMap<Integer,String>());
+	public AtomicInteger activereq=new AtomicInteger(0); 
+	long time;
+	int uploads;
+	int listrequests;
+	int searches;
+	static Set<String> badwords=new HashSet<String>();
+	static Map<Long,String> filesByDate=new ConcurrentSkipListMap<Long,String>();
+	static Map<String,String> filesByName=new ConcurrentSkipListMap<String,String>();
 	
-	Map<String,Set<EdenMap>> searchTable=Collections.synchronizedMap(new HashMap<String,Set<EdenMap>>());
+	
+	
+	static Map<String,ArrayList<EdenMap>> searchTable=new ConcurrentHashMap<String,ArrayList<EdenMap>>();
 	Random r;
-	 String[] listBuffers=new String[3];
+	static  String[] listBuffers=new String[3];
+	public void printMapSizes(){
+		System.out.println("------SIZES-----"); 
+		System.out.println("filesbyDate:"+filesByDate.size() + 
+				"  filesByName:"+filesByName.size()+ "  searchTable:"+searchTable.size()+"  badwords:"+badwords.size());
+		
+		System.out.println("-----------------");
+	}
 	public void updateBuffers(){
     	
         
         for(int sort=0;sort<3;sort++){
-        	StringBuffer buff = new StringBuffer();
+        	if(sort==2)continue;
+        	StringBuilder buff = new StringBuilder();
         	Collection<String> list=null;
         	Object sync=null;
         	if(sort==0){
@@ -34,8 +49,8 @@ public class List2 extends HttpServlet
         		sync=filesByName;
 
         	}else if(sort==1){
-        		list=filesByPopular.values();
-        		sync=filesByPopular;
+        		list=filesByName.values();
+        		sync=filesByName;
         		//filesByPopular;
 
         	}else if(sort==2){
@@ -55,11 +70,20 @@ public class List2 extends HttpServlet
         			n++;
         		}
         	}
-        	listBuffers[sort]=buff.toString();
+        	//listBuffers[sort]=buff.toString();
         }
     }
 	public void parseLine(String line){
+		if(true)return;
 		try{
+			long newtime=System.currentTimeMillis();
+			if(newtime-time>5000){
+				float etime=(newtime-time)/1000.0f;
+				time=newtime;
+				System.out.println("Uploads/s:"+(uploads/etime)+"  Searches/s:"+(searches/etime)+"  ListRequests/s:"+(listrequests/etime));
+				uploads=searches=listrequests=0;
+			}
+			uploads++;
 		String file_name=line.substring(0,line.indexOf(" "));
 		String display_name=line.substring(line.indexOf(" ")+1);
 		
@@ -68,10 +92,17 @@ public class List2 extends HttpServlet
 		String timestamp=file_name.substring(0,file_name.length()-5);
 		String listing=file_name+"\n"+display_name+".name\n";
 		display_name=display_name.toUpperCase();
+		if(filesByDate.containsKey(Long.parseLong(timestamp)))return;
 		if(!addToSearchTable(display_name,listing,Long.parseLong(timestamp)))
 			return;
 		filesByDate.put(Long.parseLong(timestamp),listing);
-		
+		if(filesByDate.size()>150){
+			synchronized(filesByDate){
+				Iterator<Long> iterator=filesByDate.keySet().iterator();
+				filesByDate.remove(iterator.next());
+			}
+		}
+			
 		
 		
 		//while(filesByName.containsKey(display_name)){
@@ -80,6 +111,7 @@ public class List2 extends HttpServlet
 		filesByName.put(display_name,listing);
 		if(filesByName.size()>150){
 			String mins="z";
+			synchronized(filesByName){
 			Iterator<String> it=filesByName.values().iterator();
 			while(it.hasNext()){
 				String s=it.next();
@@ -88,12 +120,13 @@ public class List2 extends HttpServlet
 					mins=s;
 				}
 			}
+			}
 			filesByName.remove((mins.substring(mins.indexOf("\n")+1,mins.length()-6)).toUpperCase());
 			//if(filesByName.size()>150)System.out.println(mins.substring(mins.indexOf("\n")+1,mins.length()-6));
 			
 		}
 		
-		filesByPopular.put(r.nextInt(), listing);	
+		
 		}catch(Exception ex){
 			ex.printStackTrace();
 			
@@ -125,11 +158,22 @@ public class List2 extends HttpServlet
 			if(s.length()>0){
 				
 				if(!searchTable.containsKey(s)){
-					searchTable.put(s, Collections.synchronizedSet(new HashSet<EdenMap>()));
+					searchTable.put(s, new ArrayList<EdenMap>());
 					
 				}
+				 
+				ArrayList<EdenMap> entry=searchTable.get(s);
+				synchronized(entry){
+					if(!entry.contains(map)){
+						entry.add(map);
+						if(entry.size()>2000){
+							Collections.sort(entry);
+							for(int i=0;i<1000;i++)
+							entry.remove(entry.size()-1);
+						}
+					}
+				}
 				
-				searchTable.get(s).add(map);
 			}
 		}
 		return true;
@@ -146,10 +190,12 @@ public class List2 extends HttpServlet
 			System.out.println("Initializing lists ");
 			String path = cfg.getServletContext().getRealPath("/")+"/";	
 			Scanner sc=new Scanner(new File(path+"asdf.png"));
+			Set<String> tempset=new HashSet<String>();
 			while(sc.hasNextLine()){
 				String line=sc.nextLine();
-				badwords.add(line.toUpperCase().trim());
+				tempset.add(line.toUpperCase().trim());
 			}
+			badwords.addAll(tempset);
 			sc.close();
 			sc=new Scanner(new File(path+"file_list2.txt"));
 			int i=0;
@@ -161,17 +207,18 @@ public class List2 extends HttpServlet
 			}		
 			sc.close();
 			
-			sc=new Scanner(new File(path+"popular2.txt"));
-			i=0;
+			
+			StringBuilder buff = new StringBuilder();
+			sc=new Scanner(new File(path+"popularlist.txt"));
 			while(sc.hasNextLine()){
-				String file_name=sc.nextLine();
-				String display_name=sc.nextLine();
-				String listing=file_name+"\n"+display_name+"\n";				
-				filesByPopular.put(Integer.MIN_VALUE+i, listing);		
-				i++;
-			}	
-			System.out.println("Finished loading "+searchTable.size());
+				buff.append(sc.nextLine()+"\n");
+			}
 			sc.close();
+			listBuffers[2]=listBuffers[0]=listBuffers[1]=buff.toString();
+			
+			
+			System.out.println("Finished loading "+searchTable.size());
+			
 		}catch(IOException ex){
 			ex.printStackTrace();
 		}
@@ -179,19 +226,28 @@ public class List2 extends HttpServlet
 		//parseLine("1290961151.eden World sharing temporarily unavailable.");
 	
 	}
+	
     protected void doGet( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException
     {
+    	activereq.getAndIncrement();
+    	try{
         PrintWriter outp = resp.getWriter();
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         String q=req.getQueryString();
         String[] parts=q.split("&");
+        if(true){
+    	outp.write("");
+        return;
+        }
         int sort=0;
         String search="";
         for(String s:parts){
         	if(s.startsWith("sort")){
+        		listrequests++;
         		sort=Integer.parseInt(s.substring(s.indexOf("=")+1,s.length()));
         	} 
         	if(s.startsWith("search")){
+        		searches++;
         		search=URLDecoder.decode(s.substring(s.indexOf("=")+1,s.length()),"UTF-8");
         	}
         }
@@ -212,18 +268,19 @@ public class List2 extends HttpServlet
         	//Set<EdenMap> perfectMatch=new TreeSet<EdenMap>();
     		for(int i=0;i<words.length;i++){
     			//System.out.println(words[i]+":");
-        		Set<EdenMap> match=searchTable.get(words[i]);
+        		ArrayList<EdenMap> match=searchTable.get(words[i]);
         		if(match!=null){
+        			synchronized(match){
         			for(EdenMap map:match){
         				map.count++;
         			}
         			partialMatch.addAll(match);
-        			
+        			}
         		/*	if(i==0)
         				perfectMatch.addAll(match);
         			else{
         				perfectMatch.retainAll(match);
-        			}*/
+        			}*/  
         		}else{
         			//perfectMatch.clear();
         		}
@@ -255,12 +312,21 @@ public class List2 extends HttpServlet
         		map.count=0;
         	}
         	 outp.write(buff.toString());
+        	 
         	 return;
         }
-        if(sort>=0&&sort<=3)
+        if(sort>=0&&sort<3){ 
+        	if(listBuffers[sort]!=null)
             outp.write(listBuffers[sort]);
-        else
+        }else      	
+        	
         	outp.write("");
+    	}catch(Exception ex){
+    		ex.printStackTrace();
+    	}finally{
+    		 activereq.getAndDecrement();
+    	}
+       
         
     }
 
@@ -284,7 +350,34 @@ class EdenMap implements Comparable<Object>{
 		
 	}
 	
-	
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + count;
+		result = prime * result + (int) (date ^ (date >>> 32));
+		result = prime * result + ((listing == null) ? 0 : listing.hashCode());
+		return result;
+		}
+
+		public boolean equals(Object obj) {
+		if (this == obj)
+		return true;
+		if (obj == null)
+		return false;
+		if (getClass() != obj.getClass())
+		return false;
+		EdenMap other = (EdenMap) obj;
+		if (count != other.count)
+		return false;
+		if (date != other.date)
+		return false;
+		if (listing == null) {
+		if (other.listing != null)
+		return false;
+		} else if (!listing.equals(other.listing))
+		return false;
+		return true;
+		}
 		
 
 }

@@ -17,6 +17,7 @@ void BurnModel(int idx);
 void ExplodeModels(Vector pos,int color);
 void SaveModels();
 void LoadModels2();
+void addMoreCreaturesIfNeeded();
 void setViewNow();
 void killCreature(int idx);
 float wrapx(float x);

@@ -96,8 +96,10 @@ extern float P_ASPECT_RATIO;
         rect_on[j].origin.y=properties[j].box.origin.y-2;
 	rect_on[j].size.width=135/2*1.5f;
 	rect_on[j].size.height=40/2*1.5f;
-         if(IS_WIDESCREEN)
-          rect_on[j].origin.x=300+65;
+        if(IS_WIDESCREEN){
+           // printf("adjusting options because widescreen");
+          rect_on[j].origin.x=300+115;
+        }
         else
 	rect_on[j].origin.x=300+35;
 	//rect_on[j].origin.y=0;

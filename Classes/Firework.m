@@ -20,11 +20,15 @@
         n_firework++;
     }
     fireworks[n].pos=MakeVector(x,y,z);
-    fireworks[n].vel=MakeVector(0,13,0);
+    fireworks[n].vel=MakeVector(0,27,0);
    // fireworks[n].vel=MakeVector(0,0,0);
     fireworks[n].color=color;
- //   if(color==0)fireworks[n].color=arc4random()%53+1;
-       fireworks[n].fuse=randf(1.0f)+1.5f;
+    if(color==0)fireworks[n].color=arc4random()%53+1;
+    
+    if(arc4random()%40==0){
+        fireworks[n].color=0;
+    }
+       fireworks[n].fuse=randf(0.8f)+1.5f;
 }
 -(void)removeAllFireworks{
     n_firework=0;
@@ -41,7 +45,9 @@
 -(void)update:(float)etime{
     for(int i=0;i<n_firework;i++){
         fireworks[i].pos=v_add(fireworks[i].pos,v_mult(fireworks[i].vel,etime));
-        if(getLandc(roundf(fireworks[i].pos.x),roundf(fireworks[i].pos.z),roundf(fireworks[i].pos.y))!=TYPE_NONE){
+        if([[World getWorld].terrain getLand:roundf(fireworks[i].pos.x)
+                                            :roundf(fireworks[i].pos.z)
+                                            :roundf(fireworks[i].pos.y)]>0){
             fireworks[i].fuse=-1;
         }
         fireworks[i].fuse-=etime;

@@ -129,6 +129,7 @@ void makePyramid2(int x,int z,int h,int color, int sy);
 void makePyramid(int x,int z,int h,int color);
 void makeSkyIsland(int cx,int cz,int cy,int r);
 void updateSkyColor(Player* player);
+void paintSky(int color);
 void clear();
 void makeCave(int xs,int zs,int ys,int sizex,int sizez,int sizey,int colorScheme);
 
