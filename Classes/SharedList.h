@@ -51,6 +51,7 @@ typedef struct{
 	Button sbrrect;
     Button rload_cancel;
     Button rload_go;
+    Button rect_flag;
 	SharedListNode* file_list;
 	int list_selection;
 	int num_files;

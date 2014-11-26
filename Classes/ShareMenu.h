@@ -17,6 +17,7 @@
 	CGRect input_background;
 	Button rect_cancel;
 	Button rect_submit;
+  
 	CGRect share_explain_rect;
 	statusbar* share_explain_lbl;
 	statusbar* label_bar;

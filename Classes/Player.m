@@ -31,7 +31,7 @@ static bool onground;
 static bool onramp;
 static bool jumpandbuild;
 
-bool FLY_MODE=TRUE;
+bool FLY_MODE=FALSE;
 bool FLY_UP=false;
 bool FLY_DOWN=false;
 static Point3D buildpoint;
@@ -886,6 +886,7 @@ static BOOL lastOnIce;
 
     accel.y=0;
     Vector vlateral=MakeVector(vel.x,0,vel.z);
+    if(!FLY_MODE)
     if(v_length2(vlateral)>max_walk_speed*max_walk_speed){
         if(jumping||(!onground&&!onIce)){
             if(sign(vel.x)==sign(accel.x))

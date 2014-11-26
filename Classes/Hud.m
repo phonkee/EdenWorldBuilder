@@ -9,6 +9,7 @@
 #import "Hud.h"
 #import "Globals.h"
 #import "Frustum.h"
+#import "TerrainGen2.h"
 #import <Foundation/Foundation.h>
 
 
@@ -350,6 +351,7 @@ extern float P_ZFAR;
 extern BOOL SUPPORTS_OGL2;
 static float at1=0,at2=0,at3=0;
 int flamecount=0;
+static int warpCount=0;
 - (BOOL)update:(float)etime{
 	if(flash>0){
 		flash-=etime;
@@ -520,8 +522,36 @@ int flamecount=0;
                 }else{
                     
                     extern BOOL FLY_MODE;
-                    FLY_MODE=!FLY_MODE;
-                    printf("Fly mode set to %d\n",FLY_MODE);
+                  /*  FLY_MODE=!FLY_MODE;
+                    printf("Fly mode set to %d\n",FLY_MODE);*/
+                    
+                    
+                    
+                    
+                    int ppx,ppz,ppy;
+                    ppy=3*T_HEIGHT/4;
+                    ppx=T_SIZE/2+4096*CHUNK_SIZE-GSIZE/2;
+                    ppz=T_SIZE/2+4096*CHUNK_SIZE-GSIZE/2;
+                    int dwarpx[]={0,      0,      0,        0,GSIZE/4,GSIZE/2,3*GSIZE/4};
+                    int dwarpz[]={0,GSIZE/4,GSIZE/2,3*GSIZE/4,0,      0,      0,};
+                    ppx+=dwarpx[warpCount];
+                    ppz+=dwarpz[warpCount];
+                    
+                    [[World getWorld].terrain warpToPoint:ppx:ppz:ppy];
+                    printf("warping to: %d,%d,%d\n",ppx,ppz,ppy);
+                    warpCount++;
+                    if(warpCount==7){
+                        warpCount=0;
+                    }
+                    
+                   /* int ppx=player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
+                    int ppz=player.pos.z-4096*CHUNK_SIZE+GSIZE/2;
+                    ppx=ppx/(GSIZE/4);
+                    ppz=ppz/(GSIZE/4);
+                    if(ppx>4)ppx=4;
+                    if(ppz>4)ppz=4;
+                    if(ppx<0)ppx=0;
+                    if(ppz<0)ppz=0;*/
                     
                 }
               //  printf("menu touched\n");

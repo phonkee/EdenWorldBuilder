@@ -16,6 +16,7 @@
 }
 -(void)canceldl;
 -(void)loadShared:(NSString*)file_name;
+-(void)reportWorld:(NSString*)file_name;
 -(void)loadSharedPreview:(NSString*)file_name;
 - (void)shareWorld:(NSString*)file_name;
 - (void)getSharedWorldList;
@@ -23,6 +24,8 @@
 -(void)uploadSuccess:(id)obj;
 -(void)uploadError:(id)obj;
 -(void)downloadSuccess:(id)obj;
+-(void)reportSuccess:(id)obj;
+-(void)reportError:(id)obj;
 
 -(void)downloadError:(id)obj;
 - (NSString*)searchSharedWorlds:(NSString*)query;

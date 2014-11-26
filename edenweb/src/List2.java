@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public class List2 extends HttpServlet
 {
+	/**
+	 * 
+	 */ 
+	private static final long serialVersionUID = 1L;
 	static List2 singleton;
 	public AtomicInteger activereq=new AtomicInteger(0); 
 	long time;
@@ -40,7 +44,7 @@ public class List2 extends HttpServlet
     	
         
         for(int sort=0;sort<3;sort++){
-        	if(sort==2)continue;
+        	//if(sort==2)continue;
         	StringBuilder buff = new StringBuilder();
         	Collection<String> list=null;
         	Object sync=null;
@@ -70,11 +74,11 @@ public class List2 extends HttpServlet
         			n++;
         		}
         	}
-        	//listBuffers[sort]=buff.toString();
+        	listBuffers[sort]=buff.toString();
         }
     }
 	public void parseLine(String line){
-		if(true)return;
+		
 		try{
 			long newtime=System.currentTimeMillis();
 			if(newtime-time>5000){
@@ -203,18 +207,19 @@ public class List2 extends HttpServlet
 				String line=sc.nextLine();
 				parseLine(line);	
 				i++;
-				if(i%5000==0)System.out.println("parsed "+i+ " maps");
+				if(i<5||i%100000==0)System.out.println("parsed "+i+ " maps");
 			}		
 			sc.close();
 			
 			
-			StringBuilder buff = new StringBuilder();
+			///source maps from safe list instead of real list
+			/*StringBuilder buff = new StringBuilder();
 			sc=new Scanner(new File(path+"popularlist.txt"));
 			while(sc.hasNextLine()){
 				buff.append(sc.nextLine()+"\n");
 			}
 			sc.close();
-			listBuffers[2]=listBuffers[0]=listBuffers[1]=buff.toString();
+			listBuffers[2]=listBuffers[0]=listBuffers[1]=buff.toString();*/
 			
 			
 			System.out.println("Finished loading "+searchTable.size());
@@ -235,10 +240,7 @@ public class List2 extends HttpServlet
         StringBuilder buff = new StringBuilder();
         String q=req.getQueryString();
         String[] parts=q.split("&");
-        if(true){
-    	outp.write("");
-        return;
-        }
+        
         int sort=0;
         String search="";
         for(String s:parts){
@@ -252,6 +254,7 @@ public class List2 extends HttpServlet
         	}
         }
         if(search.length()>0){
+        	
         	search=search.toUpperCase();
         	StringBuilder b=new StringBuilder();
     		for(int i=0;i<search.length();i++){

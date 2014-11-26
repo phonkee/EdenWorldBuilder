@@ -727,7 +727,6 @@
 		C6E46703127E4B0F00D509D1 /* CocosDenshion.m in Sources */ = {isa = PBXBuildFile; fileRef = C6E466FE127E4B0F00D509D1 /* CocosDenshion.m */; };
 		C6E46704127E4B0F00D509D1 /* SimpleAudioEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = C6E46700127E4B0F00D509D1 /* SimpleAudioEngine.m */; };
 		C6E4671E127E4BB800D509D1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E4671D127E4BB800D509D1 /* AVFoundation.framework */; };
-		C6E77C01141D7A1E005412DA /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E77C00141D7A1E005412DA /* libTestFlight.a */; };
 		C6F1B53B1274E9DE0080BD97 /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = C6F1B53A1274E9DE0080BD97 /* Menu.m */; };
 		C6F1B799127561D10080BD97 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C6F1B798127561D10080BD97 /* FileManager.m */; };
 		C6F311B31263A2F800890361 /* Terrain.m in Sources */ = {isa = PBXBuildFile; fileRef = C6F311B21263A2F800890361 /* Terrain.m */; };
@@ -1568,7 +1567,6 @@
 		C6E46700127E4B0F00D509D1 /* SimpleAudioEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleAudioEngine.m; sourceTree = "<group>"; };
 		C6E4671D127E4BB800D509D1 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		C6E77BFF141D7A1E005412DA /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = testflight/TestFlight.h; sourceTree = "<group>"; };
-		C6E77C00141D7A1E005412DA /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = testflight/libTestFlight.a; sourceTree = "<group>"; };
 		C6F1B5391274E9DE0080BD97 /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
 		C6F1B53A1274E9DE0080BD97 /* Menu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Menu.m; sourceTree = "<group>"; };
 		C6F1B797127561D10080BD97 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
@@ -1618,7 +1616,6 @@
 				C6E46680127E22AE00D509D1 /* CoreAudio.framework in Frameworks */,
 				C6E46688127E22C600D509D1 /* AudioToolbox.framework in Frameworks */,
 				C6E4671E127E4BB800D509D1 /* AVFoundation.framework in Frameworks */,
-				C6E77C01141D7A1E005412DA /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2185,7 +2182,6 @@
 			isa = PBXGroup;
 			children = (
 				C6E77BFF141D7A1E005412DA /* TestFlight.h */,
-				C6E77C00141D7A1E005412DA /* libTestFlight.a */,
 				32CA4F630368D1EE00C91783 /* Eden_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
@@ -3566,7 +3562,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -3601,7 +3597,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -3711,7 +3707,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = "Adhoc Distribution";
 		};
@@ -3774,7 +3770,7 @@
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = "Appstore Distribution";
 		};

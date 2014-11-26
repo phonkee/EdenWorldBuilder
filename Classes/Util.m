@@ -949,6 +949,7 @@ Button ButtonMake(float x,float y,float width,float height){
     b.origin.y=y;
     b.size.width=width;
     b.size.height=height;
+    b.pressed=FALSE;
     return b;
 }
 

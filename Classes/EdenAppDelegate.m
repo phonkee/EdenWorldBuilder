@@ -10,7 +10,7 @@
 #import "EdenViewController.h"
 //#import "FlurryAPI.h"
 #import "Appirater.h"
-#import "TestFlight.h"
+//#import "TestFlight.h"
 
 @implementation EdenAppDelegate
 

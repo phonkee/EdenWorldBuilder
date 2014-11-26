@@ -26,6 +26,8 @@ enum SORT_TYPES{
 };
 
 extern EAGLView* G_EAGL_VIEW;
+static UIAlertView *alertReportContent;
+static UIAlertView *alertReportConfirm;
 static float bsize;
 -(id)init{
     search_string=[NSMutableString stringWithString:@""];
@@ -45,6 +47,15 @@ static float bsize;
 	sbrrect.origin.x=SCREEN_WIDTH/2-220+143+90-23-85;
 	sbrrect.origin.y-=3;
     
+    alertReportContent= [[UIAlertView alloc]
+                    initWithTitle:@"Flag Content"
+                    message:@"Report this world for offensive or innappropriate content?\n"                                                                              delegate:self
+                    cancelButtonTitle:@"Cancel"                                                                           otherButtonTitles:@"Report" , nil];
+    
+    alertReportConfirm= [[UIAlertView alloc]
+                         initWithTitle:@"Report sent, thanks\n"
+                         message:@""                                                                              delegate:self
+                         cancelButtonTitle:@"Ok"                                                                          otherButtonTitles:nil , nil];
     
 	name_bar=[[statusbar alloc] initWithRect:RectFromButton(sbrrect):14];
     
@@ -98,6 +109,8 @@ static float bsize;
         rload_go=ButtonMake(292, 25, 90, 33);
         
     }
+    rect_flag=ButtonMake(SCREEN_WIDTH-40-20,SCREEN_HEIGHT-30-10,40,30);
+    if(IS_IPAD)rect_flag.origin.y-=5;
 	rect_cancel.size.width=40;
 	rect_cancel.size.height=30;
 	rect_cancel.origin.x=10;
@@ -109,7 +122,7 @@ static float bsize;
 	sbrect.size.width=320;
 	sbrect.size.height=45;
 	sbrect.origin.x=SCREEN_WIDTH/2-sbrect.size.width/2;
-	sbrect.origin.y=SCREEN_HEIGHT-75;
+	sbrect.origin.y=SCREEN_HEIGHT-74;
 	sort_left.size.width=8;
 	sort_left.size.height=15;
 	sort_right.size.width=8;
@@ -211,11 +224,11 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
 static const int usage_id=42;
 -(void)setSortStatus{
 	if(cur_sort==SORT_NAME){
-		[sort_bar setStatus:@"Search for name" :99999];
+		[sort_bar setStatus:@"Search" :99999];
 	}else if(cur_sort==SORT_DATE){
-		[sort_bar setStatus:@"Sorted by date" :99999];		
+		[sort_bar setStatus:@"Recent" :99999];
 	}else if(cur_sort==SORT_BEST){
-		[sort_bar setStatus:@"Sorted by popular" :99999];		
+		[sort_bar setStatus:@"Featured" :99999];
 	}	
 }
 -(void)clearWorldList{
@@ -241,10 +254,10 @@ static const int usage_id=42;
 	cur_page=0;
 	int n=0;
 	for(NSString* temp in list){
-		NSLog(@":::%@",temp);
+		//NSLog(@":::%@",temp);
 		if([temp hasSuffix:@".eden"]){
 			n++;
-            NSLog(@"%d sup",n);
+         //   NSLog(@"%d sup",n);
 		}
 	}
 	list_selection=0;
@@ -263,6 +276,19 @@ static const int usage_id=42;
 		NSString* temp=[list objectAtIndex:i];
 		
 		if([temp hasSuffix:@".eden"]){
+            BOOL was_reported=FALSE;
+            for(int r=0;r<rwc_count;r++){
+                if([temp isEqualToString:reportedWorlds[r]]){
+                    //printf("culled reported world from list: %s\n",[reportedWorlds[r] cStringUsingEncoding:NSUTF8StringEncoding]);
+                    was_reported=TRUE;
+                    break;
+                    
+                }
+            }
+            if(was_reported){
+                num_files--;
+                continue;
+            }
 			file_list[idx].file_name=[list objectAtIndex:i];
 			file_list[idx].name=[list objectAtIndex:i+1];
 			file_list[idx].name=[file_list[idx].name 
@@ -339,6 +365,7 @@ static const int usage_id=42;
             }*/
             
 			file_list[idx].blockrect.origin.x=20;
+            file_list[idx].blockrect.pressed=FALSE;
             if(IS_IPAD){
                 file_list[idx].blockrect.size.width=40;
                 file_list[idx].blockrect.size.height=40;  
@@ -378,7 +405,7 @@ static float cursor_blink=0;
     
 }
 -(void)update:(float)etime{
-	if(is_loading){
+	if(is_loading>0){
 		if(cur_sort==SORT_NAME){
             [self searchAndHide:TRUE];
         }
@@ -386,6 +413,7 @@ static float cursor_blink=0;
             [previewScreenshot release];
             previewScreenshot=NULL;
         }
+        if(is_loading!=2)
 		cur_sort=(cur_sort+1)%NUM_SORTS;
 		[self setSortStatus];
         if(cur_sort==SORT_NAME){
@@ -396,6 +424,11 @@ static float cursor_blink=0;
         }else{
              finished_list_dl=FALSE;
            [[World getWorld].menu.shareutil getSharedWorldList];
+            if(is_loading==2){
+                [sbar setStatus:@"Report sent, thank you" :5];
+                is_loading=-1;
+                return;
+            }
            
           
 		}
@@ -409,9 +442,11 @@ static float cursor_blink=0;
         if([list length]==0){
             [sbar setStatus:@"Connection error getting world list. ":2];
         }else{
+            if(is_loading!=-1)//just don't clear report confirm if coming from there
             [sbar clear];
             [self setWorldList:list];
         }
+        is_loading=0;
         return;
     }
 	if(finished_preview_dl){
@@ -501,6 +536,7 @@ static float cursor_blink=0;
             }else{
                 inbox3(touches[i].mx,touches[i].my,&rload_cancel);	               
                 inbox3(touches[i].mx,touches[i].my,&rload_go);
+                inbox3(touches[i].mx,touches[i].my,&rect_flag);
             }
 		}			
 		if(touches[i].inuse==usage_id&&touches[i].down==M_RELEASE){
@@ -518,11 +554,11 @@ static float cursor_blink=0;
                 }
 			}
             if(previewScreenshot==NULL){
-                if(inbox2(touches[i].mx,touches[i].my,&rect_arrow_up)){	
+                if(inbox2(touches[i].mx,touches[i].my,&rect_arrow_up)){
                     if(cur_page!=0)
                         cur_page--;
                 }
-                if(inbox2(touches[i].mx,touches[i].my,&rect_arrow_down)){	
+                if(inbox2(touches[i].mx,touches[i].my,&rect_arrow_down)){
                     if(page_size*cur_page+page_size<num_files){
                         cur_page++;
                     }
@@ -531,7 +567,7 @@ static float cursor_blink=0;
                 if(cur_sort==SORT_NAME&&inbox2(touches[i].mx,touches[i].my,&sbrrect)){
                     [self activateKB];
                 }else
-                    if(inbox(touches[i].mx,touches[i].my,sbrect)){	
+                    if(inbox(touches[i].mx,touches[i].my,sbrect)){
                         if(cur_sort==SORT_NAME)
                             [sbar setStatus:@"\nLoading list.." :9999];
                         else
@@ -540,41 +576,47 @@ static float cursor_blink=0;
                         
                     }
                 
-			for(int j=cur_page*page_size;j<cur_page*page_size+page_size;j++){
-				if(j>=num_files)break;
-				if(inbox(touches[i].mx,touches[i].my,file_list[j].namerect)||
-				   inbox(touches[i].mx,touches[i].my,file_list[j].daterect)||
-				   inbox2(touches[i].mx,touches[i].my,&(file_list[j].blockrect))){
-                    file_list[j].blockrect.pressed=FALSE;
-					if(j==list_selection){
-						loading_world=j+1;
-                        [sbar setStatus:@"Downloading preview..." :9999];
-                        finished_preview_dl=false;
-                         [[World getWorld].menu.shareutil loadSharedPreview:file_list[loading_world-1].file_name];
-						
-						
-					}else{
-						list_selection=j;
-					}
-				}
-			}
-            }else{
-           
-            if(inbox2(touches[i].mx,touches[i].my,&rload_cancel)){		
-                if(previewScreenshot!=NULL){
-                    [self setSortStatus];
-                    [previewScreenshot release];
-                    previewScreenshot=NULL;
+                for(int j=cur_page*page_size;j<cur_page*page_size+page_size;j++){
+                    if(j>=num_files)break;
+                    if(inbox(touches[i].mx,touches[i].my,file_list[j].namerect)||
+                       inbox(touches[i].mx,touches[i].my,file_list[j].daterect)||
+                       inbox2(touches[i].mx,touches[i].my,&(file_list[j].blockrect))){
+                        file_list[j].blockrect.pressed=FALSE;
+                        if(j==list_selection){
+                            loading_world=j+1;
+                            [sbar setStatus:@"Downloading preview..." :9999];
+                            finished_preview_dl=false;
+                            [[World getWorld].menu.shareutil loadSharedPreview:file_list[loading_world-1].file_name];
+                            
+                            
+                        }else{
+                            list_selection=j;
+                        }
+                    }
                 }
-               // NSLog(@"hi");
-            }
-                if(inbox2(touches[i].mx,touches[i].my,&rload_go)){		
+            }else{
+                
+                if(inbox2(touches[i].mx,touches[i].my,&rload_cancel)){
+                    if(previewScreenshot!=NULL){
+                        [self setSortStatus];
+                        [previewScreenshot release];
+                        previewScreenshot=NULL;
+                    }
+                    // NSLog(@"hi");
+                }
+                if(inbox2(touches[i].mx,touches[i].my,&rload_go)){
                     finished_dl=false;
                     [[World getWorld].menu.shareutil loadShared:file_list[loading_world-1].file_name];
                     
                     
                     
                 }
+                if(inbox2(touches[i].mx,touches[i].my,&rect_flag)){
+                    [alertReportContent show];
+                    
+
+                }
+
             }
 			touches[i].inuse=0;
 			touches[i].down=M_NONE;
@@ -595,6 +637,47 @@ static float cursor_blink=0;
         }
     }
 	
+}
+NSString* reportedWorlds[100];
+int rwc_count=0;
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	//NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	if(alertView==alertReportContent){
+        switch (buttonIndex) {
+            case 0:
+            {
+               
+                break;
+            }
+            case 1:
+            {
+                if(previewScreenshot!=NULL){
+                    
+                    [previewScreenshot release];
+                    previewScreenshot=NULL;
+                    is_loading=2;
+                }
+               
+                if(rwc_count==100){
+                    [sbar setStatus:@"Report limit reached, try again later" :5];
+                }else{
+                    
+                    [sbar setStatus:@"Report sent, thank you" :5];
+                    [[World getWorld].menu.shareutil reportWorld:file_list[loading_world-1].file_name];
+                    reportedWorlds[rwc_count]=[file_list[loading_world-1].file_name copy];
+                    rwc_count++;
+                    
+                    [alertReportConfirm show];
+                
+                }
+                break;
+            }
+           
+            default:
+                break;
+        }
+    }
 }
 -(void)render{
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -797,6 +880,9 @@ static float cursor_blink=0;
         [[[Resources getResources] getMenuTex:MENU_BACK_TEXT] drawButton:rload_cancel];
         glColor4f(0.0, 1.0, 0.0, 1.0f);
         [[[Resources getResources] getMenuTex:MENU_LOAD_TEXT] drawButton:rload_go];
+        
+        glColor4f(1.0,1.0,1.0,1.0);
+        [[[Resources getResources] getMenuTex:MENU_BACK] drawButton:rect_flag];
     }
     glColor4f(1.0, 1.0, 1.0, 1.0f);
     if(cur_sort==SORT_NAME&&previewScreenshot==NULL){

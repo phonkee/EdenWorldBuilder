@@ -581,6 +581,7 @@ void addMoreCreaturesIfNeeded(){
             continue;
         }
         guys[gc].pos.y=ly+2;
+         guys[gc].color=0;
        /* int breakout=45;
         int lastType=-1;
         while(true){
@@ -632,6 +633,15 @@ void addMoreCreaturesIfNeeded(){
             if(ppx==0&&ppz==0){
                 guys[gc].model_type=M_MOOF;
                 guys[gc].color=COLOR_BWG1;
+            }else if(ppx==0&&(ppz==2||ppz==1)){
+                if(arc4random()%2==0)
+                guys[gc].color=COLOR_ORANGE1+arc4random()%2;
+                 guys[gc].model_type=arc4random()%(NUM_CREATURES);
+            }
+            else if(ppx==0&&ppz==3){
+               
+                guys[gc].color=COLOR_PINK1+arc4random()%2;
+                 guys[gc].model_type=arc4random()%(NUM_CREATURES);
             }else
             if(ppx==3&&ppz!=0){
                 do{
@@ -641,6 +651,7 @@ void addMoreCreaturesIfNeeded(){
             {
                  guys[gc].model_type=arc4random()%(NUM_CREATURES);
             }
+           // guys[gc].model_type=M_CHARGER;
             //printf("region: %d,%d\n",(int)ppx,(int)ppz);
             
            /* if(lrx!=ppx||lrz!=ppz){
@@ -656,7 +667,7 @@ void addMoreCreaturesIfNeeded(){
        
         guys[gc].state=0;
         guys[gc].touched=FALSE;
-        guys[gc].color=0;
+       
         guys[gc].life=START_LIFE;
         guys[gc].timer=1;
         guys[gc].frame=getFrame(guys[gc].model_type,guys[gc].state,0);
@@ -1684,8 +1695,11 @@ bool LoadModels(const char* pszReadPath)
              cmax[i].x=.43f;
          }
         if(i==M_CHARGER){
-            cmin[i].x=-.3f;
-            cmax[i].x=.3f;
+            cmin[i].x=-.5f;
+            cmax[i].x=.5f;
+            
+            cmin[i].z-=.4f;
+            cmax[i].z-=.4f;
         }
         if(i==M_STALKER){
             cmin[i].x=-.3f;
@@ -2082,7 +2096,7 @@ void DrawShadows(){
     //glDisable(GL_DEPTH_TEST);
     glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:ICO_SHADOW].name);
     glColor4f(1,1,1,.4f);
-    
+    int shadows_drawn=0;
     for(int j=0;j<=max_render;j++){
        
         int i=renderlistc[j];
@@ -2119,6 +2133,7 @@ void DrawShadows(){
                 type=-1;
                 break;
             }
+            
         }
         if(type==-1)continue;
         float dist=(min[guys[i].model_type].y*scale+vpos.y)-point.y;
@@ -2146,11 +2161,12 @@ void DrawShadows(){
                 glVertexPointer(3, GL_FLOAT, 0, vertices);
         glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        
+        shadows_drawn++;
         //DrawBox(vpv(point)-PVRTVec3(.1f,.1f,.1f),
          //       vpv(point)+PVRTVec3(.1f,.1f,.1f));
         
     }
+   // printf("shadows drawn: %d\n",shadows_drawn);
       //glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
@@ -2299,8 +2315,9 @@ bool RenderModels()
         bounds[4]=guys[i].pos.y+BB.y*scale;
         bounds[5]=guys[i].pos.z+BB.z*scale;
         
-        
-        if(!(ViewTestAABB(bounds,VT_INSIDE)&VT_OUTSIDE)){
+        int vtr=(ViewTestAABB(bounds,0));
+        //printf("vtr:  %#010x\n", vtr);
+        if(!(vtr&VT_OUTSIDE)){
             guys[i].insideView=TRUE;
             renderlistc[renderidx++]=i;
              model_render_count++;
@@ -2322,6 +2339,7 @@ bool RenderModels()
     extern bool SUPPORTS_OGL2;
     if(!SUPPORTS_OGL2)mmax=10;
     if(max_render>mmax)max_render=mmax;
+    int models_drawn=0;
     for(int j=0;j<max_render;j++){
           
         int i=renderlistc[j];
@@ -2368,6 +2386,7 @@ bool RenderModels()
             
             
             DrawModel(i);
+            models_drawn++;
             glColor4f(1,1,1,1);
         }
         
@@ -2375,6 +2394,8 @@ bool RenderModels()
         guys[i].pos.z+=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
     
     }
+    
+   // printf("models drawn: %d\n",models_drawn);
     if(guys[nguys].model_type!=-1){
         glEnable(GL_BLEND);
         //if(guys[nguys].color==0)
@@ -2394,16 +2415,22 @@ bool RenderModels()
     glColor4f(1,0,0,1);
     glDisable(GL_TEXTURE_2D);
     glScalef(1/scale,1/scale,1/scale);
-   /* glLineWidth(1.0f);
+    
+    
+    glLineWidth(1.0f);
     glDisable(GL_DEPTH_TEST);
-    for(int i=0;i<nguys;i++){
+   /* for(int i=0;i<nguys;i++){
         if(!guys[i].alive)continue;
+        guys[i].pos.x-=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
+        guys[i].pos.z-=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
       //  Vector vpos=MakeVector(guys[i].pos.x*1/scale,guys[i].pos.y*1/scale,guys[i].pos.z*1/scale);
         
        // DrawBox(v_add(min[guys[i].model_type],vpos),v_add(max[guys[i].model_type],vpos));
-        guys[i].pos.x-=16;
-        guys[i].pos.z-=16;
+        if(guys[i].insideView)
         glColor4f(1,1,1,1);
+        else{
+            glColor4f(1,0,0,1);
+        }
         DrawBox(centers[guys[i].model_type]+guys[i].pos-mradius[guys[i].model_type],
                 centers[guys[i].model_type]+guys[i].pos+mradius[guys[i].model_type]);
         glColor4f(0,1,1,1);
@@ -2415,12 +2442,16 @@ bool RenderModels()
                 guys[i].pos+PVRTVec3(.1f,.1f,.1f));
         glColor4f(1,0,0,1);
         
-        guys[i].pos.x+=16;
-        guys[i].pos.z+=16;
+      
+        
+        guys[i].pos.x+=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
+        guys[i].pos.z+=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
         //DrawBox(&guys[i].box);
         
-    }
-     glEnable(GL_DEPTH_TEST);*/
+    }*/
+     glEnable(GL_DEPTH_TEST);
+    
+    
     glEnable(GL_TEXTURE_2D);
     
     
@@ -2433,10 +2464,10 @@ bool RenderModels()
     glDisable(GL_NORMALIZE);
     DrawShadows();
     glEnableClientState(GL_COLOR_ARRAY);
-    //static int mcc=0;
-    //mcc++;
-    //if(mcc%60==0)
-   // printf("Models updated:%d   models rendered:%d\n",model_update_count,model_render_count);
+    static int mcc=0;
+    mcc++;
+    if(mcc%60==0)
+    printf("Models updated:%d   models rendered:%d\n",model_update_count,model_render_count);
 		return true;
 }
 

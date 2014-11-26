@@ -26,16 +26,30 @@ static NSString* UPLOAD_URL=@"http://localhost:8080/upload2.php";
 static NSString* LIST_URL=@"http://localhost:8080/list2.php";
 static NSString* MAPS_URL=@"http://files.edengame.net/";*/
 
-static NSString* UPLOAD_URL=@"http://edengame.net/upload2.php";
+//////
+
+/*static NSString* UPLOAD_URL=@"http://edengame.net/upload2.php";
 static NSString* LIST_URL=@"http://edengame.net/list2.php";
 static NSString* MAPS_URL=@"http://files.edengame.net/";
-static NSString* POPULAR_URL=@"http://edengame.net/popularlist2.txt";
+static NSString* POPULAR_URL=@"http://edengame.net/popularlist.txt";
+static NSString* REPORT_URL=@"http://edengame.net/report.php";
+//static NSString* POPULAR_URL=@"http://edengame.net/popularlist2.txt";
 #else
 static NSString* UPLOAD_URL=@"http://edengame.net/upload2.php";
 static NSString* LIST_URL=@"http://edengame.net/list2.php";
+static NSString* REPORT_URL=@"http://edengame.net/report.php";
 static NSString* MAPS_URL=@"http://files.edengame.net/";
 static NSString* POPULAR_URL=@"http://files.edengame.net/popularlist.txt";
+
+*/
+
 #endif
+
+static NSString* UPLOAD_URL=@"http://173.255.233.66/upload2.php";
+static NSString* LIST_URL=@"http://173.255.233.66/list2.php";
+static NSString* REPORT_URL=@"http://173.255.233.66/report.php";
+static NSString* MAPS_URL=@"http://files.edengame.net/";
+static NSString* POPULAR_URL=@"http://files.edengame.net/popularlist.txt";
 
 @implementation ShareUtil
 @synthesize listresult;
@@ -45,6 +59,29 @@ static NSString* POPULAR_URL=@"http://files.edengame.net/popularlist.txt";
 	return self;	
 }
 
+FileDownload* reportmanager=NULL;
+-(void)reportWorld:(NSString*)file_name{
+    
+    NSString* uuid=[[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    NSString* nsurl=[NSString stringWithFormat:@"%@?map=%@&uuid=%@",REPORT_URL,file_name,uuid ] ;
+    NSURL* url = [[NSURL alloc] initWithString:nsurl];
+    if(reportmanager){
+        [reportmanager cancel];
+        [reportmanager release];
+        reportmanager=NULL;
+    }
+    
+    reportmanager=[[FileDownload alloc] initWithURL:url
+                                       filePath:NULL
+                                       delegate:self
+                                   doneSelector:@selector(reportSuccess:)
+                                  errorSelector:@selector(reportError:)
+                               progressSelector:@selector(reportProgress:)                                       ];
+    [url release];
+
+    NSLog(@"report: %@\n",nsurl);
+    
+}
 -(void)loadSharedPreview:(NSString*)file_name{
 	
 	
@@ -262,6 +299,23 @@ static NSString* POPULAR_URL=@"http://files.edengame.net/popularlist.txt";
     [dlmanager release];
     dlmanager=NULL;
      
+}
+-(void)reportProgress:(id)ipct{
+   }
+-(void)reportSuccess:(id)obj{
+	//
+	NSLog(@"report success: %@",obj);
+    [reportmanager release];
+    reportmanager=NULL;
+    
+	
+}
+-(void)reportError:(id)obj{
+	
+   	NSLog(@"report error: %@",obj);
+    [reportmanager release];
+    reportmanager=NULL;
+    
 }
 
 

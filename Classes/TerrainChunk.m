@@ -1062,7 +1062,7 @@ extern int g_offcz;
         paint[2]=cl.z;
        
        
-        float shadow=getShadow(x+bounds[0],z+bounds[2],y+bounds[1]);
+        float shadow=1.0f;//getShadow(x+bounds[0],z+bounds[2],y+bounds[1]);
         light[0]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],shadow,0);
         light[1]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],shadow,1);
         light[2]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],shadow,2);

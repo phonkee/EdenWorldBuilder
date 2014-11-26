@@ -305,7 +305,18 @@ int extraGeneration(any_t passedIn,any_t chunkToGen){
 	world_name=name;
 	[world_name retain];
 	[[World getWorld].fm loadWorld:name:fromArchive];
-   
+    
+   /* for(int x=0;x<T_SIZE;x++){
+        for(int z=0;z<T_SIZE;z++){
+            for(int y=T_HEIGHT-1;y>=0;y--){
+                if(blockarray[x*T_SIZE*T_HEIGHT+z*T_HEIGHT+y]>0&&blockarray[x*T_SIZE*T_HEIGHT+z*T_HEIGHT+y]!=TYPE_CLOUD){
+                    shadowarray[x*T_SIZE+z]=y;
+                    break;
+                }
+            }
+        }
+    }*/
+    
     firstframe=TRUE;
     //hashmap_iterate(chunkMap,extraGeneration,NULL);
 	//[self startDynamics];
@@ -326,6 +337,20 @@ int extraGeneration(any_t passedIn,any_t chunkToGen){
   // printf("loadtime: %f  \n",ttime);
 	
 	
+}
+-(void) warpToPoint:(float)x:(float)z:(float)y{
+    Vector pp;
+	pp.x=(x+.5f);
+	pp.z=(z+.5f);
+	pp.y=(y+1);
+	//[World getWorld].player.pos=pp;
+	[[World getWorld].fm saveWorld:pp];
+	[self unloadTerrain:FALSE];
+    
+	[self loadTerrain:world_name:FALSE];
+    //[[World getWorld].player reset];
+    
+    [[World getWorld].player groundPlayer];
 }
 - (void)warpToHome{
 	Vector pp;
@@ -1274,8 +1299,9 @@ int getRampType(int x,int z,int y, int t){
 }*/
 
 float getShadow(int x,int z,int y){
+    return 1.0f;
    // return .5f;
-    float ret=y/T_HEIGHT/2+.7f;
+ /*   float ret=y/T_HEIGHT/2+.7f;
     for(int i=1;i<20;i++){
         if(i+y>=T_HEIGHT){
             if(ret>1)ret=1;
@@ -1292,17 +1318,20 @@ float getShadow(int x,int z,int y){
       //  printf("lightarray at box:%f\n",lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].x);
     }
     
-    return 1.0f;
+    return 1.0f;*/
     //if(x<=0||z<=0||y<0||x>=T_SIZE-1||z>=T_SIZE-1||y>=T_HEIGHT)return 0;
     
     
-  /*  int count=0;
+    /*int count=0;
     for(int dx=-1;dx<=1;dx++)
         for(int dz=-1;dz<=1;dz++){
             //if(x+dx>=0&&x+dx<CHUNK_SIZE&&z+dz>=0&&z+dz<CHUNK_SIZE)
             if(shadowarray[((x+dx+g_offcx)%T_SIZE)*T_SIZE+((z+dz+g_offcz)%T_SIZE)]>y)count++;
         }
-    return 100.0f*count/9.0f; */
+    float ret=100.0f*count/9.0f;
+    ret=1.0f-ret;
+    if(ret<0)return 0;
+    return ret;*/
     
 }
 float calcLight(int x,int z,int y,float shadow,int coord){

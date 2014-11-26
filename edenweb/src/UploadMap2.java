@@ -1,7 +1,4 @@
 import java.io.*;
-import java.nio.*;
-import java.nio.channels.FileChannel;
-
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.zip.*;
@@ -11,18 +8,21 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
 import org.jets3t.service.*;
-
-
 import org.jets3t.service.acl.*;
 import org.jets3t.service.impl.rest.httpclient.*;
 import org.jets3t.service.model.*;
 import org.jets3t.service.security.*;
-import org.jets3t.service.utils.*;
 
 
 public class UploadMap2 extends HttpServlet implements Runnable
 {
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
    String path;
    String awsAccessKey;
    String awsSecretKey;
@@ -63,31 +63,26 @@ public class UploadMap2 extends HttpServlet implements Runnable
 		PrintWriter outp = resp.getWriter();
 		StringBuilder buff = new StringBuilder();
 
-
-		@SuppressWarnings({  "rawtypes" })
-		ArrayList files = (ArrayList) req.getAttribute( "org.eclipse.jetty.servlet.MultiPartFilter.files" );
-
-		if(files==null||files.size()<2){
-			if(files==null)
-				buff.append("files is null what else is new");
-			else
+		Collection<Part> parts=req.getParts();
+		
+		
+		if(parts.size()<2){
+		
 				buff.append("Less than 2 files");
 			outp.write( ""+buff );
 			activeupload--;
 			return;
 		}
+		Iterator<Part> itp=parts.iterator();
+		Part file1=itp.next();
+		Part file2=itp.next();
 		boolean corrupt=false;
-		File file1 =(File) files.get(0);
-		File file2= (File) files.get(1);
-		if( file1 == null || !file1.exists() )
-		{
-			buff.append( "File does not exist" );
-		}        
-		else if( file1.isDirectory())
-		{
-			buff.append( "File is a directory" );
-		}else if( file2 == null || !file2.exists() ){
-			buff.append("img does not exist");
+		
+		if(file1==null||file2==null){
+			System.out.println("missing a part");
+			outp.write( ""+buff );
+			activeupload--;
+			return;
 		}
 		else
 		{
@@ -107,11 +102,11 @@ public class UploadMap2 extends HttpServlet implements Runnable
 			String file_name=time+".eden";
 			// File temp=new File(path+"2"+time);
 			GZIPInputStream gzipInputStream=null;
-			FileInputStream fstream=null;
+			InputStream fstream=null;
 			byte[] buf = new byte[1024];
 			int len=0;
 			try{
-				fstream=new FileInputStream(file1);
+				fstream=file1.getInputStream();
 				gzipInputStream=
 					new GZIPInputStream(fstream);
 			openc++;
@@ -169,7 +164,7 @@ public class UploadMap2 extends HttpServlet implements Runnable
 				}
 				// fr.close();
 				// temp.delete();
-				file2.renameTo(outputFile2);
+				file2.write(outputFile2.getName());
 				try{
 					String real_hash=getMD5Checksum(outputFile2.getAbsolutePath());
 					
@@ -218,7 +213,7 @@ public class UploadMap2 extends HttpServlet implements Runnable
 					fw.close();
 				}
 			}
-			file1.renameTo( outputFile );
+			file1.write( outputFile.getName() );
 
 
 			UploadObject o=new UploadObject();

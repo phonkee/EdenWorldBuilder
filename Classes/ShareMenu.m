@@ -240,7 +240,9 @@ static float cursor_blink=0;
 	[[[Resources getResources] getMenuTex:MENU_SEND] drawButton:rect_submit];
 	glColor4f(1.0f, 1.0f, 1.0f,1.0f);    
 	[[[Resources getResources] getMenuTex:MENU_TEXT_BOX] drawInRect:input_background];
-
+    
+	
+    
 	glColor4f(0.0f, 0.0f, 0.0f,1.0f);
 	[share_explain_lbl render];
     glColor4f(0.0f, 0.0f, 0.0f,1.0f);

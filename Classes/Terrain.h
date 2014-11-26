@@ -63,6 +63,7 @@
 - (int)getLand:(int)x :(int)z :(int)y;
 - (int)getColor:(int)x :(int)z :(int)y;
 - (void)refreshChunksInRadius:(int)x:(int)z:(int)y:(int)radius;
+-(void) warpToPoint:(float)x:(float)z:(float)y;
 
 - (void)addToUpdateList:(int)cx:(int)cy:(int)cz;
 
