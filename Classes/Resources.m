@@ -125,8 +125,13 @@ static int sfxNumVariations[NUM_SOUNDS]={
     [   S_CREATURE_PICKEDUP]=1,
     [   S_FLAMELOOP]=1,
     [   S_CAMERA]=1,
+    
     [S_HIT]=3,
- 
+    [S_DOOR_OPEN]=1,
+    [S_DOOR_CLOSED]=1,
+    [S_FIREWORK_EXPLODE]=1,
+    [S_FIREWORK_FUSE]=1,
+    [S_FIREWORK_LIFTOFF]=1,
     
 };
 static NSString* soundFiles[NUM_SOUNDS][MAX_VARIATIONS2]={	
@@ -167,7 +172,12 @@ static NSString* soundFiles[NUM_SOUNDS][MAX_VARIATIONS2]={
     [S_ICE_LOOP]={@"ice_slide.wav",@"x_2.caf",@"x_3.caf",@"x_4.caf"},
 
     [S_CAMERA]={@"Grab.aif",@"x_2.caf",@"x_3.caf",@"x_4.caf"},
-    [S_HIT]={@"player_hit_1.caf",@"player_hit_2.caf",@"player_hit_3.caf"}
+    [S_HIT]={@"player_hit_1.caf",@"player_hit_2.caf",@"player_hit_3.caf"},
+    [S_DOOR_OPEN]={@"door_open.mp3"},
+    [S_DOOR_CLOSED]={@"door_close.mp3"},
+    [S_FIREWORK_EXPLODE]={@"firework_explode.mp3"},
+    [S_FIREWORK_FUSE]={@"firework_fuse.mp3"},
+    [S_FIREWORK_LIFTOFF]={@"firework_liftoff.mp3"},
 };
 
 

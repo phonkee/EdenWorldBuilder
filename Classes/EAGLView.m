@@ -290,9 +290,9 @@ extern EAGLView* G_EAGL_VIEW;
     {
         [EAGLContext setCurrentContext:context];
         
-        const GLenum discards[]  = {GL_DEPTH_ATTACHMENT};
-       // glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-        glDiscardFramebufferEXT(GL_FRAMEBUFFER,1,discards);
+        const GLenum discards[]  = {GL_DEPTH_ATTACHMENT_OES};
+                // glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+       glDiscardFramebufferEXT(GL_FRAMEBUFFER_OES,1,discards);
         
         success = [context presentRenderbuffer:GL_RENDERBUFFER_OES];
             }

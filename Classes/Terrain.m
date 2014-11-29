@@ -2279,11 +2279,19 @@ int lolc=0;
         Vector vdist=v_sub(ppos,v1);
         
         int dist=v_length2(vdist);
-        
+        int prev_ani=door->ani;
         if(ppos.y>=door->pos.y&&ppos.y<=door->pos.y+2&&dist<2*2){
             door->ani=-1;
         }else
             door->ani=1;
+        
+        if(prev_ani!=door->ani){
+            if(door->ani<0){
+                [[Resources getResources] playSound:S_DOOR_OPEN];
+            }else if(door->ani > 0){
+                 [[Resources getResources] playSound:S_DOOR_CLOSED];
+            }
+        }
         float rot=door->rot;
         /*if(renderList[i].rtobjects[j].ani==0){
          renderList[i].rtobjects[j].ani=1;
@@ -2294,12 +2302,18 @@ int lolc=0;
             door->rot-=6*last_etime;
         }
         if(door->rot<0){
+            
             door->rot=0;
-            // door->ani=1;
+            
+           
+            
         }
         if(door->rot>M_PI/2){
+            
+            
+
             door->rot=M_PI/2;
-            //door->ani=-1;
+            
         }
         Vector offsets=MakeVector(0,0,0);
         if(dir==0){

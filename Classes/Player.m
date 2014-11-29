@@ -462,6 +462,9 @@ extern bool hitCustom;
                          
 						[[World getWorld].terrain burnBlock:point.x	:point.z :point.y :FALSE];
 						if(blockinfo[type]&IS_FLAMMABLE){
+                            if(type==TYPE_FIREWORK){
+                                [[Resources getResources] playSound:S_FIREWORK_FUSE];
+                            }else
 							[[Resources getResources] playSound:S_FIRE_SUCCEED];
 						}else{
                             [[World getWorld].effects addSmoke:point.x:point.z:point.y];
