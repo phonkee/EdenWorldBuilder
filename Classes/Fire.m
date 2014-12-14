@@ -14,7 +14,7 @@
 @implementation Fire
 
 #define n_particles 50
-#define max_fparticles 3000
+#define max_fparticles 6000
 #define max_bb 500
 #define SMOKE_SIZER 80
 
@@ -370,6 +370,7 @@ static int frame=0,frame2=0;
     
     for(int i=0;i<list_size;i++){
         bnode* node=&list[i];
+        if(node==NULL)continue;
         if(node->type==2||node->type==0){
            
             continue;}

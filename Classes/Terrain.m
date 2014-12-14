@@ -1445,6 +1445,7 @@ int getColorc(int x,int z,int y){
 }
 - (void)shootFirework:(int)x :(int)z :(int)y{
     [fireworks addFirework:x:y:z:[self getColor:x:z:y]];
+    [[Resources getResources] playSound:S_FIREWORK_LIFTOFF];
    // [[World getWorld].effects addCreatureVanish:x+.5f:z+.5f:y+5:[self getColor:x:z:y]:TYPE_TNT];
     
     [self destroyBlock:x :z :y];
