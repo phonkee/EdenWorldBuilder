@@ -11,7 +11,7 @@
 
 #define P_FOVY 85.0f
 
-#define P_ZNEAR .2f
+#define P_ZNEAR .1f
 #define IPAD_WIDTH 1024
 #define IPAD_HEIGHT 768
 #define IPHONE_WIDTH 480

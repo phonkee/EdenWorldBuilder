@@ -167,12 +167,19 @@ extern bool hitCustom;
             if(!collidesWithPlayer){
                 
                 int type=[World getWorld].hud.blocktype;
+                
                 if(type==TYPE_STONE||type==TYPE_DARK_STONE||type==TYPE_COBBLESTONE||type==TYPE_BRICK||type==TYPE_VINE){
                     
                     [[Resources getResources] playSound:S_BUILD_STONE];
-                }else if(type==TYPE_LEAVES){							 
+                }else if(type==TYPE_LEAVES||type==TYPE_FLOWER){
                     [[Resources getResources] playSound:S_BUILD_LEAVES];	 
-                }else if(blockinfo[type]&IS_LAVA){							 
+                }else if(type==TYPE_LIGHTBOX){
+                    
+                    [[Resources getResources] playSound:S_BUILD_LIGHT];
+                }else if(type==TYPE_STEEL){
+                    
+                    [[Resources getResources] playSound:S_BUILD_METAL];
+                }else if(blockinfo[type]&IS_LAVA){
                     [[Resources getResources] playSound:S_BUILD_LAVA];	 
                 }else if(blockinfo[type]&IS_WATER){							 
                     [[Resources getResources] playSound:S_BUILD_WATER];	 
@@ -182,7 +189,9 @@ extern bool hitCustom;
                     [[Resources getResources] playSound:S_BUILD_GLASS];	
                 }else if(blockinfo[type]&IS_GRASS||type==TYPE_DIRT){
                     [[Resources getResources] playSound:S_BUILD_DIRT];	
-                }else{
+                }
+                    
+                        else{
                     [[Resources getResources] playSound:S_BUILD_GENERIC];
                 }
                 if([World getWorld].hud.build_size==0){
@@ -403,7 +412,13 @@ extern bool hitCustom;
                                 if(type==TYPE_STONE||type==TYPE_DARK_STONE||type==TYPE_COBBLESTONE||type==TYPE_BRICK||type==TYPE_VINE){
                                     
                                     [[Resources getResources] playSound:S_BUILD_STONE];
-                                }else if(type==TYPE_LEAVES){							 
+                                }else if(type==TYPE_LIGHTBOX){
+                                    
+                                    [[Resources getResources] playSound:S_BUILD_LIGHT];
+                                }else if(type==TYPE_STEEL){
+                                    
+                                    [[Resources getResources] playSound:S_BUILD_METAL];
+                                }else if(type==TYPE_LEAVES||type==TYPE_FLOWER){
                                     [[Resources getResources] playSound:S_BUILD_LEAVES];	 
                                 }else if(blockinfo[type]&IS_LAVA){							 
                                     [[Resources getResources] playSound:S_BUILD_LAVA];	 
@@ -471,7 +486,7 @@ extern bool hitCustom;
                         }
 					}else if(mode==MODE_MINE){
                        
-						if(type!=TYPE_BEDROCK){
+						if(type!=TYPE_BEDROCK&&type!=TYPE_GOLDEN_CUBE){
 							if(type==TYPE_STONE||type==TYPE_DARK_STONE||type==TYPE_COBBLESTONE||type==TYPE_BRICK||type==TYPE_VINE||(type>=TYPE_STONE_RAMP1&&type<=TYPE_STONE_RAMP4)||
                                
                                (type>=TYPE_STONE_SIDE1&&type<=TYPE_STONE_SIDE4)){
@@ -485,7 +500,7 @@ extern bool hitCustom;
 								[[Resources getResources] playSound:S_BREAK_WATER];	 
 							}else if(blockinfo[type]&IS_FLAMMABLE){							 
 								[[Resources getResources] playSound:S_BREAK_WOOD];	 
-							}else if(type==TYPE_GLASS){
+							}else if(type==TYPE_GLASS||type==TYPE_LIGHTBOX){
                                 [[Resources getResources] playSound:S_BREAK_GLASS];	
                             }else if(blockinfo[type]&IS_GRASS||type==TYPE_DIRT||type==TYPE_SAND){
                                  [[Resources getResources] playSound:S_BREAK_DIRT];	
@@ -503,6 +518,9 @@ extern bool hitCustom;
 						}
 					}else if(mode==MODE_PAINT){
                        
+                        if(type==TYPE_LIGHTBOX){
+                             [[Resources getResources] playSound:S_CHANGE_LIGHT];
+                        }else
                         [[Resources getResources] playSound:S_PAINT_BLOCK];	
                         
                         if(hitCustom){
@@ -689,6 +707,13 @@ static BOOL lastOnIce;
         }
     }
     if(life<0){
+        if(damage==.08f){
+            [[Resources getResources] playSound:S_DEATH_BY_LAVA];
+        }else if(damage==.2f){
+            [[Resources getResources] playSound:S_DEATH_BY_CREATURE];
+        }else if(damage==.38f||damage==.05f){
+            [[Resources getResources] playSound:S_DEATH_BY_TNT];
+        }
         dead=TRUE;
         [World getWorld].hud.fade_out=0;
         printf("dead\n");
@@ -1216,6 +1241,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                         
                         [World getWorld].hud.goldencubes++;
                         [World getWorld].hud.flash=.95f;
+                         [[Resources getResources] playSound:S_TREASURE_PICKUP];
                         int coli=[[World getWorld].terrain getColor:x :z:y];
                         if(coli==0)
                             [World getWorld].hud.flashcolor=MakeVector(blockColor[TYPE_GOLDEN_CUBE][0]/255.0f,blockColor[TYPE_GOLDEN_CUBE][1]/255.0f,blockColor[TYPE_GOLDEN_CUBE][2]/255.0f);

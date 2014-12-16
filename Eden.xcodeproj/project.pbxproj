@@ -86,6 +86,64 @@
 		19D333AF167D6E2A0082ACE7 /* Nergle_DefaultMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D333A5167D6E2A0082ACE7 /* Nergle_DefaultMASK.png */; };
 		19D333B0167D6E2A0082ACE7 /* Stumpy_BlinkMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D333A6167D6E2A0082ACE7 /* Stumpy_BlinkMASK.png */; };
 		19D333B1167D6E2A0082ACE7 /* Stumpy_DefaultMASK.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D333A7167D6E2A0082ACE7 /* Stumpy_DefaultMASK.png */; };
+		19D5466C1A3D43B500E61041 /* death_by_lava_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546321A3D43B500E61041 /* death_by_lava_02.mp3 */; };
+		19D5466D1A3D43B500E61041 /* death_by_lava_03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546331A3D43B500E61041 /* death_by_lava_03.mp3 */; };
+		19D5466E1A3D43B500E61041 /* death_by_tnt_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546341A3D43B500E61041 /* death_by_tnt_01.mp3 */; };
+		19D5466F1A3D43B500E61041 /* death_by_tnt_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546351A3D43B500E61041 /* death_by_tnt_02.mp3 */; };
+		19D546701A3D43B500E61041 /* death_by_tnt_03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546361A3D43B500E61041 /* death_by_tnt_03.mp3 */; };
+		19D546711A3D43B500E61041 /* creature_aggro_03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546371A3D43B500E61041 /* creature_aggro_03.mp3 */; };
+		19D546721A3D43B500E61041 /* creature_angry_charge_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546381A3D43B500E61041 /* creature_angry_charge_02.mp3 */; };
+		19D546731A3D43B500E61041 /* creature_angry_charge_03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546391A3D43B500E61041 /* creature_angry_charge_03.mp3 */; };
+		19D546741A3D43B500E61041 /* creature_angry_hit_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5463A1A3D43B500E61041 /* creature_angry_hit_02.mp3 */; };
+		19D546751A3D43B500E61041 /* creature_angry_hit_03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5463B1A3D43B500E61041 /* creature_angry_hit_03.mp3 */; };
+		19D546761A3D43B500E61041 /* creature_lit_on_fire_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5463C1A3D43B500E61041 /* creature_lit_on_fire_02.mp3 */; };
+		19D546771A3D43B500E61041 /* creature_lit_on_fire_03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5463D1A3D43B500E61041 /* creature_lit_on_fire_03.mp3 */; };
+		19D546781A3D43B500E61041 /* death_by_creature_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5463E1A3D43B500E61041 /* death_by_creature_01.mp3 */; };
+		19D546791A3D43B500E61041 /* death_by_creature_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5463F1A3D43B500E61041 /* death_by_creature_02.mp3 */; };
+		19D5467A1A3D43B500E61041 /* death_by_creature_03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546401A3D43B500E61041 /* death_by_creature_03.mp3 */; };
+		19D5467B1A3D43B500E61041 /* death_by_lava_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546411A3D43B500E61041 /* death_by_lava_01.mp3 */; };
+		19D5467C1A3D43B500E61041 /* creature_aggro_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546421A3D43B500E61041 /* creature_aggro_02.mp3 */; };
+		19D5467D1A3D43B500E61041 /* creature_idle_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546431A3D43B500E61041 /* creature_idle_01.mp3 */; };
+		19D5467E1A3D43B500E61041 /* creature_idle_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546441A3D43B500E61041 /* creature_idle_02.mp3 */; };
+		19D5467F1A3D43B500E61041 /* creature_idle_03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546451A3D43B500E61041 /* creature_idle_03.mp3 */; };
+		19D546801A3D43B500E61041 /* death_by_tnt.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546461A3D43B500E61041 /* death_by_tnt.mp3 */; };
+		19D546811A3D43B500E61041 /* firework_explode_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546471A3D43B500E61041 /* firework_explode_02.mp3 */; };
+		19D546821A3D43B500E61041 /* firework_explode_03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546481A3D43B500E61041 /* firework_explode_03.mp3 */; };
+		19D546831A3D43B500E61041 /* firework_explode_04.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546491A3D43B500E61041 /* firework_explode_04.mp3 */; };
+		19D546841A3D43B500E61041 /* firework_explode_05.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5464A1A3D43B500E61041 /* firework_explode_05.mp3 */; };
+		19D546851A3D43B500E61041 /* firework_liftoff_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5464B1A3D43B500E61041 /* firework_liftoff_02.mp3 */; };
+		19D546861A3D43B500E61041 /* firework_liftoff_03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5464C1A3D43B500E61041 /* firework_liftoff_03.mp3 */; };
+		19D546871A3D43B500E61041 /* creature_aggro_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5464D1A3D43B500E61041 /* creature_aggro_01.mp3 */; };
+		19D546881A3D43B500E61041 /* creature_angry_charge_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5464E1A3D43B500E61041 /* creature_angry_charge_01.mp3 */; };
+		19D546891A3D43B500E61041 /* creature_angry_hit_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5464F1A3D43B500E61041 /* creature_angry_hit_01.mp3 */; };
+		19D5468A1A3D43B500E61041 /* creature_idle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546501A3D43B500E61041 /* creature_idle.mp3 */; };
+		19D5468B1A3D43B500E61041 /* creature_lit_on_fire_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546511A3D43B500E61041 /* creature_lit_on_fire_01.mp3 */; };
+		19D5468C1A3D43B500E61041 /* death_by_creature.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546521A3D43B500E61041 /* death_by_creature.mp3 */; };
+		19D5468D1A3D43B500E61041 /* death_by_lava.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546531A3D43B500E61041 /* death_by_lava.mp3 */; };
+		19D5468E1A3D43B500E61041 /* snow_mountain_ambience.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546541A3D43B500E61041 /* snow_mountain_ambience.mp3 */; };
+		19D5468F1A3D43B500E61041 /* warp_home_activated.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546551A3D43B500E61041 /* warp_home_activated.mp3 */; };
+		19D546901A3D43B500E61041 /* warp_home_location_set.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546561A3D43B500E61041 /* warp_home_location_set.mp3 */; };
+		19D546911A3D43B500E61041 /* world_saved.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546571A3D43B500E61041 /* world_saved.mp3 */; };
+		19D546921A3D43B500E61041 /* lava_marsh_badlands_ambience.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546581A3D43B500E61041 /* lava_marsh_badlands_ambience.mp3 */; };
+		19D546931A3D43B500E61041 /* mountain_ambience.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546591A3D43B500E61041 /* mountain_ambience.mp3 */; };
+		19D546941A3D43B500E61041 /* night_time_ambience.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5465A1A3D43B500E61041 /* night_time_ambience.mp3 */; };
+		19D546951A3D43B500E61041 /* oasis_ambience.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5465B1A3D43B500E61041 /* oasis_ambience.mp3 */; };
+		19D546961A3D43B500E61041 /* pyramid_ambience.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5465C1A3D43B500E61041 /* pyramid_ambience.mp3 */; };
+		19D546971A3D43B500E61041 /* respawn_fade_from_black_to_world.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5465D1A3D43B500E61041 /* respawn_fade_from_black_to_world.mp3 */; };
+		19D546981A3D43B500E61041 /* reverlands_ambience.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5465E1A3D43B500E61041 /* reverlands_ambience.mp3 */; };
+		19D546991A3D43B500E61041 /* river_marsh_badlands_ambience.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5465F1A3D43B500E61041 /* river_marsh_badlands_ambience.mp3 */; };
+		19D5469A1A3D43B500E61041 /* sky_painting.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546601A3D43B500E61041 /* sky_painting.mp3 */; };
+		19D5469B1A3D43B500E61041 /*  mountain_grass_badlands_ambience.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546611A3D43B500E61041 /*  mountain_grass_badlands_ambience.mp3 */; };
+		19D5469C1A3D43B500E61041 /* ambience_nearby_portal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546621A3D43B500E61041 /* ambience_nearby_portal.mp3 */; };
+		19D5469D1A3D43B500E61041 /* ambience_nearby_treasure_cube.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546631A3D43B500E61041 /* ambience_nearby_treasure_cube.mp3 */; };
+		19D5469E1A3D43B500E61041 /* beach_ambience.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546641A3D43B500E61041 /* beach_ambience.mp3 */; };
+		19D5469F1A3D43B500E61041 /* exit_world.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546651A3D43B500E61041 /* exit_world.mp3 */; };
+		19D546A01A3D43B500E61041 /* grasslands_ambience.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546661A3D43B500E61041 /* grasslands_ambience.mp3 */; };
+		19D546A11A3D43B500E61041 /* joystick_begin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546671A3D43B500E61041 /* joystick_begin.mp3 */; };
+		19D546A21A3D43B500E61041 /* joystick_release.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546681A3D43B500E61041 /* joystick_release.mp3 */; };
+		19D546A31A3D43B500E61041 /* jump_button_press.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546691A3D43B500E61041 /* jump_button_press.mp3 */; };
+		19D546A41A3D43B500E61041 /* jump_button_release.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5466A1A3D43B500E61041 /* jump_button_release.mp3 */; };
+		19D546A51A3D43B500E61041 /* door close.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5466B1A3D43B500E61041 /* door close.mp3 */; };
 		19DE2CA716D83C1000BA6380 /* Icon_57.png in Resources */ = {isa = PBXBuildFile; fileRef = 19DE2CA616D83C1000BA6380 /* Icon_57.png */; };
 		19DE2CAA16D83C1E00BA6380 /* Icon_114.png in Resources */ = {isa = PBXBuildFile; fileRef = 19DE2CA916D83C1E00BA6380 /* Icon_114.png */; };
 		19DE2CAC16D83C2C00BA6380 /* Icon_72.png in Resources */ = {isa = PBXBuildFile; fileRef = 19DE2CAB16D83C2C00BA6380 /* Icon_72.png */; };
@@ -867,6 +925,64 @@
 		19D333A5167D6E2A0082ACE7 /* Nergle_DefaultMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Nergle_DefaultMASK.png; path = models/MASKS/Nergle_DefaultMASK.png; sourceTree = "<group>"; };
 		19D333A6167D6E2A0082ACE7 /* Stumpy_BlinkMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Stumpy_BlinkMASK.png; path = models/MASKS/Stumpy_BlinkMASK.png; sourceTree = "<group>"; };
 		19D333A7167D6E2A0082ACE7 /* Stumpy_DefaultMASK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Stumpy_DefaultMASK.png; path = models/MASKS/Stumpy_DefaultMASK.png; sourceTree = "<group>"; };
+		19D546321A3D43B500E61041 /* death_by_lava_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = death_by_lava_02.mp3; path = new_sound/death_by_lava_02.mp3; sourceTree = "<group>"; };
+		19D546331A3D43B500E61041 /* death_by_lava_03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = death_by_lava_03.mp3; path = new_sound/death_by_lava_03.mp3; sourceTree = "<group>"; };
+		19D546341A3D43B500E61041 /* death_by_tnt_01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = death_by_tnt_01.mp3; path = new_sound/death_by_tnt_01.mp3; sourceTree = "<group>"; };
+		19D546351A3D43B500E61041 /* death_by_tnt_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = death_by_tnt_02.mp3; path = new_sound/death_by_tnt_02.mp3; sourceTree = "<group>"; };
+		19D546361A3D43B500E61041 /* death_by_tnt_03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = death_by_tnt_03.mp3; path = new_sound/death_by_tnt_03.mp3; sourceTree = "<group>"; };
+		19D546371A3D43B500E61041 /* creature_aggro_03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_aggro_03.mp3; path = new_sound/creature_aggro_03.mp3; sourceTree = "<group>"; };
+		19D546381A3D43B500E61041 /* creature_angry_charge_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_angry_charge_02.mp3; path = new_sound/creature_angry_charge_02.mp3; sourceTree = "<group>"; };
+		19D546391A3D43B500E61041 /* creature_angry_charge_03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_angry_charge_03.mp3; path = new_sound/creature_angry_charge_03.mp3; sourceTree = "<group>"; };
+		19D5463A1A3D43B500E61041 /* creature_angry_hit_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_angry_hit_02.mp3; path = new_sound/creature_angry_hit_02.mp3; sourceTree = "<group>"; };
+		19D5463B1A3D43B500E61041 /* creature_angry_hit_03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_angry_hit_03.mp3; path = new_sound/creature_angry_hit_03.mp3; sourceTree = "<group>"; };
+		19D5463C1A3D43B500E61041 /* creature_lit_on_fire_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_lit_on_fire_02.mp3; path = new_sound/creature_lit_on_fire_02.mp3; sourceTree = "<group>"; };
+		19D5463D1A3D43B500E61041 /* creature_lit_on_fire_03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_lit_on_fire_03.mp3; path = new_sound/creature_lit_on_fire_03.mp3; sourceTree = "<group>"; };
+		19D5463E1A3D43B500E61041 /* death_by_creature_01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = death_by_creature_01.mp3; path = new_sound/death_by_creature_01.mp3; sourceTree = "<group>"; };
+		19D5463F1A3D43B500E61041 /* death_by_creature_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = death_by_creature_02.mp3; path = new_sound/death_by_creature_02.mp3; sourceTree = "<group>"; };
+		19D546401A3D43B500E61041 /* death_by_creature_03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = death_by_creature_03.mp3; path = new_sound/death_by_creature_03.mp3; sourceTree = "<group>"; };
+		19D546411A3D43B500E61041 /* death_by_lava_01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = death_by_lava_01.mp3; path = new_sound/death_by_lava_01.mp3; sourceTree = "<group>"; };
+		19D546421A3D43B500E61041 /* creature_aggro_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_aggro_02.mp3; path = new_sound/creature_aggro_02.mp3; sourceTree = "<group>"; };
+		19D546431A3D43B500E61041 /* creature_idle_01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_idle_01.mp3; path = new_sound/creature_idle_01.mp3; sourceTree = "<group>"; };
+		19D546441A3D43B500E61041 /* creature_idle_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_idle_02.mp3; path = new_sound/creature_idle_02.mp3; sourceTree = "<group>"; };
+		19D546451A3D43B500E61041 /* creature_idle_03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_idle_03.mp3; path = new_sound/creature_idle_03.mp3; sourceTree = "<group>"; };
+		19D546461A3D43B500E61041 /* death_by_tnt.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = death_by_tnt.mp3; path = new_sound/death_by_tnt.mp3; sourceTree = "<group>"; };
+		19D546471A3D43B500E61041 /* firework_explode_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = firework_explode_02.mp3; path = new_sound/firework_explode_02.mp3; sourceTree = "<group>"; };
+		19D546481A3D43B500E61041 /* firework_explode_03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = firework_explode_03.mp3; path = new_sound/firework_explode_03.mp3; sourceTree = "<group>"; };
+		19D546491A3D43B500E61041 /* firework_explode_04.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = firework_explode_04.mp3; path = new_sound/firework_explode_04.mp3; sourceTree = "<group>"; };
+		19D5464A1A3D43B500E61041 /* firework_explode_05.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = firework_explode_05.mp3; path = new_sound/firework_explode_05.mp3; sourceTree = "<group>"; };
+		19D5464B1A3D43B500E61041 /* firework_liftoff_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = firework_liftoff_02.mp3; path = new_sound/firework_liftoff_02.mp3; sourceTree = "<group>"; };
+		19D5464C1A3D43B500E61041 /* firework_liftoff_03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = firework_liftoff_03.mp3; path = new_sound/firework_liftoff_03.mp3; sourceTree = "<group>"; };
+		19D5464D1A3D43B500E61041 /* creature_aggro_01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_aggro_01.mp3; path = new_sound/creature_aggro_01.mp3; sourceTree = "<group>"; };
+		19D5464E1A3D43B500E61041 /* creature_angry_charge_01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_angry_charge_01.mp3; path = new_sound/creature_angry_charge_01.mp3; sourceTree = "<group>"; };
+		19D5464F1A3D43B500E61041 /* creature_angry_hit_01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_angry_hit_01.mp3; path = new_sound/creature_angry_hit_01.mp3; sourceTree = "<group>"; };
+		19D546501A3D43B500E61041 /* creature_idle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_idle.mp3; path = new_sound/creature_idle.mp3; sourceTree = "<group>"; };
+		19D546511A3D43B500E61041 /* creature_lit_on_fire_01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = creature_lit_on_fire_01.mp3; path = new_sound/creature_lit_on_fire_01.mp3; sourceTree = "<group>"; };
+		19D546521A3D43B500E61041 /* death_by_creature.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = death_by_creature.mp3; path = new_sound/death_by_creature.mp3; sourceTree = "<group>"; };
+		19D546531A3D43B500E61041 /* death_by_lava.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = death_by_lava.mp3; path = new_sound/death_by_lava.mp3; sourceTree = "<group>"; };
+		19D546541A3D43B500E61041 /* snow_mountain_ambience.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = snow_mountain_ambience.mp3; path = new_sound/snow_mountain_ambience.mp3; sourceTree = "<group>"; };
+		19D546551A3D43B500E61041 /* warp_home_activated.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = warp_home_activated.mp3; path = new_sound/warp_home_activated.mp3; sourceTree = "<group>"; };
+		19D546561A3D43B500E61041 /* warp_home_location_set.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = warp_home_location_set.mp3; path = new_sound/warp_home_location_set.mp3; sourceTree = "<group>"; };
+		19D546571A3D43B500E61041 /* world_saved.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = world_saved.mp3; path = new_sound/world_saved.mp3; sourceTree = "<group>"; };
+		19D546581A3D43B500E61041 /* lava_marsh_badlands_ambience.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = lava_marsh_badlands_ambience.mp3; path = new_sound/lava_marsh_badlands_ambience.mp3; sourceTree = "<group>"; };
+		19D546591A3D43B500E61041 /* mountain_ambience.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = mountain_ambience.mp3; path = new_sound/mountain_ambience.mp3; sourceTree = "<group>"; };
+		19D5465A1A3D43B500E61041 /* night_time_ambience.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = night_time_ambience.mp3; path = new_sound/night_time_ambience.mp3; sourceTree = "<group>"; };
+		19D5465B1A3D43B500E61041 /* oasis_ambience.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = oasis_ambience.mp3; path = new_sound/oasis_ambience.mp3; sourceTree = "<group>"; };
+		19D5465C1A3D43B500E61041 /* pyramid_ambience.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = pyramid_ambience.mp3; path = new_sound/pyramid_ambience.mp3; sourceTree = "<group>"; };
+		19D5465D1A3D43B500E61041 /* respawn_fade_from_black_to_world.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = respawn_fade_from_black_to_world.mp3; path = new_sound/respawn_fade_from_black_to_world.mp3; sourceTree = "<group>"; };
+		19D5465E1A3D43B500E61041 /* reverlands_ambience.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = reverlands_ambience.mp3; path = new_sound/reverlands_ambience.mp3; sourceTree = "<group>"; };
+		19D5465F1A3D43B500E61041 /* river_marsh_badlands_ambience.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = river_marsh_badlands_ambience.mp3; path = new_sound/river_marsh_badlands_ambience.mp3; sourceTree = "<group>"; };
+		19D546601A3D43B500E61041 /* sky_painting.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = sky_painting.mp3; path = new_sound/sky_painting.mp3; sourceTree = "<group>"; };
+		19D546611A3D43B500E61041 /*  mountain_grass_badlands_ambience.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = " mountain_grass_badlands_ambience.mp3"; path = "new_sound/ mountain_grass_badlands_ambience.mp3"; sourceTree = "<group>"; };
+		19D546621A3D43B500E61041 /* ambience_nearby_portal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = ambience_nearby_portal.mp3; path = new_sound/ambience_nearby_portal.mp3; sourceTree = "<group>"; };
+		19D546631A3D43B500E61041 /* ambience_nearby_treasure_cube.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = ambience_nearby_treasure_cube.mp3; path = new_sound/ambience_nearby_treasure_cube.mp3; sourceTree = "<group>"; };
+		19D546641A3D43B500E61041 /* beach_ambience.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = beach_ambience.mp3; path = new_sound/beach_ambience.mp3; sourceTree = "<group>"; };
+		19D546651A3D43B500E61041 /* exit_world.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = exit_world.mp3; path = new_sound/exit_world.mp3; sourceTree = "<group>"; };
+		19D546661A3D43B500E61041 /* grasslands_ambience.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = grasslands_ambience.mp3; path = new_sound/grasslands_ambience.mp3; sourceTree = "<group>"; };
+		19D546671A3D43B500E61041 /* joystick_begin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = joystick_begin.mp3; path = new_sound/joystick_begin.mp3; sourceTree = "<group>"; };
+		19D546681A3D43B500E61041 /* joystick_release.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = joystick_release.mp3; path = new_sound/joystick_release.mp3; sourceTree = "<group>"; };
+		19D546691A3D43B500E61041 /* jump_button_press.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = jump_button_press.mp3; path = new_sound/jump_button_press.mp3; sourceTree = "<group>"; };
+		19D5466A1A3D43B500E61041 /* jump_button_release.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = jump_button_release.mp3; path = new_sound/jump_button_release.mp3; sourceTree = "<group>"; };
+		19D5466B1A3D43B500E61041 /* door close.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "door close.mp3"; path = "new_sound/door close.mp3"; sourceTree = "<group>"; };
 		19DE2CA616D83C1000BA6380 /* Icon_57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_57.png; sourceTree = "<group>"; };
 		19DE2CA916D83C1E00BA6380 /* Icon_114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_114.png; sourceTree = "<group>"; };
 		19DE2CAB16D83C2C00BA6380 /* Icon_72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_72.png; sourceTree = "<group>"; };
@@ -1751,6 +1867,64 @@
 		19A07C5A1A290FA6008CAED0 /* new_sound */ = {
 			isa = PBXGroup;
 			children = (
+				19D546321A3D43B500E61041 /* death_by_lava_02.mp3 */,
+				19D546331A3D43B500E61041 /* death_by_lava_03.mp3 */,
+				19D546341A3D43B500E61041 /* death_by_tnt_01.mp3 */,
+				19D546351A3D43B500E61041 /* death_by_tnt_02.mp3 */,
+				19D546361A3D43B500E61041 /* death_by_tnt_03.mp3 */,
+				19D546371A3D43B500E61041 /* creature_aggro_03.mp3 */,
+				19D546381A3D43B500E61041 /* creature_angry_charge_02.mp3 */,
+				19D546391A3D43B500E61041 /* creature_angry_charge_03.mp3 */,
+				19D5463A1A3D43B500E61041 /* creature_angry_hit_02.mp3 */,
+				19D5463B1A3D43B500E61041 /* creature_angry_hit_03.mp3 */,
+				19D5463C1A3D43B500E61041 /* creature_lit_on_fire_02.mp3 */,
+				19D5463D1A3D43B500E61041 /* creature_lit_on_fire_03.mp3 */,
+				19D5463E1A3D43B500E61041 /* death_by_creature_01.mp3 */,
+				19D5463F1A3D43B500E61041 /* death_by_creature_02.mp3 */,
+				19D546401A3D43B500E61041 /* death_by_creature_03.mp3 */,
+				19D546411A3D43B500E61041 /* death_by_lava_01.mp3 */,
+				19D546421A3D43B500E61041 /* creature_aggro_02.mp3 */,
+				19D546431A3D43B500E61041 /* creature_idle_01.mp3 */,
+				19D546441A3D43B500E61041 /* creature_idle_02.mp3 */,
+				19D546451A3D43B500E61041 /* creature_idle_03.mp3 */,
+				19D546461A3D43B500E61041 /* death_by_tnt.mp3 */,
+				19D546471A3D43B500E61041 /* firework_explode_02.mp3 */,
+				19D546481A3D43B500E61041 /* firework_explode_03.mp3 */,
+				19D546491A3D43B500E61041 /* firework_explode_04.mp3 */,
+				19D5464A1A3D43B500E61041 /* firework_explode_05.mp3 */,
+				19D5464B1A3D43B500E61041 /* firework_liftoff_02.mp3 */,
+				19D5464C1A3D43B500E61041 /* firework_liftoff_03.mp3 */,
+				19D5464D1A3D43B500E61041 /* creature_aggro_01.mp3 */,
+				19D5464E1A3D43B500E61041 /* creature_angry_charge_01.mp3 */,
+				19D5464F1A3D43B500E61041 /* creature_angry_hit_01.mp3 */,
+				19D546501A3D43B500E61041 /* creature_idle.mp3 */,
+				19D546511A3D43B500E61041 /* creature_lit_on_fire_01.mp3 */,
+				19D546521A3D43B500E61041 /* death_by_creature.mp3 */,
+				19D546531A3D43B500E61041 /* death_by_lava.mp3 */,
+				19D546541A3D43B500E61041 /* snow_mountain_ambience.mp3 */,
+				19D546551A3D43B500E61041 /* warp_home_activated.mp3 */,
+				19D546561A3D43B500E61041 /* warp_home_location_set.mp3 */,
+				19D546571A3D43B500E61041 /* world_saved.mp3 */,
+				19D546581A3D43B500E61041 /* lava_marsh_badlands_ambience.mp3 */,
+				19D546591A3D43B500E61041 /* mountain_ambience.mp3 */,
+				19D5465A1A3D43B500E61041 /* night_time_ambience.mp3 */,
+				19D5465B1A3D43B500E61041 /* oasis_ambience.mp3 */,
+				19D5465C1A3D43B500E61041 /* pyramid_ambience.mp3 */,
+				19D5465D1A3D43B500E61041 /* respawn_fade_from_black_to_world.mp3 */,
+				19D5465E1A3D43B500E61041 /* reverlands_ambience.mp3 */,
+				19D5465F1A3D43B500E61041 /* river_marsh_badlands_ambience.mp3 */,
+				19D546601A3D43B500E61041 /* sky_painting.mp3 */,
+				19D546611A3D43B500E61041 /*  mountain_grass_badlands_ambience.mp3 */,
+				19D546621A3D43B500E61041 /* ambience_nearby_portal.mp3 */,
+				19D546631A3D43B500E61041 /* ambience_nearby_treasure_cube.mp3 */,
+				19D546641A3D43B500E61041 /* beach_ambience.mp3 */,
+				19D546651A3D43B500E61041 /* exit_world.mp3 */,
+				19D546661A3D43B500E61041 /* grasslands_ambience.mp3 */,
+				19D546671A3D43B500E61041 /* joystick_begin.mp3 */,
+				19D546681A3D43B500E61041 /* joystick_release.mp3 */,
+				19D546691A3D43B500E61041 /* jump_button_press.mp3 */,
+				19D5466A1A3D43B500E61041 /* jump_button_release.mp3 */,
+				19D5466B1A3D43B500E61041 /* door close.mp3 */,
 				19A07C951A29116B008CAED0 /* door_close.mp3 */,
 				19A07C5B1A291048008CAED0 /* menu_button_press_02.mp3 */,
 				19A07C5C1A291048008CAED0 /* change_electric_light_color.mp3 */,
@@ -2879,10 +3053,12 @@
 				C6FD456E12905ECC005FC996 /* world_selected.png in Resources */,
 				C6FD457012905ECC005FC996 /* world_unselected.png in Resources */,
 				C6FD458F12905ECC005FC996 /* build.png in Resources */,
+				19D546871A3D43B500E61041 /* creature_aggro_01.mp3 in Resources */,
 				C6FD459012905ECC005FC996 /* burn.png in Resources */,
 				C6FD459112905ECC005FC996 /* destroy.png in Resources */,
 				C6FD459312905ECC005FC996 /* home.png in Resources */,
 				C6FD459612905ECC005FC996 /* jump.png in Resources */,
+				19D546791A3D43B500E61041 /* death_by_creature_02.mp3 in Resources */,
 				C6FD459C12905ECC005FC996 /* save.png in Resources */,
 				C68D12A41291FB54005A698D /* arrow_down.png in Resources */,
 				C68D12A51291FB54005A698D /* arrow_up.png in Resources */,
@@ -2895,17 +3071,20 @@
 				C6964C1812C940D3008E3034 /* analog_top.png in Resources */,
 				C6964C1912C940D3008E3034 /* analog_bottom.png in Resources */,
 				C6E029B812EB600E001B2A23 /* camera.png in Resources */,
+				19D546841A3D43B500E61041 /* firework_explode_05.mp3 in Resources */,
 				C6E02A2D12EB7CF2001B2A23 /* Grab.aif in Resources */,
 				C6D100C213261F8800126EBD /* block_border.png in Resources */,
 				C6D100EE1326262C00126EBD /* block_background.png in Resources */,
 				C620BA4113B77AD10046F659 /* colorpick_background.png in Resources */,
 				C65C2FF713BA959B00C6875F /* palette.png in Resources */,
+				19D5469E1A3D43B500E61041 /* beach_ambience.mp3 in Resources */,
 				C65C2FFB13BA95A900C6875F /* color_border_pressed.png in Resources */,
 				C65C2FFC13BA95A900C6875F /* color_border.png in Resources */,
 				C65C2FFD13BA95A900C6875F /* block_border_pressed.png in Resources */,
 				C6F441C213BE586700FA5888 /* MainWindow-iPad.xib in Resources */,
 				C68CFE3313C54DBB00F6EDBD /* joystick.png in Resources */,
 				C68CFE3413C54DBB00F6EDBD /* menu_cancel.png in Resources */,
+				19D5466C1A3D43B500E61041 /* death_by_lava_02.mp3 in Resources */,
 				C68CFE3513C54DBB00F6EDBD /* menu_invert_camera.png in Resources */,
 				C68CFE3613C54DBB00F6EDBD /* menu_music.png in Resources */,
 				C68CFE3913C54DBB00F6EDBD /* menu_options.png in Resources */,
@@ -2927,6 +3106,7 @@
 				C62923C813C57028007BB907 /* ipad~menu_save.png in Resources */,
 				19A07C8A1A291048008CAED0 /* treasure_cube_place.mp3 in Resources */,
 				C62923C913C57028007BB907 /* ipad~menu_send.png in Resources */,
+				19D5467B1A3D43B500E61041 /* death_by_lava_01.mp3 in Resources */,
 				C62923CA13C57028007BB907 /* ipad~menu_text_back.png in Resources */,
 				C62923CD13C57625007BB907 /* ipad~block_border.png in Resources */,
 				C62923CE13C57625007BB907 /* ipad~color_border.png in Resources */,
@@ -2936,6 +3116,7 @@
 				C6A9B14713C92F980074190B /* ipad~pinwheel.png in Resources */,
 				C6A9B14913C92F980074190B /* ipad~world_selected.png in Resources */,
 				C6A9B14A13C92F980074190B /* ipad~options.png in Resources */,
+				19D546A31A3D43B500E61041 /* jump_button_press.mp3 in Resources */,
 				C6A9B14B13C92F980074190B /* ipad~share_world.png in Resources */,
 				C6A9B14C13C92F980074190B /* ipad~load_world.png in Resources */,
 				C6A9B14D13C92F980074190B /* ipad~delete_world.png in Resources */,
@@ -2979,6 +3160,7 @@
 				1DCAB1BF1471E52500E82A67 /* ipad~menu_autojump.png in Resources */,
 				1DCAB1C01471E52500E82A67 /* ipad~menu_best.png in Resources */,
 				1DCAB1C11471E52500E82A67 /* ipad~menu_fast.png in Resources */,
+				19D546731A3D43B500E61041 /* creature_angry_charge_03.mp3 in Resources */,
 				1DCAB1C21471E52500E82A67 /* ipad~menu_graphics.png in Resources */,
 				1DCAB1C31471E52500E82A67 /* menu_autojump.png in Resources */,
 				1DCAB1C41471E52500E82A67 /* menu_best.png in Resources */,
@@ -2987,6 +3169,7 @@
 				1D5E42821472779F004ACAD5 /* ipad~build2.png in Resources */,
 				1D5E42831472779F004ACAD5 /* ipad~build3.png in Resources */,
 				1D5E428A1472B408004ACAD5 /* ipad~burn_active.png in Resources */,
+				19D5468B1A3D43B500E61041 /* creature_lit_on_fire_01.mp3 in Resources */,
 				1D5E428C1472BE2D004ACAD5 /* ipad~build2_active.png in Resources */,
 				1D5E428F1472C3B2004ACAD5 /* ipad~mine_active.png in Resources */,
 				1D5E42901472C3B2004ACAD5 /* ipad~paint_active.png in Resources */,
@@ -3003,6 +3186,7 @@
 				1D14D5F31476BB3C003599CB /* quit.png in Resources */,
 				1DB44E8C147E863B004282D5 /* menu_creatures.png in Resources */,
 				1DB44E8D147E863B004282D5 /* ipad~menu_creatures.png in Resources */,
+				19D546821A3D43B500E61041 /* firework_explode_03.mp3 in Resources */,
 				1DED59E814815003007F3F2F /* moof_icon.png in Resources */,
 				1DED59E914815003007F3F2F /* ipad~moof_icon.png in Resources */,
 				1DAB2EE2149E910B00E95288 /* Green.pod in Resources */,
@@ -3024,6 +3208,7 @@
 				1D8CEA3114AD757700A1861D /* Stumpy_Walking_3.caf in Resources */,
 				1D8CEA3214AD757700A1861D /* Stumpy_Walking_2.caf in Resources */,
 				1D8CEA3314AD757700A1861D /* Stumpy_Walking_1.caf in Resources */,
+				19D546761A3D43B500E61041 /* creature_lit_on_fire_02.mp3 in Resources */,
 				1D8CEA3414AD757700A1861D /* Stumpy_Stretching_3.caf in Resources */,
 				1D8CEA3514AD757700A1861D /* Stumpy_Stretching_2.caf in Resources */,
 				1D8CEA3614AD757700A1861D /* Stumpy_Stretching_1.caf in Resources */,
@@ -3045,6 +3230,8 @@
 				1D8CEA4514AD757700A1861D /* Stumpy_PlayerApproaches_1.caf in Resources */,
 				1D8CEA4614AD757700A1861D /* Stumpy_OnFire_5.caf in Resources */,
 				1D8CEA4714AD757700A1861D /* Stumpy_OnFire_4.caf in Resources */,
+				19D546981A3D43B500E61041 /* reverlands_ambience.mp3 in Resources */,
+				19D5468A1A3D43B500E61041 /* creature_idle.mp3 in Resources */,
 				1D8CEA4814AD757700A1861D /* Stumpy_OnFire_3.caf in Resources */,
 				1D8CEA4914AD757700A1861D /* Stumpy_OnFire_2.caf in Resources */,
 				1D8CEA4A14AD757700A1861D /* Stumpy_OnFire_1.caf in Resources */,
@@ -3055,10 +3242,13 @@
 				1D8CEA4F14AD757700A1861D /* Stumpy_Idle_1.caf in Resources */,
 				1D8CEA5014AD757700A1861D /* Stumpy_Hit_5.caf in Resources */,
 				1D8CEA5114AD757700A1861D /* Stumpy_Hit_4.caf in Resources */,
+				19D546A01A3D43B500E61041 /* grasslands_ambience.mp3 in Resources */,
 				1D8CEA5214AD757700A1861D /* Stumpy_Hit_3.caf in Resources */,
 				1D8CEA5314AD757700A1861D /* Stumpy_Hit_2.caf in Resources */,
+				19D546A11A3D43B500E61041 /* joystick_begin.mp3 in Resources */,
 				1D8CEA5414AD757700A1861D /* Stumpy_Hit_1.caf in Resources */,
 				1D8CEA5514AD757700A1861D /* Stumpy_Excited_5.caf in Resources */,
+				19D546851A3D43B500E61041 /* firework_liftoff_02.mp3 in Resources */,
 				19A07C7A1A291048008CAED0 /* menu_button_press_01.mp3 in Resources */,
 				1D8CEA5614AD757700A1861D /* Stumpy_Excited_4.caf in Resources */,
 				1D8CEA5714AD757700A1861D /* Stumpy_Excited_3.caf in Resources */,
@@ -3083,6 +3273,7 @@
 				1D8CEA6814AD757700A1861D /* Nergle_Scared_1.caf in Resources */,
 				1D8CEA6914AD757700A1861D /* Nergle_Relieved_5.caf in Resources */,
 				1D8CEA6A14AD757700A1861D /* Nergle_Relieved_4.caf in Resources */,
+				19D546A21A3D43B500E61041 /* joystick_release.mp3 in Resources */,
 				1D8CEA6B14AD757700A1861D /* Nergle_Relieved_3.caf in Resources */,
 				1D8CEA6C14AD757700A1861D /* Nergle_Relieved_2.caf in Resources */,
 				1D8CEA6D14AD757700A1861D /* Nergle_Relieved_1.caf in Resources */,
@@ -3095,6 +3286,7 @@
 				1D8CEA7414AD757700A1861D /* Nergle_OnFire_4.caf in Resources */,
 				1D8CEA7514AD757700A1861D /* Nergle_OnFire_3.caf in Resources */,
 				1D8CEA7614AD757700A1861D /* Nergle_OnFire_2.caf in Resources */,
+				19D546A51A3D43B500E61041 /* door close.mp3 in Resources */,
 				1D8CEA7714AD757700A1861D /* Nergle_OnFire_1.caf in Resources */,
 				1D8CEA7814AD757700A1861D /* Nergle_Idle_5.caf in Resources */,
 				1D8CEA7914AD757700A1861D /* Nergle_Idle_4.caf in Resources */,
@@ -3117,6 +3309,7 @@
 				1D8CEA8814AD757700A1861D /* Nergle_Angry_4.caf in Resources */,
 				1D8CEA8914AD757700A1861D /* Nergle_Angry_3.caf in Resources */,
 				1D8CEA8A14AD757700A1861D /* Nergle_Angry_2.caf in Resources */,
+				19D546831A3D43B500E61041 /* firework_explode_04.mp3 in Resources */,
 				1D8CEA8B14AD757700A1861D /* Nergle_Angry_1.caf in Resources */,
 				1D8CEA8C14AD757700A1861D /* Moof_Walking_5.caf in Resources */,
 				1D8CEA8D14AD757700A1861D /* Moof_Walking_4.caf in Resources */,
@@ -3128,6 +3321,7 @@
 				1D8CEA9314AD757700A1861D /* Moof_Scared_5.caf in Resources */,
 				1D8CEA9414AD757700A1861D /* Moof_Scared_4.caf in Resources */,
 				1D8CEA9514AD757700A1861D /* Moof_Scared_3.caf in Resources */,
+				19D5468D1A3D43B500E61041 /* death_by_lava.mp3 in Resources */,
 				1D8CEA9614AD757700A1861D /* Moof_Scared_2.caf in Resources */,
 				1D8CEA9714AD757700A1861D /* Moof_Scared_1.caf in Resources */,
 				19A07C861A291048008CAED0 /* metal_block_destroy.mp3 in Resources */,
@@ -3158,6 +3352,7 @@
 				1D8CEAAF14AD757700A1861D /* Moof_Hit_2.caf in Resources */,
 				1D8CEAB014AD757700A1861D /* Moof_Hit_1.caf in Resources */,
 				1D8CEAB114AD757700A1861D /* Moof_Excited_5.caf in Resources */,
+				19D546A41A3D43B500E61041 /* jump_button_release.mp3 in Resources */,
 				1D8CEAB214AD757700A1861D /* Moof_Excited_4.caf in Resources */,
 				1D8CEAB314AD757700A1861D /* Moof_Excited_3.caf in Resources */,
 				1D8CEAB414AD757700A1861D /* Moof_Excited_2.caf in Resources */,
@@ -3194,9 +3389,13 @@
 				1D8CEACF14AD757700A1861D /* Green_OnFire_5.caf in Resources */,
 				1D8CEAD014AD757700A1861D /* Green_OnFire_4.caf in Resources */,
 				1D8CEAD114AD757700A1861D /* Green_OnFire_3.caf in Resources */,
+				19D546781A3D43B500E61041 /* death_by_creature_01.mp3 in Resources */,
 				1D8CEAD214AD757700A1861D /* Green_OnFire_2.caf in Resources */,
 				1D8CEAD314AD757700A1861D /* Green_OnFire_1.caf in Resources */,
 				1D8CEAD414AD757700A1861D /* Green_Idle_5.caf in Resources */,
+				19D5467A1A3D43B500E61041 /* death_by_creature_03.mp3 in Resources */,
+				19D5467D1A3D43B500E61041 /* creature_idle_01.mp3 in Resources */,
+				19D546911A3D43B500E61041 /* world_saved.mp3 in Resources */,
 				1D8CEAD514AD757700A1861D /* Green_Idle_4.caf in Resources */,
 				1D8CEAD614AD757700A1861D /* Green_Idle_3.caf in Resources */,
 				1D8CEAD714AD757700A1861D /* Green_Idle_2.caf in Resources */,
@@ -3228,12 +3427,15 @@
 				1D8CEAF114AD757700A1861D /* Batty_Scared_1.caf in Resources */,
 				1D8CEAF214AD757700A1861D /* Batty_Relieved_5.caf in Resources */,
 				1D8CEAF314AD757700A1861D /* Batty_Relieved_4.caf in Resources */,
+				19D5466E1A3D43B500E61041 /* death_by_tnt_01.mp3 in Resources */,
 				1D8CEAF414AD757700A1861D /* Batty_Relieved_3.caf in Resources */,
 				1D8CEAF514AD757700A1861D /* Batty_Relieved_2.caf in Resources */,
+				19D546961A3D43B500E61041 /* pyramid_ambience.mp3 in Resources */,
 				1D8CEAF614AD757700A1861D /* Batty_Relieved_1.caf in Resources */,
 				1D8CEAF714AD757700A1861D /* Batty_PlayerApproaches_5.caf in Resources */,
 				1D8CEAF814AD757700A1861D /* Batty_PlayerApproaches_4.caf in Resources */,
 				1D8CEAF914AD757700A1861D /* Batty_PlayerApproaches_3.caf in Resources */,
+				19D546701A3D43B500E61041 /* death_by_tnt_03.mp3 in Resources */,
 				1D8CEAFA14AD757700A1861D /* Batty_PlayerApproaches_2.caf in Resources */,
 				1D8CEAFB14AD757700A1861D /* Batty_PlayerApproaches_1.caf in Resources */,
 				1D8CEAFC14AD757700A1861D /* Batty_OnFire_5.caf in Resources */,
@@ -3245,15 +3447,19 @@
 				1D8CEB0214AD757700A1861D /* Batty_Idle_4.caf in Resources */,
 				1D8CEB0314AD757700A1861D /* Batty_Idle_3.caf in Resources */,
 				1D8CEB0414AD757700A1861D /* Batty_Idle_2.caf in Resources */,
+				19D546991A3D43B500E61041 /* river_marsh_badlands_ambience.mp3 in Resources */,
+				19D5469D1A3D43B500E61041 /* ambience_nearby_treasure_cube.mp3 in Resources */,
 				1D8CEB0514AD757700A1861D /* Batty_Idle_1.caf in Resources */,
 				19A07C921A291048008CAED0 /* tnt_explode_mix.mp3 in Resources */,
 				1D8CEB0614AD757700A1861D /* Batty_Hit_5.caf in Resources */,
 				1D8CEB0714AD757700A1861D /* Batty_Hit_4.caf in Resources */,
+				19D546951A3D43B500E61041 /* oasis_ambience.mp3 in Resources */,
 				1D8CEB0814AD757700A1861D /* Batty_Hit_3.caf in Resources */,
 				1D8CEB0914AD757700A1861D /* Batty_Hit_2.caf in Resources */,
 				1D8CEB0A14AD757700A1861D /* Batty_Hit_1.caf in Resources */,
 				1D8CEB0B14AD757700A1861D /* Batty_Excited_5.caf in Resources */,
 				1D8CEB0C14AD757700A1861D /* Batty_Excited_4.caf in Resources */,
+				19D546751A3D43B500E61041 /* creature_angry_hit_03.mp3 in Resources */,
 				1D8CEB0D14AD757700A1861D /* Batty_Excited_3.caf in Resources */,
 				1D8CEB0E14AD757700A1861D /* Batty_Excited_2.caf in Resources */,
 				1D8CEB0F14AD757700A1861D /* Batty_Excited_1.caf in Resources */,
@@ -3299,10 +3505,13 @@
 				1D8CEBFD14B092BC00A1861D /* block_build_wood_4.caf in Resources */,
 				1D8CEBFE14B092BC00A1861D /* block_build_wood_3.caf in Resources */,
 				1D8CEBFF14B092BC00A1861D /* block_build_wood_2.caf in Resources */,
+				19D5467F1A3D43B500E61041 /* creature_idle_03.mp3 in Resources */,
 				1D8CEC0014B092BC00A1861D /* block_build_wood_1.caf in Resources */,
 				1D8CEC0114B092BC00A1861D /* block_build_water_4.caf in Resources */,
 				1D8CEC0214B092BC00A1861D /* block_build_water_3.caf in Resources */,
+				19D546931A3D43B500E61041 /* mountain_ambience.mp3 in Resources */,
 				1D8CEC0314B092BC00A1861D /* block_build_water_2.caf in Resources */,
+				19D5469C1A3D43B500E61041 /* ambience_nearby_portal.mp3 in Resources */,
 				1D8CEC0414B092BC00A1861D /* block_build_water_1.caf in Resources */,
 				1D8CEC0514B092BC00A1861D /* block_build_stone_4.caf in Resources */,
 				1D8CEC0614B092BC00A1861D /* block_build_stone_3.caf in Resources */,
@@ -3310,6 +3519,7 @@
 				1D8CEC0814B092BC00A1861D /* block_build_stone_1.caf in Resources */,
 				1D8CEC0914B092BC00A1861D /* block_build_leaves_4.caf in Resources */,
 				1D8CEC0A14B092BC00A1861D /* block_build_leaves_3.caf in Resources */,
+				19D5469B1A3D43B500E61041 /*  mountain_grass_badlands_ambience.mp3 in Resources */,
 				1D8CEC0B14B092BC00A1861D /* block_build_leaves_2.caf in Resources */,
 				1D8CEC0C14B092BC00A1861D /* block_build_leaves_1.caf in Resources */,
 				1D8CEC0D14B092BC00A1861D /* block_build_lava_4.caf in Resources */,
@@ -3318,13 +3528,16 @@
 				1D8CEC1014B092BC00A1861D /* block_build_lava_1.caf in Resources */,
 				1D8CEC1114B092BC00A1861D /* block_build_glass_4.caf in Resources */,
 				1D8CEC1214B092BC00A1861D /* block_build_glass_3.caf in Resources */,
+				19D546711A3D43B500E61041 /* creature_aggro_03.mp3 in Resources */,
 				1D8CEC1314B092BC00A1861D /* block_build_glass_2.caf in Resources */,
 				1D8CEC1414B092BC00A1861D /* block_build_glass_1.caf in Resources */,
+				19D546861A3D43B500E61041 /* firework_liftoff_03.mp3 in Resources */,
 				1D8CEC1514B092BC00A1861D /* block_build_dirt_4.caf in Resources */,
 				1D8CEC1614B092BC00A1861D /* block_build_dirt_3.caf in Resources */,
 				1D8CEC1714B092BC00A1861D /* block_build_dirt_2.caf in Resources */,
 				1D8CEC1814B092BC00A1861D /* block_build_dirt_1.caf in Resources */,
 				19A07C911A291048008CAED0 /* tnt_explode_stone.mp3 in Resources */,
+				19D546741A3D43B500E61041 /* creature_angry_hit_02.mp3 in Resources */,
 				1D8CEC1C14B092BC00A1861D /* block_break_wood_4_v2.caf in Resources */,
 				1D8CEC1D14B092BC00A1861D /* block_break_wood_3_v2.caf in Resources */,
 				1D8CEC1E14B092BC00A1861D /* block_break_wood_2_v2.caf in Resources */,
@@ -3344,7 +3557,9 @@
 				1D8CEC4314B092BC00A1861D /* attempt_fire_v2.caf in Resources */,
 				1D8CEC4414B092BC00A1861D /* water_splash_small_4.caf in Resources */,
 				1D8CEC4514B092BC00A1861D /* water_splash_small_3.caf in Resources */,
+				19D546971A3D43B500E61041 /* respawn_fade_from_black_to_world.mp3 in Resources */,
 				1D8CEC4614B092BC00A1861D /* water_splash_small_2.caf in Resources */,
+				19D546941A3D43B500E61041 /* night_time_ambience.mp3 in Resources */,
 				1D8CEC4714B092BC00A1861D /* water_splash_small_1.caf in Resources */,
 				19A07C941A291048008CAED0 /* firework_fuse.mp3 in Resources */,
 				1D8CEC4814B092BC00A1861D /* water_splash_big_4.caf in Resources */,
@@ -3388,6 +3603,8 @@
 				1D8CEC6D14B092BC00A1861D /* lava_burn_2.caf in Resources */,
 				1D8CEC6E14B092BC00A1861D /* lava_burn_1.caf in Resources */,
 				1D8CEC7414B092BC00A1861D /* fire_succeed_3.caf in Resources */,
+				19D546901A3D43B500E61041 /* warp_home_location_set.mp3 in Resources */,
+				19D546891A3D43B500E61041 /* creature_angry_hit_01.mp3 in Resources */,
 				1D8CEC7514B092BC00A1861D /* fire_succeed_2.caf in Resources */,
 				1D8CEC7614B092BC00A1861D /* fire_succeed_1.caf in Resources */,
 				1D8CEC7714B092BC00A1861D /* explosion_4.caf in Resources */,
@@ -3401,6 +3618,7 @@
 				1D8CEC8014B092BC00A1861D /* block_build_generic_2.caf in Resources */,
 				1D8CEC8114B092BC00A1861D /* block_build_generic_1.caf in Resources */,
 				1D8CEC8514B092BC00A1861D /* block_break_stone_4.caf in Resources */,
+				19D546921A3D43B500E61041 /* lava_marsh_badlands_ambience.mp3 in Resources */,
 				1D8CEC8614B092BC00A1861D /* block_break_stone_3.caf in Resources */,
 				1D8CEC8714B092BC00A1861D /* block_break_stone_2.caf in Resources */,
 				1D8CEC8814B092BC00A1861D /* block_break_stone_1.caf in Resources */,
@@ -3408,12 +3626,14 @@
 				1D8CEC8D14B092BC00A1861D /* block_break_glass_3.caf in Resources */,
 				1D8CEC8E14B092BC00A1861D /* block_break_glass_2.caf in Resources */,
 				1D8CEC8F14B092BC00A1861D /* block_break_glass_1.caf in Resources */,
+				19D5466D1A3D43B500E61041 /* death_by_lava_03.mp3 in Resources */,
 				1D8CEC9314B092BC00A1861D /* block_break_dirt_4.caf in Resources */,
 				1D8CEC9414B092BC00A1861D /* block_break_dirt_3.caf in Resources */,
 				1D8CEC9514B092BC00A1861D /* block_break_dirt_2.caf in Resources */,
 				1D8CEC9614B092BC00A1861D /* block_break_dirt_1.caf in Resources */,
 				1D8CEC9A14B092BC00A1861D /* block break_leaves_4.caf in Resources */,
 				1D8CEC9B14B092BC00A1861D /* block break_leaves_3.caf in Resources */,
+				19D546801A3D43B500E61041 /* death_by_tnt.mp3 in Resources */,
 				1D8CEC9C14B092BC00A1861D /* block break_leaves_2.caf in Resources */,
 				1D8CEC9D14B092BC00A1861D /* block break_leaves_1.caf in Resources */,
 				1D8CEC9E14B092BC00A1861D /* attempt_fire.caf in Resources */,
@@ -3426,17 +3646,22 @@
 				1D8CECC114B48F0A00A1861D /* Default@2x.png in Resources */,
 				1D8CECD114B4A23900A1861D /* Green_Rage.png in Resources */,
 				1D8CECD214B4A23900A1861D /* Green_Blink.png in Resources */,
+				19D546721A3D43B500E61041 /* creature_angry_charge_02.mp3 in Resources */,
 				1D8CECD314B4A23900A1861D /* Green_Default.png in Resources */,
+				19D5468E1A3D43B500E61041 /* snow_mountain_ambience.mp3 in Resources */,
 				1D8CECD414B4A23900A1861D /* Nergle_Rage.png in Resources */,
 				19A07C8D1A291048008CAED0 /* sky_color change_light_to_dark.mp3 in Resources */,
 				1D8CECD514B4A23900A1861D /* Nergle_Default.png in Resources */,
 				1D8CECD614B4A23900A1861D /* Nergle_Blink.png in Resources */,
+				19D546771A3D43B500E61041 /* creature_lit_on_fire_03.mp3 in Resources */,
 				19A07C961A29116B008CAED0 /* door_close.mp3 in Resources */,
 				1D8CECD714B4A23900A1861D /* Stumpy_Default.png in Resources */,
 				1D8CECD814B4A23900A1861D /* Stumpy_Blink.png in Resources */,
 				1D8CECD914B4A23900A1861D /* Stumpy_Rage.png in Resources */,
 				1D8CECDA14B4A23900A1861D /* Batty_Rage.png in Resources */,
 				1D8CECDB14B4A23900A1861D /* Batty_Blink.png in Resources */,
+				19D546881A3D43B500E61041 /* creature_angry_charge_01.mp3 in Resources */,
+				19D5469A1A3D43B500E61041 /* sky_painting.mp3 in Resources */,
 				19A07C851A291048008CAED0 /* treasure_cube_pickup.mp3 in Resources */,
 				1D8CECDC14B4A23900A1861D /* Batty_Default.png in Resources */,
 				1D8CECDD14B4A23900A1861D /* Moof_Rage.png in Resources */,
@@ -3466,10 +3691,13 @@
 				1D184D99157A5DD500CA3B89 /* mountains.png in Resources */,
 				1D184D9A157A5DD500CA3B89 /* eden_menu_header.png in Resources */,
 				1D94B57F1586355A00A42722 /* ipad~build2_top.png in Resources */,
+				19D5468C1A3D43B500E61041 /* death_by_creature.mp3 in Resources */,
 				1D94B58215865E7100A42722 /* ipad~buildplus.png in Resources */,
 				1D94B58415879F4800A42722 /* ipad~destroy_active.png in Resources */,
 				1D13502E15C4AE2A0038CE4C /* uisave.png in Resources */,
+				19D5467E1A3D43B500E61041 /* creature_idle_02.mp3 in Resources */,
 				1D13503615C58F000038CE4C /* uiexit.png in Resources */,
+				19D5469F1A3D43B500E61041 /* exit_world.mp3 in Resources */,
 				1D13503715C58F000038CE4C /* uihome.png in Resources */,
 				1D13503815C58F000038CE4C /* uiphoto.png in Resources */,
 				1D310B3215C752E70038CF84 /* portal_twirl.png in Resources */,
@@ -3477,6 +3705,7 @@
 				1D7F6D2615CF551400DC5D11 /* flower_icon.png in Resources */,
 				1D7F6D2715CF551400DC5D11 /* blocktoggle2.png in Resources */,
 				1D7F6D2815CF551400DC5D11 /* blocktoggle1.png in Resources */,
+				19D5468F1A3D43B500E61041 /* warp_home_activated.mp3 in Resources */,
 				1D7F6D2B15D183FB00DC5D11 /* ipad~menu_on.png in Resources */,
 				1D7F6D2C15D183FB00DC5D11 /* ipad~menu_off.png in Resources */,
 				1DA0EDA415D75283007A9E9B /* ipad~block_border2.png in Resources */,
@@ -3485,6 +3714,8 @@
 				1DA0EDAB15D81C7B007A9E9B /* ipad~triangle_border_pressed2.png in Resources */,
 				1DA0EDAD15D88A4F007A9E9B /* ipad~build_under2.png in Resources */,
 				1DA0EDAF15D890B4007A9E9B /* ipad~build_over2.png in Resources */,
+				19D5467C1A3D43B500E61041 /* creature_aggro_02.mp3 in Resources */,
+				19D546811A3D43B500E61041 /* firework_explode_02.mp3 in Resources */,
 				1DA0EDB115D89511007A9E9B /* ipad~build2_active2.png in Resources */,
 				1DA0EDB315D99FBA007A9E9B /* ipad~build2_under2.png in Resources */,
 				1DA0EDB515D9A4A0007A9E9B /* ipad~build3_top2.png in Resources */,
@@ -3528,6 +3759,7 @@
 				19B3B13516A3B2C200E86E8D /* text_numbers.png in Resources */,
 				19B3B13716A4EC9200E86E8D /* ipad~paint_mask.png in Resources */,
 				19B3B13D16A5EF2500E86E8D /* goldcube_icon_mask.png in Resources */,
+				19D5466F1A3D43B500E61041 /* death_by_tnt_02.mp3 in Resources */,
 				19B3B13E16A5EF2500E86E8D /* flower_icon_mask.png in Resources */,
 				19B3B13F16A5EF2500E86E8D /* door_icon2_mask.png in Resources */,
 				19B3B14016A5EF2500E86E8D /* portal_icon2_mask.png in Resources */,

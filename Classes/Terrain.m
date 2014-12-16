@@ -883,6 +883,7 @@ int getRampType(int x,int z,int y, int t){
         if([World getWorld].hud.goldencubes<=0)return;
          printf("goldencubes %d paint color: %d\n",[World getWorld].hud.goldencubes, [World getWorld].hud.block_paintcolor);
         [World getWorld].hud.goldencubes--;
+        [[Resources getResources] playSound:S_TREASURE_PLACE];
        
     }
     if(y<0||y>=T_HEIGHT)return;
@@ -2290,7 +2291,7 @@ int lolc=0;
             if(door->ani<0){
                 [[Resources getResources] playSound:S_DOOR_OPEN];
             }else if(door->ani > 0){
-                 [[Resources getResources] playSound:S_DOOR_CLOSED];
+              //   [[Resources getResources] playSound:S_DOOR_CLOSED];
             }
         }
         float rot=door->rot;

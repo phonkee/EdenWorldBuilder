@@ -211,7 +211,7 @@ static int pid=0;
 	if(list_size>=max_bb){
         printf("alert: list_size overflow\n");
     }
-	while(num_particles+n_particles>max_fparticles){
+	while(num_particles+n_particles>=max_fparticles){
         printf("alert: particle overflow\n");
 		[self removeNode:arc4random()%list_size];
 	}
