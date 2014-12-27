@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		1918F522191EA67D00DA261A /* FileArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 1918F521191EA67D00DA261A /* FileArchive.m */; };
 		192FD75E167AB593003F02FF /* flower_tex.png in Resources */ = {isa = PBXBuildFile; fileRef = 192FD75D167AB593003F02FF /* flower_tex.png */; };
+		19392EA21A43C5AB008C761D /* go_through_portal_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19392E9E1A43C5AB008C761D /* go_through_portal_01.mp3 */; };
+		19392EA31A43C5AB008C761D /* go_through_portal_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19392E9F1A43C5AB008C761D /* go_through_portal_02.mp3 */; };
+		19392EA41A43C5AB008C761D /* go_through_portal_03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19392EA01A43C5AB008C761D /* go_through_portal_03.mp3 */; };
+		19392EA51A43C5AB008C761D /* go_through_portal_04.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19392EA11A43C5AB008C761D /* go_through_portal_04.mp3 */; };
 		193E4E8D17AB598600ADF103 /* ipad~treelayerright.png in Resources */ = {isa = PBXBuildFile; fileRef = 193E4E8B17AB598600ADF103 /* ipad~treelayerright.png */; };
 		193E4E8E17AB598600ADF103 /* ipad~treelayerleft.png in Resources */ = {isa = PBXBuildFile; fileRef = 193E4E8C17AB598600ADF103 /* ipad~treelayerleft.png */; };
 		1967D00A1639F26100C03DF0 /* Charger.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D0091639F26100C03DF0 /* Charger.pod */; };
@@ -844,6 +848,10 @@
 		1918F521191EA67D00DA261A /* FileArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileArchive.m; sourceTree = "<group>"; };
 		1918F523191EA69500DA261A /* FileArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileArchive.h; sourceTree = "<group>"; };
 		192FD75D167AB593003F02FF /* flower_tex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flower_tex.png; sourceTree = "<group>"; };
+		19392E9E1A43C5AB008C761D /* go_through_portal_01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = go_through_portal_01.mp3; path = new_sound/go_through_portal_01.mp3; sourceTree = "<group>"; };
+		19392E9F1A43C5AB008C761D /* go_through_portal_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = go_through_portal_02.mp3; path = new_sound/go_through_portal_02.mp3; sourceTree = "<group>"; };
+		19392EA01A43C5AB008C761D /* go_through_portal_03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = go_through_portal_03.mp3; path = new_sound/go_through_portal_03.mp3; sourceTree = "<group>"; };
+		19392EA11A43C5AB008C761D /* go_through_portal_04.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = go_through_portal_04.mp3; path = new_sound/go_through_portal_04.mp3; sourceTree = "<group>"; };
 		193E4E8B17AB598600ADF103 /* ipad~treelayerright.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ipad~treelayerright.png"; path = "ipad_menu/ipad~treelayerright.png"; sourceTree = "<group>"; };
 		193E4E8C17AB598600ADF103 /* ipad~treelayerleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ipad~treelayerleft.png"; path = "ipad_menu/ipad~treelayerleft.png"; sourceTree = "<group>"; };
 		1967D0091639F26100C03DF0 /* Charger.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Charger.pod; path = models/Charger.pod; sourceTree = "<group>"; };
@@ -1867,6 +1875,10 @@
 		19A07C5A1A290FA6008CAED0 /* new_sound */ = {
 			isa = PBXGroup;
 			children = (
+				19392E9E1A43C5AB008C761D /* go_through_portal_01.mp3 */,
+				19392E9F1A43C5AB008C761D /* go_through_portal_02.mp3 */,
+				19392EA01A43C5AB008C761D /* go_through_portal_03.mp3 */,
+				19392EA11A43C5AB008C761D /* go_through_portal_04.mp3 */,
 				19D546321A3D43B500E61041 /* death_by_lava_02.mp3 */,
 				19D546331A3D43B500E61041 /* death_by_lava_03.mp3 */,
 				19D546341A3D43B500E61041 /* death_by_tnt_01.mp3 */,
@@ -3180,6 +3192,7 @@
 				1D14D5E91476BB2B003599CB /* build3.png in Resources */,
 				1D14D5EA1476BB2B003599CB /* burn_active.png in Resources */,
 				1D14D5F01476BB3C003599CB /* jump_depressed.png in Resources */,
+				19392EA51A43C5AB008C761D /* go_through_portal_04.mp3 in Resources */,
 				1D14D5F11476BB3C003599CB /* mine_active.png in Resources */,
 				1D14D5F21476BB3C003599CB /* paint_active.png in Resources */,
 				19A07C801A291048008CAED0 /* menu_button_release_04.mp3 in Resources */,
@@ -3582,9 +3595,11 @@
 				1D8CEC5914B092BC00A1861D /* player_footsteps_hard_3.caf in Resources */,
 				1D8CEC5A14B092BC00A1861D /* player_footsteps_hard_2.caf in Resources */,
 				1D8CEC5B14B092BC00A1861D /* player_footsteps_hard_1.caf in Resources */,
+				19392EA31A43C5AB008C761D /* go_through_portal_02.mp3 in Resources */,
 				1D8CEC5C14B092BC00A1861D /* player_footsteps_grass_6.caf in Resources */,
 				1D8CEC5D14B092BC00A1861D /* player_footsteps_grass_5.caf in Resources */,
 				1D8CEC5E14B092BC00A1861D /* player_footsteps_grass_4.caf in Resources */,
+				19392EA41A43C5AB008C761D /* go_through_portal_03.mp3 in Resources */,
 				1D8CEC5F14B092BC00A1861D /* player_footsteps_grass_3.caf in Resources */,
 				1D8CEC6014B092BC00A1861D /* player_footsteps_grass_2.caf in Resources */,
 				1D8CEC6114B092BC00A1861D /* player_footsteps_grass_1.caf in Resources */,
@@ -3605,6 +3620,7 @@
 				1D8CEC7414B092BC00A1861D /* fire_succeed_3.caf in Resources */,
 				19D546901A3D43B500E61041 /* warp_home_location_set.mp3 in Resources */,
 				19D546891A3D43B500E61041 /* creature_angry_hit_01.mp3 in Resources */,
+				19392EA21A43C5AB008C761D /* go_through_portal_01.mp3 in Resources */,
 				1D8CEC7514B092BC00A1861D /* fire_succeed_2.caf in Resources */,
 				1D8CEC7614B092BC00A1861D /* fire_succeed_1.caf in Resources */,
 				1D8CEC7714B092BC00A1861D /* explosion_4.caf in Resources */,
@@ -3891,6 +3907,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CODE_SIGN_ENTITLEMENTS = "~/Documents/Eden/Entitlements.plist";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -3926,6 +3944,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CODE_SIGN_ENTITLEMENTS = "~/Documents/Eden/Entitlements.plist";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -4036,6 +4056,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CODE_SIGN_ENTITLEMENTS = "~/Documents/Eden/Entitlements.plist";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -4097,6 +4119,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CODE_SIGN_ENTITLEMENTS = "~/Documents/Eden/Entitlements.plist";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";

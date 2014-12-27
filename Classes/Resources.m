@@ -151,6 +151,7 @@ static int sfxNumVariations[NUM_SOUNDS]={
     [S_BUILD_METAL]=1,
     [S_BUILD_LIGHT]=1,
     [S_CHANGE_LIGHT]=1,
+    [S_ENTER_PORTAL]=4,
     
 };
 static NSString* soundFiles[NUM_SOUNDS][MAX_VARIATIONS2]={	
@@ -205,6 +206,7 @@ static NSString* soundFiles[NUM_SOUNDS][MAX_VARIATIONS2]={
     [S_BUILD_METAL]={@"metal_block_place.mp3"},
     [S_BUILD_LIGHT]={@"place_electric_light.mp3"},
     [S_CHANGE_LIGHT]={@"change_electric_light_color.mp3"},
+    [S_ENTER_PORTAL]={@"go_through_portal_01.mp3",@"go_through_portal_02.mp3",@"go_through_portal_03.mp3",@"go_through_portal_04.mp3"}
     
 };
 
@@ -691,7 +693,14 @@ bool firstframe=FALSE;
 	
 	return 0;
 }
--(void)soundEvent:(int)actionid{ 
+extern int flamecount;
+-(void)soundEvent:(int)actionid{
+   /* if(actionid==AMBIENT_OPEN){
+        actionid+=flamecount;
+        if(actionid>=NUM_AMBIENT){actionid=AMBIENT_OPEN;
+            flamecount=0;
+        }
+    }*/
     [self soundEvent:actionid:[World getWorld].player.pos];
 }
 static int target_ambient;
@@ -726,8 +735,11 @@ static float bkgtargetvolume=0;
         float distance_fade=12.0f;
          if(distance>distance_fade)distance=distance_fade;
         bkgtargetvolume=2.0f*(distance_fade-distance)/distance_fade;
-        if(target_ambient!=AMBIENT_RIVER&&target_ambient!=AMBIENT_OPEN)
+        if(target_ambient!=AMBIENT_RIVER&&target_ambient!=AMBIENT_OPEN&&target_ambient<6)
             bkgtargetvolume*=2;
+        if(target_ambient>=6){
+            bkgtargetvolume*=.6f;
+        }
     }
     
 }

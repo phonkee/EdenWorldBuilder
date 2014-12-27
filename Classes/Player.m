@@ -1100,8 +1100,47 @@ static BOOL lastOnIce;
             Vector v=pos;
             v.y=6;
             [[Resources getResources] soundEvent:AMBIENT_CAVE:v];
-        }else         
+        }else{
+            int ppx=[World getWorld].player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
+            int ppz=[World getWorld].player.pos.z-4096*CHUNK_SIZE+GSIZE/2;
+            ppx=ppx/(GSIZE/4);
+            ppz=ppz/(GSIZE/4);
+            if(ppx>4)ppx=4;
+            if(ppz>4)ppz=4;
+            if(ppx<0)ppx=0;
+            if(ppz<0)ppz=0;
+/*#define AMBIENT_GRASSLANDS 6
+#define AMBIENT_BEACH 7
+#define AMBIENT_GRASSBADLANDS 8
+#define AMBIENT_MARSHBADLANDS 9
+#define AMBIENT_RIVERLANDS 10
+#define AMBIENT_PYRAMID 11
+#define AMBIENT_OASIS 12
+#define AMBIENT_NIGHT 13
+#define AMBIENT_MOUNTAIN 14
+#define AMBIENT_LAVABADLANDS 15
+#define AMBIENT_SNOWMOUNTAIN 16
+            */
+            if(ppx==0&&ppz==0){
+                [[Resources getResources] soundEvent:AMBIENT_SNOWMOUNTAIN];
+            }else if(ppx==0&&ppz==1){
+                [[Resources getResources] soundEvent:AMBIENT_PYRAMID];
+            }else if(ppx==0&&ppz==2){
+                [[Resources getResources] soundEvent:AMBIENT_OASIS];
+            }else if((ppx==1||ppx==2)&&ppz==3){
+                [[Resources getResources] soundEvent:AMBIENT_BEACH];
+            }else if(ppx==3&&ppz==3){
+                 [[Resources getResources] soundEvent:AMBIENT_LAVABADLANDS];
+            }else if(ppx==3&&ppz==2){
+                [[Resources getResources] soundEvent:AMBIENT_MARSHBADLANDS];
+            }else if(ppx==3&&ppz==1){
+                [[Resources getResources] soundEvent:AMBIENT_GRASSBADLANDS];
+            }else if((ppx==3||ppx==2||ppx==1)&&ppz==0){
+                [[Resources getResources] soundEvent:AMBIENT_MOUNTAIN];
+            }else
+           // printf("region: %d,%d\n",ppx,ppz);
          [[Resources getResources] soundEvent:AMBIENT_OPEN];
+        }
     found:
         ;
     }
@@ -1864,7 +1903,7 @@ static int icesound=0;
         if(!inPortal){
             inPortal=TRUE;
             printf("entering portal (%d, %d, %d)  ", (int)pos.x,(int)(pos.y+boxbase/2),(int)pos.z);
-            
+            [[Resources getResources] playSound:S_ENTER_PORTAL];
             Vector2 ret=[[World getWorld].terrain.portals enterPortal:pos.x 
                                              :pos.y+boxbase/2 
                                                                      :pos.z:vel];

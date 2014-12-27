@@ -92,7 +92,7 @@
 #define VO_EXCITED 8
 #define VO_ANGRY 0
 
-#define NUM_SOUNDS 50
+#define NUM_SOUNDS 51
 
 enum SOUND_TYPES{
     S_LADDER=0,
@@ -147,6 +147,7 @@ enum SOUND_TYPES{
     S_BUILD_METAL=47,
     S_BUILD_LIGHT=48,
     S_CHANGE_LIGHT=49,
+    S_ENTER_PORTAL=50
 };
 enum MENU_TYPES{
 	MENU_GRAPHICS=0,

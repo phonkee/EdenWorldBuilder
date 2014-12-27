@@ -615,7 +615,7 @@ static int warpCount=0;
 			BOOL handled=FALSE;
             if(inbox2(touches[i].mx,touches[i].my,&rburn)){	
                 flamecount++;
-                if(flamecount==5){
+                if(flamecount==25){
                     flamecount=0;
                     
                 }

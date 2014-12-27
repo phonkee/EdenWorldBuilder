@@ -633,10 +633,10 @@ static const int usage_id=7;
     }
 }
 -(BOOL)loadShared:(SharedListNode*)sharedNode{
-   // NSString* rfile_name=[NSString stringWithFormat:@"%@/%@",[World getWorld].fm.documents,sharedNode->file_name];
+    NSString* rfile_name=[NSString stringWithFormat:@"%@/%@",[World getWorld].fm.documents,sharedNode->file_name];
 
- //   const char* fname=[rfile_name cStringUsingEncoding:NSUTF8StringEncoding];
-  /*  NSString* temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents];
+    const char* fname=[rfile_name cStringUsingEncoding:NSUTF8StringEncoding];
+    NSString* temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents];
     const char* tname=[temp_name cStringUsingEncoding:NSUTF8StringEncoding];
     
     FILE* fsource = fopen(fname, "rb");
@@ -664,9 +664,9 @@ static const int usage_id=7;
         zerr(ret);
         remove(fname);
         return FALSE;
-    }*/
+    }
     
-    
+    /*
 	WorldNode* new_world;
 	new_world=malloc(sizeof(WorldNode));
 	memset(new_world,0,sizeof(WorldNode));
@@ -683,7 +683,7 @@ static const int usage_id=7;
     addToIndex([selected_world->file_name cStringUsingEncoding:NSUTF8StringEncoding],selected_world->display_name);
 	[fnbar setStatus:selected_world->display_name :9999];
    
-    
+    */
 	//[shareutil loadShared:sharedNode->file_name];
 	return TRUE;	
 	
