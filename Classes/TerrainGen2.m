@@ -2764,7 +2764,7 @@ extern int regionSkyColors[4][4];
 void updateSkyColor(Player* player){
     extern int g_offcx;
     
-    if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
+    //if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
        
         int ppx=player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
         int ppz=player.pos.z-4096*CHUNK_SIZE+GSIZE/2;
@@ -2786,7 +2786,7 @@ void updateSkyColor(Player* player){
             lrz=ppz;
         }
         
-    }
+    //}
 
 
 

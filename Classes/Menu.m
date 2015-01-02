@@ -248,11 +248,12 @@ UIAlertView *alertWorldType;
 							contentsOfDirectoryAtPath:[World getWorld].fm.documents error:&err];
     
     
-    readIndex();
+    //readIndex();
 	world_list_end=world_list;
     int dirc=[dirContents count];
     BOOL reloadDir=FALSE;
-    for(int i=0;i<dirc;i++){
+    
+  /*  for(int i=0;i<dirc;i++){
 		NSString* file_name=[dirContents objectAtIndex:i];
         if([file_name hasSuffix:@".eden"]){
             if([file_name isEqualToString:@"Eden.eden"])continue;
@@ -260,7 +261,7 @@ UIAlertView *alertWorldType;
             reloadDir=TRUE;
         }
         
-    }
+    }*/
     if(reloadDir){
         dirContents=[[NSFileManager defaultManager]
          
@@ -279,10 +280,10 @@ UIAlertView *alertWorldType;
         if([wut isEqualToString:@"PNG"]){
             continue;
         }
-        if(![wut isEqualToString:@"ARCHIVE"])
+        if(![wut isEqualToString:@"EDEN"])
             continue;
         
-		NSString* real_name=[[World getWorld].fm getArchiveName:file_name];
+		NSString* real_name=[[World getWorld].fm getName:file_name];
         if(real_name==NULL){
             real_name=@"Unknown World";
         }
@@ -292,7 +293,7 @@ UIAlertView *alertWorldType;
             continue;
         }
         
-        file_name=[file_name stringByDeletingPathExtension];
+       // file_name=[file_name stringByDeletingPathExtension];
 		WorldNode* node=malloc(sizeof(WorldNode));
 		memset(node, 0, sizeof(WorldNode));
 		node->display_name=real_name;
@@ -636,10 +637,16 @@ static const int usage_id=7;
     NSString* rfile_name=[NSString stringWithFormat:@"%@/%@",[World getWorld].fm.documents,sharedNode->file_name];
 
     const char* fname=[rfile_name cStringUsingEncoding:NSUTF8StringEncoding];
+  //  NSString* new_name=[NSString stringWithFormat:@"%@/%@.archive",[World getWorld].fm.documents,sharedNode->file_name];
+   // const char* cnewname=[new_name cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    
+  //  rename(fname,cnewname);
     NSString* temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents];
     const char* tname=[temp_name cStringUsingEncoding:NSUTF8StringEncoding];
     
-    FILE* fsource = fopen(fname, "rb");
+    
+   FILE* fsource = fopen(fname, "rb");
     if(!fsource){
         NSLog(@"cant open %s",fname);
         return FALSE;
@@ -666,7 +673,7 @@ static const int usage_id=7;
         return FALSE;
     }
     
-    /*
+    
 	WorldNode* new_world;
 	new_world=malloc(sizeof(WorldNode));
 	memset(new_world,0,sizeof(WorldNode));
@@ -676,14 +683,14 @@ static const int usage_id=7;
 	[new_world->display_name retain];
 	[self addWorld:new_world];		
 	selected_world=new_world;
-    //etodo make sure downloaded files are setting the right file names, and updating the index correctly
-    //currently i think the download file needs to be renamed to end with a .archive, since we no longer decompress on dl
-    //but i'm not gonna bother making this work right till i have internet
-
-    addToIndex([selected_world->file_name cStringUsingEncoding:NSUTF8StringEncoding],selected_world->display_name);
-	[fnbar setStatus:selected_world->display_name :9999];
+    [fnbar setStatus:selected_world->display_name :9999];
+    
+    
+   // addToIndex([selected_world->file_name cStringUsingEncoding:NSUTF8StringEncoding],selected_world->display_name);
    
-    */
+   // addToIndex([selected_world->file_name cStringUsingEncoding:NSUTF8StringEncoding],selected_world->display_name);
+	
+   
 	//[shareutil loadShared:sharedNode->file_name];
 	return TRUE;	
 	

@@ -158,26 +158,24 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
 	[node->display_name retain];
 	[name release];
     name=NULL;
-    //etodo: verify file uploading/fix any issue
-    NSString* archive_name=[NSString stringWithFormat:@"%@.archive",node->file_name];
-	[[World getWorld].fm setName:archive_name:node->display_name];
-	NSString* file_name=[NSString stringWithFormat:@"%@/%@",
-						 [World getWorld].fm.documents,archive_name];
+    [[World getWorld].fm setName:node->file_name:node->display_name];
+    NSString* file_name=[NSString stringWithFormat:@"%@/%@",
+                         [World getWorld].fm.documents,node->file_name];
     NSString* image_file_name=[NSString stringWithFormat:@"%@/%@.png",
-						 [World getWorld].fm.documents,node->file_name];
+                               [World getWorld].fm.documents,node->file_name];
     NSFileManager* fm=[NSFileManager defaultManager];
     NSLog(@"Sharing \"%@\"",node->display_name);
-	if(![fm fileExistsAtPath:image_file_name]){
+    if(![fm fileExistsAtPath:image_file_name]){
         [World getWorld].menu.is_sharing=0;
-		[[World getWorld].menu.sbar setStatus:@"Error: No preview picture found":4];
+        [[World getWorld].menu.sbar setStatus:@"Error: No preview picture found":4];
         return;
     }
     
-	[[World getWorld].menu.shareutil shareWorld:file_name];
-	
-	
-	[World getWorld].menu.is_sharing=2;
-	[[World getWorld].menu refreshfn];
+    [[World getWorld].menu.shareutil shareWorld:file_name];
+    
+    
+    [World getWorld].menu.is_sharing=2;
+    [[World getWorld].menu refreshfn];
 
 	
 				

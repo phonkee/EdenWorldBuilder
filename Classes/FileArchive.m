@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 5/10/14.
 //
 //
+
+/*
 #include <stdio.h>
 
 #import "zlib.h"
@@ -230,4 +232,4 @@ BOOL DecompressWorld(const char* world){
     
     return TRUE;
     
-}
+}*/

@@ -98,8 +98,8 @@ progressSelector: (SEL)aProgressSelector
 {
     
     const char* fname=[filePath cStringUsingEncoding:NSUTF8StringEncoding];
-   /* NSString* temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents];
-   const char* tname=[temp_name cStringUsingEncoding:NSUTF8StringEncoding];
+    NSString* temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents];
+    const char* tname=[temp_name cStringUsingEncoding:NSUTF8StringEncoding];
     
     FILE* fsource = fopen(fname, "rb");
     if(!fsource){
@@ -127,15 +127,15 @@ progressSelector: (SEL)aProgressSelector
         [self uploadSucceeded:NO];
         remove(tname);
         return;
-    }*/
-    NSString* temp_name=[NSString stringWithUTF8String:fname];
+    }
+    
     NSData *compressedData = [NSData dataWithContentsOfFile:temp_name];
-	  if (!compressedData || [compressedData length] == 0) {
-	     [self uploadSucceeded:NO];
-	     return;
-	  }
+    if (!compressedData || [compressedData length] == 0) {
+        [self uploadSucceeded:NO];
+        return;
+    }
     // NSString* img_temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents];
-	NSData* imgData = [NSData dataWithContentsOfFile:imgPath];
+    NSData* imgData = [NSData dataWithContentsOfFile:imgPath];
     if (!imgData || [imgData length] == 0) {
         [self uploadSucceeded:NO];
         return;
@@ -148,13 +148,13 @@ progressSelector: (SEL)aProgressSelector
         [self uploadSucceeded:NO];
         return;
     }
-	//remove(tname);
+    remove(tname);
     NSURLConnection * connection =
     [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
     if (!connection) {
         [self uploadSucceeded:NO];
     }
-	
+    
     // Now wait for the URL connection to call us back.
 }
 

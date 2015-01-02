@@ -64,7 +64,7 @@ EntityData creatureData[MAX_CREATURES_SAVED];
 	return self;
 }
 -(BOOL)worldExists:(NSString*)name:(BOOL)appendArchive{
-	NSString* file_name=appendArchive?[NSString stringWithFormat:@"%@/%@.archive",documents,name]:[NSString stringWithFormat:@"%@/%@",documents,name];
+	NSString* file_name=appendArchive?[NSString stringWithFormat:@"%@/%@",documents,name]:[NSString stringWithFormat:@"%@/%@",documents,name];
 	NSFileManager* fm=[NSFileManager defaultManager];
 	if(![fm fileExistsAtPath:file_name]){
 	//	NSLog(@"%@ doesn't exist",file_name);
@@ -83,8 +83,8 @@ static int count=0;
     if([fm fileExistsAtPath:img_name]){
         [fm removeItemAtPath:img_name error:NULL];
     }
-    removeFromIndex(name);
-	NSString* file_name=[NSString stringWithFormat:@"%@/%@.archive",documents,name];
+   // removeFromIndex(name);
+	NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
 	
 	
 	if([fm fileExistsAtPath:file_name]){
@@ -149,9 +149,9 @@ static int count=0;
     
 }
 -(void)compressLastPlayed{
-    NSString* name=[World getWorld].terrain.world_name;
+  //  NSString* name=[World getWorld].terrain.world_name;
 	//NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
-    CompressWorld([name cStringUsingEncoding:NSUTF8StringEncoding]);
+   // CompressWorld([name cStringUsingEncoding:NSUTF8StringEncoding]);
     
 }
 -(void)loadGenFromDisk{
@@ -998,9 +998,9 @@ extern int g_offcz;
 -(void)setName:(NSString*)file_name:(NSString*)display_name{
     file_name=[file_name stringByDeletingPathExtension];
     NSLog(@"set name request on:%@",file_name);
-    NSString* nofp=file_name;
+   // NSString* nofp=file_name;
     file_name=[NSString stringWithFormat:@"%@/%@",documents,file_name];
-    DecompressWorld([file_name cStringUsingEncoding:NSUTF8StringEncoding]);
+   // DecompressWorld([file_name cStringUsingEncoding:NSUTF8StringEncoding]);
   
 	
 	
@@ -1022,7 +1022,7 @@ extern int g_offcz;
 	[saveFile closeFile];
 	 
     
-    CompressWorld([nofp cStringUsingEncoding:NSUTF8StringEncoding]);
+   // CompressWorld([nofp cStringUsingEncoding:NSUTF8StringEncoding]);
 	
 }
 -(void)setImageHash:(NSString*)hash{
@@ -1058,7 +1058,7 @@ extern int g_offcz;
 	[saveFile closeFile];	
    
 }
--(NSString*)getArchiveName:(NSString*)name{
+/*-(NSString*)getArchiveName:(NSString*)name{
 	if(![[World getWorld].fm worldExists:name:FALSE]) return @"error~";
     return getArchiveName(name);
 	//NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
@@ -1066,7 +1066,7 @@ extern int g_offcz;
 	//return fname;
 	
 	
-}
+}*/
 
 -(NSString*)getName:(NSString*)name{
 	if(![[World getWorld].fm worldExists:name:FALSE]) return @"error~";
@@ -1385,14 +1385,15 @@ extern float P_ZFAR;
 		NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
         
         if(fromArchive){
-            DecompressWorld([file_name cStringUsingEncoding:NSUTF8StringEncoding]);
+          //  DecompressWorld([file_name cStringUsingEncoding:NSUTF8StringEncoding]);
         }
 
        
 		saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];		
 		sfh=(WorldFileHeader*)[[saveFile readDataOfLength:sizeof(WorldFileHeader)] bytes];
         file_version=sfh->version;
-        if(sfh->version!=1&&sfh->version!=2&&sfh->version!=3){
+        printf("FILE VERSION: %d\n",file_version);
+        if(sfh->version<1||sfh->version>1000){  //old legacy convert code, no longer really supported
             [saveFile closeFile];
            
             NSLog(@"converting file");
@@ -1404,6 +1405,16 @@ extern float P_ZFAR;
             saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];		
             sfh=(WorldFileHeader*)[[saveFile readDataOfLength:sizeof(WorldFileHeader)] bytes];
             convertingWorld=FALSE;
+        }
+        if(file_version==3){
+            file_version=4;
+            sfh->version=4;
+            sfh->goldencubes=10;
+            for(int i=0;i<4;i++){
+                for(int j=0;j<4;j++){
+                    sfh->skycolors[i*4+j]=COLOR_NORMAL_BLUE;
+                }
+            }
         }
         if(sfh->hash[32]==0)
             NSLog(@"image hash is %s",sfh->hash);

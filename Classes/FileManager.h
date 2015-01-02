@@ -19,7 +19,7 @@
     BOOL genflat;
 }
 
-#define FILE_VERSION 3
+#define FILE_VERSION 4
 #define SIZEOF_COLUMN CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*CHUNKS_PER_COLUMN*(sizeof(block8)+sizeof(color8))
 typedef struct{
 	int level_seed;
@@ -53,7 +53,7 @@ typedef struct{
 -(void)readColumn:(int)cx:(int)cz:(NSFileHandle*)nsfh;
 -(void)saveWorld;
 -(void)saveWorld:(Vector)warp;
--(NSString*)getArchiveName:(NSString*)name;
+//-(NSString*)getArchiveName:(NSString*)name;
 -(void)loadGenFromDisk;
 -(void)writeGenToDisk;
 -(void)writeDirectory;

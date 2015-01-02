@@ -153,7 +153,7 @@ public class UploadMap2 extends HttpServlet implements Runnable
 				}
 				System.out.println("\nname:'"+name+"'"+" toString:'"+name.toString()+"'");
 				int version=(int)cbuf[92];
-				if(version!=2&&version!=3){
+				if(version!=2&&version!=3&&version!=4){
 					version=(int)cbuf[91];
 
 				}
@@ -168,7 +168,7 @@ public class UploadMap2 extends HttpServlet implements Runnable
 				try{
 					String real_hash=getMD5Checksum(outputFile2.getAbsolutePath());
 					
-					if(real_hash.trim().equals(hash.toString().trim())&&(version==2||version==3)){
+					if(real_hash.trim().equals(hash.toString().trim())&&(version==4)){
 						System.out.println("hash checks out '"+hash+"=="+real_hash+"'"); 
 						System.out.println("openhandle count:"+openc +" filesuploaded count: "+filesuploaded);
 						System.out.println("Active uploads: "+activeupload+"  Active searches and req:"+List2.singleton.activereq.get());

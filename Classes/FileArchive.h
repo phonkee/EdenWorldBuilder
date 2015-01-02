@@ -6,6 +6,8 @@
 //
 //
 
+/*
+
 #ifndef Eden_FileArchive_h
 #define Eden_FileArchive_h
 
@@ -16,3 +18,4 @@ BOOL addToIndex(const char* fname,NSString* desc_name);
 BOOL readIndex();
 BOOL removeFromIndex(NSString* name);
 #endif
+*/

@@ -3992,7 +3992,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "";
 				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "";
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-lz";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
