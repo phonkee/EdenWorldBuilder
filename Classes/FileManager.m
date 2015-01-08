@@ -996,7 +996,7 @@ extern int g_offcz;
 	
 }
 -(void)setName:(NSString*)file_name:(NSString*)display_name{
-    file_name=[file_name stringByDeletingPathExtension];
+   //file_name=[file_name stringByDeletingPathExtension];
     NSLog(@"set name request on:%@",file_name);
    // NSString* nofp=file_name;
     file_name=[NSString stringWithFormat:@"%@/%@",documents,file_name];

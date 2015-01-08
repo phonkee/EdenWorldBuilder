@@ -314,15 +314,26 @@ NSString* genhash(){
 extern EAGLView* G_EAGL_VIEW;
 extern float SCREEN_WIDTH; 
 extern float SCREEN_HEIGHT;
+extern BOOL IS_WIDESCREEN;
 void takeScreenshot(){	
 	int width=SCREEN_HEIGHT;
     int height=SCREEN_WIDTH;
+    if(TRUE){
+        width+=160;
+        height-=160;
+        if(IS_WIDESCREEN){
+            height-=88;
+        }
+    }
     if(IS_RETINA){
         width*=2;
         height*=2;
     }else if(IS_IPAD){
-        width=IPAD_HEIGHT;
-        height=IPAD_WIDTH;
+        width=IPAD_WIDTH;
+        height=IPAD_HEIGHT;
+        printf("is ipad\n");
+    }else if(IS_WIDESCREEN){
+        
     }
 	NSInteger myDataLength = width * height * 4;
 	
@@ -330,9 +341,11 @@ void takeScreenshot(){
 	GLubyte *buffer = (GLubyte *) malloc(myDataLength);
 	glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 	
+    
+    
 	// gl renders "upside down" so swap top to bottom into new array.
 	// there's gotta be a better way, but this works.
-	GLubyte *buffer2 = (GLubyte *) malloc(myDataLength);
+    GLubyte *buffer2 = (GLubyte *) malloc(myDataLength);
 	//BOOL flip=[World getWorld].FLIPPED;
 	for(int y = 0; y < height; y++)
 	{
@@ -340,12 +353,17 @@ void takeScreenshot(){
 		{
 			for(int b=0;b<4;b++){
 				//if(flip)
-				//buffer2[x * height * 4 + y*4 +b] = buffer[y * 4 * width + x*4 +b];
+				//buffer2[x * width * 4 + y*4 ] = (GLubyte)buffer[x * 4 * width + (height-1-y)*4 ];
 				//else
-				buffer2[(width-1-x) * height * 4 + y*4 +b] = buffer[(height-1-y) * 4 * width + x*4 +b];
+                /*if(IS_WIDESCREEN){
+                    buffer2[((y+(int)((float)(568-480)/2.0f))) * 4 * width + x*4 +b] = buffer[(height-1-y) * 4 * width + x*4 +b];
+                    
+                }else*/
+				buffer2[y * 4 * width + x*4 +b] = buffer[(height-1-y) * 4 * width + x*4 +b];
 			}
 		}
 	}
+    
 	free(buffer);
 	// make data provider with data.
 	CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer2, myDataLength, NULL);
@@ -353,13 +371,13 @@ void takeScreenshot(){
 	// prep the ingredients
 	int bitsPerComponent = 8;
 	int bitsPerPixel = 32;
-	int bytesPerRow = 4 * height;
+	int bytesPerRow = 4 * width;
 	CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
 	CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
 	CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
 	
 	// make the cgimage
-	CGImageRef imageRef = CGImageCreate(height, width, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
+	CGImageRef imageRef = CGImageCreate(width,height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
 	
 	// then make the uiimage from that
 	UIImage *myImage = [UIImage imageWithCGImage:imageRef];
@@ -372,6 +390,7 @@ void takeScreenshot(){
         thumbnailRect.origin = CGPointMake(0,0);
         thumbnailRect.size.width  = SCREEN_WIDTH;
         thumbnailRect.size.height = SCREEN_HEIGHT;
+        
         
         [myImage drawInRect:thumbnailRect];
         

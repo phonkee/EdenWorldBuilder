@@ -21,6 +21,8 @@
 		1967D0131639F3A900C03DF0 /* Nergle.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00E1639F3A900C03DF0 /* Nergle.pod */; };
 		1967D0141639F3A900C03DF0 /* Stumpy.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00F1639F3A900C03DF0 /* Stumpy.pod */; };
 		1967D0161639F80000C03DF0 /* TerrainGen2.m in Sources */ = {isa = PBXBuildFile; fileRef = 1967D0151639F80000C03DF0 /* TerrainGen2.m */; };
+		198920B81A5B7CE800BF795F /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 198920B01A5B7CE800BF795F /* libTestFlight.a */; };
+		198920B91A5B7CE800BF795F /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 198920B41A5B7CE800BF795F /* libTestFlight.a */; };
 		199017EF16C1D07D008EDCA7 /* icontest.png in Resources */ = {isa = PBXBuildFile; fileRef = 199017EE16C1D07D008EDCA7 /* icontest.png */; };
 		19A07C781A291048008CAED0 /* menu_button_press_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19A07C5B1A291048008CAED0 /* menu_button_press_02.mp3 */; };
 		19A07C791A291048008CAED0 /* change_electric_light_color.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19A07C5C1A291048008CAED0 /* change_electric_light_color.mp3 */; };
@@ -861,6 +863,14 @@
 		1967D00F1639F3A900C03DF0 /* Stumpy.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Stumpy.pod; path = models/Stumpy.pod; sourceTree = "<group>"; };
 		1967D0151639F80000C03DF0 /* TerrainGen2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TerrainGen2.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		1967D0171639F81800C03DF0 /* TerrainGen2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TerrainGen2.h; sourceTree = "<group>"; };
+		198920B01A5B7CE800BF795F /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		198920B11A5B7CE800BF795F /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
+		198920B21A5B7CE800BF795F /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
+		198920B31A5B7CE800BF795F /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
+		198920B41A5B7CE800BF795F /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = testflight/libTestFlight.a; sourceTree = "<group>"; };
+		198920B51A5B7CE800BF795F /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = testflight/TestFlight.h; sourceTree = "<group>"; };
+		198920B61A5B7CE800BF795F /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TestFlight+AsyncLogging.h"; path = "testflight/TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
+		198920B71A5B7CE800BF795F /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TestFlight+ManualSessions.h"; path = "testflight/TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
 		199017EE16C1D07D008EDCA7 /* icontest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icontest.png; sourceTree = "<group>"; };
 		19A07C5B1A291048008CAED0 /* menu_button_press_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = menu_button_press_02.mp3; path = new_sound/menu_button_press_02.mp3; sourceTree = "<group>"; };
 		19A07C5C1A291048008CAED0 /* change_electric_light_color.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = change_electric_light_color.mp3; path = new_sound/change_electric_light_color.mp3; sourceTree = "<group>"; };
@@ -1790,11 +1800,13 @@
 				C6AE407713C3919E0068685C /* CFNetwork.framework in Frameworks */,
 				C6AE407513C3917D0068685C /* SystemConfiguration.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				198920B81A5B7CE800BF795F /* libTestFlight.a in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */,
 				28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */,
 				C68DD0F712637D470072CBF0 /* CoreGraphics.framework in Frameworks */,
 				C6E46669127E210800D509D1 /* OpenAL.framework in Frameworks */,
+				198920B91A5B7CE800BF795F /* libTestFlight.a in Frameworks */,
 				C6E46680127E22AE00D509D1 /* CoreAudio.framework in Frameworks */,
 				C6E46688127E22C600D509D1 /* AudioToolbox.framework in Frameworks */,
 				C6E4671E127E4BB800D509D1 /* AVFoundation.framework in Frameworks */,
@@ -1870,6 +1882,17 @@
 				C60398CA127F31CB00D465BE /* Views */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		198920AF1A5B7CE800BF795F /* testflight */ = {
+			isa = PBXGroup;
+			children = (
+				198920B01A5B7CE800BF795F /* libTestFlight.a */,
+				198920B11A5B7CE800BF795F /* TestFlight+AsyncLogging.h */,
+				198920B21A5B7CE800BF795F /* TestFlight+ManualSessions.h */,
+				198920B31A5B7CE800BF795F /* TestFlight.h */,
+			);
+			path = testflight;
 			sourceTree = "<group>";
 		};
 		19A07C5A1A290FA6008CAED0 /* new_sound */ = {
@@ -2434,6 +2457,11 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				198920AF1A5B7CE800BF795F /* testflight */,
+				198920B41A5B7CE800BF795F /* libTestFlight.a */,
+				198920B51A5B7CE800BF795F /* TestFlight.h */,
+				198920B61A5B7CE800BF795F /* TestFlight+AsyncLogging.h */,
+				198920B71A5B7CE800BF795F /* TestFlight+ManualSessions.h */,
 				19AECD18192EDBAA00F8DD91 /* Default~ipad.png */,
 				19AECD14192EA99F00F8DD91 /* Eden.eden */,
 				19DE2CAD16D83C3300BA6380 /* Icon_144.png */,
@@ -3021,7 +3049,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0610;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = 4398E7EDE7;
@@ -3913,6 +3941,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.9.1;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3928,10 +3957,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
 					"\"$(SRCROOT)/testflight\"",
+					/Users/arironen/Downloads/TestFlightSDK3.0.2,
+					"$(PROJECT_DIR)/Eden",
+					"$(PROJECT_DIR)/testflight",
+					"$(PROJECT_DIR)/Eden/testflight",
 				);
-				PRODUCT_NAME = EdenBeta;
+				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -3950,6 +3983,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.9.1;
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -3964,10 +3998,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
 					"\"$(SRCROOT)/testflight\"",
+					/Users/arironen/Downloads/TestFlightSDK3.0.2,
+					"$(PROJECT_DIR)/Eden",
+					"$(PROJECT_DIR)/testflight",
+					"$(PROJECT_DIR)/Eden/testflight",
 				);
-				PRODUCT_NAME = EdenBeta;
+				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -3988,11 +4026,11 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = "";
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "";
 				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "";
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lz";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -4012,7 +4050,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = "";
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "";
 				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "";
@@ -4029,21 +4067,21 @@
 		C62F93F3127CF99F0042E4B6 /* Adhoc Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Kingly Software Inc";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = "";
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "";
 				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-lz";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "5c353993-f73d-47c3-b4e0-c6e3541354b4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5c353993-f73d-47c3-b4e0-c6e3541354b4";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "library/include//**";
@@ -4059,9 +4097,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CODE_SIGN_ENTITLEMENTS = "~/Documents/Eden/Entitlements.plist";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Kingly Software Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Kingly Software Inc";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.9.1;
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -4076,12 +4115,16 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
 					"\"$(SRCROOT)/testflight\"",
+					/Users/arironen/Downloads/TestFlightSDK3.0.2,
+					"$(PROJECT_DIR)/Eden",
+					"$(PROJECT_DIR)/testflight",
+					"$(PROJECT_DIR)/Eden/testflight",
 				);
-				PRODUCT_NAME = EdenBeta;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CC07C7DC-1EE9-4110-9281-4DB89D54828B";
+				PRODUCT_NAME = Eden;
+				PROVISIONING_PROFILE = "5c353993-f73d-47c3-b4e0-c6e3541354b4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5c353993-f73d-47c3-b4e0-c6e3541354b4";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -4099,7 +4142,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = "";
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "";
 				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "";
@@ -4125,7 +4168,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 1.6;
+				CURRENT_PROJECT_VERSION = 1.9.1;
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -4140,8 +4183,12 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
 					"\"$(SRCROOT)/testflight\"",
+					/Users/arironen/Downloads/TestFlightSDK3.0.2,
+					"$(PROJECT_DIR)/Eden",
+					"$(PROJECT_DIR)/testflight",
+					"$(PROJECT_DIR)/Eden/testflight",
 				);
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";

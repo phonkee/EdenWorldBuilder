@@ -737,13 +737,54 @@ TerrainChunk* rebuildList[13000];
 }
 - (void)explodeBlock:(int)x :(int)z :(int)y{
     int cur=getLandc(x,z,y);
+    if(cur==TYPE_GOLDEN_CUBE)return;
     if(blockinfo[cur]&IS_LIQUID){
         [liquids removeSource:x:z:y:cur];
     }else{
       //  [liquids checkPoint:x:z:y];
     }
+    
+    int paint;
+    if((cur==TYPE_TNT||cur==TYPE_FIREWORK)||isOnFire(x,z,y)){
+        paint=[self getColor:x:z:y];//save color so it can be used when explosion is triggered
+    }
+    if(cur==TYPE_LIGHTBOX){
+        void addlight(int xx,int zz,int yy,float brightness,Vector color);
+        
+        extern Vector colorTable[256];
+        addlight(x,z,y,-1.0f,colorTable[paint]);
+        [self updateChunks:x :z :y :TYPE_NONE];
+        [self refreshChunksInRadius:x:z:y:LIGHT_RADIUS];
+        
+    }
+    //[[World getWorld].effects addBlockBreak:x :z :y :[self getLand:x :z :y]:[self getColor:x:z:y]];
+    [self updateChunks:x :z :y :TYPE_NONE];
+    [self setColor:x:z:y:paint];//adds color attribute back in after updatechunks clears it
+    
+    if(blockinfo[cur]&IS_DOOR){
+        if(cur==TYPE_DOOR_TOP){
+            [self updateChunks:x :z :y-1 :TYPE_NONE];
+            [self setColor:x:z:y-1:paint];
+        }else{
+            [self updateChunks:x :z :y+1 :TYPE_NONE];
+            [self setColor:x:z:y+1:paint];
+        }
+    }
+    if(blockinfo[cur]&IS_PORTAL){
+        printf("trying to remove portal\n");
+        if(cur==TYPE_PORTAL_TOP){
+            [self updateChunks:x :z :y-1 :TYPE_NONE];
+            [self setColor:x:z:y-1:paint];
+            [portals removePortal:x:y:z];
+        }else{
+            [self updateChunks:x :z :y+1 :TYPE_NONE];
+            [self setColor:x:z:y+1:paint];
+            [portals removePortal:x :y+1 :z];
+            
+        }
+    }
 	[[World getWorld].effects addBlockExplode:x :z :y :[self getLand:x :z :y] :[self getColor:x:z:y]];
-	[self updateChunks:x :z :y :TYPE_NONE];
+	//[self updateChunks:x :z :y :TYPE_NONE];
 }
 
 bool isOnFire(int x ,int z, int y){

@@ -2464,10 +2464,10 @@ bool RenderModels()
     glDisable(GL_NORMALIZE);
     DrawShadows();
     glEnableClientState(GL_COLOR_ARRAY);
-    static int mcc=0;
-    mcc++;
-    if(mcc%60==0)
-    printf("Models updated:%d   models rendered:%d\n",model_update_count,model_render_count);
+   // static int mcc=0;
+   // mcc++;
+  //  if(mcc%60==0)
+   // printf("Models updated:%d   models rendered:%d\n",model_update_count,model_render_count);
 		return true;
 }
 

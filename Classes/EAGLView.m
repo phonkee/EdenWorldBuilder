@@ -119,8 +119,11 @@ extern EAGLView* G_EAGL_VIEW;
 	else
 	{*/
 		//1136
-    IS_WIDESCREEN =( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON );
-   // printf("is widescreen:%d\n",IS_WIDESCREEN);
+    IS_WIDESCREEN =( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.width - ( double )568 ) < DBL_EPSILON );
+    if(IS_WIDESCREEN==0){
+        IS_WIDESCREEN =( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON );
+    }
+    printf("is widescreen:%d   check_valeu:%f\n",IS_WIDESCREEN, [[ UIScreen mainScreen ] bounds ].size.width);
     
     if(IS_WIDESCREEN)
         SCREEN_WIDTH=IPHONE5_WIDTH;

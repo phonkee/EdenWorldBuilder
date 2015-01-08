@@ -10,7 +10,7 @@
 #import "EdenViewController.h"
 //#import "FlurryAPI.h"
 #import "Appirater.h"
-//#import "TestFlight.h"
+#import "TestFlight.h"
 
 @implementation EdenAppDelegate
 
@@ -22,7 +22,7 @@
 }*/
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions { 
 
-     //[TestFlight takeOff:@"2bee4b07a87b83f87dcc47a896d9e651_MTg4MDgyMDExLTA4LTI2IDA1OjEwOjM5LjUyOTUzNw"];
+     [TestFlight takeOff:@"04fc0d12-af7e-44ca-852f-bad7a896ba6c"];
 	
     // Override point for customization after app launch.
     // Add your cool controller's view to the window.
