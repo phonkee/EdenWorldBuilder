@@ -826,7 +826,12 @@ static BOOL lastOnIce;
             //vel.z=-vel.z;
         }
     }else if(onramp){
-        speed*=1.18f;
+        
+       // if(speed>0)speed+=10;
+       // else if(speed<0)speed-=10;
+        speed*=1.2f;
+        //printf("speed on ramp %f",speed);
+        
         
             
     } else if(inLiquid){
@@ -881,7 +886,7 @@ static BOOL lastOnIce;
         int z=pos.z+sinYaw*1.25f;
         int y=pos.y-boxheight/2+.01;
         int type=getLandc2(x,z,y);
-        if(autojump_option&&onground&&!jumping&&![World getWorld].hud.m_jump&&type!=TYPE_NONE&&type!=TYPE_LADDER&&type!=TYPE_VINE&&type!=TYPE_LAVA&&type!=TYPE_GOLDEN_CUBE&&type>0&&!(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_SIDE4)&&!(blockinfo[type]&IS_WATER)&&getLandc2(x,z,y+1)<=0){
+        if(autojump_option&&onground&&!jumping&&![World getWorld].hud.m_jump&&type!=TYPE_NONE&&type!=TYPE_LADDER&&type!=TYPE_FLOWER&&type!=TYPE_VINE&&type!=TYPE_LAVA&&type!=TYPE_GOLDEN_CUBE&&type>0&&!(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_SIDE4)&&!(blockinfo[type]&IS_WATER)&&getLandc2(x,z,y+1)<=0){
             
             if(getLandc2(x,z,y+2)<=0&&getLandc2(pos.x,pos.z,pos.y+2)<=0&&speed>18){
                hud.m_jump=TRUE;
@@ -1175,23 +1180,25 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     if(nest_count==1){
         hitLadder=FALSE;
         ladderExists=FALSE;
-    }
-        
-    for(int x=(int)left-1;x<=(int)right+1;x++){
-        for(int z=(int)front-1;z<=(int)back+1;z++){
-            for(int y=(int)bot-1;y<=(int)top+1;y++){
-                int type=getLandc2(x,z,y);
-                if(type<=0)continue;
-                if(type==TYPE_LADDER||
-                  type==TYPE_VINE){
-                    ladderExists=TRUE;
+        for(int x=(int)left-1;x<=(int)right+1;x++){
+            for(int z=(int)front-1;z<=(int)back+1;z++){
+                for(int y=(int)bot-1;y<=(int)top+1;y++){
+                    int type=getLandc2(x,z,y);
+                    if(type<=0)continue;
+                    if(type==TYPE_LADDER||
+                       type==TYPE_VINE){
+                        ladderExists=TRUE;
+                        
+                    }
+                    // [ter updateChunks:x :z :y :TYPE_GRASS];
                     
                 }
-               // [ter updateChunks:x :z :y :TYPE_GRASS];
-                
             }
         }
     }
+  
+   
+    
     
   Vector minminTranDist=MakeVector(0,0,0);
     int collided=0;
@@ -1253,8 +1260,13 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                 
                 if(collidePolyhedra(pbox,pbox2)){
                     if(type==TYPE_LADDER||type==TYPE_VINE){
-                        if(accel.x!=0||vspeed!=0||accel.z!=0)
-                        hitLadder=TRUE;
+                        if(accel.x!=0||vspeed!=0||accel.z!=0){
+                        
+                        
+                        if(vspeed==0&&btop<bot+.05f){
+                            
+                        }else{ hitLadder=TRUE;}
+                        }
                         
                     }
                     if(blockinfo[type]&IS_WATER){
@@ -1388,7 +1400,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                     //onIce=TRUE;
                     //onIceRamp=TRUE;
                 }
-                if(absf(lpos.y-pos.y)<.1||(collided<TYPE_ICE_RAMP1||collided>TYPE_ICE_RAMP4)){
+                if(absf(lpos.y-pos.y)<.1f||(collided<TYPE_ICE_RAMP1||collided>TYPE_ICE_RAMP4)){
                     if(!onIce){
                         onramp=TRUE;
                         //NSLog(@"hit");
@@ -1440,6 +1452,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         
     }
     if(nest_count==1){
+       // printf("on ramp!\n");
     if((climbing&&vspeed!=0&&!hitLadder)||ladderExists==FALSE){
         if(climbing&&!ladderExists&&vspeed>0){
             // vel.y=GRAVITY*-0.2f;

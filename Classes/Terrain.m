@@ -37,7 +37,7 @@ static BOOL* chunksToUpdate;
 static BOOL* chunksToUpdateImmediatley;
 
 block8* blockarray;
-static color8* shadowarray;
+//static color8* shadowarray;
 Vector8* lightarray;
 //static map_t chunkMapc;
 static TerrainChunk** chunkTablec;
@@ -194,7 +194,7 @@ void initTree(TreeNode* node){
 -(void) clearBlocks{
 	
 	memset(blockarray,0,sizeof(block8)*T_SIZE*T_SIZE*T_HEIGHT);
-    memset(shadowarray,0,sizeof(color8)*T_SIZE*T_SIZE);
+  //  memset(shadowarray,0,sizeof(color8)*T_SIZE*T_SIZE);
     memset(lightarray,0,sizeof(Vector8)*T_SIZE*T_SIZE*T_HEIGHT);
 }
 
@@ -228,7 +228,7 @@ extern int g_offcz;
 	blockarray=malloc(sizeof(block8)*(T_SIZE+1)*(T_SIZE+1)*(T_HEIGHT+1));
     lightarray=malloc(sizeof(Vector8)*T_SIZE*T_SIZE*T_HEIGHT);
    // printf("size of lightarray: %d bytes\n",(int)(sizeof(Vector)*T_SIZE*T_SIZE*T_HEIGHT));
-    shadowarray=malloc(sizeof(block8)*T_SIZE*T_SIZE);
+    //shadowarray=malloc(sizeof(block8)*T_SIZE*T_SIZE);
 	singleton=self;
 	loaded=FALSE;
 	world_name=NULL;
