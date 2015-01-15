@@ -299,7 +299,7 @@ static int pid=0;
         p->z=z*BLOCK_SIZE+BLOCK_SIZE/2;
     
 	p->pid=pid++;
-	p->life=1.37f;
+	p->life=.5f;
 	updateIndexes=TRUE;
 	
 	list_size++;	

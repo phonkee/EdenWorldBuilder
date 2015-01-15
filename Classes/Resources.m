@@ -152,6 +152,7 @@ static int sfxNumVariations[NUM_SOUNDS]={
     [S_BUILD_LIGHT]=1,
     [S_CHANGE_LIGHT]=1,
     [S_ENTER_PORTAL]=4,
+    [S_GOOP_EXPLODE]=1,
     
 };
 static NSString* soundFiles[NUM_SOUNDS][MAX_VARIATIONS2]={	
@@ -206,7 +207,8 @@ static NSString* soundFiles[NUM_SOUNDS][MAX_VARIATIONS2]={
     [S_BUILD_METAL]={@"metal_block_place.mp3"},
     [S_BUILD_LIGHT]={@"place_electric_light.mp3"},
     [S_CHANGE_LIGHT]={@"change_electric_light_color.mp3"},
-    [S_ENTER_PORTAL]={@"go_through_portal_01.mp3",@"go_through_portal_02.mp3",@"go_through_portal_03.mp3",@"go_through_portal_04.mp3"}
+    [S_ENTER_PORTAL]={@"go_through_portal_01.mp3",@"go_through_portal_02.mp3",@"go_through_portal_03.mp3",@"go_through_portal_04.mp3"},
+    [S_GOOP_EXPLODE]={@"tnt_paint_bomb_explode.mp3"},
     
 };
 
@@ -1336,6 +1338,10 @@ extern BOOL SUPPORTS_OGL2;
     temp=[[Texture2D alloc]
 		  initWithImagePath:@"treelayerright.png" sizeToFit:FALSE];
 	[menutextures addObject:temp];
+    
+    temp=[[Texture2D alloc]
+          initWithImagePath:@"report_flag.png" sizeToFit:FALSE];
+    [menutextures addObject:temp];
 	
 }
 static float cuetimer=0;

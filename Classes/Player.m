@@ -11,10 +11,10 @@
 #import "Globals.h"
 #import "Model.h"
 #import "TerrainGen2.h" //for sky color change
-#define MOVE_SPEED 120.0f
+#define MOVE_SPEED 35.0f
 #define CLIMB_SPEED 3.0f
-//#define SPEED_M 4.5f
-#define SPEED_M 5.5f
+#define SPEED_M 4.5f
+//#define SPEED_M 5.5f
 
 #define YAW_SPEED .4f
 #define PITCH_SPEED .4f
@@ -244,7 +244,7 @@ extern bool hitCustom;
                 
                 }
                 
-                if(type==TYPE_NONE||(type==TYPE_CUSTOM&&[World getWorld].hud.build_size==0)||(blockinfo[type]&IS_LIQUID&&getLevel(type)<4)){
+                if(type==TYPE_NONE||(blockinfo[type]&IS_LIQUID&&getLevel(type)<4)){
                     touches[i].preview=point;
                     touches[i].previewtype=[World getWorld].hud.blocktype;
                     touches[i].etime=0;
@@ -394,7 +394,7 @@ extern bool hitCustom;
 					if(type==-1)continue;
 					if(mode==MODE_BUILD){
                      //   printf("building: %d,%d,%d type:%d\n",point.x,point.y,point.z,type);
-						if(type==TYPE_NONE||type==TYPE_CUSTOM||(blockinfo[type]&IS_LIQUID&&getLevel(type)<4)){
+						if(type==TYPE_NONE||(blockinfo[type]&IS_LIQUID&&getLevel(type)<4)){
                             Point3D testpoint=point;
                             if([World getWorld].hud.build_size==0){
                                 testpoint.x/=2;
@@ -585,7 +585,7 @@ extern bool hitCustom;
                         type=[[World getWorld].terrain getLand:point.x/2:point.z/2:point.y/2];
                         
                     }
-                    if((type==TYPE_NONE||(type==TYPE_CUSTOM&&[World getWorld].hud.build_size==0)||(blockinfo[type]&IS_LIQUID&&getLevel(type)<4))&&mode==MODE_BUILD){
+                    if((type==TYPE_NONE||(blockinfo[type]&IS_LIQUID&&getLevel(type)<4))&&mode==MODE_BUILD){
                         touches[i].preview=point;
                         touches[i].previewtype=[World getWorld].hud.blocktype;
                         touches[i].build_size=[World getWorld].hud.build_size;
@@ -1924,6 +1924,8 @@ static int icesound=0;
             vel.x=ret.x2;
             vel.y=ret.y2;
             vel.z=ret.z2;
+            [[World getWorld].terrain destroyBlock:pos.x:pos.z:pos.y];
+            [[World getWorld].terrain destroyBlock:pos.x:pos.z:pos.y-1];
             printf("exiting at:(%d, %d, %d) \n",(int)pos.x,(int)(pos.y+boxbase/2),(int)pos.z);
             
         }

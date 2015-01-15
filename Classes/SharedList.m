@@ -882,7 +882,7 @@ int rwc_count=0;
         [[[Resources getResources] getMenuTex:MENU_LOAD_TEXT] drawButton:rload_go];
         
         glColor4f(1.0,1.0,1.0,1.0);
-        [[[Resources getResources] getMenuTex:MENU_BACK] drawButton:rect_flag];
+        [[[Resources getResources] getMenuTex:MENU_FLAG] drawButton:rect_flag];
     }
     glColor4f(1.0, 1.0, 1.0, 1.0f);
     if(cur_sort==SORT_NAME&&previewScreenshot==NULL){

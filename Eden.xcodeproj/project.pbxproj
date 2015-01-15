@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1902C8311A63A8D800D8E67F /* report_flag.png in Resources */ = {isa = PBXBuildFile; fileRef = 1902C8301A63A8D800D8E67F /* report_flag.png */; };
 		1918F522191EA67D00DA261A /* FileArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 1918F521191EA67D00DA261A /* FileArchive.m */; };
 		192FD75E167AB593003F02FF /* flower_tex.png in Resources */ = {isa = PBXBuildFile; fileRef = 192FD75D167AB593003F02FF /* flower_tex.png */; };
 		19392EA21A43C5AB008C761D /* go_through_portal_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19392E9E1A43C5AB008C761D /* go_through_portal_01.mp3 */; };
@@ -23,7 +24,6 @@
 		1967D0161639F80000C03DF0 /* TerrainGen2.m in Sources */ = {isa = PBXBuildFile; fileRef = 1967D0151639F80000C03DF0 /* TerrainGen2.m */; };
 		198920B81A5B7CE800BF795F /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 198920B01A5B7CE800BF795F /* libTestFlight.a */; };
 		198920B91A5B7CE800BF795F /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 198920B41A5B7CE800BF795F /* libTestFlight.a */; };
-		199017EF16C1D07D008EDCA7 /* icontest.png in Resources */ = {isa = PBXBuildFile; fileRef = 199017EE16C1D07D008EDCA7 /* icontest.png */; };
 		19A07C781A291048008CAED0 /* menu_button_press_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19A07C5B1A291048008CAED0 /* menu_button_press_02.mp3 */; };
 		19A07C791A291048008CAED0 /* change_electric_light_color.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19A07C5C1A291048008CAED0 /* change_electric_light_color.mp3 */; };
 		19A07C7A1A291048008CAED0 /* menu_button_press_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19A07C5D1A291048008CAED0 /* menu_button_press_01.mp3 */; };
@@ -829,7 +829,6 @@
 		C6F441C213BE586700FA5888 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6F441C113BE586700FA5888 /* MainWindow-iPad.xib */; };
 		C6F66CF6127328AC0067ECD9 /* TerrainGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C6F66CF5127328AC0067ECD9 /* TerrainGenerator.m */; };
 		C6F8A0671407A3710003C5CD /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = C6F8A0661407A3710003C5CD /* cancel.png */; };
-		C6FD456112905ECC005FC996 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = C6FD452112905ECC005FC996 /* iTunesArtwork */; };
 		C6FD456412905ECC005FC996 /* arrow_left.png in Resources */ = {isa = PBXBuildFile; fileRef = C6FD452512905ECC005FC996 /* arrow_left.png */; };
 		C6FD456512905ECC005FC996 /* arrow_right.png in Resources */ = {isa = PBXBuildFile; fileRef = C6FD452612905ECC005FC996 /* arrow_right.png */; };
 		C6FD456612905ECC005FC996 /* create_world.png in Resources */ = {isa = PBXBuildFile; fileRef = C6FD452712905ECC005FC996 /* create_world.png */; };
@@ -847,6 +846,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1902C8301A63A8D800D8E67F /* report_flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = report_flag.png; sourceTree = "<group>"; };
 		1918F521191EA67D00DA261A /* FileArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileArchive.m; sourceTree = "<group>"; };
 		1918F523191EA69500DA261A /* FileArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileArchive.h; sourceTree = "<group>"; };
 		192FD75D167AB593003F02FF /* flower_tex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flower_tex.png; sourceTree = "<group>"; };
@@ -871,7 +871,6 @@
 		198920B51A5B7CE800BF795F /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = testflight/TestFlight.h; sourceTree = "<group>"; };
 		198920B61A5B7CE800BF795F /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TestFlight+AsyncLogging.h"; path = "testflight/TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
 		198920B71A5B7CE800BF795F /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TestFlight+ManualSessions.h"; path = "testflight/TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
-		199017EE16C1D07D008EDCA7 /* icontest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icontest.png; sourceTree = "<group>"; };
 		19A07C5B1A291048008CAED0 /* menu_button_press_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = menu_button_press_02.mp3; path = new_sound/menu_button_press_02.mp3; sourceTree = "<group>"; };
 		19A07C5C1A291048008CAED0 /* change_electric_light_color.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = change_electric_light_color.mp3; path = new_sound/change_electric_light_color.mp3; sourceTree = "<group>"; };
 		19A07C5D1A291048008CAED0 /* menu_button_press_01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = menu_button_press_01.mp3; path = new_sound/menu_button_press_01.mp3; sourceTree = "<group>"; };
@@ -1049,7 +1048,7 @@
 		1D5E428D1472C3B2004ACAD5 /* ipad~mine_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~mine_active.png"; sourceTree = "<group>"; };
 		1D5E428E1472C3B2004ACAD5 /* ipad~paint_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~paint_active.png"; sourceTree = "<group>"; };
 		1D5E42911472C44A004ACAD5 /* ipad~build3_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~build3_active.png"; sourceTree = "<group>"; };
-		1D6058910D05DD3D006BFB54 /* EdenBeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EdenBeta.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* Eden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Eden.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D6CDB6114B636300088489A /* block_break_generic_4_v2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = block_break_generic_4_v2.caf; path = sound/game/block_break_generic_4_v2.caf; sourceTree = "<group>"; };
 		1D6CDB6214B636300088489A /* block_break_generic_3_v2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = block_break_generic_3_v2.caf; path = sound/game/block_break_generic_3_v2.caf; sourceTree = "<group>"; };
 		1D6CDB6314B636300088489A /* block_break_generic_2_v2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = block_break_generic_2_v2.caf; path = sound/game/block_break_generic_2_v2.caf; sourceTree = "<group>"; };
@@ -1775,7 +1774,6 @@
 		C6F66CF4127328AC0067ECD9 /* TerrainGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainGenerator.h; sourceTree = "<group>"; };
 		C6F66CF5127328AC0067ECD9 /* TerrainGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TerrainGenerator.m; sourceTree = "<group>"; };
 		C6F8A0661407A3710003C5CD /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel.png; sourceTree = "<group>"; };
-		C6FD452112905ECC005FC996 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		C6FD452512905ECC005FC996 /* arrow_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_left.png; sourceTree = "<group>"; };
 		C6FD452612905ECC005FC996 /* arrow_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_right.png; sourceTree = "<group>"; };
 		C6FD452712905ECC005FC996 /* create_world.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_world.png; sourceTree = "<group>"; };
@@ -2011,7 +2009,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* EdenBeta.app */,
+				1D6058910D05DD3D006BFB54 /* Eden.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2457,6 +2455,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				1902C8301A63A8D800D8E67F /* report_flag.png */,
 				198920AF1A5B7CE800BF795F /* testflight */,
 				198920B41A5B7CE800BF795F /* libTestFlight.a */,
 				198920B51A5B7CE800BF795F /* TestFlight.h */,
@@ -2468,7 +2467,6 @@
 				19DE2CAB16D83C2C00BA6380 /* Icon_72.png */,
 				19DE2CA916D83C1E00BA6380 /* Icon_114.png */,
 				19DE2CA616D83C1000BA6380 /* Icon_57.png */,
-				199017EE16C1D07D008EDCA7 /* icontest.png */,
 				19E6AC9C1635EBC400772AB3 /* Default-568h@2x.png */,
 				1D8CECC014B48F0A00A1861D /* Default@2x.png */,
 				1D8CECBE14B48ED100A1861D /* Default.png */,
@@ -2899,7 +2897,6 @@
 		C6FD451F12905ECC005FC996 /* icons */ = {
 			isa = PBXGroup;
 			children = (
-				C6FD452112905ECC005FC996 /* iTunesArtwork */,
 			);
 			path = icons;
 			sourceTree = "<group>";
@@ -3040,7 +3037,7 @@
 			);
 			name = Eden;
 			productName = prototype;
-			productReference = 1D6058910D05DD3D006BFB54 /* EdenBeta.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* Eden.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -3083,7 +3080,6 @@
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				28EC4C5A11D54ECE0027AA9F /* prototypeViewController.xib in Resources */,
 				C67D1768128218F3000EF2D5 /* smoke.png in Resources */,
-				C6FD456112905ECC005FC996 /* iTunesArtwork in Resources */,
 				C6FD456412905ECC005FC996 /* arrow_left.png in Resources */,
 				C6FD456512905ECC005FC996 /* arrow_right.png in Resources */,
 				C6FD456612905ECC005FC996 /* create_world.png in Resources */,
@@ -3563,6 +3559,7 @@
 				19D5469B1A3D43B500E61041 /*  mountain_grass_badlands_ambience.mp3 in Resources */,
 				1D8CEC0B14B092BC00A1861D /* block_build_leaves_2.caf in Resources */,
 				1D8CEC0C14B092BC00A1861D /* block_build_leaves_1.caf in Resources */,
+				1902C8311A63A8D800D8E67F /* report_flag.png in Resources */,
 				1D8CEC0D14B092BC00A1861D /* block_build_lava_4.caf in Resources */,
 				1D8CEC0E14B092BC00A1861D /* block_build_lava_3.caf in Resources */,
 				1D8CEC0F14B092BC00A1861D /* block_build_lava_2.caf in Resources */,
@@ -3811,7 +3808,6 @@
 				19B3B14616A6225300E86E8D /* door_icon2_active.png in Resources */,
 				19B3B14716A6225300E86E8D /* portal_icon2_active.png in Resources */,
 				19B3B14816A6225300E86E8D /* goldcube_icon_active.png in Resources */,
-				199017EF16C1D07D008EDCA7 /* icontest.png in Resources */,
 				19DE2CA716D83C1000BA6380 /* Icon_57.png in Resources */,
 				19A07C8F1A291048008CAED0 /* sky_color change_dark_to_light.mp3 in Resources */,
 				19DE2CAA16D83C1E00BA6380 /* Icon_114.png in Resources */,
@@ -3955,15 +3951,7 @@
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-					"\"$(SRCROOT)/testflight\"",
-					/Users/arironen/Downloads/TestFlightSDK3.0.2,
-					"$(PROJECT_DIR)/Eden",
-					"$(PROJECT_DIR)/testflight",
-					"$(PROJECT_DIR)/Eden/testflight",
-				);
+				LIBRARY_SEARCH_PATHS = testflight/;
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -3996,15 +3984,7 @@
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-					"\"$(SRCROOT)/testflight\"",
-					/Users/arironen/Downloads/TestFlightSDK3.0.2,
-					"$(PROJECT_DIR)/Eden",
-					"$(PROJECT_DIR)/testflight",
-					"$(PROJECT_DIR)/Eden/testflight",
-				);
+				LIBRARY_SEARCH_PATHS = testflight/;
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -4097,8 +4077,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CODE_SIGN_ENTITLEMENTS = "~/Documents/Eden/Entitlements.plist";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Kingly Software Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Kingly Software Inc";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1.9.1;
 				GCC_INPUT_FILETYPE = automatic;
@@ -4113,17 +4093,9 @@
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-					"\"$(SRCROOT)/testflight\"",
-					/Users/arironen/Downloads/TestFlightSDK3.0.2,
-					"$(PROJECT_DIR)/Eden",
-					"$(PROJECT_DIR)/testflight",
-					"$(PROJECT_DIR)/Eden/testflight",
-				);
+				LIBRARY_SEARCH_PATHS = testflight/;
 				PRODUCT_NAME = Eden;
-				PROVISIONING_PROFILE = "5c353993-f73d-47c3-b4e0-c6e3541354b4";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5c353993-f73d-47c3-b4e0-c6e3541354b4";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4181,15 +4153,7 @@
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-					"\"$(SRCROOT)/testflight\"",
-					/Users/arironen/Downloads/TestFlightSDK3.0.2,
-					"$(PROJECT_DIR)/Eden",
-					"$(PROJECT_DIR)/testflight",
-					"$(PROJECT_DIR)/Eden/testflight",
-				);
+				LIBRARY_SEARCH_PATHS = testflight/;
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4D8D4663-010B-4719-AA2C-456BD8A0BE05";

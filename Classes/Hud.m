@@ -524,7 +524,7 @@ static int warpCount=0;
                     extern BOOL FLY_MODE;
                   /*  FLY_MODE=!FLY_MODE;
                     printf("Fly mode set to %d\n",FLY_MODE);*/
-                    
+                    /*
                     
                     
                     
@@ -542,7 +542,7 @@ static int warpCount=0;
                     warpCount++;
                     if(warpCount==7){
                         warpCount=0;
-                    }
+                    }*/
                     
                    /* int ppx=player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
                     int ppz=player.pos.z-4096*CHUNK_SIZE+GSIZE/2;
@@ -766,11 +766,19 @@ static int warpCount=0;
                         }
                         printf("Setting buildsize: %d\n",build_size);
                          */
+                    }else if(hudBlocks[pressed]==TYPE_DOOR_TOP){
+                      block_paintcolor=20;
+                        mode=MODE_BUILD;
+                        blocktype=hudBlocks[pressed];
+
+                        
                     }else{
-                     block_paintcolor=0;
+                        block_paintcolor=0;
+                    
                         mode=MODE_BUILD;
                         blocktype=hudBlocks[pressed];
                     }
+                    
                 }
                 if(mode==MODE_PICK_COLOR){
                     mode=MODE_PAINT;

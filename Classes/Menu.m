@@ -847,7 +847,7 @@ static const int usage_id=7;
                     }
                   //  g_terrain_type=2;
                    
-                    loading=4;
+                    //loading=4;
                     /*new world prompt
                     if(![World getWorld].FLIPPED){
                         [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
@@ -855,9 +855,9 @@ static const int usage_id=7;
                     else{
                         [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
                         
-                    }
+                    }*/
                     [alertWorldType show];
-                    loading++;*/
+                    loading++;
                 }
 				
 				//[sbar clear];

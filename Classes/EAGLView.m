@@ -55,6 +55,7 @@ extern EAGLView* G_EAGL_VIEW;
         SCALE_HEIGHT=2.4f;
    
 		IS_IPAD=TRUE;
+        printf("is ipad");
     }
     else{
         if([[UIScreen mainScreen] respondsToSelector: NSSelectorFromString(@"scale")]&&
@@ -222,7 +223,7 @@ extern EAGLView* G_EAGL_VIEW;
 		glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer);
 		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, framebufferWidth, framebufferHeight);
 		glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_DEPTH_ATTACHMENT_OES, GL_RENDERBUFFER_OES, depthRenderbuffer);
-		
+        printf("framebuffer dimensions %d x %d\n",framebufferWidth,framebufferHeight);
         if (glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES) != GL_FRAMEBUFFER_COMPLETE_OES)
             NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES));
 		

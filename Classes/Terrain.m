@@ -631,7 +631,7 @@ TerrainChunk* rebuildList[13000];
         y-=cy*CHUNK_SIZE;
         z-=cz*CHUNK_SIZE;
         // extern block8* blocks2;
-        if(chunk.pblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]==TYPE_CUSTOM){
+       /* if(chunk.pblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]==TYPE_CUSTOM){
             
             SmallBlock* sb=chunk.psblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
             if(sb){
@@ -642,7 +642,7 @@ TerrainChunk* rebuildList[13000];
                 }
                 
             }
-        }
+        }*/
        
             chunk.pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]=type;
         chunk.modified=TRUE;
@@ -690,6 +690,7 @@ TerrainChunk* rebuildList[13000];
 - (void)destroyBlock:(int)x :(int)z :(int)y{
     NSLog(@"%d, %d, %d",x,z,y);
     int cur=getLandc(x,z,y);
+    if(cur==TYPE_GOLDEN_CUBE||cur==TYPE_BEDROCK)return;
     if(blockinfo[cur]&IS_LIQUID){
         [liquids removeSource:x:z:y:cur];
     }else{
@@ -1495,8 +1496,14 @@ int getColorc(int x,int z,int y){
 }
 
 - (void)explode:(int)x :(int)z :(int)y{
-	[[Resources getResources] playSound:S_EXPLODE];
+    
+	
     int color=[self getColor:x:z:y];
+    if(color!=0)
+         [[Resources getResources] playSound:S_GOOP_EXPLODE];
+    else
+        [[Resources getResources] playSound:S_EXPLODE];
+    
     Vector v=MakeVector(x+.5f,y+.5f,z+.5f);
     ExplodeModels(v,color);
     [[World getWorld].effects addCreatureVanish:x+.5f:z+.5f:y+.5f:color:TYPE_TNT];

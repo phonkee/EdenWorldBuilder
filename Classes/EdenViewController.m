@@ -165,17 +165,11 @@
         animating = FALSE;
     }
 }
-/*- (BOOL)shouldAutorotateToInterfaceOrientation:
-(UIInterfaceOrientation)interfaceOrientation
-{
-	if(interfaceOrientation==UIInterfaceOrientationLandscapeRight||
-	   interfaceOrientation==UIInterfaceOrientationLandscapeLeft)
-	return TRUE;
-	else {
-		return FALSE;
-	}
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 
-}*/
+{
+    return (interfaceOrientation != UIInterfaceOrientationPortrait && interfaceOrientation !=UIInterfaceOrientationPortraitUpsideDown);
+}
 
 - (void)drawFrame
 {

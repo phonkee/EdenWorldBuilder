@@ -1331,12 +1331,15 @@ extern int g_offcz;
                     int color;
                     if(type==TYPE_CLOUD&&f==4&&FALSE)
                         color=light[coord]*paint[coord]*180;
-                    else if(f==5){                      
+                    else if(f==5){
+                        
                         color=light[coord]*paint[coord]*(float)cubeColors[f*3+coord];//*top_shadow;
                     }else if(type>=TYPE_STONE_SIDE1&&type<=TYPE_ICE_SIDE4&&sideface==f){
                         color=light[coord]*paint[coord]*wshadow;
                     }
-                    else
+                    else if(type==TYPE_FIREWORK){
+                        color=255;
+                    }else
                         color=light[coord]*paint[coord]*(float)cubeColors[f*3+coord];
                     
                     //printf("WTFWTF\n");

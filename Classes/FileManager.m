@@ -1356,6 +1356,12 @@ extern float P_ZFAR;
 		temp.x=centerChunk*CHUNK_SIZE+CHUNK_SIZE/2;
 		temp.z=centerChunk*CHUNK_SIZE+CHUNK_SIZE/2;
 		temp.y=T_HEIGHT-10;
+        
+        if(gen_default){
+            temp.x=65555;
+            temp.z=65537;
+            temp.y=23;
+        }
 		ter.home=temp;
 		Vector temp2;		
 		temp2.x=BLOCK_SIZE*(ter.home.x+.5f);

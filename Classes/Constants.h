@@ -9,7 +9,7 @@
 #ifndef Eden_Constants_h
 #define Eden_Constants_h
 
-#define P_FOVY 85.0f
+#define P_FOVY 90.0f
 
 #define P_ZNEAR .1f
 #define IPAD_WIDTH 1024
@@ -130,7 +130,8 @@ enum BLOCK_TYPES{
     TYPE_PORTAL3=77,
     TYPE_PORTAL4=78,
     TYPE_PORTAL_TOP=79,
-    TYPE_CUSTOM=80,
+   // TYPE_EMPTY_SPACE=80,
+   TYPE_CUSTOM=80,
     
 };
 #define IS_FLAMMABLE       0b00000000000000000001
