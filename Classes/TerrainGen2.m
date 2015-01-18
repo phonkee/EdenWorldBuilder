@@ -1116,13 +1116,13 @@ void makeMix(){
             }
         }
     }
-    for(int x=3*GSIZE/4+GSIZE/8;x<GSIZE;x++){
+    /*for(int x=3*GSIZE/4+GSIZE/8;x<GSIZE;x++){
         for(int z=3*GSIZE/4+GSIZE/8;z<GSIZE;z++){
             for(int y=1;y<T_HEIGHT;y++){
                 BLOCK(x,z,y)=0;
             }
         }
-    }
+    }*/
     
     for(int x=4;x<GSIZE-4;x++){ //Trees
         for(int z=4;z<GSIZE-4;z++){

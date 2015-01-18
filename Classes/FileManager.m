@@ -1356,11 +1356,18 @@ extern float P_ZFAR;
 		temp.x=centerChunk*CHUNK_SIZE+CHUNK_SIZE/2;
 		temp.z=centerChunk*CHUNK_SIZE+CHUNK_SIZE/2;
 		temp.y=T_HEIGHT-10;
-        
+        int tempyaw=90;
         if(gen_default){
-            temp.x=65555;
-            temp.z=65537;
-            temp.y=23;
+            int spawn_location=arc4random()%10;
+            int spx[10]={/*64036+(700),*/64736,64629,66370, 66286,64919,65415,64763,64949,64233, 65555};
+            int spz[10]={/*64036+(1700),*/65731,66306,65496,66286,64866,66296,66224,64254,64234, 65537};
+            int spy[10]={/*25,     */ 22,24,14,22,30, 21,23,22,34,25};
+            int spyaw[10]={/*0,    */ -176,-85,1,22,88, 176,-138,91,271,91};
+            temp.x=spx[spawn_location];
+            temp.z=spz[spawn_location];
+            temp.y=spy[spawn_location];
+            tempyaw=spyaw[spawn_location];
+            
         }
 		ter.home=temp;
 		Vector temp2;		
@@ -1369,15 +1376,16 @@ extern float P_ZFAR;
 		temp2.z=BLOCK_SIZE*(ter.home.z+.5f);
             player.pos=temp2;
         
-
-		//NSLog(@"player pos init save: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
+        if(!gen_default)
+        [[World getWorld].player groundPlayer];
+        //(player.pos).y=1;
+        
+		//printf("player pos init save: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
 		//NSLog(@"chunkOffsets: %d %d",chunkOffsetX,chunkOffsetZ);
-		player.yaw=90;	
+        player.yaw=tempyaw;
         file_version=2;
 		//[ter updateAllImportantChunks];
-		[[World getWorld].player groundPlayer];
-        
-      
+		
         for(int i=0;i<MAX_CREATURES_SAVED;i++){
             creatureData[i].type=-1;
         }

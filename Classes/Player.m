@@ -511,7 +511,7 @@ extern bool hitCustom;
                                //[[World getWorld].terrain destroyCustom:point.x:point.z:point.y];
                             }else
                             {
-                                printf("removing block: %d %d %d %d\n",point.x,point.z,point.y,type);
+                                printf("removing block: %d %d %d %d  yaw:%d\n",point.x,point.z,point.y,type,(int)yaw);
                                 [[World getWorld].terrain destroyBlock:point.x:point.z:point.y];
                             }
 							

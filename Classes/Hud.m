@@ -524,7 +524,7 @@ static int warpCount=0;
                     extern BOOL FLY_MODE;
                   /*  FLY_MODE=!FLY_MODE;
                     printf("Fly mode set to %d\n",FLY_MODE);*/
-                    /*
+                    
                     
                     
                     
@@ -542,7 +542,7 @@ static int warpCount=0;
                     warpCount++;
                     if(warpCount==7){
                         warpCount=0;
-                    }*/
+                    }
                     
                    /* int ppx=player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
                     int ppz=player.pos.z-4096*CHUNK_SIZE+GSIZE/2;
