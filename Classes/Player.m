@@ -1167,7 +1167,7 @@ extern Vector tranDist;
 extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 - (BOOL)vertc{
     nest_count++;
-    if(nest_count>10)return false;
+    if(nest_count>10){printf("hit nest limit"); nest_count--; return false;}
 	Terrain* ter=world.terrain;
     float bot=pos.y-boxheight/2;
 	float top=pos.y+boxheight/2;
@@ -1180,9 +1180,9 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     if(nest_count==1){
         hitLadder=FALSE;
         ladderExists=FALSE;
-        for(int x=(int)left-1;x<=(int)right+1;x++){
-            for(int z=(int)front-1;z<=(int)back+1;z++){
-                for(int y=(int)bot-1;y<=(int)top+1;y++){
+        for(int x=(int)(left-.5f);x<=(int)(right+.5f);x++){
+            for(int z=(int)(front-.5f);z<=(int)(back+.5f);z++){
+                for(int y=(int)(bot-.5f);y<=(int)(top+.5f);y++){
                     int type=getLandc2(x,z,y);
                     if(type<=0)continue;
                     if(type==TYPE_LADDER||
@@ -1202,9 +1202,9 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     
   Vector minminTranDist=MakeVector(0,0,0);
     int collided=0;
-    for(int x=(int)left;x<=(int)right;x++){
-        for(int z=(int)front;z<=(int)back;z++){
-            for(int y=(int)bot;y<=(int)top;y++){
+    for(int x=(int)left;x<=(int)(right+.5f);x++){
+        for(int z=(int)front;z<=(int)(back+.5f);z++){
+            for(int y=(int)bot;y<=(int)(top+.5f);y++){
                 int type=getLandc2(x,z,y);
                 if(type<=0)continue;
                 
@@ -1393,7 +1393,10 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         
            // NSLog(@"after-vel:(%f,%f,%f)  vel2:(%f,%f,%f)",vel.x,vel.y,vel.z,vel2.x,vel2.y,vel2.z);
        // }
-        if(minminTranDist.y>0&&(vel.y<=0||(collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4))){
+        if((minminTranDist.y>0||(collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4))&&(vel.y<=0||(collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4))){
+            
+            if((collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4))
+            printf("hit ramp mmtd: (%f,%f,%f)\n",minminTranDist.x,minminTranDist.y,minminTranDist.z);
             
             if(collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4){
                 if(collided>=TYPE_ICE_RAMP1&&collided<=TYPE_ICE_RAMP4){
@@ -1447,17 +1450,23 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
        
       
         //pbox=makeBox(left,right,back,front,bot,top);
+        
+        
+       // printf("collison recursion nest count: %d  type:%d\n",nest_count,collided);
         [self vertc];
-        nest_count--;
+        
+        
+        
         
     }
     if(nest_count==1){
        // printf("on ramp!\n");
-    if((climbing&&vspeed!=0&&!hitLadder)||ladderExists==FALSE){
+    if((climbing&&vspeed!=0&&!ladderExists)||ladderExists==FALSE){
         if(climbing&&!ladderExists&&vspeed>0){
             // vel.y=GRAVITY*-0.2f;
             NSLog(@"dismount");
         }
+       // printf("dismounting ");
         climbing=FALSE;
         
         
@@ -1475,8 +1484,14 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         }
     }
     endClimb=FALSE;
+        
+       // printf("vspeed=%f speed=%f  hit ladder:%d and ",vspeed,speed,hitLadder);
+        //if(climbing)printf("climbing\n");
+        //else printf("not climbing\n");
     }
     
+    
+    nest_count--;
 	return collided;
     
     /*
@@ -1889,7 +1904,7 @@ static int icesound=0;
             vel.x=0;
             vel.z=0;
             vel.y=0;
-           // NSLog(@"stopping"); 
+           // printf("stopping\n");
         }
        // 
     }

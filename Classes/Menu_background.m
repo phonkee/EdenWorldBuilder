@@ -41,6 +41,7 @@ static cloud* cloud_list;
 }
 static float counter=0;
 -(void)update:(float)etime{
+    
 	pinwheelr+=10*etime;
 	groundx+=22*etime;
 	if(groundx>480)groundx-=480;

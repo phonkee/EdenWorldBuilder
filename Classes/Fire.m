@@ -13,10 +13,10 @@
 
 @implementation Fire
 
-#define n_particles 50
+#define n_particles 7
 #define max_fparticles 6000
 #define max_bb 500
-#define SMOKE_SIZER 80
+#define SMOKE_SIZER 50
 
 static unsigned short pindices[max_fparticles];
 typedef struct{
@@ -187,7 +187,7 @@ const GLubyte colors[4][3]={
     
 	for(int k=0;k<list_size;k++)
 		if(list[k].pid==ppid){
-			list[k].life=0;
+			list[k].life=.2f;
 			break;
 		}
     
@@ -453,8 +453,8 @@ static int frame=0,frame2=0;
     
     vert=0;
      poof=1.25f;
-   epoofx=1.3f;
-     epoofy=1.7f;
+   epoofx=1.2f;
+     epoofy=1.6f;
     for(int i=0;i<list_size;i++){
         
         bnode* node=&list[i];
@@ -494,6 +494,15 @@ static int frame=0,frame2=0;
           //  Vector uv=getFrameUV(0,SPRITE_FLAME);
             objVertices[vert].texs[0]=cubeTextureCustom[k*2+0];
             objVertices[vert].texs[1]=cubeTextureCustom[k*2+1];
+            
+            objVertices[vert].colors[0]=0;
+            objVertices[vert].colors[1]=0;
+           objVertices[vert].colors[2]=0;
+            if(node->life<.2f){
+               // printf("rendering dying fire\n");
+                objVertices[vert].colors[3]=5*node->life*255;
+            }else
+            objVertices[vert].colors[3]=255;
                
            
             
@@ -507,19 +516,28 @@ static int frame=0,frame2=0;
      //glPolygonOffset(-3000000.0f,1.0f);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
-    
+    glEnableClientState(GL_COLOR_ARRAY);
     glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SPRITE_FLAME].name);
     glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
+    glColorPointer(4,GL_UNSIGNED_BYTE,sizeof(vertexObject),objVertices[0].colors);
    	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
 	
-	
-    glColor4f(0,0,0,1.0f);
+    static float alpha_cycle=1.0f;
+   // glColor4f(0,0,0,alpha_cycle);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDrawArrays(GL_TRIANGLES, 0,vert);
-    
+    for(int i=0;i<vert;i++){
+        objVertices[i].colors[0]=255;
+        objVertices[i].colors[1]=255;
+        objVertices[i].colors[2]=255;
+        
+    }
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    glColor4f(1.0,1.0,1,1);
+    //glColor4f(1.0,1.0,1,alpha_cycle);
     glDrawArrays(GL_TRIANGLES, 0,vert);
+    
+    alpha_cycle-=.025f;
+    if(alpha_cycle<0)alpha_cycle=1.0f;
     
     
     
