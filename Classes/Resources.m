@@ -29,13 +29,15 @@ static Resources* singleton;
 
 
 
-#define NUM_SONGS 4
+#define NUM_SONGS 6
 
 static NSString* songFiles[NUM_SONGS]={
     @"Eden_1.mp3",
     @"Eden_2.mp3",
     @"Eden_3.mp3",
     @"Eden_4.mp3",
+    @"Eden_5.mp3",
+    @"Eden_6.mp3",
        
 };
 

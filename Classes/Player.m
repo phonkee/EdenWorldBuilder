@@ -1182,7 +1182,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         ladderExists=FALSE;
         for(int x=(int)(left-.5f);x<=(int)(right+.5f);x++){
             for(int z=(int)(front-.5f);z<=(int)(back+.5f);z++){
-                for(int y=(int)(bot-.5f);y<=(int)(top+.5f);y++){
+                for(int y=(int)(bot-.2f);y<=(int)(top+.5f);y++){
                     int type=getLandc2(x,z,y);
                     if(type<=0)continue;
                     if(type==TYPE_LADDER||
@@ -1354,9 +1354,18 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
             }
         }
         
-        
+        if((collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4)){//ugly hack to prevent stickage at bottom of ramps
+            if(minminTranDist.y==0){
+                float pytemp=pos.y-(int)pos.y;
+                if(pytemp>0.92f&&pytemp<0.925f){
+               // printf("hit ramp mmtd: (%f,%f,%f)  player.y=%f\n",minminTranDist.x,minminTranDist.y,minminTranDist.z,pos.y);
+                minminTranDist.y=.002763;
+                }
+            }
+            
+        }
       
-          pos=v_add(pos,minminTranDist);     
+          pos=v_add(pos,minminTranDist);
         Vector normal=minminTranDist;
         NormalizeVector(&normal);
         float n=dotProduct(vel,normal);
@@ -1393,10 +1402,9 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         
            // NSLog(@"after-vel:(%f,%f,%f)  vel2:(%f,%f,%f)",vel.x,vel.y,vel.z,vel2.x,vel2.y,vel2.z);
        // }
-        if((minminTranDist.y>0||(collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4))&&(vel.y<=0||(collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4))){
+        if(minminTranDist.y>0&&(vel.y<=0||(collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4))){
             
-            if((collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4))
-            printf("hit ramp mmtd: (%f,%f,%f)\n",minminTranDist.x,minminTranDist.y,minminTranDist.z);
+           
             
             if(collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4){
                 if(collided>=TYPE_ICE_RAMP1&&collided<=TYPE_ICE_RAMP4){
@@ -1850,8 +1858,16 @@ static int icesound=0;
     onramp=FALSE;
     [self vertc];
    // if(onground)NSLog(@"grounded sucka");
-    if(!onIce&&lastOnIce){
-        [[Resources getResources] stopSound:icesound];
+    static float iceTimer=.15f;
+    if(!onIce&&!lastOnIce){
+        if(icesound!=0){
+            iceTimer-=etime;
+            if(iceTimer<0){
+                [[Resources getResources] stopSound:icesound];
+                icesound=0;
+                
+            }
+        }
     }
     if((vel.x!=0||vel.z!=0)&&(onIce)){
         Vector vdir=vel;
@@ -1874,8 +1890,10 @@ static int icesound=0;
     }
     if(mag!=0&&onIce){
         if(!lastOnIce){
-            [[Resources getResources] stopSound:icesound];
+           // [[Resources getResources] stopSound:icesound];
+            if(icesound==0)
             icesound=[[Resources getResources] playSound:S_ICE_LOOP];
+            iceTimer=.15f;
             lastOnIce=TRUE;
         }
         //Vector dir=v_sub(pos,lpos);
@@ -1926,9 +1944,14 @@ static int icesound=0;
     if(blockinfo[type]&IS_WATER){
         [World getWorld].hud.underLiquid=TRUE;
     }
-   
+    type=[[World getWorld].terrain getLand:pos.x +dirv.x/8.0f
+                                              :pos.z +dirv.z/8.0f
+                                              :pos.y+boxbase/2];
     if(type==TYPE_PORTAL_TOP){
+        
         if(!inPortal){
+            pos.x=pos.x+dirv.x/8.0f;
+            pos.z=pos.z+dirv.z/8.0f;
             inPortal=TRUE;
             printf("entering portal (%d, %d, %d)  ", (int)pos.x,(int)(pos.y+boxbase/2),(int)pos.z);
             [[Resources getResources] playSound:S_ENTER_PORTAL];
