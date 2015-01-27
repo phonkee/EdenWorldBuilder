@@ -402,7 +402,15 @@ static int frame=0,frame2=0;
                 objVertices[vert].texs[0]=cubeTextureCustom[k*2+0]*.8f+.1f;
                 objVertices[vert].texs[1]=cubeTextureCustom[k*2+1]*.8f+.1f;
                 
-                
+                           objVertices[vert].colors[0]=0;
+                           objVertices[vert].colors[1]=0;
+                           objVertices[vert].colors[2]=0;
+                           if(node->life<.2f){
+                               // printf("rendering dying fire\n");
+                               objVertices[vert].colors[3]=5*node->life*255;
+                           }else
+                               objVertices[vert].colors[3]=255;
+
                 
                 
                 vert++;
@@ -417,16 +425,24 @@ static int frame=0,frame2=0;
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
-    
-    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SPRITE_FLAME].name);
+    glEnableClientState(GL_COLOR_ARRAY);
+       glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SPRITE_FLAME].name);
     glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
+    glColorPointer(4,GL_UNSIGNED_BYTE,sizeof(vertexObject),objVertices[0].colors);
+
    	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
 	
 	
     glColor4f(0,0,0,1.0f);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       glDrawArrays(GL_TRIANGLES, 0,vert);
-    
+   
+    for(int i=0;i<vert;i++){
+        objVertices[i].colors[0]=255;
+        objVertices[i].colors[1]=255;
+        objVertices[i].colors[2]=255;
+        
+    }
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     glColor4f(1.0,1.0,1,1);
    glDrawArrays(GL_TRIANGLES, 0,vert);
@@ -466,7 +482,7 @@ static int frame=0,frame2=0;
             
             float dist=sqrtf((node->x - camp.x)*(node->x - camp.x) + (node->z-camp.z)*(node->z-camp.z) + (node->y - camp.y)*(node->y-camp.y));
        // printf("dist:%f\n",dist);
-        float poof=1.1+dist*0.035f;
+        float poof=1.05+dist*0.049f;
             
         for(int k=0;k<6*6;k++){
             Vector vc;
@@ -516,9 +532,10 @@ static int frame=0,frame2=0;
      //glPolygonOffset(-3000000.0f,1.0f);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
-    glEnableClientState(GL_COLOR_ARRAY);
+   
     glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SPRITE_FLAME].name);
     glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
+    
     glColorPointer(4,GL_UNSIGNED_BYTE,sizeof(vertexObject),objVertices[0].colors);
    	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
 	

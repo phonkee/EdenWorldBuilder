@@ -2761,8 +2761,11 @@ int tg2_init(){
 int lrx=-1;
 int lrz=-1;
 extern int regionSkyColors[4][4];
-void updateSkyColor(Player* player){
+void updateSkyColor(Player* player,BOOL force){
     extern int g_offcx;
+    if(force){
+        lrx=lrz=-1;
+    }
     
     //if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
        
@@ -2780,7 +2783,12 @@ void updateSkyColor(Player* player){
         
         if(lrx!=ppx||lrz!=ppz){
             if(lrx==-1||regionSkyColors[ppz][ppx]!=regionSkyColors[lrz][lrx]){
+                
                 [World getWorld].terrain.final_skycolor=colorTable[regionSkyColors[(int)(ppz+64)%4][(int)(ppx+64)%4]];
+                if(force){
+                    [World getWorld].terrain.skycolor=MakeVector([World getWorld].terrain.final_skycolor.x,[World getWorld].terrain.final_skycolor.y,[World getWorld].terrain.final_skycolor.z+.05f);
+                    
+                }
             }
             lrx=ppx;
             lrz=ppz;

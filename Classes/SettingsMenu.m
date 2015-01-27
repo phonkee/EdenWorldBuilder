@@ -183,6 +183,10 @@ static const int usage_id=3;
     [World getWorld].bestGraphics=properties[S_GRAPHICS].value;
     CREATURES_ON=properties[S_CREATURES].value;
     
+    if(LOW_MEM_DEVICE){
+        [World getWorld].bestGraphics=FALSE;
+    }
+    
 }
 -(void)save{
 	NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];

@@ -18,6 +18,7 @@
 		19392EA51A43C5AB008C761D /* go_through_portal_04.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19392EA11A43C5AB008C761D /* go_through_portal_04.mp3 */; };
 		193E4E8D17AB598600ADF103 /* ipad~treelayerright.png in Resources */ = {isa = PBXBuildFile; fileRef = 193E4E8B17AB598600ADF103 /* ipad~treelayerright.png */; };
 		193E4E8E17AB598600ADF103 /* ipad~treelayerleft.png in Resources */ = {isa = PBXBuildFile; fileRef = 193E4E8C17AB598600ADF103 /* ipad~treelayerleft.png */; };
+		194EDC361A7722B300342AEB /* Flame_256.png in Resources */ = {isa = PBXBuildFile; fileRef = 194EDC351A7722B300342AEB /* Flame_256.png */; };
 		1967D00A1639F26100C03DF0 /* Charger.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D0091639F26100C03DF0 /* Charger.pod */; };
 		1967D0101639F3A900C03DF0 /* Batty.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00B1639F3A900C03DF0 /* Batty.pod */; };
 		1967D0121639F3A900C03DF0 /* Moof.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00D1639F3A900C03DF0 /* Moof.pod */; };
@@ -79,8 +80,6 @@
 		19C93C8E1672DEE7006ADF33 /* Charger_Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C881672DEE7006ADF33 /* Charger_Default.png */; };
 		19C93C911672E668006ADF33 /* Stalker_Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C8F1672E668006ADF33 /* Stalker_Default.png */; };
 		19C93C921672E668006ADF33 /* Stalker_Blink.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C901672E668006ADF33 /* Stalker_Blink.png */; };
-		19C93C981679216E006ADF33 /* Flame_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C971679216E006ADF33 /* Flame_1024.png */; };
-		19C93C9A167998B8006ADF33 /* Flameb_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C99167998B8006ADF33 /* Flameb_1024.png */; };
 		19D327B016AE0A23001EF2DB /* Lighting.m in Sources */ = {isa = PBXBuildFile; fileRef = 19D327AF16AE0A23001EF2DB /* Lighting.m */; };
 		19D3339B167B0CE20082ACE7 /* smoke_tex.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D3339A167B0CE20082ACE7 /* smoke_tex.png */; };
 		19D3339D167D34F70082ACE7 /* Flame_1024b.png in Resources */ = {isa = PBXBuildFile; fileRef = 19D3339C167D34F70082ACE7 /* Flame_1024b.png */; };
@@ -860,6 +859,7 @@
 		19392EA11A43C5AB008C761D /* go_through_portal_04.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = go_through_portal_04.mp3; path = new_sound/go_through_portal_04.mp3; sourceTree = "<group>"; };
 		193E4E8B17AB598600ADF103 /* ipad~treelayerright.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ipad~treelayerright.png"; path = "ipad_menu/ipad~treelayerright.png"; sourceTree = "<group>"; };
 		193E4E8C17AB598600ADF103 /* ipad~treelayerleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ipad~treelayerleft.png"; path = "ipad_menu/ipad~treelayerleft.png"; sourceTree = "<group>"; };
+		194EDC351A7722B300342AEB /* Flame_256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flame_256.png; sourceTree = "<group>"; };
 		1967D0091639F26100C03DF0 /* Charger.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Charger.pod; path = models/Charger.pod; sourceTree = "<group>"; };
 		1967D00B1639F3A900C03DF0 /* Batty.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Batty.pod; path = models/Batty.pod; sourceTree = "<group>"; };
 		1967D00D1639F3A900C03DF0 /* Moof.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Moof.pod; path = models/Moof.pod; sourceTree = "<group>"; };
@@ -930,8 +930,6 @@
 		19C93C881672DEE7006ADF33 /* Charger_Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Charger_Default.png; path = models/Charger_Default.png; sourceTree = "<group>"; };
 		19C93C8F1672E668006ADF33 /* Stalker_Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Stalker_Default.png; path = models/Stalker_Default.png; sourceTree = "<group>"; };
 		19C93C901672E668006ADF33 /* Stalker_Blink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Stalker_Blink.png; path = models/Stalker_Blink.png; sourceTree = "<group>"; };
-		19C93C971679216E006ADF33 /* Flame_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flame_1024.png; sourceTree = "<group>"; };
-		19C93C99167998B8006ADF33 /* Flameb_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flameb_1024.png; sourceTree = "<group>"; };
 		19D327AE16AE0A23001EF2DB /* Lighting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Lighting.h; path = ../Lighting.h; sourceTree = "<group>"; };
 		19D327AF16AE0A23001EF2DB /* Lighting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Lighting.m; path = ../Lighting.m; sourceTree = "<group>"; };
 		19D3339A167B0CE20082ACE7 /* smoke_tex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smoke_tex.png; sourceTree = "<group>"; };
@@ -2545,6 +2543,7 @@
 		C62C95A012713E1900379390 /* media */ = {
 			isa = PBXGroup;
 			children = (
+				194EDC351A7722B300342AEB /* Flame_256.png */,
 				19A07C5A1A290FA6008CAED0 /* new_sound */,
 				19FD78F817F7B7430023DD80 /* test.png */,
 				19B3B12316A07D4D00E86E8D /* portal_twirl2.png */,
@@ -2560,8 +2559,6 @@
 				19D333A7167D6E2A0082ACE7 /* Stumpy_DefaultMASK.png */,
 				19D3339C167D34F70082ACE7 /* Flame_1024b.png */,
 				19D3339A167B0CE20082ACE7 /* smoke_tex.png */,
-				19C93C99167998B8006ADF33 /* Flameb_1024.png */,
-				19C93C971679216E006ADF33 /* Flame_1024.png */,
 				C67F54A512CF94DD00F6DA2B /* ani_menu */,
 				C602CFAE1293124F002A0BE8 /* atlas.png */,
 				C64EB35113FCACEE00E8A475 /* atlas2.png */,
@@ -3588,6 +3585,7 @@
 				1D8CEC1E14B092BC00A1861D /* block_break_wood_2_v2.caf in Resources */,
 				1D8CEC1F14B092BC00A1861D /* block_break_wood_1_v2.caf in Resources */,
 				1D8CEC2314B092BC00A1861D /* block_break_water_4_v2.caf in Resources */,
+				194EDC361A7722B300342AEB /* Flame_256.png in Resources */,
 				1D8CEC2414B092BC00A1861D /* block_break_water_3_v2.caf in Resources */,
 				1D8CEC2514B092BC00A1861D /* block_break_water_2_v2.caf in Resources */,
 				1D8CEC2614B092BC00A1861D /* block_break_water_1_v2.caf in Resources */,
@@ -3787,8 +3785,6 @@
 				19C93C8E1672DEE7006ADF33 /* Charger_Default.png in Resources */,
 				19C93C911672E668006ADF33 /* Stalker_Default.png in Resources */,
 				19C93C921672E668006ADF33 /* Stalker_Blink.png in Resources */,
-				19C93C981679216E006ADF33 /* Flame_1024.png in Resources */,
-				19C93C9A167998B8006ADF33 /* Flameb_1024.png in Resources */,
 				192FD75E167AB593003F02FF /* flower_tex.png in Resources */,
 				19D3339B167B0CE20082ACE7 /* smoke_tex.png in Resources */,
 				19D3339D167D34F70082ACE7 /* Flame_1024b.png in Resources */,

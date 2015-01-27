@@ -527,7 +527,7 @@ static int warpCount=0;
                     
                     
                     
-                    
+                   /*
                     int ppx,ppz,ppy;
                     ppy=3*T_HEIGHT/4;
                     ppx=T_SIZE/2+4096*CHUNK_SIZE-GSIZE/2;
@@ -543,7 +543,7 @@ static int warpCount=0;
                     if(warpCount==7){
                         warpCount=0;
                     }
-                    
+                    */
                    /* int ppx=player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
                     int ppz=player.pos.z-4096*CHUNK_SIZE+GSIZE/2;
                     ppx=ppx/(GSIZE/4);

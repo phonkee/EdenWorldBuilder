@@ -10,7 +10,7 @@
 
 #import "EdenViewController.h"
 #import "EAGLView.h"
-
+#import "Globals.h"
 
 
 @interface EdenViewController ()
@@ -37,6 +37,16 @@
 	
     [(EAGLView *)self.view setContext:context];
     [(EAGLView *)self.view setFramebuffer];
+    unsigned long long memtotal=[NSProcessInfo processInfo].physicalMemory;
+    
+    if(memtotal<314572800){
+        printf("low mem device=true\n");
+        LOW_MEM_DEVICE=TRUE;
+    }else{
+        LOW_MEM_DEVICE=FALSE;
+    }
+    printf("mem total: %llu\n",memtotal);
+    
     
 	world=[[World alloc] init];
     

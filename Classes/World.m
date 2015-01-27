@@ -152,6 +152,7 @@ void RLETEST(){
 - (World*)init{
    
     singleton=self;
+    
     if(JUST_TERRAIN_GEN){
         RLETEST();
         double start=CFAbsoluteTimeGetCurrent();
@@ -334,11 +335,27 @@ void RLETEST(){
 extern int chunk_load_count;
 - (void)loadWorld:(NSString*)name{
     if(doneLoading==0){
+        
         doneLoading=1;
         [[Resources getResources] stopMenuTune];
+        if(LOW_MEM_DEVICE){
+            [menu deactivate];
+            
+            [[Resources getResources] unloadMenuTextures];
+            [[World getWorld].terrain allocateMemory];
+            [terrain loadTerrain:name:TRUE];
+            doneLoading=2;
+            [World getWorld].hud.fade_out=1;
+
+
+        }else{
+            [[World getWorld].terrain allocateMemory];
+            [NSThread detachNewThreadSelector:@selector(loadWorldThread:) toTarget:self withObject:name];
+        }
         
-        [NSThread detachNewThreadSelector:@selector(loadWorldThread:) toTarget:self withObject:name];  
-    }else{
+        
+    }
+    if(doneLoading>=1){
         int pct=100.0f*(float)(terrain.counter)/324.0f;
         
         if(pct>100)pct=100;
@@ -356,8 +373,13 @@ extern int chunk_load_count;
         
         if(doneLoading==2){
          //   printf("done loading !\n");
+            
+            if(!LOW_MEM_DEVICE){
             [menu deactivate];
+        
             [[Resources getResources] unloadMenuTextures];
+            }
+            
             [[Resources getResources] loadGameAssets];
             
             // [terrain loadTerrain:name];
@@ -390,6 +412,7 @@ extern int chunk_load_count;
     }
    // printf("loading menu textures\n");
     [[Resources getResources] unloadGameAssets];
+      [[World getWorld].terrain deallocateMemory];
 	[[Resources getResources] loadMenuTextures];
     if(SUPPORTS_RETINA&&!IS_RETINA){
       //  printf("menu activated2\n");
@@ -477,6 +500,9 @@ extern int chunk_load_count;
 		[cam update:etime];	
 		[terrain update:etime];		
 		[hud update:etime];
+        if(game_mode==GAME_MODE_WAIT){
+            return FALSE;
+        }
          if(CREATURES_ON&&![World getWorld].player.dead)
         UpdateModels(etime);
        

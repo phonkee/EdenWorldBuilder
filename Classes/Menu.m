@@ -24,6 +24,7 @@ extern float P_ASPECT_RATIO;
 
 UIAlertView *alertDeleteConfirm;
 UIAlertView *alertWorldType;
+static float fade_out=0;
 -(id)init{
     alertDeleteConfirm= [[UIAlertView alloc] 
                                              initWithTitle:@"Confirm Delete"
@@ -33,7 +34,7 @@ UIAlertView *alertWorldType;
                          initWithTitle:@"Pick world type"
                          message:@"\n"                                                                              delegate:self
                          cancelButtonTitle:nil                                                                          otherButtonTitles:@"Flat", @"Normal", nil];
-    
+    fade_out=0;
 	settings=[[SettingsMenu alloc] init];
 	menu_back=[[Menu_background alloc] init];
 	delete_mode=FALSE;
@@ -226,6 +227,7 @@ UIAlertView *alertWorldType;
 	return self;
 }
 -(void)activate{
+    fade_out=0;
 	[sbar setStatus:@"Choose world to load" :99999];
 	if(selected_world!=NULL)
 	[fnbar setStatus:selected_world->display_name :9999];
@@ -370,7 +372,11 @@ static const int usage_id=7;
 		[share_menu update:etime];
 		return;
 	}
-	if(loading)return;
+    if(loading){
+        if(loading>=4&&LOW_MEM_DEVICE)
+        fade_out+=etime/2;
+        return;
+    }
 	if(loading_world_list){
 		loading_world_list=0;
         shared_list.finished_list_dl=FALSE;
@@ -701,8 +707,12 @@ static const int usage_id=7;
 }
 -(void)render{
 	[Graphics prepareMenu];
+    
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+    
+    
 		glColor4f(1.0, 1.0, 1.0, 1.0f);
 	[menu_back render];
 	
@@ -825,7 +835,7 @@ static const int usage_id=7;
 				
 				NSString* wname=selected_world->file_name;
                 if([[World getWorld].fm worldExists:selected_world->file_name:TRUE]){
-				[[World getWorld] loadWorld:wname];	
+				//[[World getWorld] loadWorld:wname];
                     loading=4;
                 }
                 else{
@@ -863,10 +873,17 @@ static const int usage_id=7;
 				//[sbar clear];
 			}
 		}else if(loading==4){
-            NSString* wname=selected_world->file_name;
+            if(LOW_MEM_DEVICE){
+                if(fade_out>=1.0f){
+                    NSString* wname=selected_world->file_name;
            
-            [[World getWorld] loadWorld:wname];	
-           
+                    [[World getWorld] loadWorld:wname];
+                }
+            }else{
+                NSString* wname=selected_world->file_name;
+                
+                [[World getWorld] loadWorld:wname];
+            }
 
             
         }else if(loading<2){
@@ -875,6 +892,21 @@ static const int usage_id=7;
         }
 		
 	}
+    
+    if(fade_out>0){
+        glColor4f(0,0,0,fade_out);
+        glDisable(GL_TEXTURE_2D);
+        glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        if(IS_IPAD){
+            if(IS_RETINA){
+                [Graphics drawRect:0:0:SCREEN_WIDTH*2:SCREEN_HEIGHT*2];
+            }else
+                [Graphics drawRect:0:0:IPAD_WIDTH:IPAD_HEIGHT];
+        }else
+            [Graphics drawRect:0:0:SCREEN_WIDTH:SCREEN_HEIGHT];
+        glEnable(GL_TEXTURE_2D);
+        [sbar render];
+    }
 	glDisable(GL_BLEND);
     [Graphics endMenu];
 }

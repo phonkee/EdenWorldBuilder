@@ -97,6 +97,8 @@ int getLandc2(int x,int z,int y);
 int getColorc(int x,int z,int y);
 bool isOnFire(int x ,int z, int y);
 int getRampType(int x,int z,int y, int t);
+- (void)allocateMemory;
+-(void) deallocateMemory;
 //int getCustomc(int x,int z,int y);
 
 @property(nonatomic, assign) NSString* world_name;

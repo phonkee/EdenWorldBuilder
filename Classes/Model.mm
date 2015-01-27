@@ -1807,6 +1807,7 @@ void PlaceModel(int idx,Vector pos){
     guys[idx].model_type=inventory.type;
     guys[idx].alive=TRUE;
     guys[idx].life=START_LIFE;
+    guys[idx].touched=true;
     guys[idx].pos.x=wrapx(fpoint.x);
     guys[idx].pos.y=fpoint.y;//+centers[guys[idx].model_type].y;
     guys[idx].pos.z=wrapz(fpoint.z);
@@ -2336,6 +2337,9 @@ bool RenderModels()
      qsort (renderlistc, renderidx, sizeof (int), compare_creatures);
     max_render=renderidx;
     int mmax=50;//30;
+     if(LOW_MEM_DEVICE){
+         mmax=10;
+    }
     extern bool SUPPORTS_OGL2;
     if(!SUPPORTS_OGL2)mmax=10;
     if(max_render>mmax)max_render=mmax;

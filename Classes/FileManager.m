@@ -1345,6 +1345,7 @@ extern float P_ZFAR;
 		ter.level_seed=ter.tgen.LEVEL_SEED;
 		
 		for(int x=centerChunk-r;x<centerChunk+r;x++){
+        
 			for(int z=centerChunk-r;z<centerChunk+r;z++){
 				
 				[[World getWorld].fm readColumn:x:z:saveFile];	
@@ -1459,6 +1460,7 @@ extern float P_ZFAR;
             }
         }
         
+
         
         
 		[self readDirectory];
@@ -1514,7 +1516,7 @@ extern float P_ZFAR;
            [[Input getInput] clearAll];
     [[World getWorld].effects clearAllEffects];
     [[World getWorld].hud worldLoaded];
-	
+	updateSkyColor([World getWorld].player,TRUE);
 
 }
 @end

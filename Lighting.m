@@ -15,6 +15,7 @@ extern block8* blockarray;
 extern int g_offcx;
 extern int g_offcz;
 void addlight(int xx,int zz,int yy,float brightness,Vector color){
+    if(LOW_MEM_DEVICE)return;
 
  //   printf("light intensities: ");
     for(int x=-LIGHT_RADIUS;x<=LIGHT_RADIUS;x++){

@@ -33,6 +33,7 @@ extern bool IS_IPAD;
 extern bool IS_RETINA;
 extern bool SUPPORTS_RETINA;
 extern bool CREATURES_ON;
+extern bool LOW_MEM_DEVICE;
 
 
 

@@ -195,6 +195,7 @@ void initTree(TreeNode* node){
 	
 	memset(blockarray,0,sizeof(block8)*T_SIZE*T_SIZE*T_HEIGHT);
   //  memset(shadowarray,0,sizeof(color8)*T_SIZE*T_SIZE);
+    if(!LOW_MEM_DEVICE)
     memset(lightarray,0,sizeof(Vector8)*T_SIZE*T_SIZE*T_HEIGHT);
 }
 
@@ -210,32 +211,54 @@ extern int g_offcz;
     start = [NSDate date];
     [start retain];
 	tgen=[[TerrainGenerator alloc] init:self];
-	//chunkMapc=chunkMap=hashmap_new();		
-    chunkTablec=chunkTable=malloc(sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
-    memset(chunkTable,0,sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
-    //int s=(int)sizeof(TerrainChunk);
-    //printf("sizeofTerrainChunk: %d\n",(int)sizeof(TerrainChunk*));
-	chunksToUpdate=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
-    //chunksToUpdatefg=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
-    columnsToUpdate=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE);
-   	//oldChunkMap=NULL;
-	chunksToUpdateImmediatley=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
-    memset(chunksToUpdateImmediatley,0,sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+	
+    
+   
+    
+    
+    
+    
     liquids=[[Liquids alloc] init];
     portals=[[Portal alloc] init];
     fireworks=[[Firework alloc] init];
 	 initTree(&troot);
-	blockarray=malloc(sizeof(block8)*(T_SIZE+1)*(T_SIZE+1)*(T_HEIGHT+1));
-    lightarray=malloc(sizeof(Vector8)*T_SIZE*T_SIZE*T_HEIGHT);
-   // printf("size of lightarray: %d bytes\n",(int)(sizeof(Vector)*T_SIZE*T_SIZE*T_HEIGHT));
-    //shadowarray=malloc(sizeof(block8)*T_SIZE*T_SIZE);
+	
 	singleton=self;
 	loaded=FALSE;
 	world_name=NULL;
 	do_reload=0;
 	nburn=0;
-   
+    chunkTablec=NULL;
+    
 	return self;
+}
+- (void)allocateMemory{
+    if(chunkTablec!=NULL)return;
+    chunkTablec=chunkTable=malloc(sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+    memset(chunkTable,0,sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+    chunksToUpdate=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+    columnsToUpdate=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE);
+    chunksToUpdateImmediatley=malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+    memset(chunksToUpdateImmediatley,0,sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+    blockarray=malloc(sizeof(block8)*(T_SIZE+1)*(T_SIZE+1)*(T_HEIGHT+1));
+    if(!LOW_MEM_DEVICE)
+    lightarray=malloc(sizeof(Vector8)*T_SIZE*T_SIZE*T_HEIGHT);
+}
+-(void) deallocateMemory{
+    for(int i=0;i<CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN;i++){
+        if(chunkTablec[i]!=NULL){
+            [chunkTablec[i] release];
+            chunkTablec[i]=NULL;
+        }
+    }
+    free(chunkTablec);
+    free(chunksToUpdate);
+    free(columnsToUpdate);
+    free(chunksToUpdateImmediatley);
+    free(blockarray);
+    if(!LOW_MEM_DEVICE)
+free(lightarray);
+    chunkTablec=NULL;
 }
 
 int freeOldChunks(any_t passedIn,any_t chunkToUnload){	
@@ -1378,6 +1401,7 @@ float getShadow(int x,int z,int y){
     
 }
 float calcLight(int x,int z,int y,float shadow,int coord){
+    if(LOW_MEM_DEVICE)return shadow;
     if(coord==0)
         shadow+=(float)lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].x/255.0f;
     else if(coord==1)
@@ -1955,7 +1979,8 @@ static double time1,time2,time3,time4;
                     }else{
                         
                         rebuildList[i].needsRebuild=FALSE;
-                        
+                        if(LOW_MEM_DEVICE)[rebuildList[i] prepareVBO];
+                        else
                         //issue #2 chunksToUpdateImmediatley shared data access with main thread, not synchronized
                         chunksToUpdateImmediatley[rebuildList[i].idxn]=TRUE;
                     }

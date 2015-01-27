@@ -19,6 +19,7 @@ BOOL IS_IPAD;  //This flag gets set for ipad AND 'retina' devices, which is basi
 BOOL IS_RETINA;
 BOOL SUPPORTS_RETINA;
 BOOL CREATURES_ON;
+BOOL LOW_MEM_DEVICE;
 
 EAGLView* G_EAGL_VIEW;
 
