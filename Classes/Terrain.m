@@ -252,6 +252,7 @@ extern int g_offcz;
         }
     }
     free(chunkTablec);
+    
     free(chunksToUpdate);
     free(columnsToUpdate);
     free(chunksToUpdateImmediatley);

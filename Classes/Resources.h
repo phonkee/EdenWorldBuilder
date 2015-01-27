@@ -15,6 +15,7 @@
 @interface Resources : NSObject {
 	Texture2D* atlas;
     Texture2D* atlas2;
+    Texture2D* csbkg;
 
 	NSMutableArray* textures;
 	NSMutableArray* menutextures;

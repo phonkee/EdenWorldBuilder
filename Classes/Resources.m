@@ -786,6 +786,8 @@ extern BOOL SUPPORTS_OGL2;
     build_cache_color=0;
     build_cache_type=0;
     
+    csbkg=[[Texture2D alloc]
+           initWithImagePath:@"colorpick_background.png" sizeToFit:FALSE];
     if(!LOW_MEM_DEVICE){
         [self loadGameTextures];
     }
@@ -798,6 +800,7 @@ extern BOOL SUPPORTS_OGL2;
     atlas2=[[Texture2D alloc]
 		   initWithImagePath:@"atlas2.png" sizeToFit:TRUE pixelFormat:kTexture2DPixelFormat_RGBA8888 generateMips:TRUE];
 	//[textures addObject:atlas];
+    
 	
 	burnSoundTimer=playing=-1;
 	[[CDAudioManager sharedManager] setMode:kAMM_FxPlusMusicIfNoOtherAudio];
@@ -1050,8 +1053,7 @@ static float cuetimer=0;
           initWithImagePath:@"block_background.png" sizeToFit:FALSE];
     [textures addObject:temp];
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"colorpick_background.png" sizeToFit:FALSE];
+    temp=csbkg;
     [textures addObject:temp];
     
     temp=[[Texture2D alloc]
@@ -1498,7 +1500,10 @@ static int lastsongplayed=-1;
 	
 }
 
-- (Texture2D*)getTex:(int)idx{	
+- (Texture2D*)getTex:(int)idx{
+    if(idx==ICO_COLOR_SELECT_BACKGROUND){
+        return csbkg;
+    }
 	return [textures objectAtIndex:(0+idx)];
 }
 - (Texture2D*)getMenuTex:(int)idx{

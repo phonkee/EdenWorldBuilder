@@ -833,7 +833,7 @@ static const int usage_id=7;
 		if(loading==2){
 			if(selected_world!=NULL){
 				
-				NSString* wname=selected_world->file_name;
+				//NSString* wname=selected_world->file_name;
                 if([[World getWorld].fm worldExists:selected_world->file_name:TRUE]){
 				//[[World getWorld] loadWorld:wname];
                     loading=4;

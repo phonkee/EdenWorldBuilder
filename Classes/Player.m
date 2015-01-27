@@ -1167,7 +1167,7 @@ extern Vector tranDist;
 extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 - (BOOL)vertc{
     nest_count++;
-    if(nest_count>10){printf("hit nest limit"); nest_count--; return false;}
+    if(nest_count>10){/*printf("hit nest limit");*/ nest_count--; return false;}
 	Terrain* ter=world.terrain;
     float bot=pos.y-boxheight/2;
 	float top=pos.y+boxheight/2;

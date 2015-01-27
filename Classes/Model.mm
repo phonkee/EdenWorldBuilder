@@ -2113,13 +2113,15 @@ void DrawShadows(){
        	}
         Vector vpos=MakeVector(guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
         //if(guys[i].model_type==M_GREEN)vpos.x-=.5f;
-        float x=vpos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
-        float z=vpos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+        float x=ABS(vpos.x);
+        float z=ABS(vpos.z);
         float y=(int)(min[guys[i].model_type].y*scale+vpos.y+.01)+.01f;
          Vector point;
         point.x=x;
         point.z=z;
         point.y=y;
+        if((int)x<=0||(int)y<=0)continue;
+        if(y<=1)y=3;
         int type;
         if(blockinfo[getLandc(x,z,y)]&IS_LIQUID)type=-1;
         else

@@ -4052,7 +4052,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Kingly Software Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Kingly Software Inc";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_THUMB_SUPPORT = NO;
@@ -4100,7 +4100,7 @@
 				LIBRARY_SEARCH_PATHS = testflight/;
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5c353993-f73d-47c3-b4e0-c6e3541354b4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6507d606-6086-4b05-8ed6-696b77a16b8a";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -4160,7 +4160,7 @@
 				LIBRARY_SEARCH_PATHS = testflight/;
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4D8D4663-010B-4719-AA2C-456BD8A0BE05";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b891026f-7169-4646-91ec-89ff8782ace7";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
