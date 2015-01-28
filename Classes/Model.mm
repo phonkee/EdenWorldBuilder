@@ -2493,6 +2493,10 @@ void DrawModel(int mi)
    // position.z-=16;
     //position.y-=64;
     int modelType=guys[mi].model_type;
+    if(modelType==-1){
+        printf("error drawing -1 model\n");
+        return;
+    }
 	//Set the frame number
     if(modelType==M_BATTY){
     m_mTransform = PVRTMat4::Translation(position.x*1/scale,(position.y+.2f)*1/scale, position.z*1/scale) * PVRTMat4::RotationY(angle);

@@ -78,10 +78,7 @@ extern float P_ASPECT_RATIO;
 			
 		
 	}
-    if(LOW_MEM_DEVICE){
-        properties[S_GRAPHICS].value=false;
-        properties[S_CREATURES].value=false;
-    }
+    
     extern BOOL IS_WIDESCREEN;
 	rect_settings.size.width=246;
 	rect_settings.size.height=45;
@@ -116,9 +113,14 @@ extern float P_ASPECT_RATIO;
 	rect_off.origin.x=305;
 	rect_off.origin.y=0;
 	
-	
+    if(LOW_MEM_DEVICE){
+        properties[S_GRAPHICS].value=false;
+        properties[S_CREATURES].value=false;
+    }
 	
 	[self load];
+    
+    
 	return self;
 }
 static const int usage_id=3;
@@ -191,7 +193,10 @@ static const int usage_id=3;
     if(LOW_MEM_DEVICE){
         [World getWorld].bestGraphics=FALSE;
     }
-    
+    extern BOOL IS_WIDESCREEN;
+    if(IS_WIDESCREEN){
+        [World getWorld].bestGraphics=TRUE;
+    }
 }
 -(void)save{
 	NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];

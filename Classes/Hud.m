@@ -351,7 +351,7 @@ extern float P_ZFAR;
 extern BOOL SUPPORTS_OGL2;
 static float at1=0,at2=0,at3=0;
 int flamecount=0;
-static int warpCount=0;
+//static int warpCount=0;
 - (BOOL)update:(float)etime{
 	if(flash>0){
 		flash-=etime;

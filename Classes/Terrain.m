@@ -40,7 +40,7 @@ block8* blockarray;
 //static color8* shadowarray;
 Vector8* lightarray;
 //static map_t chunkMapc;
-static TerrainChunk** chunkTablec;
+TerrainChunk** chunkTablec;
 static BOOL secondPass;
 static NSDate* start;
 extern bool firstframe;
@@ -306,6 +306,7 @@ int extraGeneration(any_t passedIn,any_t chunkToGen){
 	
 	return MAP_OK;
 }
+static BOOL update_lighting=FALSE;
 - (void)loadTerrain:(NSString*)name:(BOOL)fromArchive{
     
     double start_time=-[start timeIntervalSinceNow];
@@ -345,7 +346,8 @@ int extraGeneration(any_t passedIn,any_t chunkToGen){
     //hashmap_iterate(chunkMap,extraGeneration,NULL);
 	//[self startDynamics];
     void calculateLighting();
-    calculateLighting();
+   // calculateLighting();
+    update_lighting=TRUE;
     double end_time=-[start timeIntervalSinceNow];
    
     
@@ -1844,6 +1846,7 @@ static double time1,time2,time3,time4;
                 
             }
         }
+       
         if(count>140) {
             [[World getWorld].fm saveWorld];
             
@@ -1860,14 +1863,18 @@ static double time1,time2,time3,time4;
         for(int x=0;x<2*r;x++){
             for(int z=0;z<2*r;z++){
                 if(!isloaded[x][z]){
+                    //removeLights
                     [world.fm readColumn: x+m_chunkOffsetX:z+m_chunkOffsetZ:saveFile];
+                    //addlights
                 }
             }
         }
         
         [saveFile closeFile];
-            
+            //void calculateLighting();
+           
             addMoreCreaturesIfNeeded();
+            update_lighting=TRUE;
         }
             time2=-[start timeIntervalSinceNow];
         //[sf_lock unlock];
@@ -1992,11 +1999,16 @@ static double time1,time2,time3,time4;
                 
             }
          //printf("idxrl:%d\n",idxrl);
+        
         idxrl=0;
         
         
     }
-        
+    if(update_lighting){
+        void calculateLighting();
+        calculateLighting();
+        update_lighting=FALSE;
+    }
         time3=-[start timeIntervalSinceNow];
     
     
@@ -3033,7 +3045,7 @@ int getFlowerIndex(int color){
     for(int i=0;i<chunks_rendered;i++){
         for(int j=0;j<renderList[i].rtnum_objects;j++){
             if(renderList[i].rtobjects[j].type!=TYPE_FLOWER)continue;
-            if(flowers>MAX_FLOWERS)break;
+            if(flowers>=MAX_FLOWERS)break;
             flowerList[flowers]=renderList[i].rtobjects[j];
             flowers++;
         }

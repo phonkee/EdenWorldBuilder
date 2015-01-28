@@ -46,16 +46,34 @@ void addlight(int xx,int zz,int yy,float brightness,Vector color){
 }
 extern Vector colorTable[256];
 void calculateLighting(){
-    printf("calculating lighting first load\n");
-    for(int x=0;x<T_SIZE;x++){
-        for(int z=0;z<T_SIZE;z++){
-            for(int y=0;y<T_HEIGHT;y++){
-                if(getLandc(x,z,y)==TYPE_LIGHTBOX){
-                    addlight(x,z,y,1.0f,colorTable[getColorc(x,z,y)]);
+    //printf("calculating lighting first load\n");
+    if(LOW_MEM_DEVICE)return;
+        memset(lightarray,0,sizeof(Vector8)*T_SIZE*T_SIZE*T_HEIGHT);
+    extern TerrainChunk** chunkTablec;
+    
+    for(int cx=0;cx<CHUNKS_PER_SIDE;cx++){
+        for(int cz=0;cz<CHUNKS_PER_SIDE;cz++){
+                for(int cy=0;cy<CHUNKS_PER_COLUMN;cy++){
+                    TerrainChunk* chunk=chunkTablec[threeToOne(cx,cy,cz)];
+                   
+                    if(chunk&&chunk.has_light)
+                    for(int y=chunk.pbounds[1];y<CHUNK_SIZE+chunk.pbounds[1];y++){
+                        for(int x=chunk.pbounds[0];x<CHUNK_SIZE+chunk.pbounds[0];x++){
+                            for(int z=chunk.pbounds[2];z<CHUNK_SIZE+chunk.pbounds[2];z++){
+                                
+                                if(getLandc(x,z,y)==TYPE_LIGHTBOX){
+                                    addlight(x,z,y,1.0f,colorTable[getColorc(x,z,y)]);
+                                    [[World getWorld].terrain refreshChunksInRadius:x:z:y:LIGHT_RADIUS];
+                                }
+                            }
+                        }
+                    }
                 }
-            }
         }
     }
+    
+    
+    //printf("calculating lighting first load end\n");
 }
 /*if(getLandc(x,z,y)==TYPE_NONE)continue;
  float ret=y/T_HEIGHT/2+.7f;

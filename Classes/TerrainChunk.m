@@ -13,7 +13,7 @@
 #import "Geometry.h"
 
 @implementation TerrainChunk
-@synthesize pbounds,prbounds,rtn_vertices,rtn_vertices2,pblocks,needsGen,rtobjects,rtnum_objects,idxn,loaded,m_treenode,m_listnode,in_view,psblocks,needsVBO,rebuildCounter,modified;
+@synthesize pbounds,prbounds,rtn_vertices,rtn_vertices2,pblocks,needsGen,rtobjects,rtnum_objects,idxn,loaded,m_treenode,m_listnode,in_view,psblocks,needsVBO,rebuildCounter,modified,has_light;
 @synthesize pcolors;
 
 extern Vector colorTable[256];
@@ -209,7 +209,7 @@ extern int g_offcz;
     }*/
     
     clearOldVerticesOnly=FALSE;
-    
+    has_light=FALSE;
     needsGen=FALSE;
    
     v_idx=0;
@@ -237,7 +237,8 @@ extern int g_offcz;
         for(int x=0;x<CHUNK_SIZE;x++){
 			for(int z=0;z<CHUNK_SIZE;z++){
 				int type=blocks[CC(x,z,y)];
-                if( type==TYPE_FLOWER){
+                if( type==TYPE_LIGHTBOX){
+                    has_light=TRUE;
                     //[self setLand:x:z:y:TYPE_GRASS];
                     //type=TYPE_GRASS;
                 }

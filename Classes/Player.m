@@ -424,7 +424,7 @@ extern bool hitCustom;
                                     [[Resources getResources] playSound:S_BUILD_LAVA];	 
                                 }else if(blockinfo[type]&IS_WATER){							 
                                     [[Resources getResources] playSound:S_BUILD_WATER];	 
-                                }else if(blockinfo[type]&IS_FLAMMABLE&&type!=TYPE_WEAVE&&type!=TYPE_TNT&&type!=TYPE_LADDER&&type!=TYPE_FIREWORK){							 
+                                }else if(blockinfo[type]&IS_FLAMMABLE&&type!=TYPE_WEAVE&&type!=TYPE_TNT&&type!=TYPE_FIREWORK){							 
                                     [[Resources getResources] playSound:S_BUILD_WOOD];	 
                                 }else if(type==TYPE_GLASS){
                                     [[Resources getResources] playSound:S_BUILD_GLASS];	
@@ -492,7 +492,9 @@ extern bool hitCustom;
                                (type>=TYPE_STONE_SIDE1&&type<=TYPE_STONE_SIDE4)){
 								
 								[[Resources getResources] playSound:S_BREAK_STONE];
-							}else if(type==TYPE_LEAVES){							 
+                            }else if(type==TYPE_STEEL){
+                                [[Resources getResources] playSound:S_METAL_DESTROY];
+                            }else if(type==TYPE_LEAVES||type==TYPE_FLOWER){
 								[[Resources getResources] playSound:S_BREAK_LEAVES];	 
 							}else if(blockinfo[type]&IS_LAVA){							 
 								[[Resources getResources] playSound:S_BREAK_LAVA];	 
@@ -1309,7 +1311,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                             int pt=type;
                             if(type==TYPE_PORTAL_TOP){
                                 pt=getLandc2(x,z,y-1);
-                                printf("bot:  %f  y:  %d\n",bot,y);
+                               // printf("bot:  %f  y:  %d\n",bot,y);
                                 if(bot+.1f>y)pt=-1;
                             }
                             
@@ -1932,28 +1934,39 @@ static int icesound=0;
     if(last){
         jumping=FALSE;
     }
+    int type=[[World getWorld].terrain getLand:pos.x
+                                              :pos.z
+                                              :pos.y+boxbase/2];
+    if(blockinfo[type]&IS_WATER){
+        [World getWorld].hud.underLiquid=TRUE;
+    }
+    
+    
+    
+    
     float cosYaw=cos(D2R(yaw));
 	float sinYaw=sin(D2R(yaw));
+    
+    if((vel.x>0&&cosYaw<0)||(vel.x<0&&cosYaw>0)){
+        cosYaw=cos(D2R(yaw+180));
+        sinYaw=sin(D2R(yaw+180));
+    }
 	
 	Vector dirv;
 
 	dirv.x=cosYaw;
 	dirv.z=sinYaw;	
     //  NormalizeVector(&blah);
-    int type=[[World getWorld].terrain getLand:pos.x 
-                                              :pos.z 
-                                              :pos.y+boxbase/2];
-    if(blockinfo[type]&IS_WATER){
-        [World getWorld].hud.underLiquid=TRUE;
-    }
-    type=[[World getWorld].terrain getLand:pos.x +dirv.x/8.0f
-                                              :pos.z +dirv.z/8.0f
+    
+    
+    type=[[World getWorld].terrain getLand:pos.x +dirv.x/5.3f
+                                              :pos.z +dirv.z/5.3f
                                               :pos.y+boxbase/2];
     if(type==TYPE_PORTAL_TOP){
         
         if(!inPortal){
-            pos.x=pos.x+dirv.x/8.0f;
-            pos.z=pos.z+dirv.z/8.0f;
+            pos.x=pos.x+dirv.x/5.3f;
+            pos.z=pos.z+dirv.z/5.3f;
             inPortal=TRUE;
             printf("entering portal (%d, %d, %d)  ", (int)pos.x,(int)(pos.y+boxbase/2),(int)pos.z);
             [[Resources getResources] playSound:S_ENTER_PORTAL];

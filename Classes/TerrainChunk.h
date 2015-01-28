@@ -87,7 +87,7 @@ typedef struct _small_block{
     BOOL clearOldVerticesOnly;
     
     BOOL in_view;
-    
+    BOOL has_light;
     BOOL modified;
     int isTesting;
     GLuint query
@@ -110,7 +110,7 @@ typedef struct bnode{
 	int type;
 	struct bnode* next;
 }BurnNode;
-@property(nonatomic,assign) BOOL needsRebuild,needsGen,loaded,in_view,needsVBO,modified;
+@property(nonatomic,assign) BOOL needsRebuild,needsGen,loaded,in_view,needsVBO,modified,has_light;
 @property(nonatomic,readonly) int* pbounds;
 @property(nonatomic,assign) block8* pblocks;
 //@property(nonatomic,assign) block8* pblocks2;

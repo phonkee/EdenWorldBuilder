@@ -155,6 +155,7 @@ static int sfxNumVariations[NUM_SOUNDS]={
     [S_CHANGE_LIGHT]=1,
     [S_ENTER_PORTAL]=4,
     [S_GOOP_EXPLODE]=1,
+    [S_METAL_DESTROY]=1,
     
 };
 static NSString* soundFiles[NUM_SOUNDS][MAX_VARIATIONS2]={	
@@ -211,6 +212,7 @@ static NSString* soundFiles[NUM_SOUNDS][MAX_VARIATIONS2]={
     [S_CHANGE_LIGHT]={@"change_electric_light_color.mp3"},
     [S_ENTER_PORTAL]={@"go_through_portal_01.mp3",@"go_through_portal_02.mp3",@"go_through_portal_03.mp3",@"go_through_portal_04.mp3"},
     [S_GOOP_EXPLODE]={@"tnt_paint_bomb_explode.mp3"},
+    [S_METAL_DESTROY]={@"metal_block_destroy.mp3"},
     
 };
 
@@ -286,11 +288,11 @@ static NSString* voFiles[NUM_CREATURES][NUM_VO_ACTIONS][MAX_VARIATIONS]={
     [M_BATTY][VO_ANGRY]={@"Batty_Angry_1.caf",@"Batty_Angry_2.caf",@"Batty_Angry_3.caf",@"Batty_Angry_4.caf",@"Batty_Angry_5.caf"},
     
     
-    [M_STALKER][VO_WALKING]={@"Batty_Walking_1.caf",@"Batty_Walking_2.caf",@"Batty_Walking_3.caf",@"Batty_Walking_4.caf",@"Batty_Walking_5.caf"},
-    [M_STALKER][VO_STRETCHING]={@"Batty_Stretching_1.caf",@"Batty_Stretching_2.caf",@"Batty_Stretching_3.caf",@"Batty_Stretching_4.caf",@"Batty_Stretching_5.caf"},
-    [M_STALKER][VO_SCARED]={@"Batty_Scared_1.caf",@"Batty_Scared_2.caf",@"Batty_Scared_3.caf",@"Batty_Scared_4.caf",@"Batty_Scared_5.caf"},
-    [M_STALKER][VO_RELIEVED]={@"Batty_Relieved_1.caf",@"Batty_Relieved_2.caf",@"Batty_Relieved_3.caf",@"Batty_Relieved_4.caf",@"Batty_Relieved_5.caf"},
-    [M_STALKER][VO_APPROACH]={@"Batty_PlayerApproaches_1.caf",@"Batty_PlayerApproaches_2.caf",@"Batty_PlayerApproaches_3.caf",@"Batty_PlayerApproaches_4.caf",@"Batty_PlayerApproaches_5.caf"},
+    [M_STALKER][VO_WALKING]={@"Moof_Walking_1.caf",@"Moof_Walking_2.caf",@"Moof_Walking_3.caf",@"Moof_Walking_4.caf",@"Moof_Walking_5.caf"},
+   [M_STALKER][VO_STRETCHING]={@"Moof_Stretching_1.caf",@"Moof_Stretching_2.caf",@"Moof_Stretching_3.caf",@"Moof_Stretching_4.caf",@"Moof_Stretching_5.caf"},
+    [M_STALKER][VO_SCARED]={@"Moof_Scared_1.caf",@"Moof_Scared_2.caf",@"Moof_Scared_3.caf",@"Moof_Scared_4.caf",@"Moof_Scared_5.caf"},
+   [M_STALKER][VO_RELIEVED]={@"Moof_Relieved_1.caf",@"Moof_Relieved_2.caf",@"Moof_Relieved_3.caf",@"Moof_Relieved_4.caf",@"Moof_Relieved_5.caf"},
+    [M_STALKER][VO_APPROACH]={@"Moof_PlayerApproaches_1.caf",@"Moof_PlayerApproaches_2.caf",@"Moof_PlayerApproaches_3.caf",@"Moof_PlayerApproaches_4.caf",@"Moof_PlayerApproaches_5.caf"},
     [M_STALKER][VO_ONFIRE]={@"creature_lit_on_fire_01.mp3",@"creature_lit_on_fire_02.mp3",@"creature_lit_on_fire_03.mp3"},
     [M_STALKER][VO_IDLE]={@"creature_idle_01.mp3",@"creature_idle_02.mp3",@"creature_idle_03.mp3"},
     [M_STALKER][VO_HIT]={@"creature_angry_hit_01.mp3",@"creature_angry_hit_02.mp3",@"creature_angry_hit_03.mp3"},
@@ -298,11 +300,11 @@ static NSString* voFiles[NUM_CREATURES][NUM_VO_ACTIONS][MAX_VARIATIONS]={
     [M_STALKER][VO_ANGRY]={@"creature_angry_charge_01.mp3",@"creature_angry_charge_02.mp3",@"creature_angry_charge_03.mp3"},
     
     
-    [M_CHARGER][VO_WALKING]={@"Batty_Walking_1.caf",@"Batty_Walking_2.caf",@"Batty_Walking_3.caf",@"Batty_Walking_4.caf",@"Batty_Walking_5.caf"},
-    [M_CHARGER][VO_STRETCHING]={@"Batty_Stretching_1.caf",@"Batty_Stretching_2.caf",@"Batty_Stretching_3.caf",@"Batty_Stretching_4.caf",@"Batty_Stretching_5.caf"},
-    [M_CHARGER][VO_SCARED]={@"Batty_Scared_1.caf",@"Batty_Scared_2.caf",@"Batty_Scared_3.caf",@"Batty_Scared_4.caf",@"Batty_Scared_5.caf"},
-    [M_CHARGER][VO_RELIEVED]={@"Batty_Relieved_1.caf",@"Batty_Relieved_2.caf",@"Batty_Relieved_3.caf",@"Batty_Relieved_4.caf",@"Batty_Relieved_5.caf"},
-    [M_CHARGER][VO_APPROACH]={@"Batty_PlayerApproaches_1.caf",@"Batty_PlayerApproaches_2.caf",@"Batty_PlayerApproaches_3.caf",@"Batty_PlayerApproaches_4.caf",@"Batty_PlayerApproaches_5.caf"},
+    [M_CHARGER][VO_WALKING]={@"Moof_Walking_1.caf",@"Moof_Walking_2.caf",@"Moof_Walking_3.caf",@"Moof_Walking_4.caf",@"Moof_Walking_5.caf"},
+    [M_CHARGER][VO_STRETCHING]={@"Moof_Stretching_1.caf",@"Moof_Stretching_2.caf",@"Moof_Stretching_3.caf",@"Moof_Stretching_4.caf",@"Moof_Stretching_5.caf"},
+    [M_CHARGER][VO_SCARED]={@"Moof_Scared_1.caf",@"Moof_Scared_2.caf",@"Moof_Scared_3.caf",@"Moof_Scared_4.caf",@"Moof_Scared_5.caf"},
+    [M_CHARGER][VO_RELIEVED]={@"Moof_Relieved_1.caf",@"Moof_Relieved_2.caf",@"Moof_Relieved_3.caf",@"Moof_Relieved_4.caf",@"Moof_Relieved_5.caf"},
+    [M_CHARGER][VO_APPROACH]={@"Moof_PlayerApproaches_1.caf",@"Moof_PlayerApproaches_2.caf",@"Moof_PlayerApproaches_3.caf",@"Moof_PlayerApproaches_4.caf",@"Moof_PlayerApproaches_5.caf"},
     [M_CHARGER][VO_ONFIRE]={@"creature_lit_on_fire_01.mp3",@"creature_lit_on_fire_02.mp3",@"creature_lit_on_fire_03.mp3"},
     [M_CHARGER][VO_IDLE]={@"creature_idle_01.mp3",@"creature_idle_02.mp3",@"creature_idle_03.mp3"},
     [M_CHARGER][VO_HIT]={@"creature_angry_hit_01.mp3",@"creature_angry_hit_02.mp3",@"creature_angry_hit_03.mp3"},
@@ -1348,7 +1350,7 @@ static float cuetimer=0;
         
     }else{
         temp=[[Texture2D alloc]
-              initWithImagePath:@"Flame_1024b.png" sizeToFit:FALSE];
+              initWithImagePath:@"Flame_512.png" sizeToFit:FALSE];
         [textures addObject:temp];
         
     }

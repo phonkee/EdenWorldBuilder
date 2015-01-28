@@ -87,12 +87,12 @@ extern float yawanimation;
                     vec.x2=mag*dx[(dir+1)%4];
                     vec.y2=0;
                     vec.z2=mag*dz[(dir+1)%4];
-                    vec.x=portals[k].x+dx[(dir+1)%4];
+                    vec.x=portals[k].x+dx[(dir+1)%4]*1.2f;
                     if(dx[(dir+1)%4]==0){
                         vec.x+=.5f;
                     }
                     vec.y=portals[k].y;
-                    vec.z=portals[k].z+dz[(dir+1)%4];
+                    vec.z=portals[k].z+dz[(dir+1)%4]*1.2f;
                     if(dz[(dir+1)%4]==0){
                         vec.z+=.5f;
                     }
