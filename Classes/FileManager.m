@@ -1086,7 +1086,7 @@ extern int g_offcz;
 	//NSLog(@"fn:%s",fh->name);
 	NSString* fname=[NSString stringWithCString:fh->name encoding:NSUTF8StringEncoding];
 	if([fname length]==0){
-        fname=@"temp";
+        fname=@"error~";
        // [saveFile closeFile];
         //[[World getWorld].sf_lock unlock];
         //return @"error3~";

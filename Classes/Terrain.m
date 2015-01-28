@@ -724,6 +724,7 @@ TerrainChunk* rebuildList[13000];
     if((cur==TYPE_TNT||cur==TYPE_FIREWORK)||isOnFire(x,z,y)){
         paint=[self getColor:x:z:y];//save color so it can be used when explosion is triggered
     }
+    [[World getWorld].effects addBlockBreak:x :z :y :[self getLand:x :z :y]:[self getColor:x:z:y]];
     if(cur==TYPE_LIGHTBOX){
        void addlight(int xx,int zz,int yy,float brightness,Vector color);
         
@@ -733,7 +734,7 @@ TerrainChunk* rebuildList[13000];
          [self refreshChunksInRadius:x:z:y:LIGHT_RADIUS];
         
     }
-	[[World getWorld].effects addBlockBreak:x :z :y :[self getLand:x :z :y]:[self getColor:x:z:y]];
+	
 	[self updateChunks:x :z :y :TYPE_NONE];
     [self setColor:x:z:y:paint];//adds color attribute back in after updatechunks clears it  
     

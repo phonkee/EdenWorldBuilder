@@ -430,30 +430,35 @@ int build_cache_type;
 void clearSkinCache(){
     if(paint_cache){
         [paint_cache release];
-        paint_cache=NULL;
-        paint_cache_color=0;
+        
     }
+    paint_cache=NULL;
+    paint_cache_color=0;
     if(build_cache){
         [build_cache release];
-        build_cache=NULL;
-        build_cache_color=0;
-        build_cache_type=0;
+        
+       
     }
+    build_cache=NULL;
+    build_cache_color=0;
+    build_cache_type=0;
     for(int i=0;i<100;i++){
         if(i<100){
             if(door_cache[i]){
                 [door_cache[i] release];
-                door_cache[i]=NULL;
+                
                 
                 
             }
+            door_cache[i]=NULL;
         }
     }
     for(int i=0;i<SKIN_CACHE_SIZE;i++){
         if(skin_cache[i].tex){
             [skin_cache[i].tex release];
-            skin_cache[i].tex=NULL;
+            
         }
+        skin_cache[i].tex=NULL;
     }
 }
 extern Vector colorTable[256];
@@ -486,6 +491,7 @@ extern Vector colorTable[256];
     }
     if(build_cache!=NULL){
         [build_cache release];
+        build_cache=NULL;
     }
     build_cache_color=color;
     build_cache_type=type;
@@ -526,6 +532,7 @@ extern Vector colorTable[256];
     if(paint_cache!=NULL){
         
         [paint_cache release];
+        paint_cache=NULL;
     }
     
     paint_cache_color=color;
@@ -982,7 +989,7 @@ static float cuetimer=0;
     if(!LOW_MEM_DEVICE){
         return;
     }
-    while([menutextures count]>0){
+    while([textures count]>0){
         Texture2D* t=[textures lastObject];
         [t release];
         [textures removeLastObject];

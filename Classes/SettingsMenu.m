@@ -47,6 +47,7 @@ extern float P_ASPECT_RATIO;
 		properties[i].name=pnames[i];
 		properties[i].value=pdefaults[i];
        
+       
 		properties[i].box.origin.x=37-10+30;
 		
 		properties[i].box.size.height=30;
@@ -77,6 +78,10 @@ extern float P_ASPECT_RATIO;
 			
 		
 	}
+    if(LOW_MEM_DEVICE){
+        properties[S_GRAPHICS].value=false;
+        properties[S_CREATURES].value=false;
+    }
     extern BOOL IS_WIDESCREEN;
 	rect_settings.size.width=246;
 	rect_settings.size.height=45;

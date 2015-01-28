@@ -1309,6 +1309,8 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                             int pt=type;
                             if(type==TYPE_PORTAL_TOP){
                                 pt=getLandc2(x,z,y-1);
+                                printf("bot:  %f  y:  %d\n",bot,y);
+                                if(bot+.1f>y)pt=-1;
                             }
                             
                             if(pt== TYPE_PORTAL1&&minTranDist.z<-eps){
