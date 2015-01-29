@@ -8,7 +8,7 @@
 
 #import "EdenAppDelegate.h"
 #import "EdenViewController.h"
-//#import "FlurryAPI.h"
+#import "Flurry.h"
 #import "Appirater.h"
 #import "TestFlight.h"
 
@@ -30,7 +30,7 @@
     [self.window setRootViewController:viewController];
     [window makeKeyAndVisible];
 	//NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
-	//[FlurryAPI startSession:@"LUWB9P4UZU1K1A4YUT9V"]; 
+	[Flurry startSession:@"LUWB9P4UZU1K1A4YUT9V"];
     
     [Appirater appLaunched:YES];
     return YES;

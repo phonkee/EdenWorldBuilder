@@ -264,7 +264,7 @@ CGContextRef CreateARGBBitmapContext (CGImageRef inImage)
                                      8,      // bits per component
                                      bitmapBytesPerRow,
                                      colorSpace,
-                                     kCGImageAlphaPremultipliedFirst);
+                                     kCGImageAlphaPremultipliedFirst| kCGBitmapByteOrder32Big);
     if (context == NULL)
     {
         free (bitmapData);
@@ -297,6 +297,8 @@ CGImageRef ManipulateImagePixelData(CGImageRef inImage,CGImageRef inMask,int tin
     // Draw the image to the bitmap context. Once we draw, the memory
     // allocated for the context for rendering will then contain the
     // raw image data in the specified color space.
+    CGContextSetBlendMode(cgctx, kCGBlendModeCopy);
+    CGContextSetBlendMode(cgctx2, kCGBlendModeCopy);
     CGContextDrawImage(cgctx, rect, inImage);
     CGContextDrawImage(cgctx2, rect, inMask);
     
@@ -342,8 +344,6 @@ CGImageRef ManipulateImagePixelData(CGImageRef inImage,CGImageRef inMask,int tin
                 
                                //     data[i]=ret<<8 | 0xFF;
                 //printf("hex(%X,%X)\n",data[i],data[i+1]);
-            }else{
-                
             }
             //if(i%2==0)
             //data[i]=0xFFFFFFFF;
@@ -693,6 +693,7 @@ int realStoredSkinCounter=0;
     }else if([path isEqualToString:@"palette.png"]){
        isPaint=TRUE;
         storeImage=TRUE;
+        
     }else if([path isEqualToString:@"paint_mask.png"]){
         isPaint=TRUE;
         isMask=TRUE;
@@ -1014,6 +1015,7 @@ int realStoredSkinCounter=0;
 	}
 	if(!CGAffineTransformIsIdentity(transform))
 	CGContextConcatCTM(context, transform);
+    CGContextSetBlendMode(context, kCGBlendModeCopy);
 	CGContextDrawImage(context, CGRectMake(0, 0, CGImageGetWidth(image), CGImageGetHeight(image)), image);
 	
 	//Convert "-RRRRRGGGGGBBBBB" to "RRRRRGGGGGBBBBBA"
@@ -1084,7 +1086,7 @@ int realStoredSkinCounter=0;
 		REPORT_ERROR(@"Falling off fast-path converting pixel data from RGBA8888 to LA88", NULL);
 #endif
 	}
-	
+   // printf("%d,",pixelFormat);
 	self = [self initWithData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:imageSize generateMips:genMips];
 	
 	CGContextRelease(context);
@@ -1403,7 +1405,10 @@ int realStoredSkinCounter=0;
     if(num==10){
         width = roundf((GLfloat)_width * _maxS/16.0f*2);
     }
-    
+    if(!IS_RETINA&&SUPPORTS_RETINA){
+        width/=2;
+        height/=2;
+    }
     if(IS_IPAD){
         rect.origin.x*=SCALE_WIDTH;
         rect.origin.y*=SCALE_HEIGHT;
@@ -1468,7 +1473,10 @@ int realStoredSkinCounter=0;
     };
     GLfloat				width = roundf((GLfloat)_width * _maxS),
                         height = roundf((GLfloat)_height * _maxT);
-    
+    if(!IS_RETINA&&SUPPORTS_RETINA){
+        width/=2;
+        height/=2;
+    }
     if(IS_IPAD){
         rect.origin.x*=SCALE_WIDTH;
         rect.origin.y*=SCALE_HEIGHT;

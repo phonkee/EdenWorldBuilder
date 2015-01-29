@@ -45,9 +45,9 @@ static NSString* POPULAR_URL=@"http://files.edengame.net/popularlist.txt";
 
 #endif
 
-static NSString* UPLOAD_URL=@"http://173.255.233.66/upload2.php";
-static NSString* LIST_URL=@"http://173.255.233.66/list2.php";
-static NSString* REPORT_URL=@"http://173.255.233.66/report.php";
+static NSString* UPLOAD_URL=@"http://app.edengame.net/upload2.php";
+static NSString* LIST_URL=@"http://app.edengame.net/list2.php";
+static NSString* REPORT_URL=@"http://app.edengame.net/report.php";
 static NSString* MAPS_URL=@"http://files.edengame.net/";
 static NSString* POPULAR_URL=@"http://files.edengame.net/popularlist.txt";
 
@@ -169,7 +169,7 @@ FileDownload* reportmanager=NULL;
 	[serverUrl release];
 }
 - (void)getSharedWorldList{
-    [[World getWorld].menu.shared_list.sbar setStatus:@"Loading.." :9999];
+    [[World getWorld].menu.shared_list.sbar setStatus:@"Loading " :9999];
 	NSLog(@"getting shared world list");    
     NSString* nsurl;
     if([World getWorld].menu.shared_list.cur_sort==1){

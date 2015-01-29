@@ -183,7 +183,7 @@ extern bool hitCustom;
                     [[Resources getResources] playSound:S_BUILD_LAVA];	 
                 }else if(blockinfo[type]&IS_WATER){							 
                     [[Resources getResources] playSound:S_BUILD_WATER];	 
-                }else if(blockinfo[type]&IS_FLAMMABLE&&type!=TYPE_WEAVE&&type!=TYPE_WEAVE&&type!=TYPE_TNT&&type!=TYPE_LADDER&&type!=TYPE_FIREWORK){							 
+                }else if(blockinfo[type]&IS_FLAMMABLE&&type!=TYPE_WEAVE&&type!=TYPE_WEAVE&&type!=TYPE_TNT&&type!=TYPE_FIREWORK){
                     [[Resources getResources] playSound:S_BUILD_WOOD];	 
                 }else if(type==TYPE_GLASS){
                     [[Resources getResources] playSound:S_BUILD_GLASS];	

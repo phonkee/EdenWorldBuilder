@@ -17,7 +17,7 @@ float P_ZFAR;
 BOOL IS_WIDESCREEN;
 BOOL IS_IPAD;  //This flag gets set for ipad AND 'retina' devices, which is basically all supported devices these days.
 BOOL IS_RETINA;
-BOOL SUPPORTS_RETINA;
+BOOL SUPPORTS_RETINA=FALSE;
 BOOL CREATURES_ON;
 BOOL LOW_MEM_DEVICE;
 

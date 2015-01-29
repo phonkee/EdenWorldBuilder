@@ -529,7 +529,7 @@ extern Vector colorTable[256];
 }
 - (Texture2D*)getPaintTex:(int)color{
     if(color==0)return [self getTex:ICO_PAINT];
-    if(color==paint_cache_color)return paint_cache;
+    if(paint_cache!=NULL&&color==paint_cache_color)return paint_cache;
     
     if(paint_cache!=NULL){
         
@@ -797,10 +797,11 @@ extern BOOL SUPPORTS_OGL2;
     
     csbkg=[[Texture2D alloc]
            initWithImagePath:@"colorpick_background.png" sizeToFit:FALSE];
+    [csbkg retain];
     if(!LOW_MEM_DEVICE){
         [self loadGameTextures];
     }
-
+   
     
 	[self loadMenuTextures];			  
 	
@@ -1260,6 +1261,7 @@ static float cuetimer=0;
     temp=[[Texture2D alloc]
           initWithImagePath:@"blocktoggle2.png" sizeToFit:FALSE];
     [textures addObject:temp];
+    
     
     temp=[[Texture2D alloc]
           initWithImagePath:@"flower_icon.png" sizeToFit:FALSE];

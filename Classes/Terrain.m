@@ -1622,7 +1622,7 @@ extern float P_ZFAR;
 	if(player.pos.x/BLOCK_SIZE-radius<0||player.pos.x/BLOCK_SIZE+radius>T_SIZE||
 	   player.pos.z/BLOCK_SIZE-radius<0||player.pos.z/BLOCK_SIZE+radius>T_SIZE){
 		do_reload=1;
-		[[World getWorld].hud.sb setStatus:@"Loading..." :999];
+		[[World getWorld].hud.sb setStatus:@"Loading " :999];
        
             
 		
@@ -1642,7 +1642,7 @@ float last_etime;
         
         if(pct>100)pct=100;
         
-            [[World getWorld].hud.sb setStatus:[NSString stringWithFormat:@"Loading World... %d%%",pct]:20];
+            [[World getWorld].hud.sb setStatus:[NSString stringWithFormat:@"Loading World  %d%%",pct]:20];
         
         
         return FALSE;

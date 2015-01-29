@@ -1204,7 +1204,16 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     
     //if(blockinfo[type]&IS_RAMP)
     //    offy=-1;
+    
     CGRect rect=recto;
+    if(!IS_RETINA&&SUPPORTS_RETINA){
+     //   bb/=2;
+      //  size;
+        depth/=2;
+        offy-=2;
+        
+    }
+    
         if(IS_IPAD){
             rect.origin.x*=SCALE_WIDTH;
             rect.origin.y*=SCALE_HEIGHT;
@@ -1313,7 +1322,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     }else{
         glVertexPointer(3, GL_FLOAT, 0, vertices);
         glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);        
+       glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
         glDrawArrays(GL_TRIANGLE_STRIP, 8, 4);
     }

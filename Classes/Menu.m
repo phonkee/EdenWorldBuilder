@@ -516,7 +516,7 @@ static const int usage_id=7;
 						}else{
                             if(loading==0){
 							loading=1;
-							[sbar setStatus:@"Loading..." :9999];	
+							[sbar setStatus:@"Loading " :9999];	
                             }
 						}	
 					}else{

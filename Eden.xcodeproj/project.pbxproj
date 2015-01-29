@@ -20,6 +20,8 @@
 		193E4E8E17AB598600ADF103 /* ipad~treelayerleft.png in Resources */ = {isa = PBXBuildFile; fileRef = 193E4E8C17AB598600ADF103 /* ipad~treelayerleft.png */; };
 		194EDC361A7722B300342AEB /* Flame_256.png in Resources */ = {isa = PBXBuildFile; fileRef = 194EDC351A7722B300342AEB /* Flame_256.png */; };
 		194EDC381A788E2300342AEB /* Flame_512.png in Resources */ = {isa = PBXBuildFile; fileRef = 194EDC371A788E2300342AEB /* Flame_512.png */; };
+		194EDC3C1A79C9D700342AEB /* libFlurry_6.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 194EDC3B1A79C9D700342AEB /* libFlurry_6.0.0.a */; };
+		194EDC3E1A79CAA200342AEB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 194EDC3D1A79CAA200342AEB /* Security.framework */; };
 		1967D00A1639F26100C03DF0 /* Charger.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D0091639F26100C03DF0 /* Charger.pod */; };
 		1967D0101639F3A900C03DF0 /* Batty.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00B1639F3A900C03DF0 /* Batty.pod */; };
 		1967D0121639F3A900C03DF0 /* Moof.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00D1639F3A900C03DF0 /* Moof.pod */; };
@@ -861,6 +863,9 @@
 		193E4E8C17AB598600ADF103 /* ipad~treelayerleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ipad~treelayerleft.png"; path = "ipad_menu/ipad~treelayerleft.png"; sourceTree = "<group>"; };
 		194EDC351A7722B300342AEB /* Flame_256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flame_256.png; sourceTree = "<group>"; };
 		194EDC371A788E2300342AEB /* Flame_512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flame_512.png; sourceTree = "<group>"; };
+		194EDC3A1A79C9D700342AEB /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		194EDC3B1A79C9D700342AEB /* libFlurry_6.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_6.0.0.a; sourceTree = "<group>"; };
+		194EDC3D1A79CAA200342AEB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1967D0091639F26100C03DF0 /* Charger.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Charger.pod; path = models/Charger.pod; sourceTree = "<group>"; };
 		1967D00B1639F3A900C03DF0 /* Batty.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Batty.pod; path = models/Batty.pod; sourceTree = "<group>"; };
 		1967D00D1639F3A900C03DF0 /* Moof.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Moof.pod; path = models/Moof.pod; sourceTree = "<group>"; };
@@ -1797,6 +1802,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				194EDC3E1A79CAA200342AEB /* Security.framework in Frameworks */,
 				C6AE407713C3919E0068685C /* CFNetwork.framework in Frameworks */,
 				C6AE407513C3917D0068685C /* SystemConfiguration.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -1805,6 +1811,7 @@
 				28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */,
 				28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */,
 				C68DD0F712637D470072CBF0 /* CoreGraphics.framework in Frameworks */,
+				194EDC3C1A79C9D700342AEB /* libFlurry_6.0.0.a in Frameworks */,
 				C6E46669127E210800D509D1 /* OpenAL.framework in Frameworks */,
 				198920B91A5B7CE800BF795F /* libTestFlight.a in Frameworks */,
 				C6E46680127E22AE00D509D1 /* CoreAudio.framework in Frameworks */,
@@ -1882,6 +1889,15 @@
 				C60398CA127F31CB00D465BE /* Views */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		194EDC391A79C9D700342AEB /* flurry */ = {
+			isa = PBXGroup;
+			children = (
+				194EDC3A1A79C9D700342AEB /* Flurry.h */,
+				194EDC3B1A79C9D700342AEB /* libFlurry_6.0.0.a */,
+			);
+			path = flurry;
 			sourceTree = "<group>";
 		};
 		198920AF1A5B7CE800BF795F /* testflight */ = {
@@ -2459,6 +2475,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				194EDC391A79C9D700342AEB /* flurry */,
 				1902C8301A63A8D800D8E67F /* report_flag.png */,
 				198920AF1A5B7CE800BF795F /* testflight */,
 				198920B41A5B7CE800BF795F /* libTestFlight.a */,
@@ -2511,6 +2528,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				194EDC3D1A79CAA200342AEB /* Security.framework */,
 				C6AE407613C3919E0068685C /* CFNetwork.framework */,
 				C6AE407413C3917D0068685C /* SystemConfiguration.framework */,
 				28FD15070DC6FC5B0079059D /* QuartzCore.framework */,
@@ -3955,7 +3973,10 @@
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = testflight/;
+				LIBRARY_SEARCH_PATHS = (
+					testflight/,
+					"$(PROJECT_DIR)/flurry",
+				);
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -3988,7 +4009,10 @@
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = testflight/;
+				LIBRARY_SEARCH_PATHS = (
+					testflight/,
+					"$(PROJECT_DIR)/flurry",
+				);
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -4020,7 +4044,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "library/include//**";
-				VALID_ARCHS = "armv6 armv7 i386";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -4044,7 +4068,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "library/include//**";
-				VALID_ARCHS = "armv6 armv7";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -4070,7 +4094,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "library/include//**";
 				VALIDATE_PRODUCT = NO;
-				VALID_ARCHS = "armv6 armv7";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = "Adhoc Distribution";
 		};
@@ -4097,7 +4121,10 @@
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = testflight/;
+				LIBRARY_SEARCH_PATHS = (
+					testflight/,
+					"$(PROJECT_DIR)/flurry",
+				);
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6507d606-6086-4b05-8ed6-696b77a16b8a";
@@ -4130,7 +4157,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "library/include//**";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv6 armv7";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = "Appstore Distribution";
 		};
@@ -4157,7 +4184,10 @@
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = testflight/;
+				LIBRARY_SEARCH_PATHS = (
+					testflight/,
+					"$(PROJECT_DIR)/flurry",
+				);
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "b891026f-7169-4646-91ec-89ff8782ace7";
