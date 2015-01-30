@@ -892,7 +892,7 @@ static BOOL lastOnIce;
             
             if(getLandc2(x,z,y+2)<=0&&getLandc2(pos.x,pos.z,pos.y+2)<=0&&speed>18){
                hud.m_jump=TRUE;
-               // printf("speed:%f",speed);
+              // printf("autojump");
             }
         }
             
@@ -961,6 +961,9 @@ static BOOL lastOnIce;
     }
     
 	//if(sinPitch*speed>0)vy=sinPitch*speed;
+    if(onIce){
+         accel.y+=-gravity*1.2f;
+    }else
     if(climbing){
        
         accel.y+=vspeed;
@@ -1218,11 +1221,18 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                 int btop=y+1;
                 Polyhedra pbox2;
                 if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
-                   
+                    if(type>=TYPE_ICE_RAMP1&&type<=TYPE_ICE_RAMP1){
+                        float poof=0;
+                        pbox2=makeRamp(bleft-poof,bright+poof,bback+poof,bfront-poof,bbot-poof,btop+poof,type%4);
+                    }else
                     pbox2=makeRamp(bleft,bright,bback,bfront,bbot,btop,type%4);
                    // NSLog(@"yop");
                     
                 }else if(type>=TYPE_STONE_SIDE1&&type<=TYPE_ICE_SIDE4){
+                    if(type>=TYPE_ICE_SIDE1&&type<=TYPE_ICE_SIDE2){
+                        float poof=0;
+                        pbox2=makeSide(bleft-poof,bright+poof,bback+poof,bfront-poof,bbot-poof,btop+poof,type%4);
+                    }else
                     pbox2=makeSide(bleft,bright,bback,bfront,bbot,btop,type%4);
                     
                 }else if(blockinfo[type]&IS_LIQUID){
@@ -1358,11 +1368,11 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
             }
         }
         
-        if((collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4)){//ugly hack to prevent stickage at bottom of ramps
+        if(!onIce&&!lastOnIce&&(collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4)){//ugly hack to prevent stickage at bottom of ramps
             if(minminTranDist.y==0){
                 float pytemp=pos.y-(int)pos.y;
                 if(pytemp>0.92f&&pytemp<0.925f){
-               // printf("hit ramp mmtd: (%f,%f,%f)  player.y=%f\n",minminTranDist.x,minminTranDist.y,minminTranDist.z,pos.y);
+                //printf("hit ramp mmtd: (%f,%f,%f)  player.y=%f\n",minminTranDist.x,minminTranDist.y,minminTranDist.z,pos.y);
                 minminTranDist.y=.002763;
                 }
             }
@@ -1402,6 +1412,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         Vector vel2=v_mult(normal,n);
         
        // if(!onIce&&!lastOnIce){
+       // if(collided==)
             vel=v_sub(vel,vel2);
         
            // NSLog(@"after-vel:(%f,%f,%f)  vel2:(%f,%f,%f)",vel.x,vel.y,vel.z,vel2.x,vel2.y,vel2.z);
@@ -1465,13 +1476,29 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         
         
        // printf("collison recursion nest count: %d  type:%d\n",nest_count,collided);
+        
         [self vertc];
+        
+        
         
         
         
         
     }
     if(nest_count==1){
+      /*  if(onIce){
+            printf("-");
+            
+        }else printf(".");
+        */
+        if(onIce){
+            //onramp=false;
+            //NSLog(@"hit");
+            // vel.y=0;
+            //onground=false;
+            
+        }
+
        // printf("on ramp!\n");
     if((climbing&&vspeed!=0&&!ladderExists)||ladderExists==FALSE){
         if(climbing&&!ladderExists&&vspeed>0){
@@ -1882,7 +1909,7 @@ static int icesound=0;
         NormalizeVector(&volddir);
         Vector crossp=crossProduct(vdir,volddir);
         
-        if(absf(absf(crossp.y)-.707107f)<.00001f){
+        if(absf(absf(crossp.y)-.707107f)<.00003f){
             if(crossp.y>0)yawanimation+=45;
             else yawanimation-=45;
             

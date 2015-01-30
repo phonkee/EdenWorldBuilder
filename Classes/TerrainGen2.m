@@ -2783,12 +2783,23 @@ void updateSkyColor(Player* player,BOOL force){
         
         if(lrx!=ppx||lrz!=ppz){
             if(lrx==-1||regionSkyColors[ppz][ppx]!=regionSkyColors[lrz][lrx]){
-                
-                [World getWorld].terrain.final_skycolor=colorTable[regionSkyColors[(int)(ppz+64)%4][(int)(ppx+64)%4]];
+                int rct=regionSkyColors[(int)(ppz+64)%4][(int)(ppx+64)%4];
+                if(!LOW_MEM_DEVICE)
+                if((v_equals([World getWorld].terrain.final_skycolor,colorTable[54])&&rct!=54)||
+                   (!v_equals([World getWorld].terrain.final_skycolor,colorTable[54])&&rct==54)){
+                    extern BOOL* chunksToUpdate;
+                    extern BOOL* columnsToUpdate;
+                    
+                    memset(chunksToUpdate,TRUE,sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+                    memset(columnsToUpdate,TRUE,sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE);
+                }
+                [World getWorld].terrain.final_skycolor=colorTable[rct];
                 if(force){
                     [World getWorld].terrain.skycolor=MakeVector([World getWorld].terrain.final_skycolor.x,[World getWorld].terrain.final_skycolor.y,[World getWorld].terrain.final_skycolor.z+.05f);
                     
                 }
+                
+                
             }
             lrx=ppx;
             lrz=ppz;
@@ -2802,8 +2813,20 @@ void updateSkyColor(Player* player,BOOL force){
     
 }
 void paintSky(int color){
+    if(!LOW_MEM_DEVICE)
+    if((v_equals([World getWorld].terrain.final_skycolor,colorTable[54])&&color!=54)||
+        (!v_equals([World getWorld].terrain.final_skycolor,colorTable[54])&&color==54)){
+        extern BOOL* chunksToUpdate;
+        extern BOOL* columnsToUpdate;
+        
+        memset(chunksToUpdate,TRUE,sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+        memset(columnsToUpdate,TRUE,sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE);
+    }
     [World getWorld].terrain.final_skycolor=colorTable[color];
+    
     regionSkyColors[lrz][lrx]=color;
+    
+    
     
 }
 void tg2_render(){

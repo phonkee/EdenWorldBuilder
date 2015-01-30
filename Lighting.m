@@ -45,11 +45,42 @@ void addlight(int xx,int zz,int yy,float brightness,Vector color){
    // printf("\n");
 }
 extern Vector colorTable[256];
+
 void calculateLighting(){
     //printf("calculating lighting first load\n");
     if(LOW_MEM_DEVICE)return;
-        memset(lightarray,0,sizeof(Vector8)*T_SIZE*T_SIZE*T_HEIGHT);
+     memset(lightarray,0,sizeof(Vector8)*T_SIZE*T_SIZE*T_HEIGHT);
     extern TerrainChunk** chunkTablec;
+   /* extern BOOL* chunksToUpdate;
+    extern BOOL* columnsToUpdate;
+    Vector8 fill;
+    fill.x=128; fill.y=0; fill.z=0;
+    memset(lightarray,128,sizeof(Vector8)*T_SIZE*T_SIZE*T_HEIGHT);
+    for(int i=0;i<T_SIZE*T_SIZE*T_HEIGHT;i++){
+        lightarray[i].x=fill.x;
+        lightarray[i].z=fill.z;
+        lightarray[i].y=fill.y;
+    }
+    memset(chunksToUpdate,TRUE,sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+    memset(columnsToUpdate,TRUE,sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE);
+    for(int x=0;x<T_SIZE;x++){
+        for(int z=0;z<T_SIZE;z++){
+            int shadow=0;
+            for(int y=T_HEIGHT-1;y>=0;y--){
+                int lidx=((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y;
+                lightarray[lidx].x=lightarray[lidx].y=lightarray[lidx].z=128-shadow*15;
+                if(getLandc(x,z,y)!=TYPE_NONE){
+                    if((shadow+1)*15<128)
+                    shadow++;
+                }else{
+                    shadow -=2;
+                    if(shadow<0)shadow=0;
+                }
+                
+            }
+        }
+    }*/
+    
     
     for(int cx=0;cx<CHUNKS_PER_SIDE;cx++){
         for(int cz=0;cz<CHUNKS_PER_SIDE;cz++){

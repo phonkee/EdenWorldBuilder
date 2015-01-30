@@ -30,8 +30,8 @@ int chunks_rendered2=0;
 
 static Terrain* singleton;
 
-static BOOL* columnsToUpdate;
-static BOOL* chunksToUpdate;
+ BOOL* columnsToUpdate;
+ BOOL* chunksToUpdate;
 //static BOOL* chunksToUpdatefg;
 
 static BOOL* chunksToUpdateImmediatley;

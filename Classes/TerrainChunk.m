@@ -692,6 +692,10 @@ extern int g_offcz;
         }
     }
     
+    float skylight=1.0f;
+    if(!LOW_MEM_DEVICE&&v_equals([World getWorld].terrain.final_skycolor,colorTable[54]))
+        skylight=.35f;
+    
     Resources* res=[Resources getResources];
 	for(int idx=0;idx<CHUNK_SIZE3;idx++){
         if(!face_visibility[idx])continue;
@@ -1063,10 +1067,10 @@ extern int g_offcz;
         paint[2]=cl.z;
        
        
-        float shadow=1.0f;//getShadow(x+bounds[0],z+bounds[2],y+bounds[1]);
-        light[0]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],shadow,0);
-        light[1]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],shadow,1);
-        light[2]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],shadow,2);
+        //float shadow=0.5f;//getShadow(x+bounds[0],z+bounds[2],y+bounds[1]);
+        light[0]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],skylight,0);
+        light[1]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],skylight,1);
+        light[2]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],skylight,2);
         /*lightsf[CC(x,z,y)]+*/
     //    Vector lightv=lighting[(x)*CHUNK_SIZE*CHUNK_SIZE+(z)*CHUNK_SIZE+(y)];
     //    light[0]=lightv.x;
