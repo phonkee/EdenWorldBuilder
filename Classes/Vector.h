@@ -17,9 +17,9 @@ typedef struct {
 	float    z;
 }Vector;
 typedef struct {
-	unsigned char    x;
-	unsigned char    y;
-	unsigned char    z;
+	GLubyte    x;
+	GLubyte    y;
+	GLubyte    z;
 }Vector8;
 typedef struct {
 	float    x;

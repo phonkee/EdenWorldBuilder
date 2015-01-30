@@ -2761,12 +2761,18 @@ int tg2_init(){
 int lrx=-1;
 int lrz=-1;
 extern int regionSkyColors[4][4];
-void updateSkyColor(Player* player,BOOL force){
+void updateSkyColor1(Player* player,BOOL force){
+    updateSkyColor2(player,force,0);
+}
+static float timeSinceLastChange=0;
+void updateSkyColor2(Player* player,BOOL force,float etime){
     extern int g_offcx;
     if(force){
         lrx=lrz=-1;
+        timeSinceLastChange=8;
     }
-    
+    timeSinceLastChange+=etime;
+    if(timeSinceLastChange<6)return;
     //if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
        
         int ppx=player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
@@ -2783,6 +2789,8 @@ void updateSkyColor(Player* player,BOOL force){
         
         if(lrx!=ppx||lrz!=ppz){
             if(lrx==-1||regionSkyColors[ppz][ppx]!=regionSkyColors[lrz][lrx]){
+                
+                timeSinceLastChange=0;
                 int rct=regionSkyColors[(int)(ppz+64)%4][(int)(ppx+64)%4];
                 if(!LOW_MEM_DEVICE)
                 if((v_equals([World getWorld].terrain.final_skycolor,colorTable[54])&&rct!=54)||
@@ -2813,6 +2821,8 @@ void updateSkyColor(Player* player,BOOL force){
     
 }
 void paintSky(int color){
+    if( v_equals([World getWorld].terrain.final_skycolor,colorTable[color]))return;
+    timeSinceLastChange=0;
     if(!LOW_MEM_DEVICE)
     if((v_equals([World getWorld].terrain.final_skycolor,colorTable[54])&&color!=54)||
         (!v_equals([World getWorld].terrain.final_skycolor,colorTable[54])&&color==54)){

@@ -722,7 +722,7 @@ TerrainChunk* rebuildList[13000];
     }else{
        // [liquids checkPoint:x:z:y];
     }
-    int paint=0;
+    int paint=[self getColor:x:z:y];;
     if((cur==TYPE_TNT||cur==TYPE_FIREWORK)||isOnFire(x,z,y)){
         paint=[self getColor:x:z:y];//save color so it can be used when explosion is triggered
     }
@@ -772,7 +772,7 @@ TerrainChunk* rebuildList[13000];
       //  [liquids checkPoint:x:z:y];
     }
     
-    int paint;
+    int paint=[self getColor:x:z:y];;
     if((cur==TYPE_TNT||cur==TYPE_FIREWORK)||isOnFire(x,z,y)){
         paint=[self getColor:x:z:y];//save color so it can be used when explosion is triggered
     }
@@ -780,9 +780,11 @@ TerrainChunk* rebuildList[13000];
         void addlight(int xx,int zz,int yy,float brightness,Vector color);
         
         extern Vector colorTable[256];
+        //paint=[self getColor:x:z:y];
         addlight(x,z,y,-1.0f,colorTable[paint]);
-        [self updateChunks:x :z :y :TYPE_NONE];
         [self refreshChunksInRadius:x:z:y:LIGHT_RADIUS];
+        [self updateChunks:x :z :y :TYPE_NONE];
+        
         
     }
     //[[World getWorld].effects addBlockBreak:x :z :y :[self getLand:x :z :y]:[self getColor:x:z:y]];
@@ -1407,11 +1409,11 @@ float getShadow(int x,int z,int y){
 float calcLight(int x,int z,int y,float shadow,int coord){
     if(LOW_MEM_DEVICE)return shadow;
     if(coord==0)
-        shadow+=(float)lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].x/255.0f;
+        shadow+=(float)lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].x/64.0f;
     else if(coord==1)
-        shadow+=(float)lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].y/255.0f;
+        shadow+=(float)lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].y/64.0f;
     else if(coord==2)
-        shadow+=(float)lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].z/255.0f;
+        shadow+=(float)lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].z/64.0f;
     
     
     

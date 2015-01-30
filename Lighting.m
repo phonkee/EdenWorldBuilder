@@ -31,9 +31,9 @@ void addlight(int xx,int zz,int yy,float brightness,Vector color){
             //        printf("%f ",inten);
                 }
                
-                lightarray[lidx].x=MAX(0,MIN(255,lightarray[lidx].x+255.0f*inten*brightness*color.x));
-                lightarray[lidx].y=MAX(0,MIN(255,lightarray[lidx].y+255.0f*inten*brightness*color.y));
-                lightarray[lidx].z=MAX(0,MIN(255,lightarray[lidx].z+255.0f*inten*brightness*color.z));
+                lightarray[lidx].x=MAX(0,MIN(255,lightarray[lidx].x+64.0f*inten*brightness*color.x));
+                lightarray[lidx].y=MAX(0,MIN(255,lightarray[lidx].y+64.0f*inten*brightness*color.y));
+                lightarray[lidx].z=MAX(0,MIN(255,lightarray[lidx].z+64.0f*inten*brightness*color.z));
                 
 
                

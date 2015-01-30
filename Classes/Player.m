@@ -1043,7 +1043,7 @@ static BOOL lastOnIce;
             pos.z=4096*CHUNK_SIZE+GSIZE/2;
         }
     }
-    updateSkyColor(self,FALSE);
+    updateSkyColor2(self,FALSE,etime);
 	//NSLog(@"%f %f %f",pos.x,pos.y,pos.z);
 	
 	Camera* cam=world.cam;

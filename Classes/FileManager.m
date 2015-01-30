@@ -1516,7 +1516,7 @@ extern float P_ZFAR;
            [[Input getInput] clearAll];
     [[World getWorld].effects clearAllEffects];
     [[World getWorld].hud worldLoaded];
-	updateSkyColor([World getWorld].player,TRUE);
+	updateSkyColor1([World getWorld].player,TRUE);
 
 }
 @end
