@@ -691,6 +691,7 @@ void LoadModels2(){
     for(int i=0;i<nguys;i++){
         ResetModel(i);
     }
+    guys[nguys].model_type=-1;
     for(int i=0;i<MAX_CREATURES_SAVED;i++){
         if( creatureData[i].type>-1&&creatureData[i].type<NUM_CREATURES&&creatureData[i].color>=0&&creatureData[i].color<256){
             
@@ -740,7 +741,7 @@ void LoadModels2(){
    // Vector player_pos=[World getWorld].player.pos;
     addMoreCreaturesIfNeeded();
     while(totalactive<40&&gc<nguys){
-        if(guys[gc].model_type!=-1&&guys[gc].update==TRUE){
+        if(guys[gc].update==TRUE){
         
             totalactive++;
             gc++;   //infinite loop sometimes
@@ -1785,7 +1786,13 @@ bool UnloadModels()
 extern Vector fpoint;
 extern int offsetdir;
 void PlaceModel(int idx,Vector pos){
+    if(idx==-2)
+    {guys[nguys].model_type=-1;
+        return;
+        
+    }
     if(idx!=-1){
+        guys[nguys].model_type=-1;
         //guys[idx].touched=TRUE;
         idx=0;
         for(int i=0;i<nguys;i++){
@@ -1829,10 +1836,12 @@ void PlaceModel(int idx,Vector pos){
     guys[idx].vel.y=3;
     [World getWorld].hud.blocktype=TYPE_CLOUD;       
     [World getWorld].hud.holding_creature=FALSE;
+       
     }else{
         guys[idx].vel.y=0;
        
     }
+    
    
     
     
@@ -2117,28 +2126,35 @@ void DrawShadows(){
             if(guys[nguys].model_type!=-1){
                 i=nguys;
                 
-                
             }else
-                continue;
+            {
+               // printf("continue1\n");
+                continue;}
         }else{
-            if(!guys[i].alive||!guys[i].update||!guys[i].insideView)continue;
+            if(!guys[i].alive||!guys[i].update||!guys[i].insideView){
+              //  printf("continue2\n");
+                continue;}
        	}
         Vector vpos=MakeVector(guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
         //if(guys[i].model_type==M_GREEN)vpos.x-=.5f;
-        float x=ABS(vpos.x);
-        float z=ABS(vpos.z);
+        float x=ABS(vpos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE);
+        float z=ABS(vpos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE);
         float y=(int)(min[guys[i].model_type].y*scale+vpos.y+.01)+.01f;
          Vector point;
         point.x=x;
         point.z=z;
         point.y=y;
-        if((int)x<=0||(int)y<=0)continue;
+        if((int)x<=0||(int)y<=0){
+            
+            continue;}
         if(y<=1)y=3;
         int type;
-        if(blockinfo[getLandc(x,z,y)]&IS_LIQUID)type=-1;
+        int landx=vpos.x;
+        int landz=vpos.z;
+        if(blockinfo[getLandc(landx,landz,y)]&IS_LIQUID)type=-1;
         else
         for(int k=0;k<5;k++){
-           type=getLandc(x,z,y-1-k);
+           type=getLandc(landx,landz,y-1-k);
             if(type<=0||blockinfo[type]&IS_RAMP){
                 
                 point.y--;
@@ -2150,9 +2166,13 @@ void DrawShadows(){
             }
             
         }
-        if(type==-1)continue;
+        if(type==-1){
+           
+            continue;};
         float dist=(min[guys[i].model_type].y*scale+vpos.y)-point.y;
-        if(dist>4)continue;
+        if(dist>4){
+            
+            continue;}
         dist=(4-dist)/4.0f;
         
         GLfloat				coordinates[] = {
@@ -2187,7 +2207,7 @@ void DrawShadows(){
     glDisable(GL_BLEND);
 
     
-        guys[nguys].model_type=-1;
+      //  guys[nguys].model_type=-1;
         
 }
 int compare_creatures (const void *a, const void *b)
@@ -2350,7 +2370,7 @@ bool RenderModels()
         
        
     }
-   // printf("rendering: %d\n",max_render);
+  // printf("rendering: %d\n",max_render);
      qsort (renderlistc, renderidx, sizeof (int), compare_creatures);
     max_render=renderidx;
     int mmax=50;//30;
@@ -2421,9 +2441,11 @@ bool RenderModels()
         glEnable(GL_BLEND);
         //if(guys[nguys].color==0)
             glColor4f(1.0f,1.0f,1.0f,.5f);
-       
+        guys[nguys].pos.z-=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+        guys[nguys].pos.x-=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
         DrawModel(nguys);
-       
+       guys[nguys].pos.z+=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+        guys[nguys].pos.x+=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
         glDisable(GL_BLEND);
     }
 	glDisableClientState(GL_NORMAL_ARRAY);

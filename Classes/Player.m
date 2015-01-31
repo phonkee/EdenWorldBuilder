@@ -2065,12 +2065,13 @@ extern Vector fpoint;
 	itouch* touches=[input getTouches];
 	glColor4f(1.0, 1.0, 1.0, .4f);
 	
-	
+    BOOL drewPreview=FALSE;
 	for(int i=0;i<MAX_TOUCHES;i++){
 		if(touches[i].inuse==usage_id&&
 		   touches[i].down==M_DOWN&&
 		   touches[i].placeBlock&&
 		   touches[i].previewtype!=TYPE_NONE&&touches[i].etime>0){
+            drewPreview=TRUE;
             if([World getWorld].hud.holding_creature&&touches[i].previewtype==TYPE_CLOUD&&[World getWorld].hud.mode==MODE_BUILD){
                 PlaceModel(-1,fpoint);
             }else{
@@ -2084,6 +2085,9 @@ extern Vector fpoint;
         }
 		
 	}
+    if(!drewPreview){
+        PlaceModel(-2,fpoint);
+    }
 	[Graphics endPreview];
 	
 

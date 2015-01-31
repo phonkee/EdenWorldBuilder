@@ -282,6 +282,7 @@ extern BOOL IS_WIDESCREEN;
 	mode=MODE_MINE;
 	blocktype=TYPE_BRICK;
     holding_creature=FALSE;
+    
     block_paintcolor=0;
 	sb=[[statusbar alloc] initWithRect:sbrect];	
 	gamepad=[[Gamepad alloc] init];

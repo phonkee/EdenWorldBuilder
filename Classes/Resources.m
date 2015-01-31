@@ -759,7 +759,7 @@ static float bkgtargetvolume=0;
         if(target_ambient!=AMBIENT_RIVER&&target_ambient!=AMBIENT_OPEN&&target_ambient<6)
             bkgtargetvolume*=2;
         if(target_ambient>=6||target_ambient==AMBIENT_OPEN){
-            bkgtargetvolume*=.6f;
+            bkgtargetvolume*=.35f;
             if(target_ambient==AMBIENT_BEACH){
                 bkgtargetvolume*=.2f;
 
