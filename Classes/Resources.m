@@ -49,7 +49,7 @@ static NSString* ambientFiles[NUM_AMBIENT]={
 [AMBIENT_SKYHIGH]=@"ambience_skyhigh.wav",
 [AMBIENT_CAVE]=@"ambience_cave.wav",
 [AMBIENT_OPEN]=@"ambience_open.wav",
-[AMBIENT_GRASSLANDS]=@"grasslands_ambience.mp3",
+[AMBIENT_GRASSLANDS]=@"ambience_open.mp3",
 [AMBIENT_BEACH]=@"beach_ambience.mp3",
 [AMBIENT_GRASSBADLANDS]=@"mountain_grass_badlands_ambience.mp3",
 [AMBIENT_MARSHBADLANDS]=@"river_marsh_badlands_ambience.mp3",
@@ -758,8 +758,12 @@ static float bkgtargetvolume=0;
         bkgtargetvolume=2.0f*(distance_fade-distance)/distance_fade;
         if(target_ambient!=AMBIENT_RIVER&&target_ambient!=AMBIENT_OPEN&&target_ambient<6)
             bkgtargetvolume*=2;
-        if(target_ambient>=6){
+        if(target_ambient>=6||target_ambient==AMBIENT_OPEN){
             bkgtargetvolume*=.6f;
+            if(target_ambient==AMBIENT_BEACH){
+                bkgtargetvolume*=.2f;
+
+            }
         }
     }
     

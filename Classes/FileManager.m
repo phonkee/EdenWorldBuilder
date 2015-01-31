@@ -1377,8 +1377,13 @@ extern float P_ZFAR;
 		temp2.z=BLOCK_SIZE*(ter.home.z+.5f);
             player.pos=temp2;
         
-        if(!gen_default)
-        [[World getWorld].player groundPlayer];
+        if(ter.tgen.LEVEL_SEED==0){
+            temp2.x=BLOCK_SIZE*(ter.home.x+.5f);
+            temp2.y=34;
+            temp2.z=BLOCK_SIZE*(ter.home.z+.5f);
+            player.pos=temp2;
+            printf("sup!!!\n!");
+        }
         //(player.pos).y=1;
         
 		//printf("player pos init save: %f %f %f",player.pos.x,player.pos.y,player.pos.z);

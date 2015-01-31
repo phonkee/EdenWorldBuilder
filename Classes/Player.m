@@ -1084,7 +1084,7 @@ static BOOL lastOnIce;
         int y=pos.y;
         Vector spos;
         for(int h=-1;h<=2;h++){
-            for(int size=0;size<8;size++){
+            for(int size=0;size<5;size++){
                 for(int xx=x-size;xx<=x+size;xx++){
                     for(int zz=z-size;zz<=z+size;zz++){
                         
@@ -1131,6 +1131,9 @@ static BOOL lastOnIce;
 #define AMBIENT_LAVABADLANDS 15
 #define AMBIENT_SNOWMOUNTAIN 16
             */
+            if([World getWorld].terrain.tgen.LEVEL_SEED!=DEFAULT_LEVEL_SEED){
+                 [[Resources getResources] soundEvent:AMBIENT_OPEN];
+            }else
             if(ppx==0&&ppz==0){
                 [[Resources getResources] soundEvent:AMBIENT_SNOWMOUNTAIN];
             }else if(ppx==0&&ppz==1){

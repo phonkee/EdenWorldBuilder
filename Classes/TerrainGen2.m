@@ -2760,6 +2760,7 @@ int tg2_init(){
 
 int lrx=-1;
 int lrz=-1;
+BOOL loaded_new_terrain=FALSE;
 extern int regionSkyColors[4][4];
 void updateSkyColor1(Player* player,BOOL force){
     updateSkyColor2(player,force,0);
@@ -2769,10 +2770,11 @@ void updateSkyColor2(Player* player,BOOL force,float etime){
     extern int g_offcx;
     if(force){
         lrx=lrz=-1;
-        timeSinceLastChange=8;
+        loaded_new_terrain=TRUE;
     }
-    timeSinceLastChange+=etime;
-    if(timeSinceLastChange<6)return;
+   
+    if(!loaded_new_terrain)return;
+     loaded_new_terrain=FALSE;
     //if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
        
         int ppx=player.pos.x-4096*CHUNK_SIZE+GSIZE/2;

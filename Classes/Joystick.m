@@ -43,10 +43,10 @@ static const int usage_id=999;
 		if((touches[i].inuse==0||touches[i].inuse==usage_id)&&touches[i].down==M_DOWN){
 			if(inbox(touches[i].mx,touches[i].my,padbounds)||touches[i].inuse==usage_id){
 				if(touches[i].mx>padbounds.origin.x+padbounds.size.width){
-					touches[i].mx=padbounds.origin.x+padbounds.size.width;
+					//touches[i].mx=padbounds.origin.x+padbounds.size.width;
 				}
 				if(touches[i].my>padbounds.origin.y+padbounds.size.height){
-					touches[i].my=padbounds.origin.y+padbounds.size.height;
+					//touches[i].my=padbounds.origin.y+padbounds.size.height;
 				}
 				joystick_pos.origin.x=touches[i].mx-joystick_pos.size.width/2;
 				joystick_pos.origin.y=touches[i].my-joystick_pos.size.height/2;
@@ -62,10 +62,12 @@ static const int usage_id=999;
 				float mag=sqrt(pos.x*pos.x+pos.y*pos.y);
 				//NSLog(@"%f",mag);
 				NormalizeVector(&pos);
-				mag/=45;
+				mag/=65;
+                if(mag>1.3f)mag=1.3f;
 				//pos.x*=mag;
 				//pos.y*=mag;
 				[[World getWorld].player setSpeed:pos:mag];
+               // printf("magnitude:%f\n",mag);
 				handled=TRUE;	
 				touches[i].inuse=usage_id;	
 			}		

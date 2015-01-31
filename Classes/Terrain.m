@@ -349,7 +349,8 @@ static BOOL update_lighting=FALSE;
    // calculateLighting();
     update_lighting=TRUE;
     double end_time=-[start timeIntervalSinceNow];
-   
+    extern BOOL loaded_new_terrain;
+    loaded_new_terrain=TRUE;
     
 	loaded=1;
     [World getWorld].hud.justLoaded=1;
@@ -1877,6 +1878,8 @@ static double time1,time2,time3,time4;
            
             addMoreCreaturesIfNeeded();
             update_lighting=TRUE;
+            extern BOOL loaded_new_terrain;
+            loaded_new_terrain=TRUE;
         }
             time2=-[start timeIntervalSinceNow];
         //[sf_lock unlock];

@@ -662,7 +662,7 @@ void addMoreCreaturesIfNeeded(){
                 lrz=ppz;
             }*/
             
-        }
+        }else guys[gc].model_type=arc4random()%(NUM_CREATURES);
 
        
         guys[gc].state=0;
@@ -675,6 +675,7 @@ void addMoreCreaturesIfNeeded(){
         guys[gc].update=TRUE;
         
         gc++;
+        printf("new creature gened ]\n");
     }
     
     extern int g_offcx;
@@ -685,6 +686,9 @@ void addMoreCreaturesIfNeeded(){
 void LoadModels2(){
     int gc=0;
     int totalactive=0;
+    for(int i=0;i<nguys;i++){
+        ResetModel(i);
+    }
     for(int i=0;i<MAX_CREATURES_SAVED;i++){
         if( creatureData[i].type>-1&&creatureData[i].type<NUM_CREATURES&&creatureData[i].color>=0&&creatureData[i].color<256){
             
@@ -2273,6 +2277,10 @@ bool RenderModels()
     PVRTVec4 lightPosition = PVRTVec4(0.0f,0.0f, 0.0f, 1.0f);
     PVRTVec4 lightAmbient  = PVRTVec4(0.3f, 0.3f, 0.3f, 1.0f);
     PVRTVec4 lightDiffuse  = PVRTVec4(0.7f, 0.7f, 0.7f, 1.0f);
+    if(!LOW_MEM_DEVICE&&v_equals([World getWorld].terrain.final_skycolor,colorTable[54])){
+       lightAmbient  = PVRTVec4(0.2f, 0.2f, 0.2f, 1.0f);
+       lightDiffuse  = PVRTVec4(0.35f, 0.35f, 0.35f, 1.0f);
+    }
     //PVRTVec4 lightSpecular = PVRTVec4(0.2f, 0.2f, 0.2f, 1.0f);
     
     glEnable(GL_LIGHT0);
