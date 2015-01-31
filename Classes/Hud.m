@@ -331,6 +331,7 @@ extern BOOL IS_WIDESCREEN;
 -(void)worldLoaded{
     pressed=-1;
     inmenu=FALSE;
+    at1=0;
 	if(mode==MODE_PICK_BLOCK){
 		mode=MODE_BUILD;
 	}

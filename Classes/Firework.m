@@ -28,7 +28,7 @@
     if(arc4random()%40==0){
         fireworks[n].color=0;
     }
-       fireworks[n].fuse=randf(0.8f)+1.5f;
+       fireworks[n].fuse=randf(0.8f)+1.3f;
 }
 -(void)removeAllFireworks{
     n_firework=0;

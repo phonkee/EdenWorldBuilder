@@ -1382,6 +1382,11 @@ extern float P_ZFAR;
             temp2.y=34;
             temp2.z=BLOCK_SIZE*(ter.home.z+.5f);
             player.pos=temp2;
+            for(int i=0;i<4;i++){
+                for(int j=0;j<4;j++){
+                    regionSkyColors[i][j]=COLOR_NORMAL_BLUE;
+                }
+            }
             printf("sup!!!\n!");
         }
         //(player.pos).y=1;

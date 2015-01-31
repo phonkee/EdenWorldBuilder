@@ -2836,6 +2836,17 @@ void paintSky(int color){
     }
     [World getWorld].terrain.final_skycolor=colorTable[color];
     
+    int ppx=[World getWorld].player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
+    int ppz=[World getWorld].player.pos.z-4096*CHUNK_SIZE+GSIZE/2;
+    ppx=ppx/(GSIZE/4);
+    ppz=ppz/(GSIZE/4);
+    if(ppx>4)ppx=4;
+    if(ppz>4)ppz=4;
+    if(ppx<0)ppx=0;
+    if(ppz<0)ppz=0;
+   
+    lrx=ppx;
+    lrz=ppz;
     regionSkyColors[lrz][lrx]=color;
     
     

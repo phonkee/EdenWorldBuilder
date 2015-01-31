@@ -54,7 +54,11 @@ extern GLfloat cubeNormals[3*6*6];
     memset(blocks,0,sizeof(block8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
    // printf("leaking memory freeing small blocks\n");
  //   memset(sblocks,0,sizeof(SmallBlock*)*CHUNK_SIZE3);
-    memset(colors,0,sizeof(color8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);    
+    memset(colors,0,sizeof(color8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
+    rtnum_objects=0;
+    rtobjects=NULL;
+    rtn_vertices=0;
+   
     
 }
 -(id) initWithBlocks:(const int*)boundz:(int)rrcx:(int)rrcz:(Terrain*)terrain:(BOOL)genblocks{
@@ -220,6 +224,9 @@ extern int g_offcz;
         face_idx[i]=0;
         face_idx2[i]=0;
     }
+   
+    
+   // self.rtnum_objects=self.rtn_vertices=self.rtn_vertices2=0;
 	[self clearMeshes];
     memset(hasBlocky,0,sizeof(bool)*CHUNK_SIZE);
    /* memset(lighting,0,sizeof(Vector)*CHUNK_SIZE);
@@ -1771,7 +1778,7 @@ extern int g_offcz;
 
 - (void)clearMeshes{
    // printf("vb %d, %d, %d",vertexBuffer,vertexBuffer2,elementBuffer);
-   
+    
     num_objects=0;
     objects=NULL;
     free(verticesbg);

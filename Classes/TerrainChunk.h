@@ -121,7 +121,7 @@ typedef struct bnode{
 @property(nonatomic,assign) StaticObject* rtobjects;
 @property(nonatomic,assign) int idxn;
 @property(nonatomic,assign) int rebuildCounter;
-@property(nonatomic,readonly) int rtn_vertices,rtn_vertices2,rtnum_objects;
+@property(nonatomic,assign) int rtn_vertices,rtn_vertices2,rtnum_objects;
 @property(nonatomic,readonly) float* prbounds;
 @property(nonatomic,assign) TreeNode* m_treenode;
 @property(nonatomic,assign) ListNode* m_listnode;

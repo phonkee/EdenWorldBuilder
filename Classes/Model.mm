@@ -525,6 +525,7 @@ void ResetModel(int i){
     guys[i].timer=0;
     guys[i].flash=0;
     guys[i].idx=i;
+    guys[i].life=START_LIFE;
     guys[i].alive=TRUE;
     guys[i].update=TRUE;
     guys[i].state=0;
@@ -546,8 +547,10 @@ void addMoreCreaturesIfNeeded(){
     int totalactive=0;
     int gc=0;
     int nTouched=0;
+    if(totalactive<15&&gc<nguys)
+    printf("adding more creatures");
     while(totalactive<15&&gc<nguys){
-        if(guys[gc].update==TRUE||(guys[gc].touched==TRUE&&nTouched<150)){
+        if(guys[gc].model_type!=-1&&(guys[gc].update==TRUE||(guys[gc].touched==TRUE&&nTouched<150))){
             if(guys[gc].touched==TRUE){
                 nTouched++;
                 gc++;
@@ -642,8 +645,7 @@ void addMoreCreaturesIfNeeded(){
                
                 guys[gc].color=COLOR_PINK1+arc4random()%2;
                  guys[gc].model_type=arc4random()%(NUM_CREATURES);
-            }else
-            if(ppx==3&&ppz!=0){
+            }else if(ppx==3&&ppz!=0){
                 do{
                  guys[gc].model_type=arc4random()%(NUM_CREATURES);
                 }while(guys[gc].model_type!=M_STALKER&&guys[gc].model_type!=M_CHARGER);
@@ -664,7 +666,7 @@ void addMoreCreaturesIfNeeded(){
             
         }else guys[gc].model_type=arc4random()%(NUM_CREATURES);
 
-       
+       guys[gc].model_type=M_CHARGER;
         guys[gc].state=0;
         guys[gc].touched=FALSE;
        
@@ -675,7 +677,7 @@ void addMoreCreaturesIfNeeded(){
         guys[gc].update=TRUE;
         
         gc++;
-        printf("new creature gened ]\n");
+        printf("new creature gened:%d \n",gc);
     }
     
     extern int g_offcx;
@@ -738,7 +740,8 @@ void LoadModels2(){
    // Vector player_pos=[World getWorld].player.pos;
     addMoreCreaturesIfNeeded();
     while(totalactive<40&&gc<nguys){
-        if(guys[gc].update==TRUE){
+        if(guys[gc].model_type!=-1&&guys[gc].update==TRUE){
+        
             totalactive++;
             gc++;   //infinite loop sometimes
             continue;
@@ -746,11 +749,12 @@ void LoadModels2(){
             if(!guys[gc].touched){
             ResetModel(gc);
             guys[gc].alive=false;
+                guys[gc].update=false;
                 gc++;}
             else{
                 gc++;
             }
-        }
+        }else gc++;
     }
    /* while(totalactive<40&&gc<nguys){
         ResetModel(gc);
@@ -967,7 +971,7 @@ bool CheckCollision(Entity* e){
                 vel.z+=pos.z;
                 ep.vel=vel;
             
-                [ep takeDamage:.2f];
+                [ep takeDamage:.33333333f];
                 ep.flash=0.6f;
                 [[Resources getResources] playSound:S_HIT];
             
@@ -1699,11 +1703,12 @@ bool LoadModels(const char* pszReadPath)
              cmax[i].x=.43f;
          }
         if(i==M_CHARGER){
-            cmin[i].x=-.5f;
-            cmax[i].x=.5f;
+            cmin[i].x=-.3f;
+            cmax[i].x=.3f;
             
-            cmin[i].z-=.4f;
-            cmax[i].z-=.4f;
+            cmin[i].z=-.3f;
+            cmax[i].z=.3f;
+           // cmax[i].z-=.4f;
         }
         if(i==M_STALKER){
             cmin[i].x=-.3f;
@@ -2026,7 +2031,10 @@ void LoadVbos(int idx)
         min[idx].x-=117.5;
         max[idx].x-=117.5;
     }
-   
+    if(idx==M_CHARGER){
+        min[idx].x+=48;
+        max[idx].x+=48;
+    }
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
@@ -2189,8 +2197,7 @@ int compare_creatures (const void *a, const void *b)
     int second=*((int*)(b));
     
     Vector player_pos=[World getWorld].player.pos;
-    player_pos.x=wrapx(player_pos.x);
-    player_pos.z=wrapz(player_pos.z);
+ 
     
     Vector cam=player_pos;
     Vector center=MakeVector(guys[first].pos.x,guys[first].pos.y,guys[first].pos.z);
@@ -2433,8 +2440,19 @@ bool RenderModels()
     
     glLineWidth(1.0f);
     glDisable(GL_DEPTH_TEST);
-   /* for(int i=0;i<nguys;i++){
+    /*Vector AA=min[M_CHARGER];
+    Vector BB=max[M_CHARGER];
+    Vector avg=v_add(AA,BB);
+    avg=v_mult(avg,.5f);*/
+   // printf("center: %f,%f,%f\n",avg.x,avg.y,avg.z);
+    //outputs; center: -48.000000,13.084567,5.033846
+    bool DRAW_BOUNDING_BOXES=FALSE;
+    if(DRAW_BOUNDING_BOXES)
+    for(int i=0;i<nguys;i++){
         if(!guys[i].alive)continue;
+      
+        
+        
         guys[i].pos.x-=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
         guys[i].pos.z-=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
       //  Vector vpos=MakeVector(guys[i].pos.x*1/scale,guys[i].pos.y*1/scale,guys[i].pos.z*1/scale);
@@ -2445,8 +2463,22 @@ bool RenderModels()
         else{
             glColor4f(1,0,0,1);
         }
-        DrawBox(centers[guys[i].model_type]+guys[i].pos-mradius[guys[i].model_type],
-                centers[guys[i].model_type]+guys[i].pos+mradius[guys[i].model_type]);
+        
+        Vector AA=min[guys[i].model_type];
+        Vector BB=max[guys[i].model_type];
+       
+        AA.x=guys[i].pos.x+AA.x*scale;
+        AA.y=guys[i].pos.y+AA.y*scale;
+        AA.z=guys[i].pos.z+AA.z*scale;
+         BB.x=guys[i].pos.x+BB.x*scale;
+       BB.y=guys[i].pos.y+BB.y*scale;
+        BB.z=guys[i].pos.z+BB.z*scale;
+        DrawBox(AA,
+               BB);
+        
+        
+        //DrawBox(centers[guys[i].model_type]+guys[i].pos-mradius[guys[i].model_type],
+         //       centers[guys[i].model_type]+guys[i].pos+mradius[guys[i].model_type]);
         glColor4f(0,1,1,1);
         DrawBox(centers[guys[i].model_type]+guys[i].pos-PVRTVec3(.1f,.1f,.1f),
                 centers[guys[i].model_type]+guys[i].pos+PVRTVec3(.1f,.1f,.1f));
@@ -2462,7 +2494,7 @@ bool RenderModels()
         guys[i].pos.z+=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
         //DrawBox(&guys[i].box);
         
-    }*/
+    }
      glEnable(GL_DEPTH_TEST);
     
     
