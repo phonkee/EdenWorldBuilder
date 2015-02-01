@@ -1280,6 +1280,7 @@ int convertColumnIdx(any_t passedIn,any_t colToConvert){
 }
 extern bool SUPPORTS_OGL2;
 extern float P_ZFAR;
+  static int last_spawn_location=-1;
 -(void)loadWorld:(NSString*)name:(BOOL)fromArchive{
     
    
@@ -1340,26 +1341,23 @@ extern float P_ZFAR;
 		int centerChunk=4096;
         int r=T_SIZE/CHUNK_SIZE/2;
 
-		chunkOffsetX=centerChunk-r;
-		chunkOffsetZ=centerChunk-r;
 		ter.level_seed=ter.tgen.LEVEL_SEED;
 		
-		for(int x=centerChunk-r;x<centerChunk+r;x++){
         
-			for(int z=centerChunk-r;z<centerChunk+r;z++){
-				
-				[[World getWorld].fm readColumn:x:z:saveFile];	
-				[World getWorld].terrain.counter++;
-			}
-		}
+        
+        
+	
 		
 		Vector temp;
-		temp.x=centerChunk*CHUNK_SIZE+CHUNK_SIZE/2;
-		temp.z=centerChunk*CHUNK_SIZE+CHUNK_SIZE/2;
-		temp.y=T_HEIGHT-10;
+		
         int tempyaw=90;
+      
         if(gen_default){
             int spawn_location=arc4random()%10;
+            while(spawn_location==last_spawn_location){
+                spawn_location=arc4random()%10;
+            }
+            last_spawn_location=spawn_location;
             int spx[10]={/*64036+(700),*/64736,64629,66370, 66286,64919,65415,64763,64949,64233, 65555};
             int spz[10]={/*64036+(1700),*/65731,66306,65496,66286,64866,66296,66224,64254,64234, 65537};
             int spy[10]={/*25,     */ 22,24,14,22,30, 21,23,22,34,25};
@@ -1369,7 +1367,31 @@ extern float P_ZFAR;
             temp.y=spy[spawn_location];
             tempyaw=spyaw[spawn_location];
             
+            chunkOffsetX=centerChunk-r;
+            chunkOffsetZ=centerChunk-r;
+            chunkOffsetX=temp.x/CHUNK_SIZE-T_RADIUS;
+            chunkOffsetZ=temp.z/CHUNK_SIZE-T_RADIUS;
+            
+        }else{
+            chunkOffsetX=centerChunk-r;
+            chunkOffsetZ=centerChunk-r;
+            temp.x=centerChunk*CHUNK_SIZE+CHUNK_SIZE/2;
+            temp.z=centerChunk*CHUNK_SIZE+CHUNK_SIZE/2;
+            temp.y=T_HEIGHT-10;
         }
+        
+        
+        
+        for(int x=centerChunk-r;x<centerChunk+r;x++){
+            
+            for(int z=centerChunk-r;z<centerChunk+r;z++){
+                
+                [[World getWorld].fm readColumn:x:z:saveFile];
+                [World getWorld].terrain.counter++;
+            }
+        }
+        
+        
 		ter.home=temp;
 		Vector temp2;		
 		temp2.x=BLOCK_SIZE*(ter.home.x+.5f);
@@ -1502,7 +1524,7 @@ extern float P_ZFAR;
                 [World getWorld].terrain.counter++;
 			}
 		}
-        if(CREATURES_ON)
+        //if(CREATURES_ON)
         [self LoadCreatures];
 		//[ter updateAllImportantChunks];
 		NSLog(@"done");

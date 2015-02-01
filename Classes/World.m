@@ -406,7 +406,7 @@ extern int chunk_load_count;
 - (void)exitToMenu{	
     exit_to_menu=FALSE;
    // printf("hihihi\n");
-	[terrain unloadTerrain:FALSE];
+	[terrain unloadTerrain:TRUE];
     if(CREATURES_ON){
         UnloadModels();
     }

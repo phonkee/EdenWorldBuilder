@@ -1350,7 +1350,7 @@ extern int g_offcz;
                         color=light[coord]*paint[coord]*wshadow;
                     }
                     else if(type==TYPE_FIREWORK){
-                        color=255;
+                        color=255*light[coord];
                     }else
                         color=light[coord]*paint[coord]*(float)cubeColors[f*3+coord];
                     
@@ -1358,7 +1358,7 @@ extern int g_offcz;
                     if(burned){
                         color/=2.0f;
                     }
-                    if(type==TYPE_LIGHTBOX){
+                    if(type==TYPE_LIGHTBOX||getBaseType(type)==TYPE_LAVA){
                         color=paint[coord]*255;
                     }
                     if( color>255) vert_array[vert_c].colors[coord]=255;

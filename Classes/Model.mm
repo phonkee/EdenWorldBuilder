@@ -525,6 +525,7 @@ void ResetModel(int i){
     guys[i].timer=0;
     guys[i].flash=0;
     guys[i].idx=i;
+    guys[i].touched=FALSE;
     guys[i].life=START_LIFE;
     guys[i].alive=TRUE;
     guys[i].update=TRUE;
@@ -547,34 +548,48 @@ void addMoreCreaturesIfNeeded(){
     int totalactive=0;
     int gc=0;
     int nTouched=0;
-    if(totalactive<15&&gc<nguys)
-    printf("adding more creatures");
-    while(totalactive<15&&gc<nguys){
-        if(guys[gc].model_type!=-1&&(guys[gc].update==TRUE||(guys[gc].touched==TRUE&&nTouched<150))){
-            if(guys[gc].touched==TRUE){
+    for(int i=0;i<nguys;i++){
+        if(guys[i].model_type!=-1&&(guys[i].update==TRUE||(guys[i].touched==TRUE&&nTouched<150))){
+            if(guys[i].touched==TRUE){
                 nTouched++;
-                gc++;
+               
             }else{
-            totalactive++;
-            gc++;
+                totalactive++;
+              
             }
             continue;
         }
-        ResetModel(gc);
+    }
+    if(totalactive<15)
+    printf("adding more creatures");
+    while(totalactive<15&&gc<nguys){
+        if(guys[gc].model_type==-1||!guys[gc].update||!guys[gc].alive){
+          ResetModel(gc);
+        }else{
+            gc++;
+            continue;
+                
+        }
+    
+        
         guys[gc].targetangle=randf(3.14f*2);
         
         int ly=-1;
         //guys[gc].pos=PVRTVec3(arc4random()%25+90,arc4random()%5+32,T_HEIGHT);
-        for(int i=0;i<10;i++){
+        for(int i=0;i<20;i++){
         guys[gc].pos=PVRTVec3(arc4random()%T_SIZE+[World getWorld].fm.chunkOffsetX*CHUNK_SIZE,T_HEIGHT-15,arc4random()%T_SIZE+[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE);
             for(int y=T_HEIGHT-1;y>0;y--){
                 int t=getLandc(guys[gc].pos.x,guys[gc].pos.z,y);
                 if(t>0){
-                    if((!(blockinfo[t]&IS_LIQUID))   &&  t!=TYPE_LEAVES){
+                    if(((blockinfo[t]&IS_LIQUID))  ||  t==TYPE_LEAVES){
+                        ly=-1;
+                        break;
+                        
+                    }else{
                         ly=y;
                         goto escapenest;
                     }
-                    break;
+                    
                 }
             }
         }
@@ -617,6 +632,9 @@ void addMoreCreaturesIfNeeded(){
          continue;
          }*/
         //printf("creating creature:%d pos:(%f,%f,%f)\n",gc,guys[gc].pos.x,guys[gc].pos.y,guys[gc].pos.z);
+        
+        
+      
         
         if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
             
@@ -666,7 +684,7 @@ void addMoreCreaturesIfNeeded(){
             
         }else guys[gc].model_type=arc4random()%(NUM_CREATURES);
 
-       guys[gc].model_type=M_CHARGER;
+      // guys[gc].model_type=M_CHARGER;
         guys[gc].state=0;
         guys[gc].touched=FALSE;
        
@@ -690,6 +708,9 @@ void LoadModels2(){
     int totalactive=0;
     for(int i=0;i<nguys;i++){
         ResetModel(i);
+        guys[i].update=false;
+        guys[i].alive=false;
+        guys[i].model_type=-1;
     }
     guys[nguys].model_type=-1;
     for(int i=0;i<MAX_CREATURES_SAVED;i++){
@@ -739,7 +760,11 @@ void LoadModels2(){
     }
     printf("LoadModels2  totalactive:%d   gc: %d \n",totalactive,gc);
    // Vector player_pos=[World getWorld].player.pos;
+    for(int i=gc;i<nguys;i++){
+        guys[i].update=FALSE;
+    }
     addMoreCreaturesIfNeeded();
+    // printf("LoadModels2  totalactive:%d   gc: %d \n",totalactive,gc);
     while(totalactive<40&&gc<nguys){
         if(guys[gc].update==TRUE){
         
@@ -757,6 +782,7 @@ void LoadModels2(){
             }
         }else gc++;
     }
+     printf("LoadModels2  totalactive:%d   gc: %d \n",totalactive,gc);
    /* while(totalactive<40&&gc<nguys){
         ResetModel(gc);
         guys[gc].targetangle=randf(3.14f*2);
@@ -971,8 +997,11 @@ bool CheckCollision(Entity* e){
                 vel.y+=pos.y+4;
                 vel.z+=pos.z;
                 ep.vel=vel;
-            
+                if(e->model_type==M_CHARGER||e->model_type==M_STALKER)
                 [ep takeDamage:.33333333f];
+                else
+                [ep takeDamage:.5f];
+            
                 ep.flash=0.6f;
                 [[Resources getResources] playSound:S_HIT];
             
@@ -2333,13 +2362,15 @@ bool RenderModels()
     float bounds[6];
     int renderidx=0;
     model_render_count=0;
+    int debug_count1=0;
+    
     for(int i=0;i<nguys;i++){
         if(!guys[i].alive)continue;
         if(!guys[i].update){
           //  printf("model alive but not updating[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
             continue;
         }else{
-           
+            debug_count1++;
         }
        
        // while(guys[i].frame > models[guys[i].model_type].nNumFrame-1)
@@ -2370,7 +2401,7 @@ bool RenderModels()
         
        
     }
-  // printf("rendering: %d\n",max_render);
+  // printf("models alive and being updated: %d   inside view: %d\n",debug_count1,model_render_count);
      qsort (renderlistc, renderidx, sizeof (int), compare_creatures);
     max_render=renderidx;
     int mmax=50;//30;

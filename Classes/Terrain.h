@@ -79,7 +79,7 @@
 - (void)render;
 
 -(void)render2;
-- (void)unloadTerrain:(BOOL)partial;
+- (void)unloadTerrain:(BOOL)exitToMenu;
 - (void)warpToHome;
 - (void)destroyBlock:(int)x :(int)z :(int)y;
 - (void)clearBlocks;

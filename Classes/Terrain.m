@@ -280,16 +280,17 @@ int unloadChunk(any_t passedIn,any_t chunkToUnload){
 	
 
 
--(void)unloadTerrain:(BOOL)partial{
+-(void)unloadTerrain:(BOOL)exitToMenu{
     loaded=FALSE;
     [portals removeAllPortals];
     [fireworks removeAllFireworks];
-	if(!partial){
+	if(!exitToMenu){
+        freeTree(&troot);
+        initTree(&troot);
 	//	hashmap_iterate(chunkMap, unloadChunk, NULL);
 	//	hashmap_remove_all(chunkMap,FALSE);
 	}
-	//freeTree(&troot);
-    
+	
 	//initTree(
 	
 	//release ur memz!
@@ -1742,7 +1743,7 @@ float last_etime;
 	else if(do_reload==2){
         do_reload=0;
 		[[World getWorld].fm saveWorld];
-		[self unloadTerrain:TRUE];
+		[self unloadTerrain:FALSE];
 		//oldChunkMap=chunkMap;	
 		//chunkMapc=chunkMap=hashmap_new();
        
@@ -2310,7 +2311,8 @@ int lolc=0;
     glEnable(GL_LIGHTING);
     
     glShadeModel(GL_SMOOTH);
-   
+    extern Vector colorTable[256];
+    BOOL isNight=v_equals([World getWorld].terrain.final_skycolor,colorTable[54]);
     float lightPosition[4] = {0.0f,0.0f, 0.0f, 1.0f};
     float lightAmbient[4]  = {0.3f, 0.3f, 0.3f, 1.0f};
     float lightDiffuse[4]  = {0.7f, 0.7f, 0.7f, 1.0f};
@@ -2318,6 +2320,26 @@ int lolc=0;
     float lightPosition2[4] = {1.0f,1.0f, 0.0f, 1.0f};
     float lightAmbient2[4]  = {0.3f, 0.3f, 0.3f, 1.0f};
     float lightDiffuse2[4]  = {0.3f, 0.3f, 0.3f, 1.0f};
+    
+    
+    if(isNight){
+        float NlightPosition[4] = {0.0f,0.0f, 0.0f, 1.0f};
+        float NlightAmbient[4]  = {0.17f, 0.17f, 0.17f, 1.0f};
+        float NlightDiffuse[4]  = {0.3f, 0.3f, 0.3f, 1.0f};
+        
+        float NlightPosition2[4] = {1.0f,1.0f, 0.0f, 1.0f};
+        float NlightAmbient2[4]  = {0.15f, 0.15f, 0.15f, 1.0f};
+        float NlightDiffuse2[4]  = {0.15f, 0.15f, 0.15f, 1.0f};
+        for(int i=0;i<4;i++){
+            lightPosition[i]=NlightPosition[i];
+            lightAmbient[i]  =NlightAmbient[i];
+            lightDiffuse[i]  =NlightDiffuse[i];
+            
+            lightPosition2[i] =NlightPosition2[i];
+            lightAmbient2[i]  =NlightAmbient2[i];
+            lightDiffuse2[i]  =NlightDiffuse2[i];
+        }
+    }
     
     //PVRTVec4 lightSpecular = PVRTVec4(0.2f, 0.2f, 0.2f, 1.0f);
     
@@ -2350,6 +2372,7 @@ int lolc=0;
             doorso[num_doors++]=&renderList[i].rtobjects[j];
         }
     }
+   // printf("chunksr %d   num doors:%d\n",chunksr,num_doors);
     int vert=0;
     int object=0;
     
@@ -3057,6 +3080,8 @@ int getFlowerIndex(int color){
     }
     
     qsort (flowerList, flowers, sizeof (StaticObject), compare_objects_back2front);
+    extern Vector colorTable[256];
+    BOOL isNight=v_equals([World getWorld].terrain.final_skycolor,colorTable[54]);
     for(int i=0;i<flowers;i++){
         
         
@@ -3107,11 +3132,32 @@ int getFlowerIndex(int color){
             extern Vector colorTable[256];
             Vector color=colorTable[flowerList[i].color];
             color.x=color.y=color.z=1;
-                
             
-            objVertices[vert].colors[0]=color.x*255;
-            objVertices[vert].colors[1]=color.y*255;
-            objVertices[vert].colors[2]=color.z*255;
+            float skylight=.35f;
+            if(!isNight)skylight=1.0f;
+            float light[3];
+            light[0]=calcLight(flowerList[i].pos.x,flowerList[i].pos.z,flowerList[i].pos.y,skylight,0);
+            light[1]=calcLight(flowerList[i].pos.x,flowerList[i].pos.z,flowerList[i].pos.y,skylight,1);
+            light[2]=calcLight(flowerList[i].pos.x,flowerList[i].pos.z,flowerList[i].pos.y,skylight,2);
+            if(light[0]>1){
+                light[0]=1;
+            }if(light[1]>1){
+                light[1]=1;
+            }
+            if(light[2]>1){
+                light[2]=1;
+            }
+            
+           // if(!isNight){
+            objVertices[vert].colors[0]=color.x*255*light[0];
+            objVertices[vert].colors[1]=color.y*255*light[1];
+            objVertices[vert].colors[2]=color.z*255*light[2];
+           //}else{
+                
+            //    objVertices[vert].colors[0]=color.x*255*.65f;
+             //   objVertices[vert].colors[1]=color.y*255*.65f;
+              //  objVertices[vert].colors[2]=color.z*255*.65f;
+         //   }
             objVertices[vert].colors[3]=255;
             vert++;
         }
