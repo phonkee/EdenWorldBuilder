@@ -116,7 +116,11 @@ static float bsize;
 	rect_cancel.origin.x=10;
 	rect_cancel.origin.y=SCREEN_HEIGHT-rect_cancel.size.height-10;
 	if(IS_IPAD)rect_cancel.origin.y-=5;
-	
+    extern BOOL IS_WIDESCREEN;
+    if(IS_WIDESCREEN){
+        rload_cancel.origin.x+=25;
+        rload_go.origin.x+=55;
+    }
 	
 	
 	sbrect.size.width=320;

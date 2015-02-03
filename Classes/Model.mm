@@ -1017,7 +1017,7 @@ bool CheckCollision(Entity* e){
             for(int y=(int)bot;y<=(int)top;y++){
                 int type=getLandc(x,z,y);
                 if(type<=0)continue;
-                
+                if(type==TYPE_FLOWER)continue;
                 int bleft=x;
 				int bright=x+1;
 				int bfront=z;
@@ -1253,7 +1253,7 @@ void Move(Entity* e,float etime){
             int y=min[e->model_type].y*scale+vpos.y+.01;
             int type=getLandc(x,z,y );
             if(!e->onIce){
-            if(type!=TYPE_NONE&&type!=TYPE_LADDER&&type!=TYPE_VINE&&type!=TYPE_LAVA&&type>0&&!(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_SIDE4)&&!(blockinfo[type]&IS_WATER)&&getLandc(x,z,y+1)<=0){
+            if(type!=TYPE_NONE&&type!=TYPE_FLOWER&&type!=TYPE_LADDER&&type!=TYPE_VINE&&type!=TYPE_LAVA&&type>0&&!(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_SIDE4)&&!(blockinfo[type]&IS_WATER)&&getLandc(x,z,y+1)<=0){
                 
                 if(getLandc(x,z,y+2)<=0&&getLandc(vpos.x,vpos.z,vpos.y+2)<=0){
                     e->vel.y=jump_speed;

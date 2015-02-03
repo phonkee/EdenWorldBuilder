@@ -284,7 +284,7 @@ int unloadChunk(any_t passedIn,any_t chunkToUnload){
     loaded=FALSE;
     [portals removeAllPortals];
     [fireworks removeAllFireworks];
-	if(!exitToMenu){
+	if(exitToMenu){
         freeTree(&troot);
         initTree(&troot);
 	//	hashmap_iterate(chunkMap, unloadChunk, NULL);
@@ -2322,7 +2322,7 @@ int lolc=0;
     float lightDiffuse2[4]  = {0.3f, 0.3f, 0.3f, 1.0f};
     
     
-    if(isNight){
+    if(!LOW_MEM_DEVICE&&isNight){
         float NlightPosition[4] = {0.0f,0.0f, 0.0f, 1.0f};
         float NlightAmbient[4]  = {0.17f, 0.17f, 0.17f, 1.0f};
         float NlightDiffuse[4]  = {0.3f, 0.3f, 0.3f, 1.0f};
@@ -3134,7 +3134,7 @@ int getFlowerIndex(int color){
             color.x=color.y=color.z=1;
             
             float skylight=.35f;
-            if(!isNight)skylight=1.0f;
+            if(!isNight||LOW_MEM_DEVICE)skylight=1.0f;
             float light[3];
             light[0]=calcLight(flowerList[i].pos.x,flowerList[i].pos.z,flowerList[i].pos.y,skylight,0);
             light[1]=calcLight(flowerList[i].pos.x,flowerList[i].pos.z,flowerList[i].pos.y,skylight,1);

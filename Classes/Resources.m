@@ -134,7 +134,7 @@ static int sfxNumVariations[NUM_SOUNDS]={
     [   S_SWOOSH]=3,
     [   S_FIRE_SUCCEED]=3,
    
-    [   S_CREATURE_VANISH]=1,
+    [   S_CREATURE_VANISH]=5,
     [   S_CREATURE_PICKEDUP]=1,
     [   S_FLAMELOOP]=1,
     [   S_CAMERA]=1,
@@ -190,7 +190,7 @@ static NSString* soundFiles[NUM_SOUNDS][MAX_VARIATIONS2]={
     [S_FOOTSTEPS_SOFT]={@"player_footsteps_grass_1.caf",@"player_footsteps_grass_2.caf",@"player_footsteps_grass_3.caf",@"player_footsteps_grass_4.caf",@"player_footsteps_grass_5.caf",@"player_footsteps_grass_6.caf"},
     [S_SWOOSH]={@"menu_transition_1.caf",@"menu_transition_2.caf",@"menu_transition_3.caf",@"menu_transition_4.caf"},
     [S_FIRE_SUCCEED]={@"fire_succeed_1.caf",@"fire_succeed_2.caf",@"fire_succeed_3.caf",@"menu_transition_4.caf"},
-    [S_CREATURE_VANISH]={@"creature_vanish.caf",@"creature_vanish_2.caf",@"creature_vanish_3.caf",@"creature_vanish_4.caf"},
+    [S_CREATURE_VANISH]={@"creature_destruction_01.mp3",@"creature_destruction_02.mp3",@"creature_destruction_03.mp3",@"creature_destruction_04.mp3",@"creature_destruction_05.mp3"},
     [S_CREATURE_PICKEDUP]={@"creature_pickedup.caf",@"creature_pickedup_2.caf",@"creature_pickedup_3.caf",@"creature_pickedup_4.caf"},
     [S_FLAMELOOP]={@"fire_loop.caf",@"x_2.caf",@"x_3.caf",@"x_4.caf"},
     [S_ICE_LOOP]={@"ice_slide.wav",@"x_2.caf",@"x_3.caf",@"x_4.caf"},
@@ -418,7 +418,7 @@ UIImage* storedPortalico;
 UIImage* storedPortalicoMask;
 
 
-#define SKIN_CACHE_SIZE 50
+#define SKIN_CACHE_SIZE 200
 CTexture skin_cache[SKIN_CACHE_SIZE];
 
 Texture2D* door_cache[100];
@@ -998,7 +998,9 @@ static float cuetimer=0;
     }
     while([textures count]>0){
         Texture2D* t=[textures lastObject];
+        if(t!=csbkg){
         [t release];
+        }
         [textures removeLastObject];
     }
 }
