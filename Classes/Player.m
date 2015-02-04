@@ -224,7 +224,7 @@ extern bool hitCustom;
             [[World getWorld].terrain buildBlock:c%T_SIZE:(c/T_SIZE)%T_SIZE:T_HEIGHT/2+(c/(T_SIZE*T_SIZE))%T_HEIGHT];
             c++;
         }*/
-     //   printf("c:%d\n",c);
+     //   printg("c:%d\n",c);
         
 
     
@@ -306,7 +306,7 @@ extern bool hitCustom;
 			if(mode==MODE_MINE||mode==MODE_BUILD||mode==MODE_BURN||mode==MODE_PAINT){
 				if(touches[i].placeBlock){
 					Point3D point;
-                    if(fwc_result!=-1)printf("hit model: %d\n",fwc_result);
+                    if(fwc_result!=-1)printg("hit model: %d\n",fwc_result);
 					if(mode==MODE_BUILD){
 						point=findWorldCoords(touches[i].my,touches[i].mx,FC_PLACE);
                         
@@ -332,7 +332,7 @@ extern bool hitCustom;
                         }else
                         if(fwc_result!=-1){
                             PickupModel(fwc_result);
-                            printf("building REALLY?: %d,%d,%d\n",point.x,point.y,point.z);
+                            printg("building REALLY?: %d,%d,%d\n",point.x,point.y,point.z);
                            // [[Resources getResources] playSound:S_];	
                             point.x=-1;
                             
@@ -368,7 +368,7 @@ extern bool hitCustom;
                             
                             paintSky([World getWorld].hud.paintColor);
                                                         
-                            printf("painting sky %f,%f,%f\n",  [World getWorld].terrain.skycolor.x,  [World getWorld].terrain.skycolor.y,  [World getWorld].terrain.skycolor.z);
+                            printg("painting sky %f,%f,%f\n",  [World getWorld].terrain.skycolor.x,  [World getWorld].terrain.skycolor.y,  [World getWorld].terrain.skycolor.z);
                             
 
                         }
@@ -393,7 +393,7 @@ extern bool hitCustom;
                     }
 					if(type==-1)continue;
 					if(mode==MODE_BUILD){
-                     //   printf("building: %d,%d,%d type:%d\n",point.x,point.y,point.z,type);
+                     //   printg("building: %d,%d,%d type:%d\n",point.x,point.y,point.z,type);
 						if(type==TYPE_NONE||(blockinfo[type]&IS_LIQUID&&getLevel(type)<4)){
                             Point3D testpoint=point;
                             if([World getWorld].hud.build_size==0){
@@ -434,7 +434,7 @@ extern bool hitCustom;
                                     [[Resources getResources] playSound:S_BUILD_GENERIC];	
                                     
                                 }
-                              //  printf("building: %d,%d,%d\n",point.x,point.y,point.z);
+                              //  printg("building: %d,%d,%d\n",point.x,point.y,point.z);
                                 if([World getWorld].hud.build_size==1){
 								[[World getWorld].terrain buildBlock:point.x:point.z:point.y];
                                 }else if([World getWorld].hud.build_size==2){
@@ -463,16 +463,16 @@ extern bool hitCustom;
                                     doublejump=TRUE;
                                     jumpandbuild=TRUE;
                                     buildpoint=point;
-                                   // printf("jumping to build\n");
+                                   // printg("jumping to build\n");
                                 }
                             }
 							
 						}
 					}else if(mode==MODE_BURN){
                         if(hitCustom){
-                            printf("burning custom??\n");
+                            printg("burning custom??\n");
                         }else
-                        printf("burning: %d,%d,%d\n",point.x,point.y,point.z);
+                        printg("burning: %d,%d,%d\n",point.x,point.y,point.z);
 						[[Resources getResources] playSound:S_ATTEMPT_FIRE];
                          
 						[[World getWorld].terrain burnBlock:point.x	:point.z :point.y :FALSE];
@@ -513,7 +513,7 @@ extern bool hitCustom;
                                //[[World getWorld].terrain destroyCustom:point.x:point.z:point.y];
                             }else
                             {
-                                printf("removing block: %d %d %d %d  yaw:%d\n",point.x,point.z,point.y,type,(int)yaw);
+                                printg("removing block: %d %d %d %d  yaw:%d\n",point.x,point.z,point.y,type,(int)yaw);
                                 [[World getWorld].terrain destroyBlock:point.x:point.z:point.y];
                             }
 							
@@ -718,7 +718,7 @@ static BOOL lastOnIce;
         }
         dead=TRUE;
         [World getWorld].hud.fade_out=0;
-        printf("dead\n");
+        printg("dead\n");
     }
     
 }
@@ -832,7 +832,7 @@ static BOOL lastOnIce;
        // if(speed>0)speed+=10;
        // else if(speed<0)speed-=10;
         speed*=1.2f;
-        //printf("speed on ramp %f",speed);
+        //printg("speed on ramp %f",speed);
         
         
             
@@ -852,7 +852,7 @@ static BOOL lastOnIce;
 	//static int mcc=0;
     //mcc++;
     //if(mcc%5==0)
-     // printf("onground:%d  climbing:%d  inLiquid:%d  onramp:%d  onIce:%d\n",onground,climbing,inLiquid,onramp,onIce);
+     // printg("onground:%d  climbing:%d  inLiquid:%d  onramp:%d  onIce:%d\n",onground,climbing,inLiquid,onramp,onIce);
     
 	/*if([World getWorld].hud.mode==MODE_BURN){
 	speed=MOVE_SPEED*10;
@@ -892,7 +892,7 @@ static BOOL lastOnIce;
             
             if(getLandc2(x,z,y+2)<=0&&getLandc2(pos.x,pos.z,pos.y+2)<=0&&speed>18){
                hud.m_jump=TRUE;
-              // printf("autojump");
+              // printg("autojump");
             }
         }
             
@@ -951,7 +951,7 @@ static BOOL lastOnIce;
         vel.z*=.95;
         
         Vector flowdir=getFlowDirection(pos.x,pos.z,pos.y-boxheight/2+.01);
-       // printf("flowdir (%f,%f)\n",flowdir.x,flowdir.z);
+       // printg("flowdir (%f,%f)\n",flowdir.x,flowdir.z);
         vel.x+=flowdir.x*FLOW_SPEED*etime;
         vel.z+=flowdir.z*FLOW_SPEED*etime;
         
@@ -1023,7 +1023,7 @@ static BOOL lastOnIce;
     }
     //if(!v_equals(pos,lpos)){
         //player pos log
-    //    printf("player pos: %f, %f, %f\n",pos.x,pos.z,pos.y);
+    //    printg("player pos: %f, %f, %f\n",pos.x,pos.z,pos.y);
     //}
 	
 	lpos.x=pos.x;
@@ -1151,7 +1151,7 @@ static BOOL lastOnIce;
             }else if((ppx==3||ppx==2||ppx==1)&&ppz==0){
                 [[Resources getResources] soundEvent:AMBIENT_MOUNTAIN];
             }else
-           // printf("region: %d,%d\n",ppx,ppz);
+           // printg("region: %d,%d\n",ppx,ppz);
          [[Resources getResources] soundEvent:AMBIENT_OPEN];
         }
     found:
@@ -1175,7 +1175,7 @@ extern Vector tranDist;
 extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 - (BOOL)vertc{
     nest_count++;
-    if(nest_count>10){/*printf("hit nest limit");*/ nest_count--; return false;}
+    if(nest_count>10){/*printg("hit nest limit");*/ nest_count--; return false;}
 	Terrain* ter=world.terrain;
     float bot=pos.y-boxheight/2;
 	float top=pos.y+boxheight/2;
@@ -1324,7 +1324,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                             int pt=type;
                             if(type==TYPE_PORTAL_TOP){
                                 pt=getLandc2(x,z,y-1);
-                               // printf("bot:  %f  y:  %d\n",bot,y);
+                               // printg("bot:  %f  y:  %d\n",bot,y);
                                 if(bot+.1f>y)pt=-1;
                             }
                             
@@ -1337,7 +1337,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                             }else if(pt==TYPE_PORTAL4&&minTranDist.x<-eps){
                                 continue;
                             }
-                     //   printf("mtd: (%f, %f, %f) pt: %d\n",minTranDist.x,minTranDist.y,minTranDist.z,pt);
+                     //   printg("mtd: (%f, %f, %f) pt: %d\n",minTranDist.x,minTranDist.y,minTranDist.z,pt);
                         }
                        // continue;
                     }
@@ -1375,7 +1375,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
             if(minminTranDist.y==0){
                 float pytemp=pos.y-(int)pos.y;
                 if(pytemp>0.92f&&pytemp<0.925f){
-                //printf("hit ramp mmtd: (%f,%f,%f)  player.y=%f\n",minminTranDist.x,minminTranDist.y,minminTranDist.z,pos.y);
+                //printg("hit ramp mmtd: (%f,%f,%f)  player.y=%f\n",minminTranDist.x,minminTranDist.y,minminTranDist.z,pos.y);
                 minminTranDist.y=.002763;
                 }
             }
@@ -1478,7 +1478,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         //pbox=makeBox(left,right,back,front,bot,top);
         
         
-       // printf("collison recursion nest count: %d  type:%d\n",nest_count,collided);
+       // printg("collison recursion nest count: %d  type:%d\n",nest_count,collided);
         
         [self vertc];
         
@@ -1490,9 +1490,9 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     }
     if(nest_count==1){
       /*  if(onIce){
-            printf("-");
+            printg("-");
             
-        }else printf(".");
+        }else printg(".");
         */
         if(onIce){
             //onramp=false;
@@ -1502,13 +1502,13 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
             
         }
 
-       // printf("on ramp!\n");
+       // printg("on ramp!\n");
     if((climbing&&vspeed!=0&&!ladderExists)||ladderExists==FALSE){
         if(climbing&&!ladderExists&&vspeed>0){
             // vel.y=GRAVITY*-0.2f;
             NSLog(@"dismount");
         }
-       // printf("dismounting ");
+       // printg("dismounting ");
         climbing=FALSE;
         
         
@@ -1527,9 +1527,9 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     }
     endClimb=FALSE;
         
-       // printf("vspeed=%f speed=%f  hit ladder:%d and ",vspeed,speed,hitLadder);
-        //if(climbing)printf("climbing\n");
-        //else printf("not climbing\n");
+       // printg("vspeed=%f speed=%f  hit ladder:%d and ",vspeed,speed,hitLadder);
+        //if(climbing)printg("climbing\n");
+        //else printg("not climbing\n");
     }
     
     
@@ -1843,7 +1843,7 @@ static int icesound=0;
         if(absf(vel.x)>.1f||absf(vel.z)>.1f)
         walkCount+=etime;
         float vv2=sqrtf(vel.x*vel.x+vel.z*vel.z);
-        //printf("(%f,%f)\n",vv2,vel.z);
+        //printg("(%f,%f)\n",vv2,vel.z);
         if(walkCount>.35+(6.0f-vv2)/12.0f){
             
           
@@ -1956,7 +1956,7 @@ static int icesound=0;
             vel.x=0;
             vel.z=0;
             vel.y=0;
-           // printf("stopping\n");
+           // printg("stopping\n");
         }
        // 
     }
@@ -1998,7 +1998,7 @@ static int icesound=0;
             pos.x=pos.x+dirv.x/5.3f;
             pos.z=pos.z+dirv.z/5.3f;
             inPortal=TRUE;
-            printf("entering portal (%d, %d, %d)  ", (int)pos.x,(int)(pos.y+boxbase/2),(int)pos.z);
+            printg("entering portal (%d, %d, %d)  ", (int)pos.x,(int)(pos.y+boxbase/2),(int)pos.z);
             [[Resources getResources] playSound:S_ENTER_PORTAL];
             Vector2 ret=[[World getWorld].terrain.portals enterPortal:pos.x 
                                              :pos.y+boxbase/2 
@@ -2022,7 +2022,7 @@ static int icesound=0;
             vel.z=ret.z2;
             [[World getWorld].terrain destroyBlock:pos.x:pos.z:pos.y];
             [[World getWorld].terrain destroyBlock:pos.x:pos.z:pos.y-1];
-            printf("exiting at:(%d, %d, %d) \n",(int)pos.x,(int)(pos.y+boxbase/2),(int)pos.z);
+            printg("exiting at:(%d, %d, %d) \n",(int)pos.x,(int)(pos.y+boxbase/2),(int)pos.z);
             
         }
     }else inPortal=FALSE;
@@ -2080,7 +2080,7 @@ extern Vector fpoint;
 							  :touches[i].preview.z*BLOCK_SIZE
 							  :touches[i].previewtype
                               :touches[i].build_size];	
-                //printf("%d:(%d,%d)\n",i,touches[i].preview.x,touches[i].preview.z);
+                //printg("%d:(%d,%d)\n",i,touches[i].preview.x,touches[i].preview.z);
             }
         }
 		

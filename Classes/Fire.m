@@ -162,7 +162,7 @@ extern vertexpStruct pbuffer[pbuffer_size];
 			
 		}
         if(num_particles>max_fparticles){
-            printf("real particle overflow\n");
+            printg("real particle overflow\n");
         }
 
 		updateIndexes=FALSE;
@@ -193,7 +193,7 @@ const GLubyte colors[4][3]={
     
 }
 -(void)updateFire:(int)idx:(Vector)pos{
-     //printf("fire updated to model %f,%f%f,\n",pos.x,pos.z,pos.y);
+     //printg("fire updated to model %f,%f%f,\n",pos.x,pos.z,pos.y);
     for(int k=0;k<list_size;k++)
 		if(list[k].pid==idx){
 			list[k].x=pos.x;
@@ -207,12 +207,12 @@ const GLubyte colors[4][3]={
 static int pid=0;
 - (int)addFire:(float)x:(float)z:(float)y:(int)type:(float)life{
    // if(type==1)
-    //printf("fire added to model %f,%f,%f,\n",x,z,y);
+    //printg("fire added to model %f,%f,%f,\n",x,z,y);
 	if(list_size>=max_bb){
-        printf("alert: list_size overflow\n");
+        printg("alert: list_size overflow\n");
     }
 	while(num_particles+n_particles>=max_fparticles){
-        printf("alert: particle overflow\n");
+        printg("alert: particle overflow\n");
 		[self removeNode:arc4random()%list_size];
 	}
 	num_particles+=n_particles;
@@ -265,7 +265,7 @@ static int pid=0;
 - (int)addSmoke:(float)x:(float)z:(float)y{
     
     while(num_particles+n_particles>max_fparticles){
-        printf("alert: particle overflow\n");
+        printg("alert: particle overflow\n");
 		[self removeNode:arc4random()%list_size];
 	}
 	num_particles+=n_particles;
@@ -335,14 +335,14 @@ static int frame=0,frame2=0;
     frame=(frame+1)%((112)*framescale);
     int row=(frame/framescale)/16;
     int col=(frame/framescale)%16;
-    // printf("frame: %d\n",frame/framescale);
+    // printg("frame: %d\n",frame/framescale);
    // glTranslatef(col,row,0);
     
     framescale=4;
     frame2=(frame2+1)%((32)*framescale);
     row=(frame2/framescale)/16;
     col=(frame2/framescale)%16;
-    //printf("row: %d\n",row);
+    //printg("row: %d\n",row);
     glTranslatef(col,row+14,0);
     glMatrixMode(GL_MODELVIEW);
     glMatrixMode(GL_MODELVIEW);
@@ -406,7 +406,7 @@ static int frame=0,frame2=0;
                            objVertices[vert].colors[1]=0;
                            objVertices[vert].colors[2]=0;
                            if(node->life<.2f){
-                               // printf("rendering dying fire\n");
+                               // printg("rendering dying fire\n");
                                objVertices[vert].colors[3]=5*node->life*255;
                            }else
                                objVertices[vert].colors[3]=255;
@@ -458,7 +458,7 @@ static int frame=0,frame2=0;
     frame=(frame+1)%((112)*framescale);
     row=(frame/framescale)/16;
     col=(frame/framescale)%16;
-   // printf("frame: %d\n",frame/framescale);
+   // printg("frame: %d\n",frame/framescale);
     glTranslatef(col,row,0);
     glMatrixMode(GL_MODELVIEW);
     
@@ -481,7 +481,7 @@ static int frame=0,frame2=0;
         if(node->life>0){
             
             float dist=sqrtf((node->x - camp.x)*(node->x - camp.x) + (node->z-camp.z)*(node->z-camp.z) + (node->y - camp.y)*(node->y-camp.y));
-       // printf("dist:%f\n",dist);
+       // printg("dist:%f\n",dist);
         float poof=1.05+dist*0.049f;
             
         for(int k=0;k<6*6;k++){
@@ -515,7 +515,7 @@ static int frame=0,frame2=0;
             objVertices[vert].colors[1]=0;
            objVertices[vert].colors[2]=0;
             if(node->life<.2f){
-               // printf("rendering dying fire\n");
+               // printg("rendering dying fire\n");
                 objVertices[vert].colors[3]=5*node->life*255;
             }else
             objVertices[vert].colors[3]=255;

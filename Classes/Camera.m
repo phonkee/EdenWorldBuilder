@@ -145,7 +145,7 @@
 	float sinYaw=sin(D2R(yaw));
 	
 	float sinPitch=sin(D2R(pitch));
-	//printf("pitch: %f\n",pitch);
+	//printg("pitch: %f\n",pitch);
 	look.x=px+cosYaw*(1.0f-absf(sinPitch));
 	look.y=py+sinPitch;
 	look.z=pz+sinYaw*(1.0f-absf(sinPitch));

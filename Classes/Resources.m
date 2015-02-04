@@ -524,7 +524,7 @@ extern Vector colorTable[256];
     [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
     
     //[uiImage2 release];
-    printf("initing build texture ;o");
+    printg("initing build texture ;o");
     return build_cache;
 }
 - (Texture2D*)getPaintTex:(int)color{
@@ -547,7 +547,7 @@ extern Vector colorTable[256];
         paint_cache =
         [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
      //[uiImage2 release];
-    printf("initing paint texture ;o");
+    printg("initing paint texture ;o");
         return paint_cache;
     
     
@@ -570,7 +570,7 @@ extern Vector colorTable[256];
         door_cache[color] =
         [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
        //  [uiImage2 release];
-        printf("initing texture ;o");
+        printg("initing texture ;o");
         return door_cache[color].name;
     }
     
@@ -610,7 +610,7 @@ extern Vector colorTable[256];
     skin_cache[cidx].color=color;
     skin_cache[cidx].state=state;
     
-    printf("storing skin in cache idx: %d\n",cidx);
+    printg("storing skin in cache idx: %d\n",cidx);
     return skin_cache[cidx].tex.name;
 }
 
@@ -745,7 +745,7 @@ static float bkgtargetvolume=0;
         bkgtargetvolume=2.0f*(distance_fade-distance)/distance_fade;
         if(target_ambient!=AMBIENT_RIVER&&target_ambient!=AMBIENT_OPEN)
             bkgtargetvolume*=2;
-        //printf("ambient triggered:%d\n",target_ambient);
+        //printg("ambient triggered:%d\n",target_ambient);
         current_ambient=target_ambient;
         [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
         if(target_ambient!=AMBIENT_NONE)
@@ -1490,7 +1490,7 @@ static int lastsongplayed=-1;
           [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:bkgvolume];
         
     }
-    // printf("volume:%f\n",[[SimpleAudioEngine sharedEngine] backgroundMusicVolume]);
+    // printg("volume:%f\n",[[SimpleAudioEngine sharedEngine] backgroundMusicVolume]);
     //fadetimer+=etime;
     //float volume=1-(sinf(fadetimer)+1.0f)/2.0f;
     //[[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:volume];

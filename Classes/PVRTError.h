@@ -42,7 +42,7 @@
 		#elif defined(_WIN32) && !defined(UNDER_CE)
 			#define PVRTERROR_OUTPUT_DEBUG(A) OutputDebugStringA(A);
 		#else
-			#define PVRTERROR_OUTPUT_DEBUG(A) fprintf(stderr,A);
+			#define PVRTERROR_OUTPUT_DEBUG(A) fprintg(stderr,A);
 		#endif
 	#else
 		#define PVRTERROR_OUTPUT_DEBUG(A)
@@ -63,7 +63,7 @@ enum EPVRTError
 
 /*!***************************************************************************
  @Function			PVRTErrorOutputDebug
- @Input				format		printf style format followed by arguments it requires
+ @Input				format		printg style format followed by arguments it requires
  @Description		Outputs a string to the standard error.
 *****************************************************************************/
 void PVRTErrorOutputDebug(char const * const format, ...);

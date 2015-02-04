@@ -283,7 +283,7 @@ static const int usage_id=42;
             BOOL was_reported=FALSE;
             for(int r=0;r<rwc_count;r++){
                 if([temp isEqualToString:reportedWorlds[r]]){
-                    //printf("culled reported world from list: %s\n",[reportedWorlds[r] cStringUsingEncoding:NSUTF8StringEncoding]);
+                    //printg("culled reported world from list: %s\n",[reportedWorlds[r] cStringUsingEncoding:NSUTF8StringEncoding]);
                     was_reported=TRUE;
                     break;
                     

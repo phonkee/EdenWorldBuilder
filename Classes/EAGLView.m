@@ -55,7 +55,7 @@ extern EAGLView* G_EAGL_VIEW;
         SCALE_HEIGHT=2.4f;
    
 		IS_IPAD=TRUE;
-        printf("is ipad");
+        printg("is ipad");
     }
     else{
         if([[UIScreen mainScreen] respondsToSelector: NSSelectorFromString(@"scale")]&&
@@ -124,7 +124,7 @@ extern EAGLView* G_EAGL_VIEW;
     if(IS_WIDESCREEN==0){
         IS_WIDESCREEN =( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON );
     }
-    printf("is widescreen:%d   check_valeu:%f\n",IS_WIDESCREEN, [[ UIScreen mainScreen ] bounds ].size.width);
+    printg("is widescreen:%d   check_valeu:%f\n",IS_WIDESCREEN, [[ UIScreen mainScreen ] bounds ].size.width);
     
     if(IS_WIDESCREEN)
         SCREEN_WIDTH=IPHONE5_WIDTH;
@@ -223,7 +223,7 @@ extern EAGLView* G_EAGL_VIEW;
 		glBindRenderbufferOES(GL_RENDERBUFFER_OES, depthRenderbuffer);
 		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, GL_DEPTH_COMPONENT16_OES, framebufferWidth, framebufferHeight);
 		glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_DEPTH_ATTACHMENT_OES, GL_RENDERBUFFER_OES, depthRenderbuffer);
-        printf("framebuffer dimensions %d x %d\n",framebufferWidth,framebufferHeight);
+        printg("framebuffer dimensions %d x %d\n",framebufferWidth,framebufferHeight);
         if (glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES) != GL_FRAMEBUFFER_COMPLETE_OES)
             NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES));
 		
@@ -231,7 +231,7 @@ extern EAGLView* G_EAGL_VIEW;
         glBindFramebufferOES(GL_FRAMEBUFFER_OES, defaultFramebuffer);
         glBindRenderbufferOES(GL_RENDERBUFFER_OES, colorRenderbuffer);
         
-    //    printf("glviewport!: %d, %d\n",framebufferWidth,framebufferHeight);
+    //    printg("glviewport!: %d, %d\n",framebufferWidth,framebufferHeight);
         glViewport(0, 0, framebufferWidth, framebufferHeight);
 	
 	}

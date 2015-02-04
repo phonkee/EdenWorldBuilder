@@ -66,10 +66,10 @@
 	#define _ASSERTE(a)((void)0)
 	#ifdef _DEBUG
 		#ifndef _RPT0
-		#define _RPT0(a,b) printf(b)
+		#define _RPT0(a,b) printg(b)
 		#endif
 		#ifndef _RPT1
-		#define _RPT1(a,b,c) printf(b,c)
+		#define _RPT1(a,b,c) printg(b,c)
 		#endif
 	#else
 		#ifndef _RPT0

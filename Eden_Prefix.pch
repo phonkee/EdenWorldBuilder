@@ -18,7 +18,7 @@
 #    define printg(...) printf(__VA_ARGS__)
 #else
 #    define NSLog(...) {}
-#define printg(...) {}
+#    define printg(...) {}
 #endif
 
 #pragma clang diagnostic ignored "-Wmissing-selector-name"

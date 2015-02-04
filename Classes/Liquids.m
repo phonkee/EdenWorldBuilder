@@ -534,7 +534,7 @@ static int removeUnfed(any_t passedIn,any_t wnode){
         eetime++;
         if(n!=0){
            
-         // printf("nodes: %d  etime: %f  etime/node: %f\n",n,eetime,eetime/n);//eetime/(float)n);
+         // printg("nodes: %d  etime: %f  etime/node: %f\n",n,eetime,eetime/n);//eetime/(float)n);
             return FALSE;
         }
         

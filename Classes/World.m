@@ -25,7 +25,7 @@ extern EAGLView* G_EAGL_VIEW;
 void RLETEST(){
     
     BOOL passed=TRUE;
-    printf("rleTest started\n");
+    printg("rleTest started\n");
     //rand init data;
     for(int test=0;test<100;test++){
     block8 blocks[CHUNK_SIZE3];
@@ -78,7 +78,7 @@ void RLETEST(){
     }
     
     if(dataidx>CHUNK_SIZE3*3){
-        printf("dataidx overflow\n");
+        printg("dataidx overflow\n");
     }
     else {
       /*  if(dataidx/CHUNK_SIZE3>1)
@@ -109,10 +109,10 @@ void RLETEST(){
         int marker=buf[idx++];
         int marker_color=buf[idx++];
         int count=buf[idx++];
-        //printf("count %d\n",count);
+        //printg("count %d\n",count);
         for(int i=0;i<count;i++){
             if(idx2>CHUNK_SIZE3){
-                printf("data overflow %d\n",idx2);
+                printg("data overflow %d\n",idx2);
                 //break;
             }
             rblocks[idx2]=marker;
@@ -128,8 +128,10 @@ void RLETEST(){
         }
     }
         
-        if(idx2>CHUNK_SIZE3)printf("data overflow %d\n",idx2);
-    else if(idx2<CHUNK_SIZE3)printf("data underflow\n");
+        if(idx2>CHUNK_SIZE3)
+        {printg("data overflow %d\n",idx2);
+        }else if(idx2<CHUNK_SIZE3)
+        {printg("data underflow\n");}
     
     
     for(int i=0;i<CHUNK_SIZE3;i++){
@@ -143,8 +145,8 @@ void RLETEST(){
    
     
     }
-    if(passed)printf("RLE passed\n");
-    else printf("rle failed\n");
+    if(passed){printg("RLE passed\n");}
+    else{ printg("rle failed\n");}
     
     
 }
@@ -156,16 +158,16 @@ void RLETEST(){
     if(JUST_TERRAIN_GEN){
         RLETEST();
         double start=CFAbsoluteTimeGetCurrent();
-        printf("Terrain gen started\n");
+        printg("Terrain gen started\n");
         fm=[[FileManager alloc] init];
         [Hud genColorTable];
         [[World getWorld].fm loadGenFromDisk];
         tg2_init();
         
-        printf("Terrain gen finished %f\n",(CFAbsoluteTimeGetCurrent()-start));
+        printg("Terrain gen finished %f\n",(CFAbsoluteTimeGetCurrent()-start));
         start=CFAbsoluteTimeGetCurrent();
          [[World getWorld].fm writeGenToDisk];
-        printf("File write finished %f\n",(CFAbsoluteTimeGetCurrent()-start));
+        printg("File write finished %f\n",(CFAbsoluteTimeGetCurrent()-start));
         
         
         bestGraphics=TRUE;
@@ -212,7 +214,7 @@ void RLETEST(){
     World* world=object;
     
     [NSThread setThreadPriority:0.1f];
-    printf("Loading thread started, priority: %f\n",[NSThread threadPriority]);  
+    printg("Loading thread started, priority: %f\n",[NSThread threadPriority]);  
       int i=0;
     while(true){
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -239,11 +241,11 @@ void RLETEST(){
                         
                         {
                             
-                            //   printf("(%d,%d)=?=(%d,%d)\n",chunk.pbounds[0],chunk.pbounds[2],(x+chunkOffsetX)*CHUNK_SIZE,(z+chunkOffsetZ)*CHUNK_SIZE);  
+                            //   printg("(%d,%d)=?=(%d,%d)\n",chunk.pbounds[0],chunk.pbounds[2],(x+chunkOffsetX)*CHUNK_SIZE,(z+chunkOffsetZ)*CHUNK_SIZE);  
                           
                             count++;
                             isloaded[x][z]=FALSE;
-                          //  printf("overwriting a chunk\n");
+                          //  printg("overwriting a chunk\n");
                           
                         }
                           else
@@ -258,7 +260,7 @@ void RLETEST(){
                 }
             }
             if(count==0) goto cleanup;
-            // printf("chunks to load:%d\n",count);
+            // printg("chunks to load:%d\n",count);
             NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm.documents,world.terrain.world_name];		
             
            
@@ -372,7 +374,7 @@ extern int chunk_load_count;
         
         
         if(doneLoading==2){
-         //   printf("done loading !\n");
+         //   printg("done loading !\n");
             
             if(!LOW_MEM_DEVICE){
             [menu deactivate];
@@ -405,17 +407,17 @@ extern int chunk_load_count;
 }
 - (void)exitToMenu{	
     exit_to_menu=FALSE;
-   // printf("hihihi\n");
+   // printg("hihihi\n");
 	[terrain unloadTerrain:TRUE];
     if(CREATURES_ON){
         UnloadModels();
     }
-   // printf("loading menu textures\n");
+   // printg("loading menu textures\n");
     [[Resources getResources] unloadGameAssets];
       [[World getWorld].terrain deallocateMemory];
 	[[Resources getResources] loadMenuTextures];
     if(SUPPORTS_RETINA&&!IS_RETINA){
-      //  printf("menu activated2\n");
+      //  printg("menu activated2\n");
 
         IS_IPAD=TRUE;
         IS_RETINA=TRUE;
@@ -429,7 +431,7 @@ extern int chunk_load_count;
         SCALE_HEIGHT=1;
         
     }else{
-       // printf("menu activated\n");
+       // printg("menu activated\n");
         [menu activate];
    	}
 
@@ -439,7 +441,7 @@ extern int chunk_load_count;
     
     [fm compressLastPlayed];
    
-//printf("hi\n");
+//printg("hi\n");
 	
 	
 }
@@ -544,7 +546,7 @@ extern int chunk_load_count;
         glDisable(GL_BLEND);
         [Graphics endMenu];
         
-        //printf("hi");
+        //printg("hi");
     }
     if(game_mode==GAME_MODE_WAIT){
        

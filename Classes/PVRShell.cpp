@@ -45,7 +45,7 @@
 #define PVRSHELL_SCREENSHOT_NAME	"PVRShell"
 
 #if defined(_WIN32) && !defined(__BADA__)
-#define snprintf _snprintf
+#define snprintg _snprintg
 #endif
 /*****************************************************************************
 ** Prototypes
@@ -579,9 +579,9 @@ int PVRShell::PVRShellScreenSave(
 	for(nScreenshotCount = 0; nScreenshotCount < 10000; ++nScreenshotCount)
 	{
 #if defined(__SYMBIAN32__) || defined(UITRON) || defined(_UITRON_)
-		sprintf(pszFileName, "%s%s%04d.bmp", pszWritePath, fname, nScreenshotCount);
+		sprintg(pszFileName, "%s%s%04d.bmp", pszWritePath, fname, nScreenshotCount);
 #else
-		snprintf(pszFileName, nFileNameSize, "%s%s%04d.bmp", pszWritePath, fname, nScreenshotCount);
+		snprintg(pszFileName, nFileNameSize, "%s%s%04d.bmp", pszWritePath, fname, nScreenshotCount);
 #endif
 		file = fopen(pszFileName,"r");
 		if(!file)
@@ -593,9 +593,9 @@ int PVRShell::PVRShellScreenSave(
 	if (nScreenshotCount==10000)
 	{
 #if defined(__SYMBIAN32__) || defined(UITRON) || defined(_UITRON_)
-		sprintf(pszFileName, "%s%s0000.bmp", pszWritePath, fname);
+		sprintg(pszFileName, "%s%s0000.bmp", pszWritePath, fname);
 #else
-		snprintf(pszFileName, nFileNameSize, "%s%s0000.bmp", pszWritePath, fname);
+		snprintg(pszFileName, nFileNameSize, "%s%s0000.bmp", pszWritePath, fname);
 #endif
 		PVRShellOutputDebug("PVRShell: *WARNING* : Overwriting %s\n", pszFileName);
 	}
@@ -1422,9 +1422,9 @@ bool PVRShellInit::Run()
 			if(pString)
 			{
 #if defined(__SYMBIAN32__) || defined(UITRON) || defined(_UITRON_)
-				sprintf(pString, "%s%s", pPath, pCL);
+				sprintg(pString, "%s%s", pPath, pCL);
 #else
-				snprintf(pString, nSize, "%s%s", pPath, pCL);
+				snprintg(pString, nSize, "%s%s", pPath, pCL);
 #endif
 				if(!m_CommandLine.PrefixFromFile(pString))
 				{
@@ -1433,9 +1433,9 @@ bool PVRShellInit::Run()
 					nSize = strlen(pPath) + strlen(pCL) + 1;
 					pString = new char[nSize];
 #if defined(__SYMBIAN32__) || defined(UITRON) || defined(_UITRON_)
-					sprintf(pString, "%s%s", pPath, pCL);
+					sprintg(pString, "%s%s", pPath, pCL);
 #else
-					snprintf(pString, nSize, "%s%s", pPath, pCL);
+					snprintg(pString, nSize, "%s%s", pPath, pCL);
 #endif
 					if(m_CommandLine.PrefixFromFile(pString))
 						m_pShell->PVRShellOutputDebug("Loaded command-line options from %s.\n", pString);

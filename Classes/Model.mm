@@ -386,7 +386,7 @@ void CalcEnvMap(vertexObject* vert){
     
    /* lolcounter++;
     if(lolcounter>500000){
-        printf("transformedVec:(%f,%f,%f)\n",reflectedVec.x,reflectedVec.y,reflectedVec.z);
+        printg("transformedVec:(%f,%f,%f)\n",reflectedVec.x,reflectedVec.y,reflectedVec.z);
         lolcounter=0;
     }*/
      
@@ -424,7 +424,7 @@ bool isFacingPlayer(int idx){
         a=b;
         b=t;
     }
-  //  printf("a: %d, b:%d\n",a,b);
+  //  printg("a: %d, b:%d\n",a,b);
     if(absf(a-b)>180){
         if(absf((a+360)-b)<45){
             return TRUE;
@@ -561,7 +561,7 @@ void addMoreCreaturesIfNeeded(){
         }
     }
     if(totalactive<15)
-    printf("adding more creatures");
+    printg("adding more creatures");
     while(totalactive<15&&gc<nguys){
         if(guys[gc].model_type==-1||!guys[gc].update||!guys[gc].alive){
           ResetModel(gc);
@@ -595,7 +595,7 @@ void addMoreCreaturesIfNeeded(){
         }
     escapenest:
         if(ly==-1){
-            printf("oob model gen\n");
+            printg("oob model gen\n");
             continue;
         }
         guys[gc].pos.y=ly+2;
@@ -623,15 +623,15 @@ void addMoreCreaturesIfNeeded(){
             guys[gc].pos.y+=1;
         }*/
        
-        //   printf("creature_pos: %f,%f,%f\n",guys[gc].pos.x,guys[gc].pos.z,guys[gc].pos.y);
+        //   printg("creature_pos: %f,%f,%f\n",guys[gc].pos.x,guys[gc].pos.z,guys[gc].pos.y);
         /*  if(ltype!=TYPE_GRASS&&ltype!=TYPE_GRASS2&&ltype!=TYPE_GRASS3&&ltype!=TYPE_DIRT){
          totalactive++;
          guys[gc].alive=FALSE;
-         //printf("type:%d\n",ltype);
+         //printg("type:%d\n",ltype);
          
          continue;
          }*/
-        //printf("creating creature:%d pos:(%f,%f,%f)\n",gc,guys[gc].pos.x,guys[gc].pos.y,guys[gc].pos.z);
+        //printg("creating creature:%d pos:(%f,%f,%f)\n",gc,guys[gc].pos.x,guys[gc].pos.y,guys[gc].pos.z);
         
         
       
@@ -672,7 +672,7 @@ void addMoreCreaturesIfNeeded(){
                  guys[gc].model_type=arc4random()%(NUM_CREATURES);
             }
            // guys[gc].model_type=M_CHARGER;
-            //printf("region: %d,%d\n",(int)ppx,(int)ppz);
+            //printg("region: %d,%d\n",(int)ppx,(int)ppz);
             
            /* if(lrx!=ppx||lrz!=ppz){
                 if(lrx==-1||regionSkyColors[ppz][ppx]!=regionSkyColors[lrz][lrx]){
@@ -695,7 +695,7 @@ void addMoreCreaturesIfNeeded(){
         guys[gc].update=TRUE;
         
         gc++;
-        printf("new creature gened:%d \n",gc);
+        printg("new creature gened:%d \n",gc);
     }
     
     extern int g_offcx;
@@ -720,7 +720,7 @@ void LoadModels2(){
             
             guys[gc].model_type=creatureData[i].type;
             if(guys[gc].model_type==-1){
-                printf("-1 model type\n");
+                printg("-1 model type\n");
                 continue;
             }
             guys[gc].pos=vpv(creatureData[i].pos);
@@ -753,18 +753,18 @@ void LoadModels2(){
             if(gc==nguys)break;
         }else{
             if(creatureData[i].type!=-1){
-           //     printf("corrupt creature type: %d,  idx: %i\n",creatureData[i].type,i);
+           //     printg("corrupt creature type: %d,  idx: %i\n",creatureData[i].type,i);
             }
         }
         
     }
-    printf("LoadModels2  totalactive:%d   gc: %d \n",totalactive,gc);
+    printg("LoadModels2  totalactive:%d   gc: %d \n",totalactive,gc);
    // Vector player_pos=[World getWorld].player.pos;
     for(int i=gc;i<nguys;i++){
         guys[i].update=FALSE;
     }
     addMoreCreaturesIfNeeded();
-    // printf("LoadModels2  totalactive:%d   gc: %d \n",totalactive,gc);
+    // printg("LoadModels2  totalactive:%d   gc: %d \n",totalactive,gc);
     while(totalactive<40&&gc<nguys){
         if(guys[gc].update==TRUE){
         
@@ -782,7 +782,7 @@ void LoadModels2(){
             }
         }else gc++;
     }
-     printf("LoadModels2  totalactive:%d   gc: %d \n",totalactive,gc);
+     printg("LoadModels2  totalactive:%d   gc: %d \n",totalactive,gc);
    /* while(totalactive<40&&gc<nguys){
         ResetModel(gc);
         guys[gc].targetangle=randf(3.14f*2);
@@ -804,7 +804,7 @@ void LoadModels2(){
             guys[gc].pos.y+=1;
         }
     
-         //printf("creating creature:%d pos:(%f,%f,%f)\n",gc,guys[gc].pos.x,guys[gc].pos.y,guys[gc].pos.z);
+         //printg("creating creature:%d pos:(%f,%f,%f)\n",gc,guys[gc].pos.x,guys[gc].pos.y,guys[gc].pos.z);
         guys[gc].model_type=arc4random()%(NUM_CREATURES);
         guys[gc].state=0;   
         guys[gc].touched=FALSE;
@@ -848,7 +848,7 @@ float wrapz(float z){
 }
 int PointTestModels(float x,float y,float z){
     
-   // printf("point testing models: %f,%f   %f,%f  global_offs: %d,%d\n" ,x,z,wrapx(x),wrapz(z),g_offcx,g_offcz);
+   // printg("point testing models: %f,%f   %f,%f  global_offs: %d,%d\n" ,x,z,wrapx(x),wrapz(z),g_offcx,g_offcz);
     for(int i=0;i<nguys;i++){
         if(!guys[i].alive||!guys[i].update)continue;
         Entity* e=&guys[i];
@@ -858,7 +858,7 @@ int PointTestModels(float x,float y,float z){
       
         float xx=(x-(int)x)+ggx;
         float zz=(z-(int)z)+ggz;*/
-       // printf("creature: %f, %f\n", e->pos.x,e->pos.y);
+       // printg("creature: %f, %f\n", e->pos.x,e->pos.y);
         float ax=e->pos.x-wrapx(x);
         float az=e->pos.z-wrapz(z);
         
@@ -869,8 +869,8 @@ int PointTestModels(float x,float y,float z){
             return i;
         }else{
            // if(ax*ax+az*az<=mradius[e->model_type]*mradius[e->model_type])
-           //     printf("missed y?\n");
-           // printf("distance from hit: %f,%f, 2(%f,%f)\n",ax,az,e->pos.x,x);
+           //     printg("missed y?\n");
+           // printg("distance from hit: %f,%f, 2(%f,%f)\n",ax,az,e->pos.x,x);
         }
 
     }
@@ -1062,7 +1062,7 @@ bool CheckCollision(Entity* e){
                         /*
                         for(int yy=0;yy<T_HEIGHT;yy++){
                             if(getLandc(x,z,yy)==TYPE_GRASS&&[[World getWorld].terrain getColor:x:z:yy]!=e->idx){
-                                //    printf("setting color: %d,%d,%d local:(%d,%d)\n",ggx,ggz,y,x,z);
+                                //    printg("setting color: %d,%d,%d local:(%d,%d)\n",ggx,ggz,y,x,z);
                                 [[World getWorld].terrain paintBlock:x:z:yy:e->idx];
                             }
                             
@@ -1227,7 +1227,7 @@ void Move(Entity* e,float etime){
             e->vel.y=-JUMP_SPEED*2;
         
         Vector flowdir=getFlowDirection(e->pos.x,e->pos.z,e->pos.y+min[e->model_type].y*scale+.01);
-        // printf("flowdir (%f,%f)\n",flowdir.x,flowdir.z);
+        // printg("flowdir (%f,%f)\n",flowdir.x,flowdir.z);
         e->vel.x+=flowdir.x*FLOW_SPEED*etime;
         e->vel.z+=flowdir.z*FLOW_SPEED*etime;
     }else{
@@ -1258,7 +1258,7 @@ void Move(Entity* e,float etime){
                 if(getLandc(x,z,y+2)<=0&&getLandc(vpos.x,vpos.z,vpos.y+2)<=0){
                     e->vel.y=jump_speed;
                     setState(e->idx,DEFAULT_JUMP);
-                   //  printf("jumping:%d\n",e->idx);
+                   //  printg("jumping:%d\n",e->idx);
                 }
                 
             }
@@ -1380,9 +1380,9 @@ void UpdateModels(float etime){
     xtimer+=etime;
     if(xtimer>5){
         for(int i=0;i<nguys;i++){
-           // printf("Guys[%d]=  Type: %d  State: %d Frame: %f\n",i,guys[i].model_type,guys[i].state,guys[i].frame);
+           // printg("Guys[%d]=  Type: %d  State: %d Frame: %f\n",i,guys[i].model_type,guys[i].state,guys[i].frame);
         }
-       // printf("\n");
+       // printg("\n");
         xtimer=0;
     }
    model_update_count=0;
@@ -1427,7 +1427,7 @@ void UpdateModels(float etime){
         guys[i].blinktimer+=etime;
         if(guys[i].blinktimer>=.2f){
             guys[i].blinktimer=-(float)((arc4random()%4+1));
-           // printf("hmmm: %f\n",guys[i].blinktimer);
+           // printg("hmmm: %f\n",guys[i].blinktimer);
         }
         if(guys[i].state!=0){
             bool inbounds=true;
@@ -1623,9 +1623,9 @@ Polyhedra boxFromBox(Polyhedra* box,PVRTVec3 pos,float angle,float yaw){
      //   pt*= m_mView * PVRTMat4::Translation(pos.x, pos.y, pos.z)*PVRTMat4::RotationY(angle);
         PVRTMat4 mat4=PVRTMat4::Translation(pos.x, pos.y, pos.z)*PVRTMat4::RotationY(angle);
         //for(int j=0;j<16;j++){
-            ///printf("%f ",mat4.f[j]);
+            ///printg("%f ",mat4.f[j]);
        // }
-        //printf("---\n");
+        //printg("---\n");
         pt=mat4*pt;
        
        
@@ -1657,7 +1657,7 @@ bool LoadModels(const char* pszReadPath)
 
 	if(!CPVRTglesExt::IsGLExtensionSupported("GL_OES_matrix_palette"))
 	{
-		// printf("bone animations not supported!!\n");
+		// printg("bone animations not supported!!\n");
 		return false;
 	}
     const char* file;
@@ -1671,12 +1671,12 @@ bool LoadModels(const char* pszReadPath)
         if(i==M_STALKER)file=stalkerFile;
         if(models[i].ReadFromFile(file) != PVR_SUCCESS)
         {
-          //  printf("failed to load model:%s!!\n",file);
+          //  printg("failed to load model:%s!!\n",file);
             return false;
         }
     }
      
-	//printf("%d,  %d!!!\n",getFrame(M_MOOF,MOOF_WALK,1),models[M_MOOF].nNumFrame);
+	//printg("%d,  %d!!!\n",getFrame(M_MOOF,MOOF_WALK,1),models[M_MOOF].nNumFrame);
 	
 
 
@@ -1685,7 +1685,7 @@ bool LoadModels(const char* pszReadPath)
     
     
 	
-  //  printf("%s\n", glGetString(GL_EXTENSIONS));
+  //  printg("%s\n", glGetString(GL_EXTENSIONS));
 	// Initialise the matrix palette extensions
     if(firstLoad)
 	m_Extensions.LoadExtensions();
@@ -1769,7 +1769,7 @@ bool LoadModels(const char* pszReadPath)
     }
     
     
- //   printf("succeeded load model!!\n");
+ //   printg("succeeded load model!!\n");
  //  for(int i=0;i<nguys;i++){
       //  ResetModel(i);
   //     // guys[i].alive=FALSE;
@@ -1794,7 +1794,7 @@ bool LoadModels(const char* pszReadPath)
 
 bool UnloadModels()
 {
-    //printf("models unloaded\n");
+    //printg("models unloaded\n");
 	if(CHECK_GL_ERROR()){
         
     }
@@ -1829,7 +1829,7 @@ void PlaceModel(int idx,Vector pos){
                 idx=i;
                 
                  guys[idx].touched=TRUE;
-                printf("assigining new slot: %d\n",idx);
+                printg("assigining new slot: %d\n",idx);
                 
                 break;
             }
@@ -1839,7 +1839,7 @@ void PlaceModel(int idx,Vector pos){
                 idx=i;
                 
                 guys[idx].touched=TRUE;
-                printf("ran out of untouched slot spaces, assigining new slot: %d\n",idx);
+                printg("ran out of untouched slot spaces, assigining new slot: %d\n",idx);
                 
                 break;
             }
@@ -1908,7 +1908,7 @@ void BurnModel(int idx){
                       //  foundWater=TRUE;
                         e->dest=PVRTVec3(xx+.5f,y+h+.5f,zz+.5f);
                         e->gotoDest=1;
-                       // printf("Found water\n");
+                       // printg("Found water\n");
                         return;
                     }//else 
                        // [World getWorld].terrain setColor:x,z,y+h)
@@ -1933,7 +1933,7 @@ void HitModel(int idx,Vector hitpoint){
     if(idx>=0&&idx<nguys){
         guys[idx].touched=TRUE;
         Vector dir;
-       // printf("hitpoint (%f,%f)\n",guys[idx].pos.x,hitpoint.x);
+       // printg("hitpoint (%f,%f)\n",guys[idx].pos.x,hitpoint.x);
         dir.x=guys[idx].pos.x-wrapx(hitpoint.x);
         dir.z=guys[idx].pos.z-wrapz(hitpoint.z);
         dir.y=0;
@@ -1947,7 +1947,7 @@ void HitModel(int idx,Vector hitpoint){
         if(guys[idx].life<=0){        
             killCreature(idx);
             
-            //printf("adding particle fx for creature: (%f,%f,%f)\n",guys[idx].pos.x,guys[idx].pos.y,guys[idx].pos.z);
+            //printg("adding particle fx for creature: (%f,%f,%f)\n",guys[idx].pos.x,guys[idx].pos.y,guys[idx].pos.z);
             //[[World getWorld].effects addCreatureVanish:guys[idx].pos.x:guys[idx].pos.z:guys[idx].pos.y:guys[idx].color:guys[idx].model_type];
         }else
             PlaySound(idx,VO_HIT);
@@ -1958,7 +1958,7 @@ void HitModel(int idx,Vector hitpoint){
         guys[idx].flash=1.0f;
     }
     else
-        printf("bad creature idx for hitModel\n");
+        printg("bad creature idx for hitModel\n");
     
 }
 void ColorModel(int idx,int color){
@@ -1969,7 +1969,7 @@ void ColorModel(int idx,int color){
        
     }
     else
-        printf("bad creature idx for ColorModel\n");
+        printg("bad creature idx for ColorModel\n");
     
 }
 
@@ -1985,7 +1985,7 @@ void PickupModel(int idx){
           [[Resources getResources] playSound:S_CREATURE_PICKEDUP];     
     }
     else
-        printf("bad creature idx for PickupModel\n");
+        printg("bad creature idx for PickupModel\n");
     
 }
 
@@ -2036,13 +2036,13 @@ void LoadVbos(int idx)
 		Interleaving data improves the memory access pattern and cache efficiency,
 		thus it can be read faster by the hardware.
 	*/
-    //printf("model:%d n_mesh:%d\n",idx,models[idx].nNumMesh);
+    //printg("model:%d n_mesh:%d\n",idx,models[idx].nNumMesh);
 	glGenBuffers(models[idx].nNumMesh, m_puiVbo[idx]);
     max[idx]=MakeVector(-9999,-99999,-9999999);
     min[idx]=MakeVector(99999,99999,9999999);
 	for(unsigned int i = 0; i <models[idx].nNumMesh; ++i)
 	{
-       // printf("numMesh:%d\n",i);
+       // printg("numMesh:%d\n",i);
 		// Load vertex data into buffer object
 		SPODMesh& Mesh = models[idx].pMesh[i];
 		unsigned int uiSize = Mesh.nNumVertex * Mesh.sVertex.nStride;
@@ -2064,7 +2064,7 @@ void LoadVbos(int idx)
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, uiSize, Mesh.sFaces.pData, GL_STATIC_DRAW);
 		}
 	}
-    //printf("min(%f,%f,%f)  max(%f,%f,%f)\n",min[idx].x,min[idx].y,min[idx].z,max[idx].x,max[idx].y,max[idx].z);
+    //printg("min(%f,%f,%f)  max(%f,%f,%f)\n",min[idx].x,min[idx].y,min[idx].z,max[idx].x,max[idx].y,max[idx].z);
     if(idx==M_GREEN){
         min[idx].x-=117.5;
         max[idx].x-=117.5;
@@ -2080,12 +2080,12 @@ void LoadVbos(int idx)
 void DrawBox(Polyhedra*p){
     GLfloat				verts[8*3];
     int v=0;
-   // printf("----\n");
+   // printg("----\n");
     for(int i=0;i<p->n_points;i++){
         verts[v]=p->points[i].x;
         verts[v+1]=p->points[i].y;
         verts[v+2]=p->points[i].z;
-      //  printf("(%f,%f,%f)\n",p->points[i].x,p->points[i].y,p->points[i].z);
+      //  printg("(%f,%f,%f)\n",p->points[i].x,p->points[i].y,p->points[i].z);
         v+=3;
         
     }
@@ -2157,11 +2157,11 @@ void DrawShadows(){
                 
             }else
             {
-               // printf("continue1\n");
+               // printg("continue1\n");
                 continue;}
         }else{
             if(!guys[i].alive||!guys[i].update||!guys[i].insideView){
-              //  printf("continue2\n");
+              //  printg("continue2\n");
                 continue;}
        	}
         Vector vpos=MakeVector(guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
@@ -2211,7 +2211,7 @@ void DrawShadows(){
              1,			1,
             1,			0
         };
-        //printf("(%f,%f,%f)",point.x,point.y,point.z);
+        //printg("(%f,%f,%f)",point.x,point.y,point.z);
         GLfloat				width = dist*shadow_size[guys[i].model_type],
         height = dist*shadow_size[guys[i].model_type];
         GLfloat				vertices[] = {
@@ -2230,7 +2230,7 @@ void DrawShadows(){
          //       vpv(point)+PVRTVec3(.1f,.1f,.1f));
         
     }
-   // printf("shadows drawn: %d\n",shadows_drawn);
+   // printg("shadows drawn: %d\n",shadows_drawn);
       //glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
@@ -2309,7 +2309,7 @@ int compare_creatures2 (const void *a, const void *b)
 bool RenderModels()
 {
 
-    //printf("renderModels\n");
+    //printg("renderModels\n");
 	
 		
     
@@ -2367,7 +2367,7 @@ bool RenderModels()
     for(int i=0;i<nguys;i++){
         if(!guys[i].alive)continue;
         if(!guys[i].update){
-          //  printf("model alive but not updating[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
+          //  printg("model alive but not updating[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
             continue;
         }else{
             debug_count1++;
@@ -2385,23 +2385,23 @@ bool RenderModels()
         bounds[5]=guys[i].pos.z+BB.z*scale;
         
         int vtr=(ViewTestAABB(bounds,0));
-        //printf("vtr:  %#010x\n", vtr);
+        //printg("vtr:  %#010x\n", vtr);
         if(!(vtr&VT_OUTSIDE)){
             guys[i].insideView=TRUE;
             renderlistc[renderidx++]=i;
              model_render_count++;
             
-            //printf("model in view[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
+            //printg("model in view[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
            
         }else{
              guys[i].insideView=FALSE;
             //renderlistc[renderidx++]=i;
-            //printf("model out of view(but active/alive)[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
+            //printg("model out of view(but active/alive)[%d]: (%f,%f,%f)\n",i,guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
         }
         
        
     }
-  // printf("models alive and being updated: %d   inside view: %d\n",debug_count1,model_render_count);
+  // printg("models alive and being updated: %d   inside view: %d\n",debug_count1,model_render_count);
      qsort (renderlistc, renderidx, sizeof (int), compare_creatures);
     max_render=renderidx;
     int mmax=50;//30;
@@ -2419,7 +2419,7 @@ bool RenderModels()
         guys[i].pos.x-=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
         guys[i].pos.z-=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
         
-     //   printf("rendering model: (%f,%f,%f)\n",guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
+     //   printg("rendering model: (%f,%f,%f)\n",guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
         if(guys[i].color==0||guys[i].ragetimer>0){
             if(guys[i].flash!=0){
                 glColor4f(1,1-guys[i].flash,1-guys[i].flash,1);
@@ -2467,7 +2467,7 @@ bool RenderModels()
     
     }
     
-   // printf("models drawn: %d\n",models_drawn);
+   // printg("models drawn: %d\n",models_drawn);
     if(guys[nguys].model_type!=-1){
         glEnable(GL_BLEND);
         //if(guys[nguys].color==0)
@@ -2497,7 +2497,7 @@ bool RenderModels()
     Vector BB=max[M_CHARGER];
     Vector avg=v_add(AA,BB);
     avg=v_mult(avg,.5f);*/
-   // printf("center: %f,%f,%f\n",avg.x,avg.y,avg.z);
+   // printg("center: %f,%f,%f\n",avg.x,avg.y,avg.z);
     //outputs; center: -48.000000,13.084567,5.033846
     bool DRAW_BOUNDING_BOXES=FALSE;
     if(DRAW_BOUNDING_BOXES)
@@ -2566,7 +2566,7 @@ bool RenderModels()
    // static int mcc=0;
    // mcc++;
   //  if(mcc%60==0)
-   // printf("Models updated:%d   models rendered:%d\n",model_update_count,model_render_count);
+   // printg("Models updated:%d   models rendered:%d\n",model_update_count,model_render_count);
 		return true;
 }
 
@@ -2587,7 +2587,7 @@ void DrawModel(int mi)
     //position.y-=64;
     int modelType=guys[mi].model_type;
     if(modelType==-1){
-        printf("error drawing -1 model\n");
+        printg("error drawing -1 model\n");
         return;
     }
 	//Set the frame number
@@ -2709,7 +2709,7 @@ void DrawModel(int mi)
 		glNormalPointer(GL_FLOAT, pMesh->sNormals.nStride, pMesh->sNormals.pData);
 		glTexCoordPointer(pMesh->psUVW[0].n, GL_FLOAT, pMesh->psUVW[0].nStride, pMesh->psUVW[0].pData);
 
-	// printf("model:%d, %d\n",modelType,iNode);
+	// printg("model:%d, %d\n",modelType,iNode);
 			//Set up the indexes into the matrix palette.
         if(pMesh->sBoneIdx.pData!=NULL)
 			m_Extensions.glMatrixIndexPointerOES(pMesh->sBoneIdx.n, GL_UNSIGNED_BYTE, pMesh->sBoneIdx.nStride, pMesh->sBoneIdx.pData);

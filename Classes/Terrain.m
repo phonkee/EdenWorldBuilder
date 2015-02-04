@@ -121,7 +121,7 @@ void removeFromTree(TreeNode* tnode,ListNode* node){
                 tnode->dataList=NULL;
            // [(NSNumber*)cur->data release];
            // free(cur);
-           // printf("found and removed node\n");
+           // printg("found and removed node\n");
             break;
         }
         prev=cur;
@@ -362,7 +362,7 @@ static BOOL update_lighting=FALSE;
     
     float ttime=end_time-start_time;
     ttime++;
-  // printf("loadtime: %f  \n",ttime);
+  // printg("loadtime: %f  \n",ttime);
 	
 	
 }
@@ -418,7 +418,7 @@ TerrainChunk* rebuildList[13000];
     /*
     //Terrain* ter=object;
     [NSThread setThreadPriority:.2];
-    printf("Chunk Building thread started, priority: %f \n",[NSThread threadPriority]);
+    printg("Chunk Building thread started, priority: %f \n",[NSThread threadPriority]);
 	//[NSThread sleepForTimeInterval:2.00f];
 	
 	while(TRUE){
@@ -437,7 +437,7 @@ TerrainChunk* rebuildList[13000];
                                     int n=threeToOne(x,y,z);
                                     
                                     if(n>=CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN||n<0){
-                                        printf("out of bounds index: %d\n",n);
+                                        printg("out of bounds index: %d\n",n);
                                     }
                                     list[num++]=n;
                                     
@@ -446,7 +446,7 @@ TerrainChunk* rebuildList[13000];
                                 
                             }
                             columnsToUpdate[getColIndex(x,z)]=FALSE;
-                            // if(num>=1000){printf("1234overflow\n");break;}
+                            // if(num>=1000){printg("1234overflow\n");break;}
                             
                         }
                     }
@@ -462,7 +462,7 @@ TerrainChunk* rebuildList[13000];
                 for(int i=0;i<num;i++){
                     TerrainChunk* chunk=NULL;
                     if(list[i]<0||list[i]>=CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN){
-                        printf("out of bounds access list[%d]=%d  num: %d idxrl: %d  max:%d\n",i,list[i],num,idxrl, CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+                        printg("out of bounds access list[%d]=%d  num: %d idxrl: %d  max:%d\n",i,list[i],num,idxrl, CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
                         //  continue;
                     }
                     //issue #3 continued
@@ -474,7 +474,7 @@ TerrainChunk* rebuildList[13000];
                     }
                 }
             }
-            // printf("rebuild %d\n",idx);
+            // printg("rebuild %d\n",idx);
             if(idxrl>0){
                 qsort (rebuildList, idxrl, sizeof (TerrainChunk*), compare_rebuild_order);
 //                
@@ -507,13 +507,13 @@ TerrainChunk* rebuildList[13000];
                 if(idxrl!=0&&rebuildList[idxrl-1]==rebuildList[idxrl]){
                     i--;
                     continue;
-                    printf("really???\n");
+                    printg("really???\n");
                 }
-                // printf("hi\n");
+                // printg("hi\n");
                 if(rebuildList[idxrl]){
                     sanity_test++;
                     if(sanity_test!=1){
-                        printf("sanity test failed\n");
+                        printg("sanity test failed\n");
                     }
                     
                     //issue #1 continued
@@ -533,7 +533,7 @@ TerrainChunk* rebuildList[13000];
                 if(idxrl==0)break;
                 
             }
-           // printf("idxrl:%d\n",idxrl);
+           // printg("idxrl:%d\n",idxrl);
             
             
 		}
@@ -560,7 +560,7 @@ TerrainChunk* rebuildList[13000];
 	
 	NSNumber* chunkIdx=[NSNumber numberWithInt:threeToOne(cx,cy,cz)];
 	TerrainChunk* old=chunkTable[threeToOne(cx,cy,cz)];
-    if(old)printf("overwriting something2\n");
+    if(old)printg("overwriting something2\n");
     chunkTable[threeToOne(cx,cy,cz)]=chunk;
 
 	//hashmap_put(chunkMap,threeToOne(cx,cy,cz),chunk);
@@ -580,9 +580,9 @@ TerrainChunk* rebuildList[13000];
            //chunk.m_listnode->dead=TRUE;
             readdtree=FALSE;
             //removeFromTree(chunk.m_treenode,chunk.m_listnode);
-          //  printf("reusing chunk\n");
+          //  printg("reusing chunk\n");
         }else
-        printf("ERROR:chunk overwrite error\n");
+        printg("ERROR:chunk overwrite error\n");
         
         //[old release];
         
@@ -663,7 +663,7 @@ TerrainChunk* rebuildList[13000];
             
             SmallBlock* sb=chunk.psblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
             if(sb){
-                printf("clearing blocks");
+                printg("clearing blocks");
                 for(int i=0;i<8;i++){
                     sb->blocks[i]=0;
                     sb->colors[i]=0;
@@ -752,7 +752,7 @@ TerrainChunk* rebuildList[13000];
         }
     }
     if(blockinfo[cur]&IS_PORTAL){
-        printf("trying to remove portal\n");
+        printg("trying to remove portal\n");
         if(cur==TYPE_PORTAL_TOP){
             [self updateChunks:x :z :y-1 :TYPE_NONE];
             [self setColor:x:z:y-1:paint];
@@ -803,7 +803,7 @@ TerrainChunk* rebuildList[13000];
         }
     }
     if(blockinfo[cur]&IS_PORTAL){
-        printf("trying to remove portal\n");
+        printg("trying to remove portal\n");
         if(cur==TYPE_PORTAL_TOP){
             [self updateChunks:x :z :y-1 :TYPE_NONE];
             [self setColor:x:z:y-1:paint];
@@ -954,7 +954,7 @@ int getRampType(int x,int z,int y, int t){
 - (void)buildBlock:(int)x :(int)z :(int)y{
     if([World getWorld].hud.blocktype==TYPE_GOLDEN_CUBE){
         if([World getWorld].hud.goldencubes<=0)return;
-         printf("goldencubes %d paint color: %d\n",[World getWorld].hud.goldencubes, [World getWorld].hud.block_paintcolor);
+         printg("goldencubes %d paint color: %d\n",[World getWorld].hud.goldencubes, [World getWorld].hud.block_paintcolor);
         [World getWorld].hud.goldencubes--;
         [[Resources getResources] playSound:S_TREASURE_PLACE];
        
@@ -1389,7 +1389,7 @@ float getShadow(int x,int z,int y){
         }
     }
     if(getLandc(x,z,y)==TYPE_LIGHTBOX){
-      //  printf("lightarray at box:%f\n",lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].x);
+      //  printg("lightarray at box:%f\n",lightarray[((x+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+((z+g_offcz)%T_SIZE)*T_HEIGHT+y].x);
     }
     
     return 1.0f;*/
@@ -1433,7 +1433,7 @@ inline int getLandc2(int x,int z,int y){
    
         if(getLandc(x/2,z/2,y/2)!=TYPE_CUSTOM){
             int n=getLandc(x/2,z/2,y/2);
-           // printf("get custom on non-custom\n");
+           // printg("get custom on non-custom\n");
            return n;
             
             
@@ -1485,7 +1485,7 @@ int getColorc(int x,int z,int y){
      if(y<0||y>=T_HEIGHT)return -1;
 	//if(x<0||z<0||y<0||x>=T_SIZE||z>=T_SIZE||y>=T_HEIGHT)return -1;	
     if(x+g_offcx<0||z+g_offcz<0){
-        printf("under/overflow (%d,%d)\n",x,z);
+        printg("under/overflow (%d,%d)\n",x,z);
     }
 	return GBLOCK_SAFE(x,z,y);
 	int cx=x/CHUNK_SIZE;
@@ -1524,7 +1524,7 @@ int getColorc(int x,int z,int y){
    // [[World getWorld].effects addCreatureVanish:x+.5f:z+.5f:y+5:[self getColor:x:z:y]:TYPE_TNT];
     
     [self destroyBlock:x :z :y];
-    printf("shooting firework, color:%d\n",[self getColor:x:z:y]);
+    printg("shooting firework, color:%d\n",[self getColor:x:z:y]);
 }
 
 - (void)explode:(int)x :(int)z :(int)y{
@@ -1721,7 +1721,7 @@ float last_etime;
         float clr[4]={v.x-.03f, v.y-.03f, v.z-.03f, 1.0f};
         
         glFogfv(GL_FOG_COLOR,clr);
-       // printf("TRUE\n");
+       // printg("TRUE\n");
     }
     
     if(v_equals([World getWorld].terrain.final_skycolor,colorTable[14])){
@@ -1832,11 +1832,11 @@ static double time1,time2,time3,time4;
                         
                     {
                         
-                        //   printf("(%d,%d)=?=(%d,%d)\n",chunk.pbounds[0],chunk.pbounds[2],(x+chunkOffsetX)*CHUNK_SIZE,(z+chunkOffsetZ)*CHUNK_SIZE);
+                        //   printg("(%d,%d)=?=(%d,%d)\n",chunk.pbounds[0],chunk.pbounds[2],(x+chunkOffsetX)*CHUNK_SIZE,(z+chunkOffsetZ)*CHUNK_SIZE);
                         
                         count++;
                         isloaded[x][z]=FALSE;
-                        //  printf("overwriting a chunk\n");
+                        //  printg("overwriting a chunk\n");
                         
                     }
                     else
@@ -1858,7 +1858,7 @@ static double time1,time2,time3,time4;
             [World getWorld].fm.chunkOffsetZ=m_chunkOffsetZ;
 
             
-         printf("chunks to load:%d\n",count);
+         printg("chunks to load:%d\n",count);
         NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm.documents,world.terrain.world_name];
         
         //[sf_lock lock];
@@ -1941,7 +1941,7 @@ static double time1,time2,time3,time4;
                                 int n=threeToOne(x,y,z);
                                 
                                 if(n>=CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN||n<0){
-                                    printf("out of bounds index: %d\n",n);
+                                    printg("out of bounds index: %d\n",n);
                                 }
                                 list[num++]=n;
                                 
@@ -1950,7 +1950,7 @@ static double time1,time2,time3,time4;
                             
                         }
                         columnsToUpdate[getColIndex(x,z)]=FALSE;
-                        // if(num>=1000){printf("1234overflow\n");break;}
+                        // if(num>=1000){printg("1234overflow\n");break;}
                         
                     }
                 }
@@ -1966,7 +1966,7 @@ static double time1,time2,time3,time4;
             for(int i=0;i<num;i++){
                 TerrainChunk* chunk=NULL;
                 if(list[i]<0||list[i]>=CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN){
-                    printf("out of bounds access list[%d]=%d  num: %d idxrl: %d  max:%d\n",i,list[i],num,idxrl, CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+                    printg("out of bounds access list[%d]=%d  num: %d idxrl: %d  max:%d\n",i,list[i],num,idxrl, CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
                     //  continue;
                 }
                 //issue #3 continued
@@ -1976,7 +1976,7 @@ static double time1,time2,time3,time4;
                     rebuildList[idxrl++]=chunk;
                     chunk.idxn=list[i];
                 }else{
-                    printf("null chunk marked for updating??\n");
+                    printg("null chunk marked for updating??\n");
                 }
             }
         
@@ -1990,7 +1990,7 @@ static double time1,time2,time3,time4;
                    if([rebuildList[i] rebuild2]==-1){
                     //    chunksToUpdate[rebuildList[i].idxn]=TRUE;
                      //   columnsToUpdate[rebuildList[i].idxn/CHUNKS_PER_COLUMN]=TRUE;
-                       printf("fail update on chunk: %d    bounds %d %d %d   rebuildCounter: %d\n",i,rebuildList[i].pbounds[0],rebuildList[i].pbounds[1],rebuildList[i].pbounds[2],rebuildList[i].rebuildCounter);
+                       printg("fail update on chunk: %d    bounds %d %d %d   rebuildCounter: %d\n",i,rebuildList[i].pbounds[0],rebuildList[i].pbounds[1],rebuildList[i].pbounds[2],rebuildList[i].rebuildCounter);
                     }else{
                         
                         rebuildList[i].needsRebuild=FALSE;
@@ -2004,7 +2004,7 @@ static double time1,time2,time3,time4;
                // if(idxrl==0)break;
                 
             }
-         //printf("idxrl:%d\n",idxrl);
+         //printg("idxrl:%d\n",idxrl);
         
         idxrl=0;
         
@@ -2076,8 +2076,8 @@ static double time1,time2,time3,time4;
            
             //frp=mgp+mlp+frp;//<---delete
             if(count>50){
-            printf("File read: %f(%d%%)    Mesh gen: %f(%d%%)     Mesh load: %f(%d%%)\n ",fr,frp,mg,mgp,ml,mlp);
-            printf("Chunks loaded: %d     Mesh gen time per chunk: %f ms\n",count,1000*mg/(double)count);
+            printg("File read: %f(%d%%)    Mesh gen: %f(%d%%)     Mesh load: %f(%d%%)\n ",fr,frp,mg,mgp,ml,mlp);
+            printg("Chunks loaded: %d     Mesh gen time per chunk: %f ms\n",count,1000*mg/(double)count);
             }
         }
   //  NSLog(@"chunk updates: %d  etime: %f  etime/count: %f\n",count,etime,etime/count);
@@ -2145,7 +2145,7 @@ void renderTree(TreeNode* node,int state){
 		list=list->next;
 	}
     //if(leafnodes!=0)
-    //printf("chunks in this node: %d\n",leafnodes);
+    //printg("chunks in this node: %d\n",leafnodes);
 	for(int i=0;i<8;i++){
 		if(node->children[i])
 		renderTree(node->children[i],istate);
@@ -2289,9 +2289,9 @@ int lolc=0;
 	//float pushx=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE*BLOCK_SIZE;
 	//float pushz=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE*BLOCK_SIZE;
 	//glTranslatef(-pushx, 0, -pushz);
-   // printf("-------------start renderTree------------\n");
+   // printg("-------------start renderTree------------\n");
 	renderTree(&troot,0);
-   //printf("--------x--x--x----end----x--x--x--------\n");
+   //printg("--------x--x--x----end----x--x--x--------\n");
     
    // qsort (renderList, chunks_rendered, sizeof (TerrainChunk*), compare_front2back);
   //  glDisable(GL_TEXTURE_2D);
@@ -2372,7 +2372,7 @@ int lolc=0;
             doorso[num_doors++]=&renderList[i].rtobjects[j];
         }
     }
-   // printf("chunksr %d   num doors:%d\n",chunksr,num_doors);
+   // printg("chunksr %d   num doors:%d\n",chunksr,num_doors);
     int vert=0;
     int object=0;
     
@@ -2473,7 +2473,7 @@ int lolc=0;
             objVertices[vert].position[1]=4*door->pos.y+vc.y;
             objVertices[vert].position[2]=4*(door->pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)+vc.z;
             if(k==0){
-                /* printf("door objVertices[%d]= (%d,%d,%d) suggested offsets(%d,%d),\n",j,door->pos[0]
+                /* printg("door objVertices[%d]= (%d,%d,%d) suggested offsets(%d,%d),\n",j,door->pos[0]
                  ,door->pos[1]
                  ,door->pos[2],
                  -[World getWorld].fm.chunkOffsetX,-[World getWorld].fm.chunkOffsetZ);*/
@@ -2657,7 +2657,7 @@ int lolc=0;
     for(int i=0;i<chunksr;i++){
         for(int j=0;j<renderList[i].rtnum_objects;j++){
             if(renderList[i].rtobjects[j].type!=TYPE_PORTAL_TOP)continue;
-           // printf("drawing portal\n");
+           // printg("drawing portal\n");
             
             float rot=0;
             int dir=(renderList[i].rtobjects[j].dir+3)%4;
@@ -2992,7 +2992,7 @@ int lolc=0;
     
     firstframe=FALSE;
 	if(frame_counter==120){
-	//printf("chunks: %d, faces: %d, vertices: %d\n",chunks_rendered,faces_rendered,vertices_rendered);
+	//printg("chunks: %d, faces: %d, vertices: %d\n",chunks_rendered,faces_rendered,vertices_rendered);
 		frame_counter=0;
 	}
 	[Graphics endTerrain];	
@@ -3085,7 +3085,7 @@ int getFlowerIndex(int color){
     for(int i=0;i<flowers;i++){
         
         
-        // printf("rendering flower?\n");
+        // printg("rendering flower?\n");
         for(int k=0;k<6;k++){
             Vector vc=MakeVector((cubeVertices[k*3]-.5f)*.5f,cubeVertices[k*3+1],cubeVertices[k*3+2]);
             Vector dir;
@@ -3117,7 +3117,7 @@ int getFlowerIndex(int color){
             int sidx=getFlowerIndex(flowerList[i].color);
           //  vert_array[vert_c].texs[0]=cubeTextureCustom[st]*size;
             
-           // printf("picking flower:%d\n",sidx);
+           // printg("picking flower:%d\n",sidx);
             
             
             

@@ -1022,7 +1022,7 @@ extern int g_offcz;
                                 if(v.y>1)v.y=1;
                                 if(v.z>1)v.z=1;
                                 if(v.x!=0||v.y!=0||v.z!=0){
-                                    //  printf("strength: %f\n",strength);
+                                    //  printg("strength: %f\n",strength);
                                 }
                                 lighting[(x+dx)*CHUNK_SIZE*CHUNK_SIZE+(z+dz)*CHUNK_SIZE+(y+dy)]=v;
                             }
@@ -1041,7 +1041,7 @@ extern int g_offcz;
 			
 		}
 	}
-    if(!hasAnything){//printf("return early 1\n");
+    if(!hasAnything){//printg("return early 1\n");
         return;}
     hasAnything=FALSE;
     memset(face_visibility,0,sizeof(int)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
@@ -1064,7 +1064,7 @@ extern int g_offcz;
                         hasVisy[gy-bounds[1]]=TRUE;
                         
                         face_visibility[(gx-bounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-bounds[2])*(CHUNK_SIZE)+(gy-bounds[1])]=FACE_ALL;
-                        printf("hi\n");
+                        printg("hi\n");
                         continue;
                     }
                     int isvisible=0;            
@@ -1167,7 +1167,7 @@ extern int g_offcz;
     }*/
     
     if(!hasAnything){   
-        //printf("return early 2\n");
+        //printg("return early 2\n");
         return;
     }
     
@@ -1364,9 +1364,9 @@ extern int g_offcz;
     verticesbg2=malloc(sizeof(vertexStructSmall)*n_vertices2);
     if(objidx<num_objects)num_objects=objidx;
     if(num_objects>0){
-        //printf("%d doors in this chunk \n",num_objects);
+        //printg("%d doors in this chunk \n",num_objects);
     }
-    if(!n_vertices&&!n_vertices2){//printf("return early 3\n");
+    if(!n_vertices&&!n_vertices2){//printg("return early 3\n");
         return;}
     for(int i=1;i<7;i++){       
         face_idx[i]=num_vertices[i-1]+face_idx[i-1];
@@ -1396,7 +1396,7 @@ extern int g_offcz;
         offsets[2]=z;	
         
         if(type==TYPE_CUSTOM){
-            // printf("isvisible %d\n",isvisible);
+            // printg("isvisible %d\n",isvisible);
             
             SmallBlock* sb=sblocks[idx];
             for(int ci=0;ci<8;ci++){
@@ -1427,7 +1427,7 @@ extern int g_offcz;
                     light[1]=lightv.y;
                     light[2]=lightv.z;
                     //if(light[0]!=0||light[1]!=0||light[2]!=0)
-                    // printf("lighting at(%d,%d,%d),  (%f,%f,%f)\n",x,y,z,light[0],light[1],light[2]);
+                    // printg("lighting at(%d,%d,%d),  (%f,%f,%f)\n",x,y,z,light[0],light[1],light[2]);
                     //int corners[4]={4,4,4,4};
                     int top_shadow=255;
                     if(FACE_TOP&isvisible){
@@ -1539,7 +1539,7 @@ extern int g_offcz;
                         if(maxlevel==level)maxleveld=0;
                         if(maxlevel<level)maxleveld=(2+maxleveld)%4;
                         const GLshort* cubeVerticesTop;
-                        //  printf("maxleveld:%d",maxleveld);
+                        //  printg("maxleveld:%d",maxleveld);
                         if(maxleveld==0){                
                             cubeVerticesTop=side3Texture;
                         }else if(maxleveld==1){               

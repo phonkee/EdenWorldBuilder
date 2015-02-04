@@ -42,8 +42,6 @@
 		1967D0131639F3A900C03DF0 /* Nergle.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00E1639F3A900C03DF0 /* Nergle.pod */; };
 		1967D0141639F3A900C03DF0 /* Stumpy.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00F1639F3A900C03DF0 /* Stumpy.pod */; };
 		1967D0161639F80000C03DF0 /* TerrainGen2.m in Sources */ = {isa = PBXBuildFile; fileRef = 1967D0151639F80000C03DF0 /* TerrainGen2.m */; };
-		198920B81A5B7CE800BF795F /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 198920B01A5B7CE800BF795F /* libTestFlight.a */; };
-		198920B91A5B7CE800BF795F /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 198920B41A5B7CE800BF795F /* libTestFlight.a */; };
 		19A07C781A291048008CAED0 /* menu_button_press_02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19A07C5B1A291048008CAED0 /* menu_button_press_02.mp3 */; };
 		19A07C791A291048008CAED0 /* change_electric_light_color.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19A07C5C1A291048008CAED0 /* change_electric_light_color.mp3 */; };
 		19A07C7A1A291048008CAED0 /* menu_button_press_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19A07C5D1A291048008CAED0 /* menu_button_press_01.mp3 */; };
@@ -890,14 +888,6 @@
 		1967D00F1639F3A900C03DF0 /* Stumpy.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Stumpy.pod; path = models/Stumpy.pod; sourceTree = "<group>"; };
 		1967D0151639F80000C03DF0 /* TerrainGen2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TerrainGen2.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		1967D0171639F81800C03DF0 /* TerrainGen2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TerrainGen2.h; sourceTree = "<group>"; };
-		198920B01A5B7CE800BF795F /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
-		198920B11A5B7CE800BF795F /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
-		198920B21A5B7CE800BF795F /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
-		198920B31A5B7CE800BF795F /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
-		198920B41A5B7CE800BF795F /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = testflight/libTestFlight.a; sourceTree = "<group>"; };
-		198920B51A5B7CE800BF795F /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = testflight/TestFlight.h; sourceTree = "<group>"; };
-		198920B61A5B7CE800BF795F /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TestFlight+AsyncLogging.h"; path = "testflight/TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
-		198920B71A5B7CE800BF795F /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TestFlight+ManualSessions.h"; path = "testflight/TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
 		19A07C5B1A291048008CAED0 /* menu_button_press_02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = menu_button_press_02.mp3; path = new_sound/menu_button_press_02.mp3; sourceTree = "<group>"; };
 		19A07C5C1A291048008CAED0 /* change_electric_light_color.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = change_electric_light_color.mp3; path = new_sound/change_electric_light_color.mp3; sourceTree = "<group>"; };
 		19A07C5D1A291048008CAED0 /* menu_button_press_01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = menu_button_press_01.mp3; path = new_sound/menu_button_press_01.mp3; sourceTree = "<group>"; };
@@ -1812,14 +1802,12 @@
 				C6AE407713C3919E0068685C /* CFNetwork.framework in Frameworks */,
 				C6AE407513C3917D0068685C /* SystemConfiguration.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
-				198920B81A5B7CE800BF795F /* libTestFlight.a in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */,
 				28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */,
 				C68DD0F712637D470072CBF0 /* CoreGraphics.framework in Frameworks */,
 				194EDC3C1A79C9D700342AEB /* libFlurry_6.0.0.a in Frameworks */,
 				C6E46669127E210800D509D1 /* OpenAL.framework in Frameworks */,
-				198920B91A5B7CE800BF795F /* libTestFlight.a in Frameworks */,
 				C6E46680127E22AE00D509D1 /* CoreAudio.framework in Frameworks */,
 				C6E46688127E22C600D509D1 /* AudioToolbox.framework in Frameworks */,
 				C6E4671E127E4BB800D509D1 /* AVFoundation.framework in Frameworks */,
@@ -1916,17 +1904,6 @@
 				194EDC3B1A79C9D700342AEB /* libFlurry_6.0.0.a */,
 			);
 			path = flurry;
-			sourceTree = "<group>";
-		};
-		198920AF1A5B7CE800BF795F /* testflight */ = {
-			isa = PBXGroup;
-			children = (
-				198920B01A5B7CE800BF795F /* libTestFlight.a */,
-				198920B11A5B7CE800BF795F /* TestFlight+AsyncLogging.h */,
-				198920B21A5B7CE800BF795F /* TestFlight+ManualSessions.h */,
-				198920B31A5B7CE800BF795F /* TestFlight.h */,
-			);
-			path = testflight;
 			sourceTree = "<group>";
 		};
 		19A07C5A1A290FA6008CAED0 /* new_sound */ = {
@@ -2500,11 +2477,6 @@
 			children = (
 				194EDC391A79C9D700342AEB /* flurry */,
 				1902C8301A63A8D800D8E67F /* report_flag.png */,
-				198920AF1A5B7CE800BF795F /* testflight */,
-				198920B41A5B7CE800BF795F /* libTestFlight.a */,
-				198920B51A5B7CE800BF795F /* TestFlight.h */,
-				198920B61A5B7CE800BF795F /* TestFlight+AsyncLogging.h */,
-				198920B71A5B7CE800BF795F /* TestFlight+ManualSessions.h */,
 				19AECD14192EA99F00F8DD91 /* Eden.eden */,
 				C62C95A012713E1900379390 /* media */,
 				080E96DDFE201D6D7F000001 /* Classes */,

@@ -56,7 +56,7 @@ static const int thresh=1000; //beyond this don't erase text ever.
 	}
 	textlife=time;
    
-	//printf("message set:%s time:%f\n",[message cString],textlife);
+	//printg("message set:%s time:%f\n",[message cString],textlife);
 }
 -(void)clear{
 	if(text!=NULL){
@@ -73,7 +73,7 @@ static const int thresh=1000; //beyond this don't erase text ever.
 	if(textlife<thresh)
 	textlife-=etime;
     
-   // printf("message update set:%s time:%f\n",[message cString],textlife);
+   // printg("message update set:%s time:%f\n",[message cString],textlife);
 }
 -(void)render{
 	if(text!=NULL&&textlife>0){
@@ -95,9 +95,9 @@ static const int thresh=1000; //beyond this don't erase text ever.
 		p.y+=1;
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		[text drawAtPoint:p];
-        //printf("text: %s\n",[message cString]);
+        //printg("text: %s\n",[message cString]);
 	}
-   // printf("text null or textlif<=0\n");
+   // printg("text null or textlif<=0\n");
 	
 }
 -(void)renderPlain{

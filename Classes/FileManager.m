@@ -99,7 +99,7 @@ static int count=0;
 	
 }
 -(void)LoadCreatures{
-    printf("start load:%d\n",1);
+    printg("start load:%d\n",1);
     if(sfh->version<3){
         for(int i=0;i<MAX_CREATURES_SAVED;i++){
             creatureData[i].type=-1;
@@ -112,16 +112,16 @@ static int count=0;
             [data getBytes:&creatureData[i] length:sizeof(EntityData)];
           //  creatureData[i].pos.x-=CHUNK_SIZE*chunkOffsetX;
            // creatureData[i].pos.z-=CHUNK_SIZE*chunkOffsetZ;
-            //  printf("type: %d\n  pos(%f,%f,%f)",creatureData[i].type,creatureData[i].pos.x,creatureData[i].pos.z,creatureData[i].pos.y);
+            //  printg("type: %d\n  pos(%f,%f,%f)",creatureData[i].type,creatureData[i].pos.x,creatureData[i].pos.z,creatureData[i].pos.y);
         }
     }
     
 
     LoadModels2();
-     printf("end load:%d\n",2);
+     printg("end load:%d\n",2);
 }
 -(void)saveCreatures{
-  //  printf("start save:%d\n",sfh->version);
+  //  printg("start save:%d\n",sfh->version);
     if(sfh->version<3){
     [saveFile seekToFileOffset:sfh->directory_offset];
         sfh->directory_offset+=sizeof(EntityData)*MAX_CREATURES_SAVED;
@@ -140,7 +140,7 @@ static int count=0;
 
     }
      
-//	 printf("end save:%d\n",sfh->version);
+//	 printg("end save:%d\n",sfh->version);
 }
 
 -(void)saveWorld{
@@ -168,7 +168,7 @@ static int count=0;
        
         UIImage *image = [UIImage imageWithContentsOfFile:path];
        
-        if(image != NULL)printf("loaded image\n");
+        if(image != NULL)printg("loaded image\n");
         
        
         
@@ -235,7 +235,7 @@ static int count=0;
             }
             
         }*/
-        //printf("landc:%d waterc:%d total:%d\n",landc,waterc, count);
+        //printg("landc:%d waterc:%d total:%d\n",landc,waterc, count);
         free(rawData);
         
        
@@ -245,7 +245,7 @@ static int count=0;
     
 }
 -(void)writeGenToDisk{
-    printf("writing gen to disk\n");
+    printg("writing gen to disk\n");
     NSString* name=@"Eden.eden";
 	NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
     
@@ -257,9 +257,9 @@ static int count=0;
 
         BOOL success = [fm removeItemAtPath:file_name error:NULL];
         if(success){
-            printf("removed existing world file\n");
+            printg("removed existing world file\n");
         }else
-            printf("error removing world file\n");
+            printg("error removing world file\n");
 		
         
 	}
@@ -348,12 +348,12 @@ static int count=0;
 	[self readDirectory];
 	free(sfh);
 	[saveFile closeFile];
-    printf("finished writing gen to disk\n");
+    printg("finished writing gen to disk\n");
 
 }
 -(void)saveWorld:(Vector)warp{
     //[TestFlight passCheckpoint:[NSString stringWithFormat:@"header_size:%d",(int)sizeof(WorldFileHeader)]];
-    //printf("sizeof(WFH)=%d",(int)sizeof(WorldFileHeader));
+    //printg("sizeof(WFH)=%d",(int)sizeof(WorldFileHeader));
 	[[World getWorld].terrain endDynamics:TRUE];
 	//[[World getWorld].terrain updateAllImportantChunks];
 	writeDirectory=FALSE;
@@ -372,7 +372,7 @@ static int count=0;
 	//sfh->pos.z/=BLOCK_SIZE;
 	//sfh->pos.x+=CHUNK_SIZE*chunkOffsetX;
 	//sfh->pos.z+=CHUNK_SIZE*chunkOffsetZ;
-    printf("saving at player pos: %f,%f   co: %d,%d wfh_size:%d\n",sfh->pos.x,sfh->pos.z,chunkOffsetX,chunkOffsetZ,(int)sizeof(WorldFileHeader));
+    printg("saving at player pos: %f,%f   co: %d,%d wfh_size:%d\n",sfh->pos.x,sfh->pos.z,chunkOffsetX,chunkOffsetZ,(int)sizeof(WorldFileHeader));
 	sfh->yaw=[World getWorld].player.yaw;
     sfh->version=file_version;
     
@@ -420,8 +420,8 @@ static int count=0;
     //NSLog(@"player pos load: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
     //int r=T_RADIUS;
 	//	int asdf=0;
-   // printf("saving at co(%d,%d)",scox,scoz);
-   // printf("save player pos(%d,%d)\n",(int)warp.x,(int)warp.z);
+   // printg("saving at co(%d,%d)",scox,scoz);
+   // printg("save player pos(%d,%d)\n",(int)warp.x,(int)warp.z);
  //   for(int x=scox;x<scox+2*r;x++){
   //      for(int z=scoz;z<scoz+2*r;z++){
 			//	NSLog(@"lch:%d",asdf++);
@@ -438,7 +438,7 @@ static int count=0;
                                   :chunk.pbounds[2]/CHUNK_SIZE];
                 
             }else{
-                printf("trying to save column with unexpected chunk bound[1]: %d\n",chunk.pbounds[1]);
+                printg("trying to save column with unexpected chunk bound[1]: %d\n",chunk.pbounds[1]);
             }
         }
     }
@@ -505,7 +505,7 @@ int saveColIdx(any_t passedIn,any_t colToSave){
 		int n=twoToOne(colIdx->x, colIdx->z);
 		if(n!=0){
 		hashmap_put(indexes,n, (any_t)colIdx);
-           // printf("reading dir\n");
+           // printg("reading dir\n");
         }else {
 			free(colIdx);
 		}
@@ -649,14 +649,14 @@ int saveColIdx(any_t passedIn,any_t colToSave){
         for(int i=0;i<CHUNK_SIZE3;i++){
             int t=blocks[i];
             int c=colors[i];
-            if(t<0||c<0)printf("wtf mate");
+            if(t<0||c<0)printg("wtf mate");
             if(t==marker&&c==marker_color&&count!=127){
                 count++;
                 
             }else{
                 if(count>0){
  
-                   // printf("count: %d\n",count);
+                   // printg("count: %d\n",count);
                     rledata[dataidx++]=marker;
                     rledata[dataidx++]=marker_color;
                     rledata[dataidx++]=count;
@@ -672,7 +672,7 @@ int saveColIdx(any_t passedIn,any_t colToSave){
             }
         }
         if(count>0){
-            //printf("count: %d\n",count);
+            //printg("count: %d\n",count);
             rledata[dataidx++]=marker;
             rledata[dataidx++]=marker_color;
             rledata[dataidx++]=count;
@@ -683,7 +683,7 @@ int saveColIdx(any_t passedIn,any_t colToSave){
         
        
         if(dataidx>CHUNK_SIZE3*3){
-            printf("dataidx overflow\n");
+            printg("dataidx overflow\n");
         }else{
             rledata[0]=dataidx/256;
             rledata[1]=dataidx%256;
@@ -717,7 +717,7 @@ int saveColIdx(any_t passedIn,any_t colToSave){
     }
     if(!needsSave)return;
     
-    //printf("saving column: %d,%d\n",cx,cz);
+    //printg("saving column: %d,%d\n",cx,cz);
 	int n=twoToOneTest(cx,cz);
 	if(n==0){
 		return;
@@ -740,9 +740,9 @@ int saveColIdx(any_t passedIn,any_t colToSave){
        
 	}
 	if((colIndex->chunk_offset-192)%SIZEOF_COLUMN!=0||colIndex->chunk_offset>=sfh->directory_offset){
-        if((colIndex->chunk_offset-192)%SIZEOF_COLUMN!=0)
-		printf("BAD BAD OFFSET!! %d\n",(int)sizeof(WorldFileHeader));
-        else if(colIndex->chunk_offset>=sfh->directory_offset)
+        if((colIndex->chunk_offset-192)%SIZEOF_COLUMN!=0){
+		printg("BAD BAD OFFSET!! %d\n",(int)sizeof(WorldFileHeader));
+        }else if(colIndex->chunk_offset>=sfh->directory_offset)
         NSLog(@"OFFSET OVERFLOWS DIRECTORY!");
 	}
 	[saveFile seekToFileOffset:colIndex->chunk_offset];
@@ -778,7 +778,7 @@ int saveColIdx(any_t passedIn,any_t colToSave){
                                 freeWhenDone:FALSE];
 			[saveFile writeData:data];
 		}else{
-			printf("NULL CHUNK O SHIT\n");
+			printg("NULL CHUNK O SHIT\n");
 		}
 	}
 	
@@ -795,7 +795,7 @@ extern int g_offcz;
 		NSLog(@"mm");
 		return;	
 	}
-    if(indexes_hmm!=indexes)printf("FATAL ERROR: indexes pointer corrupted!!!!\n");
+    if(indexes_hmm!=indexes)printg("FATAL ERROR: indexes pointer corrupted!!!!\n");
 	hashmap_get(indexes,n, (any_t)&colIndex);
    
 	if(colIndex==NULL){
@@ -804,7 +804,7 @@ extern int g_offcz;
      //   int cx2=cx-chunkOffsetX;
       //  int cz2=cz-chunkOffsetZ;
      //   if(rcfile==saveFile){
-        //printf("loading column from gen %d,%d \n",cx,cz);
+        //printg("loading column from gen %d,%d \n",cx,cz);
      if(ter.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
          fmh_readColumnFromDefault(cx,cz);
             
@@ -832,7 +832,7 @@ extern int g_offcz;
 	
 	if(chunk!=NULL){
         
-		printf("nononono123 abort!\n");
+		printg("nononono123 abort!\n");
 		/*for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
 			//hashmap_get(ter.oldChunkMap, threeToOne(oldcx, cy, oldcz), (any_t)&chunk);
 			[chunk retain];
@@ -845,7 +845,7 @@ extern int g_offcz;
 			bounds[5]=(cz+1)*CHUNK_SIZE;		
 			[chunk setBounds:bounds];
             if(chunk.needsGen){
-                //printf("adding background loaded chunk\n");
+                //printg("adding background loaded chunk\n");
                 [ter addChunk:chunk:cx:cy:cz:TRUE];
             }else
 			[ter readdChunk:chunk:cx:cy:cz];	
@@ -866,11 +866,11 @@ extern int g_offcz;
 		
 		
 	}else{
-      //  printf("loading column from file\n");
+      //  printg("loading column from file\n");
        /* if(saveFile==rcfile)
-        printf("loading column from file\n");
+        printg("loading column from file\n");
         else 
-            printf("attempting to load col from file for bgthread\n");
+            printg("attempting to load col from file for bgthread\n");
 */
 		[rcfile seekToFileOffset:colIndex->chunk_offset];
         TerrainChunk* columns[CHUNKS_PER_COLUMN];
@@ -911,9 +911,9 @@ extern int g_offcz;
                  NSData* data=[rcfile readDataOfLength:chunk_data_length];
                  int n=[data length];
                  if(n<chunk_data_length){
-                     printf("not enough file left, only read %d bytes\n",n);
+                     printg("not enough file left, only read %d bytes\n",n);
                  }//else
-                  //   printf("all good %d, %d  sizeofcolor8:%d\n",(int)n,(int)chunk_data_length,(int)sizeof(color8));
+                  //   printg("all good %d, %d  sizeofcolor8:%d\n",(int)n,(int)chunk_data_length,(int)sizeof(color8));
                  [data getBytes:buf length:n];
                  
                  int idx=0;
@@ -922,11 +922,11 @@ extern int g_offcz;
                      int marker=(block8)buf[idx++];
                      int marker_color=(color8)buf[idx++];
                      int count=(color8)buf[idx++];
-                    // printf("count: %d\n",count);
-                     if(count<0||count>127)printf("strange count %d\n ",count);
+                    // printg("count: %d\n",count);
+                     if(count<0||count>127)printg("strange count %d\n ",count);
                      for(int i=0;i<count;i++){
                          if(idx2>CHUNK_SIZE3){
-                            // printf("data overflow1 %d  n:%d\n",idx2,n);
+                            // printg("data overflow1 %d  n:%d\n",idx2,n);
                              break;
                          }
                          tblocks[idx2]=marker;
@@ -971,7 +971,7 @@ extern int g_offcz;
                 for(int x=0;x<CHUNK_SIZE;x++){
                     for(int z=0;z<CHUNK_SIZE;z++){
                         if((x+bounds[0]+g_offcx)<0||(z+bounds[0]+g_offcz)<0){
-                            printf("over/underflowing...\n");
+                            printg("over/underflowing...\n");
                         }
                         memcpy(
                                
@@ -1036,12 +1036,12 @@ extern int g_offcz;
    
     saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];
     if(!saveFile){
-        printf("err gettin save file: %s\n",[file_name cStringUsingEncoding:NSUTF8StringEncoding]);
+        printg("err gettin save file: %s\n",[file_name cStringUsingEncoding:NSUTF8StringEncoding]);
         return;
     }
 	WorldFileHeader* fh=(WorldFileHeader*)[[saveFile readDataOfLength:sizeof(WorldFileHeader)] bytes];
     if(fh==NULL){
-        printf("err reading has from file\n");
+        printg("err reading has from file\n");
         return;
     }
 	WorldFileHeader* fh2=malloc(sizeof(WorldFileHeader));
@@ -1297,7 +1297,7 @@ extern float P_ZFAR;
         
         extern int g_terrain_type;
         
-        printf("making new world : %d\n",g_terrain_type);
+        printg("making new world : %d\n",g_terrain_type);
         
       //  clear();
         BOOL gen_default=FALSE;
@@ -1409,11 +1409,11 @@ extern float P_ZFAR;
                     regionSkyColors[i][j]=COLOR_NORMAL_BLUE;
                 }
             }
-            printf("sup!!!\n!");
+            printg("sup!!!\n!");
         }
         //(player.pos).y=1;
         
-		//printf("player pos init save: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
+		//printg("player pos init save: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
 		//NSLog(@"chunkOffsets: %d %d",chunkOffsetX,chunkOffsetZ);
         player.yaw=tempyaw;
         file_version=2;
@@ -1439,7 +1439,7 @@ extern float P_ZFAR;
 		saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];		
 		sfh=(WorldFileHeader*)[[saveFile readDataOfLength:sizeof(WorldFileHeader)] bytes];
         file_version=sfh->version;
-        printf("FILE VERSION: %d\n",file_version);
+        printg("FILE VERSION: %d\n",file_version);
         if(sfh->version<1||sfh->version>1000){  //old legacy convert code, no longer really supported
             [saveFile closeFile];
            
@@ -1480,9 +1480,9 @@ extern float P_ZFAR;
          extern Vector colorTable[256];
        /* if(sfh->skycolor<=0||sfh->skycolor>NUM_COLORS){
            [World getWorld].terrain.final_skycolor=colorTable[14];
-            printf("skycolor oob setting sky color to beautiful blue\n");
+            printg("skycolor oob setting sky color to beautiful blue\n");
         }else{
-             printf("skycolor setting sky color to : %d\n",sfh->skycolor);
+             printg("skycolor setting sky color to : %d\n",sfh->skycolor);
         */
        // [World getWorld].terrain.final_skycolor=colorTable[sfh->skycolor];
         
@@ -1512,7 +1512,7 @@ extern float P_ZFAR;
           
 		*/player.pos=sfh->pos;
        
-        printf("reading at co %d, %d    player pos %d, %d)\n",chunkOffsetX,chunkOffsetZ,(int)player.pos.x,(int)player.pos.z);
+        printg("reading at co %d, %d    player pos %d, %d)\n",chunkOffsetX,chunkOffsetZ,(int)player.pos.x,(int)player.pos.z);
         		//NSLog(@"player pos load: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
 		int r=T_RADIUS;
 	//	int asdf=0;

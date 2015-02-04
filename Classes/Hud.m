@@ -230,7 +230,7 @@ extern BOOL IS_WIDESCREEN;
 		sbrect.size.height*=2;
 	}*/
     if(IS_WIDESCREEN){
-       // printf("It's widescreen homie!\n");
+       // printg("It's widescreen homie!\n");
         marginLeft2+=57;
         
     }
@@ -365,9 +365,9 @@ int flamecount=0;
         if(fade_out<1){
             fade_out+=etime/4;
         }else if(fade_out>=1){
-            printf("warping home\n");
+            printg("warping home\n");
             [[World getWorld].terrain warpToHome];
-            printf("finished warping\n");
+            printg("finished warping\n");
         }
     }else{
         if(fade_out>0){
@@ -430,7 +430,7 @@ int flamecount=0;
         test2=colorTable[lookupColor(test1)];
        //  [sb setStatus:[NSString stringWithFormat:@"FPS: %d chunks:%d vertices:%d",fpsc,var1,var2] :2];
        //[sb setStatus:[NSString stringWithFormat:@"FPS: %d player:(%.1f,%.1f)",fpsc,[World getWorld].player.pos.x,[World getWorld].player.pos.z] :2];
-		//printf("Fps:%d   vertices:%d   max_vertices:%d chunks:%d.\n",fpsc,vertices_rendered,max_vertices,chunks_rendered);
+		//printg("Fps:%d   vertices:%d   max_vertices:%d chunks:%d.\n",fpsc,vertices_rendered,max_vertices,chunks_rendered);
        // float pz=P_ZFAR;
         if(!SUPPORTS_OGL2){
            /* if( fpsf<28){
@@ -474,7 +474,7 @@ int flamecount=0;
 			[sb clear];
 		}else if(delayedaction==5){
             mode=MODE_NONE;
-           // printf("trying to exit\n!!!");
+           // printg("trying to exit\n!!!");
 			[[World getWorld].fm saveWorld];
 			[[World getWorld] exitToMenu];
             
@@ -525,7 +525,7 @@ int flamecount=0;
                     
                     extern BOOL FLY_MODE;
                   /*  FLY_MODE=!FLY_MODE;
-                    printf("Fly mode set to %d\n",FLY_MODE);*/
+                    printg("Fly mode set to %d\n",FLY_MODE);*/
                     
                     
                     
@@ -540,7 +540,7 @@ int flamecount=0;
                     ppz+=dwarpz[warpCount];
                     
                     [[World getWorld].terrain warpToPoint:ppx:ppz:ppy];
-                    printf("warping to: %d,%d,%d\n",ppx,ppz,ppy);
+                    printg("warping to: %d,%d,%d\n",ppx,ppz,ppy);
                     warpCount++;
                     if(warpCount==7){
                         warpCount=0;
@@ -556,7 +556,7 @@ int flamecount=0;
                     if(ppz<0)ppz=0;*/
                     
                 }
-              //  printf("menu touched\n");
+              //  printg("menu touched\n");
                 handled=TRUE;
             }
                        if(handled){
@@ -579,7 +579,7 @@ int flamecount=0;
                    inbox3(touches[i].mx,touches[i].my,&rtSave)||
                    inbox3(touches[i].mx,touches[i].my,&rtExit))
                 {
-                    printf("something touched in menu\n");
+                    printg("something touched in menu\n");
                     inbox3(touches[i].mx,touches[i].my,&rcam);
                     inbox3(touches[i].mx,touches[i].my,&rhome);
                     inbox3(touches[i].mx,touches[i].my,&rsave);
@@ -621,7 +621,7 @@ int flamecount=0;
                     flamecount=0;
                     
                 }
-                printf("flamecount: %d\n",flamecount);
+                printg("flamecount: %d\n",flamecount);
                 if(mode==MODE_BURN)mode=MODE_NONE;
                 else
                     mode=MODE_BURN;
@@ -679,7 +679,7 @@ int flamecount=0;
 				if([self handlePickBlock:touches[i].mx:touches[i].my]){
                     inmenu=FALSE;
 					handled=TRUE;
-                    //printf("handled\n");
+                    //printg("handled\n");
 				}				
 			}
             if(mode==MODE_PICK_COLOR){
@@ -757,7 +757,7 @@ int flamecount=0;
                             block_paintcolor=20;
                             mode=MODE_BUILD;
                             blocktype=hudBlocks[pressed];
-                            printf("set paintcolor %d \n",block_paintcolor);
+                            printg("set paintcolor %d \n",block_paintcolor);
                           
                         }
                     }else if(hudBlocks[pressed]==TYPE_CUSTOM){
@@ -766,7 +766,7 @@ int flamecount=0;
                         if(build_size==2){
                             build_size=0;
                         }
-                        printf("Setting buildsize: %d\n",build_size);
+                        printg("Setting buildsize: %d\n",build_size);
                          */
                     }else if(hudBlocks[pressed]==TYPE_DOOR_TOP){
                       block_paintcolor=20;
@@ -786,7 +786,7 @@ int flamecount=0;
                     mode=MODE_PAINT;
                     paintColor=pressed+1;
                     
-                    printf("paint color-1:%d\n",paintColor-1);
+                    printg("paint color-1:%d\n",paintColor-1);
                 }
                 pressed=-1;
                 
@@ -882,10 +882,10 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 	for(int i=0;i<NUM_DISPLAY_BLOCKS;i++){
 		if(inbox(x,y,blockBounds[i])){
             if(hudBlocks[pressed]==TYPE_CUSTOM){
-                printf("no custom\n");
+                printg("no custom\n");
             }else{
                 pressed=i;
-                // printf("set pressed: %d\n",i);
+                // printg("set pressed: %d\n",i);
             }
            
 			 handled=TRUE;
@@ -944,7 +944,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         
        // if(i%9 ==8){
          //   hudColor=colorTable[i+1];
-           // printf("i:%d\n",i);
+           // printg("i:%d\n",i);
            // if(i==13||i==22)
            // hudColor=MakeVector(1.0f,1,1);
         //}
@@ -1022,7 +1022,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         }
         [[[Resources getResources] getTex:ICO_BUILD_PLUS] drawTextHalfsies:recto];
         if(type==TYPE_GOLDEN_CUBE){
-           // printf("wtf\n");
+           // printg("wtf\n");
             CGRect num_rect=recto;
             //recto.origin.x/=2;
             //recto.origin.y/=2;
@@ -1380,7 +1380,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 
 		[tsave drawButton: rsave];		
   
-   // printf("rtExit.x:%f  rtCam.x:%f\n",rtExit.origin.x, rtCam.origin.x);
+   // printg("rtExit.x:%f  rtCam.x:%f\n",rtExit.origin.x, rtCam.origin.x);
     [[res getTex:ICOT_SAVE] drawButton:rtSave];
     [[res getTex:ICOT_HOME] drawButton:rtHome];
     [[res getTex:ICOT_PHOTO] drawButton:rtCam];

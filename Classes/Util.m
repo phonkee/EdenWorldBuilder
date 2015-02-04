@@ -331,7 +331,7 @@ void takeScreenshot(){
     }else if(IS_IPAD){
         width=IPAD_WIDTH;
         height=IPAD_HEIGHT;
-        printf("is ipad\n");
+        printg("is ipad\n");
     }else if(IS_WIDESCREEN){
         
     }
@@ -461,11 +461,11 @@ int lookupColor(Vector clr){
             minDif=dif;
         }
         if(dif>10000000){
-            printf("wtf dif\n");
+            printg("wtf dif\n");
         }
     }
     if(mini==0){
-        //printf("err looking up color\n");
+        //printg("err looking up color\n");
     }
     return mini;
     
@@ -589,7 +589,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
 	winX = (float)mx;
 	winY = (float)my;
 	
-    //printf("winX: %f, winY: %f viewport[3]:%d\n",winX,winY,viewport[3]);
+    //printg("winX: %f, winY: %f viewport[3]:%d\n",winX,winY,viewport[3]);
     
 	gluUnProject( winX, winY, 0, modelview, projection, viewport, &posX, &posY, &posZ);
 	gluUnProject( winX, winY, 1, modelview, projection, viewport, &posX2, &posY2, &posZ2);
@@ -619,7 +619,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
 	wp1.y/=BLOCK_SIZE;
 	wp1.z/=BLOCK_SIZE;
 	
-	//printf("wp1.x: %f wp1.z: %f \n",wp1.x,wp1.z);
+	//printg("wp1.x: %f wp1.z: %f \n",wp1.x,wp1.z);
 	NormalizeVector(&dir);
 	
 	
@@ -643,7 +643,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
                 point.x=fpoint.x;
                 point.y=fpoint.y;
                 point.z=fpoint.z;
-              //  printf("hit!!! %d\n",idx);
+              //  printg("hit!!! %d\n",idx);
                 return point;
             }
             
@@ -675,7 +675,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
                     if(ftx>.6)ftx-=.00001;
                     if(fty>.6)fty-=.00001;
                     if(ftz>.6)ftz-=.00001;
-                   // printf("prerounding: (%f,%f,%f)\n",ftx,ftz,fty);
+                   // printg("prerounding: (%f,%f,%f)\n",ftx,ftz,fty);
                     ftx=roundf(ftx);
                     fty=roundf(fty);
                     ftz=roundf(ftz);
@@ -684,12 +684,12 @@ Point3D findWorldCoords(int mx,int my,int mode){
                         
                     if(typec==TYPE_NONE){
                       
-                       // printf("passing through custom block(%f,%f,%f)\n",tx*2+ftx,tz*2+ftz,ty*2+fty);
+                       // printg("passing through custom block(%f,%f,%f)\n",tx*2+ftx,tz*2+ftz,ty*2+fty);
                         continue;
                         
                        
                     }else{
-                       //  printf("Collided with custom block: %d\n",typec);
+                       //  printg("Collided with custom block: %d\n",typec);
             
                     }
                                   
@@ -702,13 +702,13 @@ Point3D findWorldCoords(int mx,int my,int mode){
                     if(!collidePolyhedra(pbox,pbox2))
                         continue;
                     
-                     //printf("hit smallblock (%f,%f,%f)\n",tx+ftx,ty+fty,tz+ftz);
+                     //printg("hit smallblock (%f,%f,%f)\n",tx+ftx,ty+fty,tz+ftz);
                     hitCustom=TRUE;
                     tx=(((float)tx*2)+ftx*2);
                     ty=(((float)ty*2)+fty*2);
                    tz=(((float)tz*2)+ftz*2);
                     
-                   // printf("building custom block(%d,%d,%d), (%f,%f,%f)\n",tx*2,tz*2,ty*2,ftx,ftz,fty);
+                   // printg("building custom block(%d,%d,%d), (%f,%f,%f)\n",tx*2,tz*2,ty*2,ftx,ftz,fty);
 
                 }
                 else{
@@ -729,7 +729,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
                     pbox2=makeSide(tx,tx+1,tz+1,tz,ty,ty+1,type%4);
                     
                 }else if(blockinfo[type]&IS_LIQUID){
-                    //printf("sup\n");
+                    //printg("sup\n");
                     pbox2=makeBox(tx,tx+1,tz+1,tz,ty,ty+getLevel(type)/4.0f);
                 }else
                     pbox2=makeBox(tx,tx+1,tz+1,tz,ty,ty+1);
@@ -799,7 +799,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
 							float distToRay=intersect.x*intersect.x+
 							intersect.y*intersect.y+
 							intersect.z*intersect.z;
-							//printf("hello builder: %f  %f (%f,%f,%f)  (%f,%f,%f)  dist2plane: %f  a:%f\n",distToRay,min,intersect.x,intersect.y,intersect.z,wp1.x,wp1.y,wp1.z,rayPosDist2plane,a);
+							//printg("hello builder: %f  %f (%f,%f,%f)  (%f,%f,%f)  dist2plane: %f  a:%f\n",distToRay,min,intersect.x,intersect.y,intersect.z,wp1.x,wp1.y,wp1.z,rayPosDist2plane,a);
 							if(distToRay<min){
 								mini=i;
                                 mintersect=intersect;
@@ -808,7 +808,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
 						}
 					}
 				}
-                //printf("hello builder: %d\n",mini);
+                //printg("hello builder: %d\n",mini);
                 offsetdir=mini;
 				int rx=tx+fx[mini];
 				int ry=ty+fy[mini];
@@ -839,10 +839,10 @@ Point3D findWorldCoords(int mx,int my,int mode){
                     point.x=roundf(rfx-1);
                     point.y=roundf(rfy-1);
                     point.z=roundf(rfz-1);
-                    printf("fpoint: (%f,%f,%f)\n",fpoint.x,fpoint.y,fpoint.z);
+                    printg("fpoint: (%f,%f,%f)\n",fpoint.x,fpoint.y,fpoint.z);
                 }
 				
-               // printf("pt: %d,%d,%d type:%d\n",rx,ry,rz,getLandc(rx,rz,ry));
+               // printg("pt: %d,%d,%d type:%d\n",rx,ry,rz,getLandc(rx,rz,ry));
 				
 			}
 			
@@ -1036,24 +1036,24 @@ int threeToOne(int cx,int cy,int cz){
 }
 int twoToOne(int cx,int cz){
 	if(cx<0||cz<0||cx>=(1<<15)||cz>=(1<<15)){
-		printf("overflowing! %d,%d \n",cx,cz);	
+		printg("overflowing! %d,%d \n",cx,cz);	
 		return 0;
 	}
 	int n=(cx<<15)+cz;
 	if(n<0){
-		printf("overflowing! %d,%d %X \n",cx,cz,n);
+		printg("overflowing! %d,%d %X \n",cx,cz,n);
 		return 0;
 	}
 	return n;
 }
 int twoToOneTest(int cx,int cz){
 	if(cx<0||cz<0||cx>=(1<<15)||cz>=(1<<15)){
-		printf("tt1 test overflowing! %d,%d \n",cx,cz);
+		printg("tt1 test overflowing! %d,%d \n",cx,cz);
 		return 0;
 	}
 	int n=(cx<<15)+cz;
 	if(n<0){
-		printf("tt1 test overflowing2! %d,%d %X \n",cx,cz,n);
+		printg("tt1 test overflowing2! %d,%d %X \n",cx,cz,n);
 		return 0;
 	}
 	return n;

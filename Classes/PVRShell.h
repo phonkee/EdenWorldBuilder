@@ -111,7 +111,7 @@ save a screen-shot of the current frame:
 
 PVRShellGetTime() returns time in milliseconds.
 
-PVRShellOutputDebug() will write a debug string (same format as printf) to the platform debug output.
+PVRShellOutputDebug() will write a debug string (same format as printg) to the platform debug output.
 
 PVRShellScreenCaptureBuffer() and  PVRShellWriteBMPFile() will be used to save the current frame as a BMP file. PVRShellScreenCaptureBuffer()
 receives a pointer to an area of memory containing the screen buffer. The memory should be freed with free() when not needed any longer.
@@ -595,9 +595,9 @@ public:
 
 	/*!***********************************************************************
 	@Function		PVRShellOutputDebug
-	@Input			format			printf style format followed by arguments it requires
+	@Input			format			printg style format followed by arguments it requires
 	@Description	Writes the resultant string to the debug output (e.g. using
-	printf(), OutputDebugString(), ...). Check the SDK release notes for
+	printg(), OutputDebugString(), ...). Check the SDK release notes for
 	details on how the string is output.
 	*************************************************************************/
 	void PVRShellOutputDebug(char const * const format, ...) const;

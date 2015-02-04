@@ -28,7 +28,7 @@ void fmh_init(FileManager* t_fm){
      //Terrain* ter=[[World getWorld] terrain];
     
      //Player* player=[[World getWorld] player];
-    printf("fmh init...\n");
+    printg("fmh init...\n");
    
     indexes=hashmap_new();
      
@@ -65,7 +65,7 @@ static void fmh_read_directory(){
 		int n=twoToOne(colIdx->x, colIdx->z);
 		if(n!=0){
             hashmap_put(indexes,n, (any_t)colIdx);
-            // printf("reading dir\n");
+            // printg("reading dir\n");
         }else {
 			free(colIdx);
 		}
@@ -113,7 +113,7 @@ void fmh_readColumnFromDefault(int cx,int cz){
         
         
         if(colIndex==NULL){
-       // printf("col index null at (%d,%d) converted to: (%d,%d) \n",cx, cz, fcx,fcz);
+       // printg("col index null at (%d,%d) converted to: (%d,%d) \n",cx, cz, fcx,fcz);
         
         //4150
         //4041
@@ -163,9 +163,9 @@ void fmh_readColumnFromDefault(int cx,int cz){
             NSData* data=[saveFile readDataOfLength:chunk_data_length];
             int n=[data length];
             if(n<chunk_data_length){
-                printf("not enough file left, only read %d bytes\n",n);
+                printg("not enough file left, only read %d bytes\n",n);
             }//else
-            //   printf("all good %d, %d  sizeofcolor8:%d\n",(int)n,(int)chunk_data_length,(int)sizeof(color8));
+            //   printg("all good %d, %d  sizeofcolor8:%d\n",(int)n,(int)chunk_data_length,(int)sizeof(color8));
             [data getBytes:buf length:n];
             
             int idx=0;
@@ -174,11 +174,11 @@ void fmh_readColumnFromDefault(int cx,int cz){
                 int marker=(block8)buf[idx++];
                 int marker_color=(color8)buf[idx++];
                 int count=(color8)buf[idx++];
-                // printf("count: %d\n",count);
-                if(count<0||count>127)printf("strange count %d\n ",count);
+                // printg("count: %d\n",count);
+                if(count<0||count>127)printg("strange count %d\n ",count);
                 for(int i=0;i<count;i++){
                     if(idx2>CHUNK_SIZE3){
-                        // printf("data overflow1 %d  n:%d\n",idx2,n);
+                        // printg("data overflow1 %d  n:%d\n",idx2,n);
                         break;
                     }
                     tblocks[idx2]=marker;
@@ -228,7 +228,7 @@ void fmh_readColumnFromDefault(int cx,int cz){
         for(int x=0;x<CHUNK_SIZE;x++){
             for(int z=0;z<CHUNK_SIZE;z++){
                 if((x+bounds[0]+g_offcx)<0||(z+bounds[0]+g_offcz)<0){
-                    printf("over/underflowing...\n");
+                    printg("over/underflowing...\n");
                 }
                 memcpy(
                        

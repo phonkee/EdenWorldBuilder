@@ -72,7 +72,7 @@ extern float yawanimation;
     vec.x=-9;
     
     for(int i=0;i<n_portal;i++){
-      //  printf(" portal[%d] %d, %d, %d ",i,portals[i].x,portals[i].y,portals[i].z);
+      //  printg(" portal[%d] %d, %d, %d ",i,portals[i].x,portals[i].y,portals[i].z);
         if(portals[i].x==x&&portals[i].y==y&&portals[i].z==z){
             int color=portals[i].color;
             for(int j=0;j<n_portal;j++){
@@ -115,7 +115,7 @@ extern float yawanimation;
         vec.x2=vel.x;
         vec.y2=vel.y;
         vec.z2=vel.z;
-        printf("couldn't find entered portal\n");
+        printg("couldn't find entered portal\n");
     }
     
     return vec;

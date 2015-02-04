@@ -28,7 +28,7 @@
 const size_t CPVRTString::npos = (size_t) -1;
 
 #if defined(_WIN32) && !defined(__BADA__)
-#define vsnprintf _vsnprintf
+#define vsnprintg _vsnprintg
 #endif
 
 /*!***********************************************************************
@@ -1399,7 +1399,7 @@ CPVRTString PVRTStringFromFormattedStr(const char *pFormat, ...)
 
 	va_start(arg, pFormat);
 #if defined(__SYMBIAN32__) || defined(UITRON) || defined(_UITRON_)
-	vsprintf(buf, pFormat, arg);
+	vsprintg(buf, pFormat, arg);
 #else
 	vsnprintf(buf, 1024, pFormat, arg);
 #endif

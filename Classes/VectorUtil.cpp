@@ -9,9 +9,9 @@ Vector rotateVertice(Vector rot,Vector v){
     PVRTVec4 pt=PVRTVec4(v.x,v.y,v.z,1);
     PVRTMat4 mat4=PVRTMat4::RotationX(rot.x)*PVRTMat4::RotationY(rot.y)*PVRTMat4::RotationZ(rot.z);
     //for(int j=0;j<16;j++){
-    ///printf("%f ",mat4.f[j]);
+    ///printg("%f ",mat4.f[j]);
     // }
-    //printf("---\n");
+    //printg("---\n");
     pt=mat4*pt;
     r.x=pt.x;
     r.y=pt.y;

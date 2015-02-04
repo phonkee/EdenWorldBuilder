@@ -52,7 +52,7 @@ void PVRShell::PVRShellOutputDebug(char const * const format, ...) const
 	char	buf[1024];
 
 	va_start(arg, format);
-	vsnprintf(buf, 1024, format, arg);
+	vsnprintg(buf, 1024, format, arg);
 	va_end(arg);
 
 	/* Passes the data to a platform dependant function */
@@ -265,7 +265,7 @@ bool PVRShellInit::OsSet(const prefNameIntEnum prefName, const int i32Value)
 void PVRShellInit::OsDisplayDebugString(char const * const str)
 {
 #ifndef NO_SHELL_DEBUG
-	fprintf(stderr, "%s", str);
+	fprintg(stderr, "%s", str);
 #endif
 }
 

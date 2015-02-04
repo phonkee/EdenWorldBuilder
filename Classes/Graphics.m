@@ -354,7 +354,7 @@ extern BOOL SUPPORTS_OGL2;
 	glLoadIdentity();
 	//static int c=0;
     //if(c==0){c++;
-       // printf("ar: %f, fovy:%f\n",P_ASPECT_RATIO,P_FOVY);}
+       // printg("ar: %f, fovy:%f\n",P_ASPECT_RATIO,P_FOVY);}
 	gluPerspective(P_FOVY,P_ASPECT_RATIO,P_ZNEAR,P_ZFAR-25);
 	glMatrixMode(GL_MODELVIEW);		
 	glLoadIdentity();
@@ -666,7 +666,7 @@ extern const GLfloat cubeNormals[36*3];
     
 }
 + (void)drawCube:(float)x :(float)y :(float)z :(int)type :(int)buildsize {	
- // printf("drawCube: %f, %f, %f\n",x,y,z);
+ // printg("drawCube: %f, %f, %f\n",x,y,z);
     if(!(blockinfo[type]&IS_ATLAS2))
         glBindTexture(GL_TEXTURE_2D, [Resources getResources].atlas.name);
     else
@@ -836,7 +836,7 @@ extern const GLfloat cubeNormals[36*3];
         glScalef(.5f,.5f,.5f);
     }
 	glTranslatef(x, y, z); 
-   // printf("working tanslate: %f,%f,%f\n",x,y,z);
+   // printg("working tanslate: %f,%f,%f\n",x,y,z);
     if(buildsize==2){
         glScalef(2,2,2);
     }

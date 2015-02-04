@@ -52,7 +52,7 @@ int colorCycle4(int idx,int c){
     int r=(hue*9+color+1);
     r%=NUM_COLORS;
     if(r>=NUM_COLORS){
-        printf("r:%d hue:%d color: %d\n",r,hue,color);
+        printg("r:%d hue:%d color: %d\n",r,hue,color);
     }
     
     
@@ -78,7 +78,7 @@ int colorCycle6(int idx,int c){
     int r=(hue*9+color+1);
     r%=NUM_COLORS;
     if(r>=NUM_COLORS){
-        printf("r:%d hue:%d color: %d\n",r,hue,color);
+        printg("r:%d hue:%d color: %d\n",r,hue,color);
     }
     
     
@@ -104,7 +104,7 @@ int colorCycle7(int idx,int c){
     int r=(hue*9+color+1);
     r%=NUM_COLORS;
     if(r>=NUM_COLORS){
-        printf("r:%d hue:%d color: %d\n",r,hue,color);
+        printg("r:%d hue:%d color: %d\n",r,hue,color);
     }
     
     
@@ -130,7 +130,7 @@ int colorCycle5(int idx,int c){
     int r=(hue*9+color+1);
     r%=NUM_COLORS;
     if(r>=NUM_COLORS){
-        printf("r:%d hue:%d color: %d\n",r,hue,color);
+        printg("r:%d hue:%d color: %d\n",r,hue,color);
     }
     
     
@@ -157,7 +157,7 @@ int colorCycle3(int idx,int c){
     int r=(hue*9+color+1);
     r%=NUM_COLORS;
     if(r>=NUM_COLORS){
-        printf("r:%d hue:%d color: %d\n",r,hue,color);
+        printg("r:%d hue:%d color: %d\n",r,hue,color);
     }
     
     
@@ -182,7 +182,7 @@ int colorCycle2(int idx,int c){
     int r=(hue*9+color+1);
     r%=NUM_COLORS;
     if(r>=NUM_COLORS){
-        printf("r:%d hue:%d color: %d\n",r,hue,color);
+        printg("r:%d hue:%d color: %d\n",r,hue,color);
     }
     
     
@@ -205,7 +205,7 @@ int colorCycle(int idx,int type){
     int r=(hue*9+color+1);
     r%=NUM_COLORS;
     if(r>=NUM_COLORS){
-        printf("r:%d hue:%d color: %d\n",r,hue,color);
+        printg("r:%d hue:%d color: %d\n",r,hue,color);
     }
     
     
@@ -430,17 +430,17 @@ void makePalmTree(int x,int z,int y,int hheight){
     for(int i=0;i<4;i++){
         for(int d=0;d<4;d++){
             BLOCK(tx+dx[d]*i,tz+dz[d]*i,ty+ypattern[i])=type;
-          //  printf("making leaf:(%d,%d,%d)\n",tx+dx[d]*i,tz+dz[d]*i,ty+ypattern[i]);
+          //  printg("making leaf:(%d,%d,%d)\n",tx+dx[d]*i,tz+dz[d]*i,ty+ypattern[i]);
             COLOR(tx+dx[d]*i,tz+dz[d]*i,ty+ypattern[i])=color;
             
             if(i==1){
                 BLOCK(tx+dx[d]*i,tz+dz[d]*i,ty+ypattern[i]-1)=type;
-                //  printf("making leaf:(%d,%d,%d)\n",tx+dx[d]*i,tz+dz[d]*i,ty+ypattern[i]);
+                //  printg("making leaf:(%d,%d,%d)\n",tx+dx[d]*i,tz+dz[d]*i,ty+ypattern[i]);
                 COLOR(tx+dx[d]*i,tz+dz[d]*i,ty+ypattern[i]-1)=color;
             }
             /*if(i==4){
                 BLOCK(tx+dx[d]*i,tz+dz[d]*i,ty+ypattern[i]+1)=type;
-                //  printf("making leaf:(%d,%d,%d)\n",tx+dx[d]*i,tz+dz[d]*i,ty+ypattern[i]);
+                //  printg("making leaf:(%d,%d,%d)\n",tx+dx[d]*i,tz+dz[d]*i,ty+ypattern[i]);
                 COLOR(tx+dx[d]*i,tz+dz[d]*i,ty+ypattern[i]+1)=color;
             }*/
         }
@@ -467,7 +467,7 @@ Vector makeWorm(int x,int z,int yy,int size){
     }
    // h=15;
     
-    if(h==-1)   {  //printf("no valid spot %d, %d,%d\n",h,x,z);
+    if(h==-1)   {  //printg("no valid spot %d, %d,%d\n",h,x,z);
     return MakeVector(-1,-1,-1);
     }
   
@@ -860,7 +860,7 @@ void makeMars(int x1,int z1,int x2,int z2){
  
     [World getWorld].terrain.final_skycolor=  colorTable[10];
    
-   // printf("sky %f,%f,%f\n",  [World getWorld].terrain.final_skycolor.x,  [World getWorld].terrain.final_skycolor.y,  [World getWorld].terrain.final_skycolor.z);
+   // printg("sky %f,%f,%f\n",  [World getWorld].terrain.final_skycolor.x,  [World getWorld].terrain.final_skycolor.y,  [World getWorld].terrain.final_skycolor.z);
 	
 }
 int clampy(int h){
@@ -1129,7 +1129,7 @@ void makeMix(){
             for(int y=4;y<T_HEIGHT-10;y++){
                 if(BLOCK(x ,z ,y)==TYPE_GRASS&&BLOCK(x ,z ,y+1)==TYPE_NONE){
                     if(randi(300)==0){
-                        // printf("making a tree\n");
+                        // printg("making a tree\n");
                         makeTree2(x,z,y,12);
                     }
                 }
@@ -1258,7 +1258,7 @@ void makeBeach(){
             for(int y=sealevel;y<T_HEIGHT-10;y++){
                 if((BLOCK(x ,z ,y)==TYPE_GRASS)&&BLOCK(x ,z ,y+1)==TYPE_NONE){
                     if(randi(90)==0){
-                        // printf("making a tree\n");
+                        // printg("making a tree\n");
                         makePalmTree(x,z,y,4);
                     }
                 }
@@ -1777,14 +1777,14 @@ void makeSkyIsland(int cx,int cz,int cy,int r){
             for(int y=-r;y<=-r/2;y++){
                 
                 if(x*x+z*z+y*y<=r*r){
-                    if(cy+y>=T_HEIGHT){printf("skyisland hit upper bound\n");}
-                    if(cy+y<=1)printf("skyisland hit lower bound)\n");
+                    if(cy+y>=T_HEIGHT){printg("skyisland hit upper bound\n");}
+                    if(cy+y<=1)printg("skyisland hit lower bound)\n");
                     if(y==-r/2){
                         BLOCK(cx+x,cz+z,cy+y)=TYPE_GRASS;
                         COLOR(cx+x,cz+z,cy+y)=0;
                         
                             if((x*x+z*z+y*y)<(r-1)*(r-1)&&randi(90)==0){
-                                // printf("making a tree\n");
+                                // printg("making a tree\n");
                                 makePalmTree(cx+x,cz+z,cy+y,4);
                             }
                         
@@ -1827,7 +1827,7 @@ void makePyramid2(int x,int z,int h,int color,int sy){
     }
     if(!solidground)return;
     }else starty=sy;
-   // printf("making pyramid\n");
+   // printg("making pyramid\n");
     for(int y=starty;y<=starty+h;y++){
         if(y>T_HEIGHT-4)continue;
         for(int sx=x-r;sx<=x+r;sx++){
@@ -1868,7 +1868,7 @@ void makePyramid(int x,int z,int h,int color){
         if(solidground)break;
     }
     if(!solidground)return;
-   // printf("making pyramid\n");
+   // printg("making pyramid\n");
     for(int y=starty;y<starty+h;y++){
         if(y>T_HEIGHT-8)continue;
         for(int sx=x-r;sx<x+r;sx++){
@@ -1893,7 +1893,7 @@ int nNodeList=0;
 void floodFill(int x,int z,int y){
     
     if(x>3*GSIZE/4&&z>7*GSIZE/8){
-        printf("node (%d,%d,%d)\n",x,z,y);
+        printg("node (%d,%d,%d)\n",x,z,y);
     }
 
     
@@ -1935,7 +1935,7 @@ void floodFill(int x,int z,int y){
             }
 
             if(nNodeList==5000){
-                printf("node List overflow");
+                printg("node List overflow");
                 return;
             }
             nodeList[nNodeList]=node2;
@@ -2254,7 +2254,7 @@ void makeRiverTrees(int sx,int sz,int ex,int ez,int SEED){
      for(int y=4;y<T_HEIGHT-10;y++){
      if(BLOCK(x ,z ,y)==TYPE_DIRT&&BLOCK(x ,z ,y+1)==TYPE_NONE){
          if(randi(70)==0){
-        // printf("making a tree\n");
+        // printg("making a tree\n");
          makeTree2(x,z,y,12);
          }
      }
@@ -2274,7 +2274,7 @@ void makeTransition(int sx,int sz,int ex,int ez){
                 lh=i+1;
                 ltype=BLOCK(sx-1,z,i);
                 lcolor=COLOR(sx-1,z,i);
-                //  printf("found type: %d  height: %d\n",BLOCK(sx-1,z,i),i);
+                //  printg("found type: %d  height: %d\n",BLOCK(sx-1,z,i),i);
                 break;
             }
         }
@@ -2302,12 +2302,12 @@ void makeTransition(int sx,int sz,int ex,int ez){
             
             
             float fx=(float)(x-sx)/(ex-sx);
-           // printf("fx:%f\n",fx);
+           // printg("fx:%f\n",fx);
             //int h=(lh*fx+rh*(1-fx))/2.0f;
             int h=deltay*fx+lh;//(lh+rh)/2;
             float cx=1-fx;
             if(cx>1.0f||cx<0){
-                printf("error color interpolating\n");
+                printg("error color interpolating\n");
             }
             Vector mcolor=MakeVector(rvcolor.x-deltacolor.x*cx,rvcolor.y-deltacolor.y*cx,rvcolor.z-deltacolor.z*cx);
             
@@ -2492,7 +2492,7 @@ void makeMountains(int sx,int sz,int ex,int ez,int SEED){
             for(int y=4;y<T_HEIGHT-10;y++){
                 if(BLOCK(x ,z ,y)==TYPE_DIRT&&BLOCK(x ,z ,y+1)==TYPE_NONE){
                     if(randi(70)==0){
-                        // printf("making a tree\n");
+                        // printg("making a tree\n");
                         makeTree2(x,z,y,12);
                     }
                 }
@@ -2644,8 +2644,8 @@ int tg2_init(){
     if(!NOBLOCKGEN){
     blockz=malloc(sizeof(block8)*BLOCKZ_SIZE);
     colorz=malloc(sizeof(block8)*BLOCKZ_SIZE);
-    if(!blockz)printf("couldn't allocate mem for blockz\n");
-    if(!colorz)printf("couldn't allocate mem for colorz\n");
+    if(!blockz)printg("couldn't allocate mem for blockz\n");
+    if(!colorz)printg("couldn't allocate mem for colorz\n");
         
     }
     
@@ -2750,7 +2750,7 @@ int tg2_init(){
         }
         
     }*/
-   //printf("creating biome: %d\n",g_terrain_type);
+   //printg("creating biome: %d\n",g_terrain_type);
 
     return 0;
     
@@ -2787,7 +2787,7 @@ void updateSkyColor2(Player* player,BOOL force,float etime){
         if(ppz<0)ppz=0;
                    
         
-        //printf("region: %d,%d\n",(int)ppx,(int)ppz);
+        //printg("region: %d,%d\n",(int)ppx,(int)ppz);
         
         if(lrx!=ppx||lrz!=ppz){
             if(lrx==-1||regionSkyColors[ppz][ppx]!=regionSkyColors[lrz][lrx]){

@@ -80,7 +80,7 @@ const int kFPS = 60.0;
 	
 	if(pPVRShell->InitApplication())
 	{
-		printf("InitApplication() succeeded\n");
+		printg("InitApplication() succeeded\n");
 	}
 	else
 	{	
@@ -163,20 +163,20 @@ const int kFPS = 60.0;
 		}
 		else
 		{
-			printf("Creating glView failed.\n");
+			printg("Creating glView failed.\n");
 			if(pPVRShell->PVRShellGet(prefStencilBufferContext))
 			{
-				printf("Dropping stencil buffer\n");
+				printg("Dropping stencil buffer\n");
 				pPVRShell->PVRShellSet(prefStencilBufferContext,false);
 			}
 			else if(pPVRShell->PVRShellGet(prefFSAAMode))
 			{
-				printf("Dropping FSAA\n");
+				printg("Dropping FSAA\n");
 				pPVRShell->PVRShellSet(prefFSAAMode,0);
 			}
 			else
 			{
-				printf("Couldn't initialise glView\n");
+				printg("Couldn't initialise glView\n");
 				break;
 			}
 			
@@ -191,7 +191,7 @@ const int kFPS = 60.0;
 	
 	if(pPVRShell->InitView())
 	{
-		printf("InitView() succeeded\n");
+		printg("InitView() succeeded\n");
 	}
 	else
 	{
@@ -238,7 +238,7 @@ const int kFPS = 60.0;
 {
 	// Exiting an iPhone application programmatically is not possible from public APIs (at time of writing)
 	// So this just puts up a message and lets the user press the button and quit
-	printf("%s\n",[reason UTF8String]);
+	printg("%s\n",[reason UTF8String]);
 	UIAlertView *myExitWindow = [[UIAlertView alloc]
 								 initWithFrame: [[UIScreen mainScreen] bounds]];
 	[myExitWindow setTitle:reason];

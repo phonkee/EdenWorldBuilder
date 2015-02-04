@@ -285,7 +285,7 @@ CGImageRef ManipulateImagePixelData(CGImageRef inImage,CGImageRef inMask,int tin
     if (cgctx == NULL)
     {
         // error creating context
-        printf("error creating context for manipulation\n");
+        printg("error creating context for manipulation\n");
         return NULL;
     }
     
@@ -343,7 +343,7 @@ CGImageRef ManipulateImagePixelData(CGImageRef inImage,CGImageRef inMask,int tin
                 
                 
                                //     data[i]=ret<<8 | 0xFF;
-                //printf("hex(%X,%X)\n",data[i],data[i+1]);
+                //printg("hex(%X,%X)\n",data[i],data[i+1]);
             }
             //if(i%2==0)
             //data[i]=0xFFFFFFFF;
@@ -516,7 +516,7 @@ CGImageRef ManipulateImagePixelData2(CGImageRef inImage,int tint,int mode)
     if (cgctx == NULL)
     {
         // error creating context
-        printf("error creating context for manipulation\n");
+        printg("error creating context for manipulation\n");
         return NULL;
     }
     
@@ -557,9 +557,9 @@ CGImageRef ManipulateImagePixelData2(CGImageRef inImage,int tint,int mode)
     unsigned int ret=HSL2RGB(hh,ss,ll);
         
     if(ret!=utint){
-        printf("conversion off: %X != %X\n",utint,ret);
+        printg("conversion off: %X != %X\n",utint,ret);
     }else{
-        printf("convert success!");
+        printg("convert success!");
     }
     if (data != NULL)
     {
@@ -683,7 +683,7 @@ int realStoredSkinCounter=0;
     if([path isEqualToString:@"door.png"]){
         isDoor=TRUE;
         storeImage=TRUE;
-        //printf("stored door path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
+        //printg("stored door path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
 
     }else if([path isEqualToString:@"door_mask.png"]){
         isDoor=TRUE;
@@ -699,11 +699,11 @@ int realStoredSkinCounter=0;
         isMask=TRUE;
         storeImage=TRUE;
     }else if([path isEqualToString:@"goldcube_icon.png"]){
-       // printf("stored cube path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
+       // printg("stored cube path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
         isGoldcubeico=TRUE;
         storeImage=TRUE;
     }else if([path isEqualToString:@"goldcube_icon_mask.png"]){
-       // printf("stored cube mask path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
+       // printg("stored cube mask path %s\n",[path cStringUsingEncoding:NSUTF8StringEncoding]);
         isGoldcubeico=TRUE;
         isMask=TRUE;
         storeImage=TRUE;
@@ -791,7 +791,7 @@ int realStoredSkinCounter=0;
                 storedDoor=uiImage;
         }else
         if(isMask){
-          //  printf("Storing mask in [%d][%d]: %s\n",storedMaskCounter/2,storedMaskCounter%2,[path cStringUsingEncoding:NSUTF8StringEncoding]);
+          //  printg("Storing mask in [%d][%d]: %s\n",storedMaskCounter/2,storedMaskCounter%2,[path cStringUsingEncoding:NSUTF8StringEncoding]);
             storedMasks[storedMaskCounter/2][storedMaskCounter%2]=uiImage;
             storedMaskCounter++;
             
@@ -1086,7 +1086,7 @@ int realStoredSkinCounter=0;
 		REPORT_ERROR(@"Falling off fast-path converting pixel data from RGBA8888 to LA88", NULL);
 #endif
 	}
-   // printf("%d,",pixelFormat);
+   // printg("%d,",pixelFormat);
 	self = [self initWithData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:imageSize generateMips:genMips];
 	
 	CGContextRelease(context);
@@ -1386,7 +1386,7 @@ int realStoredSkinCounter=0;
 }
 - (void) drawNumbers:(CGRect)rect:(int)num{
     if(num<0||num>10){
-        printf("num out of bounds/n");
+        printg("num out of bounds/n");
         num=0;
     }
     CGFloat depth=0.0;

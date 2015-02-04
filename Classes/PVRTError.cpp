@@ -24,13 +24,13 @@
 #include <stdlib.h>
 #include <string.h>
 #if defined(_WIN32)
-#define vsnprintf _vsnprintf
+#define vsnprintg _vsnprintg
 #endif
 #endif
 
 /*!***************************************************************************
  @Function			PVRTErrorOutputDebug
- @Input				format		printf style format followed by arguments it requires
+ @Input				format		printg style format followed by arguments it requires
  @Description		Outputs a string to the standard error.
 *****************************************************************************/
 void PVRTErrorOutputDebug(char const * const format, ...)
@@ -40,7 +40,7 @@ void PVRTErrorOutputDebug(char const * const format, ...)
 
 	va_start(arg, format);
 #if defined(__SYMBIAN32__) || defined(UITRON) || defined(_UITRON_)
-	vsprintf(pszString, format, arg);
+	vsprintg(pszString, format, arg);
 #else
 	vsnprintf(pszString, 1024, format, arg);
 #endif
@@ -60,7 +60,7 @@ void PVRTErrorOutputDebug(char const * const format, ...)
 	#if defined(_WIN32)
 		OutputDebugString(pswzString);
 	#else
-		fprintf(stderr, pswzString);
+		fprintg(stderr, pswzString);
 	#endif
 
 	free(pswzString);
@@ -72,7 +72,7 @@ void PVRTErrorOutputDebug(char const * const format, ...)
 	#elif defined(_WIN32) && !defined(UNDER_CE)
 		OutputDebugString(pszString);
 	#else
-		fprintf(stderr, "%s", pszString);
+		vfprintf(stderr, "%s", pszString);
 	#endif
 #endif
 }

@@ -158,7 +158,7 @@ public:
 						No window needs to be allocated to use this function.
 						However, PVRTPrint3DSetTextures(...) must have been called
 						beforehand.
-						This function accepts formatting in the printf way.
+						This function accepts formatting in the printg way.
 	*****************************************************************************/
 	EPVRTError Print3D(float fPosX, float fPosY, const float fScale, unsigned int Colour, const char * const pszFormat, ...);
 
@@ -230,7 +230,7 @@ public:
 	 @Input				Format		Format string
 	 @Return			PVR_SUCCESS or PVR_FAIL
 	 @Description		Feed the text buffer of window referenced by dwWin.
-						This function accepts formatting in the printf way.
+						This function accepts formatting in the printg way.
 	*****************************************************************************/
 	EPVRTError SetText(unsigned int dwWin, const char *Format, ...);
 

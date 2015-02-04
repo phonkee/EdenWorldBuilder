@@ -132,7 +132,7 @@ extern BOOL IS_WIDESCREEN;
     if(!IS_IPAD)
         glTranslatef(SCREEN_WIDTH/2,0,0);
     else if(IS_WIDESCREEN){
-      //  printf("Wtf\n");
+      //  printg("Wtf\n");
         glTranslatef(SCREEN_WIDTH,130,0);
     }else
         glTranslatef(IPAD_WIDTH/2,0,0);

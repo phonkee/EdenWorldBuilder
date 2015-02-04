@@ -67,7 +67,7 @@ static const int usage_id=999;
 				//pos.x*=mag;
 				//pos.y*=mag;
 				[[World getWorld].player setSpeed:pos:mag];
-               // printf("magnitude:%f\n",mag);
+               // printg("magnitude:%f\n",mag);
 				handled=TRUE;	
 				touches[i].inuse=usage_id;	
 			}		

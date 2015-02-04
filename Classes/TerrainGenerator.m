@@ -106,7 +106,7 @@ extern int g_offcx,g_offcz;
 		column[cy]=chunk;
         /*  if(bgthread){
          if(cy==0){
-         // printf("adding from bgthread to chunkmap\n");
+         // printg("adding from bgthread to chunkmap\n");
          }
          [ter readdChunk:chunk:ocx:cy:ocz];
          }else*/
@@ -129,7 +129,7 @@ extern int g_offcx,g_offcz;
         
         /*  if(bgthread){
          if(cy==0){
-         // printf("adding from bgthread to chunkmap\n");
+         // printg("adding from bgthread to chunkmap\n");
          }
          [ter readdChunk:chunk:ocx:cy:ocz];
          }else*/
@@ -165,7 +165,7 @@ extern int g_offcx,g_offcz;
 		column[cy]=chunk;
       /*  if(bgthread){
             if(cy==0){
-               // printf("adding from bgthread to chunkmap\n");
+               // printg("adding from bgthread to chunkmap\n");
             }
         [ter readdChunk:chunk:ocx:cy:ocz];	 
         }else*/
@@ -333,7 +333,7 @@ extern int g_offcx,g_offcz;
           
             /*  if(bgthread){
              if(cy==0){
-             // printf("adding from bgthread to chunkmap\n");
+             // printg("adding from bgthread to chunkmap\n");
              }
              [ter readdChunk:chunk:ocx:cy:ocz];	 
              }else*/

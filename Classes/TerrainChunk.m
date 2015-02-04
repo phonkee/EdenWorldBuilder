@@ -52,7 +52,7 @@ extern GLfloat cubeNormals[3*6*6];
 -(void) resetForReuse{
     
     memset(blocks,0,sizeof(block8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
-   // printf("leaking memory freeing small blocks\n");
+   // printg("leaking memory freeing small blocks\n");
  //   memset(sblocks,0,sizeof(SmallBlock*)*CHUNK_SIZE3);
     memset(colors,0,sizeof(color8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
     rtnum_objects=0;
@@ -192,7 +192,7 @@ extern int g_offcz;
     rebuildCounter++;
     
     if(needsVBO){
-        printf("not ready to rebuild chunk yet rbc: %d\n",rebuildCounter);
+        printg("not ready to rebuild chunk yet rbc: %d\n",rebuildCounter);
         return -1;
     }
     needsVBO=TRUE;
@@ -206,7 +206,7 @@ extern int g_offcz;
         blocks=blocks2;
 		pblocks=blocks1;
     }else{
-        printf("WHAT!\n");
+        printg("WHAT!\n");
     }
     }else{
         memcpy(pblocks,
@@ -264,7 +264,7 @@ extern int g_offcz;
                     SmallBlock* sb=sblocks[CC(x,z,y)];
                     if(sb==NULL){
                         sblocks[CC(x,z,y)]=sb=malloc(sizeof(SmallBlock));
-                        printf("Custom with no blocks??\n");
+                        printg("Custom with no blocks??\n");
                         for(int i=0;i<8;i++){
                             if(arc4random()%2==0)sb->blocks[i]=0;
                             else{
@@ -307,7 +307,7 @@ extern int g_offcz;
                                 if(v.y>1)v.y=1;
                                 if(v.z>1)v.z=1;
                                 if(v.x!=0||v.y!=0||v.z!=0){
-                                    //  printf("strength: %f\n",strength);
+                                    //  printg("strength: %f\n",strength);
                                 }
                                 lighting[(x+dx)*CHUNK_SIZE*CHUNK_SIZE+(z+dz)*CHUNK_SIZE+(y+dy)]=v;
                             }
@@ -321,7 +321,7 @@ extern int g_offcz;
                     if(type==TYPE_DOOR_TOP||type==TYPE_GOLDEN_CUBE||type==TYPE_FLOWER||type==TYPE_PORTAL_TOP){
                         if(type!=TYPE_DOOR_TOP&&type!=TYPE_GOLDEN_CUBE&&type!=TYPE_PORTAL_TOP){
                             
-                          //  printf("flower in chunk, les do it\n"); flowers supported!
+                          //  printg("flower in chunk, les do it\n"); flowers supported!
                         }
                         num_objects++;
                     }
@@ -330,8 +330,8 @@ extern int g_offcz;
 			
 		}
 	}
-    if(!hasAnything){//printf("return early 1\n");
-         //printf("im gonna clear some old vertices\n");
+    if(!hasAnything){//printg("return early 1\n");
+         //printg("im gonna clear some old vertices\n");
         clearOldVerticesOnly=TRUE;
         pblocks=blocks1;
         return 0;}
@@ -561,7 +561,7 @@ extern int g_offcz;
                     
                     
                 }else if(blockinfo[type]&IS_OBJECT){
-                        //printf("object type detected\n");
+                        //printg("object type detected\n");
 
                         face_visibility[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]=0;
                         if(type==TYPE_DOOR_TOP){
@@ -577,12 +577,12 @@ extern int g_offcz;
                             objects[objidx].pos.y=y-1+bounds[1];
                             objects[objidx].pos.z=z+bounds[2];
                             
-                          // printf("door[%d] %f, %f, %f \n", objidx, objects[objidx].pos.x,  objects[objidx].pos.y,  objects[objidx].pos.z);
+                          // printg("door[%d] %f, %f, %f \n", objidx, objects[objidx].pos.x,  objects[objidx].pos.y,  objects[objidx].pos.z);
 
                             
                             objidx++;
                         }else if(type==TYPE_GOLDEN_CUBE){
-                            // printf("got cube\n");
+                            // printg("got cube\n");
                             objects[objidx].color=colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
                             objects[objidx].open=FALSE;
                             objects[objidx].type=TYPE_GOLDEN_CUBE;
@@ -593,7 +593,7 @@ extern int g_offcz;
                             
                             objidx++;
                         }else if(type==TYPE_FLOWER){
-                            // printf("got flower\n");
+                            // printg("got flower\n");
                             objects[objidx].color=colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
                             objects[objidx].open=FALSE;
                             objects[objidx].type=TYPE_FLOWER;
@@ -616,7 +616,7 @@ extern int g_offcz;
                             
                             
                         } else if(type==TYPE_CUSTOM)       {
-                            //printf("bad count3\n");
+                            //printg("bad count3\n");
                             /*
                             face_visibility[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]=FACE_ALL;
                             SmallBlock* sb=sblocks[ x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
@@ -672,15 +672,15 @@ extern int g_offcz;
     verticesbg2=malloc(sizeof(vertexStructSmall)*n_vertices2);
     if(objidx<num_objects){num_objects=objidx;
     
-        printf("objidx<num_objects?\n");
+        printg("objidx<num_objects?\n");
     }else if(objidx!=num_objects){
-        printf("miscount on num objects\n");
+        printg("miscount on num objects\n");
     }
     if(num_objects>0){
-        //printf("%d doors in this chunk \n",num_objects);
+        //printg("%d doors in this chunk \n",num_objects);
     }
-    if(!n_vertices&&!n_vertices2){//printf("return early 3\n");
-     //    printf("im gonna clear some old vertices\n");
+    if(!n_vertices&&!n_vertices2){//printg("return early 3\n");
+     //    printg("im gonna clear some old vertices\n");
         clearOldVerticesOnly=TRUE;
          pblocks=blocks1;
         return 0;}
@@ -690,11 +690,11 @@ extern int g_offcz;
         face_idx[i]=num_vertices[i-1]+face_idx[i-1];
         face_idx2[i]=num_vertices2[i-1]+face_idx2[i-1];
         if(face_idx[i]>n_vertices){
-            printf("f1  %d>%d\n",face_idx[i],n_vertices);
+            printg("f1  %d>%d\n",face_idx[i],n_vertices);
             
         }
         if(face_idx2[i]>n_vertices2){
-            printf("f2  %d>%d\n",face_idx2[i],n_vertices2);
+            printg("f2  %d>%d\n",face_idx2[i],n_vertices2);
             
         }
     }
@@ -756,7 +756,7 @@ extern int g_offcz;
                    // light[1]=lightv.y;
                    // light[2]=lightv.z;
                     //if(light[0]!=0||light[1]!=0||light[2]!=0)
-                    // printf("lighting at(%d,%d,%d),  (%f,%f,%f)\n",x,y,z,light[0],light[1],light[2]);
+                    // printg("lighting at(%d,%d,%d),  (%f,%f,%f)\n",x,y,z,light[0],light[1],light[2]);
                     //int corners[4]={4,4,4,4};
                     int top_shadow=255;
                     if(FACE_TOP&isvisible){
@@ -868,7 +868,7 @@ extern int g_offcz;
                         if(maxlevel==level)maxleveld=0;
                         if(maxlevel<level)maxleveld=(2+maxleveld)%4;
                         const GLshort* cubeVerticesTop;
-                        //  printf("maxleveld:%d",maxleveld);
+                        //  printg("maxleveld:%d",maxleveld);
                         if(maxleveld==0){                
                             cubeVerticesTop=side3Texture;
                         }else if(maxleveld==1){               
@@ -1084,7 +1084,7 @@ extern int g_offcz;
     //    light[1]=lightv.y;
     //    light[2]=lightv.z;
         //if(light[0]!=0||light[1]!=0||light[2]!=0)
-        // printf("lighting at(%d,%d,%d),  (%f,%f,%f)\n",x,y,z,light[0],light[1],light[2]);
+        // printg("lighting at(%d,%d,%d),  (%f,%f,%f)\n",x,y,z,light[0],light[1],light[2]);
         //int corners[4]={4,4,4,4};
         int top_shadow=255;
         if(FACE_TOP&isvisible){
@@ -1196,7 +1196,7 @@ extern int g_offcz;
             if(maxlevel==level)maxleveld=0;
             if(maxlevel<level)maxleveld=(2+maxleveld)%4;
             const GLshort* cubeVerticesTop;
-            //  printf("maxleveld:%d",maxleveld);
+            //  printg("maxleveld:%d",maxleveld);
             if(maxleveld==0){                
                 cubeVerticesTop=side3Texture;
             }else if(maxleveld==1){               
@@ -1325,7 +1325,7 @@ extern int g_offcz;
                 int sv=sf+v*3;
                
                 //if(f==0&&v==0)
-               // printf("vert position1: (%d,%d,%d)\n",offsets[0], offsets[1], offsets[2]);
+               // printg("vert position1: (%d,%d,%d)\n",offsets[0], offsets[1], offsets[2]);
                 for(int coord=0;coord<3;coord++){
                     
                     
@@ -1354,7 +1354,7 @@ extern int g_offcz;
                     }else
                         color=light[coord]*paint[coord]*(float)cubeColors[f*3+coord];
                     
-                    //printf("WTFWTF\n");
+                    //printg("WTFWTF\n");
                     if(burned){
                         color/=2.0f;
                     }
@@ -1377,12 +1377,12 @@ extern int g_offcz;
                 if(!(blockinfo[type]&IS_ATLAS2)){
                     v_idx++;
                     if(vert_c>n_vertices){
-                        printf("!! vert_c:%d  n_vertices:%d\n",vert_c,n_vertices);
+                        printg("!! vert_c:%d  n_vertices:%d\n",vert_c,n_vertices);
                         if(f==specialFace){
-                             printf("!! face_idx6:%d\n",face_idx[6]-6);
+                             printg("!! face_idx6:%d\n",face_idx[6]-6);
                            
                         }else{
-                            printf("!! face_idx:%d\n",face_idx[f]-6);
+                            printg("!! face_idx:%d\n",face_idx[f]-6);
                            
                         }
                        
@@ -1393,8 +1393,8 @@ extern int g_offcz;
                     v_idx2++;
                     
                     if(vert_c>n_vertices2){
-                        printf("!!2 vert_c:%d  n_vertices2:%d\n",vert_c,n_vertices2);
-                         printf("!!2 face_idx2:%d\n",face_idx2[f]-6);
+                        printg("!!2 vert_c:%d  n_vertices2:%d\n",vert_c,n_vertices2);
+                         printg("!!2 face_idx2:%d\n",face_idx2[f]-6);
                     }
 
                     if(blockinfo[type]&IS_WATER)vert_array[vert_c].colors[3]=145;
@@ -1428,7 +1428,7 @@ extern int g_offcz;
 - (void)prepareVBO{
     rebuildCounter=0;
     if(clearOldVerticesOnly){
-       // printf("clearing some old vertices\n");
+       // printg("clearing some old vertices\n");
        
         rtn_vertices=n_vertices=0;
         rtn_vertices2=n_vertices2=0;
@@ -1474,7 +1474,7 @@ extern int g_offcz;
         if(rtnum_objects>0){
             free(rtobjects);
             rtnum_objects=0;
-            //printf("not freeing %d objects2\n",rtnum_objects);
+            //printg("not freeing %d objects2\n",rtnum_objects);
 
         }
         needsVBO=FALSE;
@@ -1488,7 +1488,7 @@ extern int g_offcz;
     
     
     if(rtnum_objects>0){
-        //printf("not freeing %d objects\n",rtnum_objects);
+        //printg("not freeing %d objects\n",rtnum_objects);
         free(rtobjects);
         
     }
@@ -1496,7 +1496,7 @@ extern int g_offcz;
     rtobjects=objects;
 
     if(num_objects>0){
-        //printf("vertice 1: (%d,%d,%d)\n",verticesbg[0].position[0],verticesbg[0].position[1],verticesbg[0].position[2]);
+        //printg("vertice 1: (%d,%d,%d)\n",verticesbg[0].position[0],verticesbg[0].position[1],verticesbg[0].position[2]);
         }
         
 
@@ -1572,21 +1572,21 @@ extern int g_offcz;
     int ry=y/2;
     
     if(blocks[(rx)*CHUNK_SIZE*CHUNK_SIZE+(rz)*CHUNK_SIZE+(ry)]!=TYPE_CUSTOM){
-      //  printf("asking for custom, when block isn't custom\n");
+      //  printg("asking for custom, when block isn't custom\n");
          return blocks[(rx)*CHUNK_SIZE*CHUNK_SIZE+(rz)*CHUNK_SIZE+(ry)];
     }
     
     
      SmallBlock* sb=sblocks[rx*CHUNK_SIZE*CHUNK_SIZE+rz*CHUNK_SIZE+ry];
     if(sb==NULL){
-        printf("asking for custom, can't find SmallBlock entry\n");
+        printg("asking for custom, can't find SmallBlock entry\n");
         return 0;
     }
     x-=rx*2;
     z-=rz*2;
     y-=ry*2;
     
-   // printf("returning custom block: (%d,%d,%d)->%d\n",x,z,y,sb->blocks[x*2*2+z*2+y]);
+   // printg("returning custom block: (%d,%d,%d)->%d\n",x,z,y,sb->blocks[x*2*2+z*2+y]);
     x=1-x;
     z=1-z;
     y=1-y;
@@ -1601,13 +1601,13 @@ extern int g_offcz;
     int ry=y/2;
     
     if(blocks[(rx)*CHUNK_SIZE*CHUNK_SIZE+(rz)*CHUNK_SIZE+(ry)]!=TYPE_CUSTOM){
-        printf("asking for custom color, when block isn't custom\n");
+        printg("asking for custom color, when block isn't custom\n");
         return 0;
     }
     
     SmallBlock* sb=sblocks[rx*CHUNK_SIZE*CHUNK_SIZE+rz*CHUNK_SIZE+ry];
     if(sb==NULL){
-        printf("asking for custom color, can't find SmallBlock entry\n");
+        printg("asking for custom color, can't find SmallBlock entry\n");
         return 0;
     }
     x-=rx*2;
@@ -1635,7 +1635,7 @@ extern int g_offcz;
     if(sb==NULL){
         sblocks[rx*CHUNK_SIZE*CHUNK_SIZE+rz*CHUNK_SIZE+ry]=sb=malloc(sizeof(SmallBlock));
         memset(sb,0,sizeof(SmallBlock));
-       // printf("allocated new custom\n");
+       // printg("allocated new custom\n");
     }
     x-=rx*2;
     z-=rz*2;
@@ -1662,7 +1662,7 @@ extern int g_offcz;
         
     }
     if(isSolid){
-        printf("custom became solid\n");
+        printg("custom became solid\n");
         
         blocks[(rx)*CHUNK_SIZE*CHUNK_SIZE+(rz)*CHUNK_SIZE+(ry)]=solid;
         colors[(rx)*CHUNK_SIZE*CHUNK_SIZE+(rz)*CHUNK_SIZE+(ry)]=scolor;
@@ -1777,7 +1777,7 @@ extern int g_offcz;
 }
 
 - (void)clearMeshes{
-   // printf("vb %d, %d, %d",vertexBuffer,vertexBuffer2,elementBuffer);
+   // printg("vb %d, %d, %d",vertexBuffer,vertexBuffer2,elementBuffer);
     
     num_objects=0;
     objects=NULL;
@@ -1827,7 +1827,7 @@ extern int g_offcz;
    
 	glPushMatrix();
   //  if([World getWorld].hud.heartbeat)
-   // printf("rtbounds %f  proposedoffset %d\n",rbounds[0],[World getWorld].fm.chunkOffsetX*CHUNK_SIZE);
+   // printg("rtbounds %f  proposedoffset %d\n",rbounds[0],[World getWorld].fm.chunkOffsetX*CHUNK_SIZE);
     //glTranslatef((rtbounds[0])*4, rtbounds[1]*4, (rtbounds[2])*4);
 	glTranslatef((rtbounds[0]-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)*4, rtbounds[1]*4, (rtbounds[2]-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)*4);
     
@@ -1893,7 +1893,7 @@ extern int g_offcz;
     //rebuildIndices=TRUE;
      int n=0;
     if(rebuildIndices){
-       // printf("rebuilding");
+       // printg("rebuilding");
        for(int i=0;i<7;i++){ 
            if(rtvisibleFaces[i]){
                if(n+rtnum_vertices[i]>=INDICES_MAX)
@@ -1920,7 +1920,7 @@ extern int g_offcz;
         totalvert+=rtnum_vertices[i];
     }
     if(totalvert>rtn_vertices||rtface_idx[6]+rtnum_vertices[6]>rtn_vertices||rtvis_vertices>rtn_vertices){
-        printf("Great\n");
+        printg("Great\n");
     }
     if(rtvis_vertices!=0){
     

@@ -40,12 +40,12 @@
     unsigned long long memtotal=[NSProcessInfo processInfo].physicalMemory;
     
     if(memtotal<314572800){
-        printf("low mem device=true\n");
+        printg("low mem device=true\n");
         LOW_MEM_DEVICE=TRUE;
     }else{
         LOW_MEM_DEVICE=FALSE;
     }
-    printf("mem total: %llu\n",memtotal);
+    printg("mem total: %llu\n",memtotal);
     
     
 	world=[[World alloc] init];
@@ -201,7 +201,7 @@
     
     [(EAGLView *)self.view presentFramebuffer];
     if(retinaSwap){
-       // printf("sup\n");
+       // printg("sup\n");
     if(IS_RETINA){
         [(EAGLView *)self.view deleteFramebuffer];
         

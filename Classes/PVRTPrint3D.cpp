@@ -53,7 +53,7 @@
 #define Print3D_NO_BORDER	128
 
 #if defined(_WIN32) && !defined(__BADA__)
-#define vsnprintf _vsnprintf
+#define vsnprintg _vsnprintg
 #endif
 /****************************************************************************
 ** Class: CPVRTPrint3D
@@ -213,7 +213,7 @@ EPVRTError CPVRTPrint3D::SetTextures(
 					No window needs to be allocated to use this function.
 					However, PVRTPrint3DSetTextures(...) must have been called
 					beforehand.
-					This function accepts formatting in the printf way.
+					This function accepts formatting in the printg way.
 *****************************************************************************/
 EPVRTError CPVRTPrint3D::Print3D(float fPosX, float fPosY, const float fScale, unsigned int Colour, const char * const pszFormat, ...)
 {
@@ -235,7 +235,7 @@ EPVRTError CPVRTPrint3D::Print3D(float fPosX, float fPosY, const float fScale, u
 	/* Reading the arguments to create our Text string */
 	va_start(args, pszFormat);
 #if defined(__SYMBIAN32__) || defined(UITRON) || defined(_UITRON_)
-	vsprintf(Text, pszFormat, args);
+	vsprintg(Text, pszFormat, args);
 #else
 	vsnprintf(Text, MAX_LETTERS+1, pszFormat, args);
 #endif
@@ -638,7 +638,7 @@ EPVRTError CPVRTPrint3D::DisplayWindow(unsigned int dwWin)
  @Input				Format		Format string
  @Return			PVR_SUCCESS or PVR_FAIL
  @Description		Feed the text buffer of window referenced by dwWin.
-					This function accepts formatting in the printf way.
+					This function accepts formatting in the printg way.
 *****************************************************************************/
 EPVRTError CPVRTPrint3D::SetText(unsigned int dwWin, const char *Format, ...)
 {
@@ -662,7 +662,7 @@ EPVRTError CPVRTPrint3D::SetText(unsigned int dwWin, const char *Format, ...)
 	/* Reading the arguments to create our Text string */
 	va_start(args,Format);
 #if defined(__SYMBIAN32__) || defined(UITRON) || defined(_UITRON_)
-	vsprintf(sText, Format, args);
+	vsprintg(sText, Format, args);
 #else
 	vsnprintf(sText, MAX_LETTERS+1, Format, args);
 #endif

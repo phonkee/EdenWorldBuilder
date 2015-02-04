@@ -51,7 +51,7 @@ BOOL writeIndex(){
     for(int i=0;i<s_archive;i++){
         const char* s1=[ArchiveIndex[i].file_name cStringUsingEncoding:NSUTF8StringEncoding];
         const char* s2=[ArchiveIndex[i].descriptive_name cStringUsingEncoding:NSUTF8StringEncoding];
-        fprintf(file,"%s=%s\n",s1,s2);
+        fprintg(file,"%s=%s\n",s1,s2);
     }
     
     
@@ -84,7 +84,7 @@ BOOL removeFromIndex(NSString* name){
 
 BOOL readIndex(){
     
-  //  printf("Reading index...\n");
+  //  printg("Reading index...\n");
     FILE* file = fopen([[NSString stringWithFormat:@"%@/%s",[World getWorld].fm.documents,archive_idx_file] cStringUsingEncoding:NSUTF8StringEncoding], "rb");
     if(!file){
         NSLog(@"can't find or open  archive index file");
@@ -105,11 +105,11 @@ BOOL readIndex(){
         [ArchiveIndex[s_archive].descriptive_name retain];
         s_archive++;
         if(s_archive==300)break;
-       // printf("%s--%s\n",file_name,descriptive_name);
+       // printg("%s--%s\n",file_name,descriptive_name);
     }
      fclose(file);
     
-   // printf("Done index...\n");
+   // printg("Done index...\n");
     return FALSE;
 }
 
