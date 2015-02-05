@@ -844,7 +844,7 @@ extern BOOL SUPPORTS_OGL2;
 }
 - (void)loadMenuTextures{
 	Texture2D* temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_graphics.png" sizeToFit:FALSE];
+		  initWithImagePath:@"menu_autojump.png" sizeToFit:FALSE];
     
   
 	[menutextures addObject:temp];

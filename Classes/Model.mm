@@ -963,7 +963,7 @@ bool CheckCollision(Entity* e){
     UpdateBoxes(e);
     
     if(e->ragetimer>0){
-        Polyhedra ppbox=[World getWorld].player.pbox;
+        Polyhedra ppbox=[World getWorld].player.testbox;
         //Face faces[6];
         //Vector points[8];
         for(int i=0;i<8;i++){
@@ -1077,7 +1077,7 @@ bool CheckCollision(Entity* e){
         }
     }
     if(!collided){
-        Polyhedra ppbox=[World getWorld].player.pbox;
+        Polyhedra ppbox=[World getWorld].player.testbox;
         //Face faces[6];
         //Vector points[8];
         for(int i=0;i<8;i++){
@@ -1198,6 +1198,8 @@ bool CheckCollision(Entity* e){
     
 }
 int nestmove=0;
+static float poffsetx,poffsetz;
+
 void Move(Entity* e,float etime){
    
    
@@ -1293,6 +1295,8 @@ void Move(Entity* e,float etime){
     e->inLiquid=FALSE;
     float mag=0;
     mag=e->vel.length();
+    poffsetx=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
+    poffsetz=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
     CheckCollision(e);  
     
     

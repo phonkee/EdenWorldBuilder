@@ -25,7 +25,7 @@
 #define THREE_TO_ONE(x,y,z) 
 
 @implementation Player
-@synthesize pos,yaw,pitch,move_back,jumping,invertcam,autojump_option,vel,flash,pbox,life,dead,health_option;
+@synthesize pos,yaw,pitch,move_back,jumping,invertcam,autojump_option,vel,flash,pbox,life,dead,health_option,testbox;
 static int nest_count;
 static bool onground;
 static bool onramp;
@@ -69,6 +69,7 @@ float yawanimation;
 	float back=pos.z+boxbase/2;
     
     pbox=makeBox(left,right,back,front,bot,top);
+    testbox=makeBox(left,right,back,front,bot,top);
     accel=MakeVector(0,0,0);
     walk_force=MakeVector(0,0,0);
     max_walk_speed=0;
@@ -84,7 +85,7 @@ extern Vector minTranDist;
 	float front=pos.z-boxbase/2;
 	float back=pos.z+boxbase/2;
     int type=[World getWorld].hud.blocktype;
-    pbox=makeBox(left,right,back,front,bot,top);
+    testbox=makeBox(left,right,back,front,bot,top);
     Polyhedra pbox2;
     if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
         
@@ -99,7 +100,7 @@ extern Vector minTranDist;
     }else
         pbox2=makeBox(tx,tx+r,tz+r,tz,ty,ty+r);
     
-    if(collidePolyhedra(pbox,pbox2))
+    if(collidePolyhedra(testbox,pbox2))
     {
         if(v_length2(minTranDist)<.1f) 
             return false;
@@ -1149,7 +1150,7 @@ static BOOL lastOnIce;
             }else if(ppx==3&&ppz==1){
                 [[Resources getResources] soundEvent:AMBIENT_GRASSBADLANDS];
             }else if((ppx==3||ppx==2||ppx==1)&&ppz==0){
-                [[Resources getResources] soundEvent:AMBIENT_MOUNTAIN];
+                [[Resources getResources] soundEvent:AMBIENT_GRASSBADLANDS];
             }else
            // printg("region: %d,%d\n",ppx,ppz);
          [[Resources getResources] soundEvent:AMBIENT_OPEN];
@@ -1178,13 +1179,13 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     if(nest_count>10){/*printg("hit nest limit");*/ nest_count--; return false;}
 	Terrain* ter=world.terrain;
     float bot=pos.y-boxheight/2;
-	float top=pos.y+boxheight/2;
+    float top=pos.y+boxheight/2;
 	float left=pos.x-boxbase/2;
 	float right=pos.x+boxbase/2;
 	float front=pos.z-boxbase/2;
 	float back=pos.z+boxbase/2;
     
-    pbox=makeBox(left,right,back,front,bot,top);
+    pbox=makeBox(left-poffsetx,right-poffsetx,back-poffsetz,front-poffsetz,bot,top);
     if(nest_count==1){
         hitLadder=FALSE;
         ladderExists=FALSE;
@@ -1224,24 +1225,18 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                 int btop=y+1;
                 Polyhedra pbox2;
                 if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
-                    if(type>=TYPE_ICE_RAMP1&&type<=TYPE_ICE_RAMP1){
-                        float poof=0;
-                        pbox2=makeRamp(bleft-poof,bright+poof,bback+poof,bfront-poof,bbot-poof,btop+poof,type%4);
-                    }else
-                    pbox2=makeRamp(bleft,bright,bback,bfront,bbot,btop,type%4);
+                    
+                    pbox2=makeRamp(bleft-poffsetx,bright-poffsetx,bback-poffsetz,bfront-poffsetz,bbot,btop,type%4);
                    // NSLog(@"yop");
                     
                 }else if(type>=TYPE_STONE_SIDE1&&type<=TYPE_ICE_SIDE4){
-                    if(type>=TYPE_ICE_SIDE1&&type<=TYPE_ICE_SIDE2){
-                        float poof=0;
-                        pbox2=makeSide(bleft-poof,bright+poof,bback+poof,bfront-poof,bbot-poof,btop+poof,type%4);
-                    }else
-                    pbox2=makeSide(bleft,bright,bback,bfront,bbot,btop,type%4);
+                   
+                    pbox2=makeSide(bleft-poffsetx,bright-poffsetx,bback-poffsetz,bfront-poffsetz,bbot,btop,type%4);
                     
                 }else if(blockinfo[type]&IS_LIQUID){
-                    pbox2=makeBox(bleft,bleft+1,bback,bfront,bbot,bbot+getLevel(type)/4.0f);
+                    pbox2=makeBox(bleft-poffsetx,bleft+1-poffsetx,bback-poffsetz,bfront-poffsetz,bbot,bbot+getLevel(type)/4.0f);
                 }else
-                pbox2=makeBox(bleft,bright,bback,bfront,bbot,btop);
+                pbox2=makeBox(bleft-poffsetx,bright-poffsetx,bback-poffsetz,bfront-poffsetz,bbot,btop);
                /* int cx=x/CHUNK_SIZE;
                 int cy=y/CHUNK_SIZE;
                 int cz=z/CHUNK_SIZE;
@@ -1373,11 +1368,11 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         
         if(!onIce&&!lastOnIce&&(collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4)){//ugly hack to prevent stickage at bottom of ramps
             if(minminTranDist.y==0){
-                float pytemp=pos.y-(int)pos.y;
-                if(pytemp>0.92f&&pytemp<0.925f){
-                //printg("hit ramp mmtd: (%f,%f,%f)  player.y=%f\n",minminTranDist.x,minminTranDist.y,minminTranDist.z,pos.y);
-                minminTranDist.y=.002763;
-                }
+               // float pytemp=pos.y-(int)pos.y;
+                //if(pytemp>0.92f&&pytemp<0.925f){
+                //printf("hit ramp mmtd: (%f,%f,%f)  player.y=%f\n",minminTranDist.x,minminTranDist.y,minminTranDist.z,pos.y);
+                //minminTranDist.y=.002763;
+                //}
             }
             
         }
@@ -1489,6 +1484,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         
     }
     if(nest_count==1){
+        testbox=makeBox(left,right,back,front,bot,top);
       /*  if(onIce){
             printg("-");
             
@@ -1813,6 +1809,8 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     }
 }
 static int icesound=0;
+float poffsetx=0;
+float poffsetz=0;
 - (void)move:(float)etime{
     
 //	Terrain* ter=world.terrain;
@@ -1890,6 +1888,8 @@ static int icesound=0;
     nest_count=0;
     onground=FALSE;
     onramp=FALSE;
+    poffsetx=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
+    poffsetz=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
     [self vertc];
    // if(onground)NSLog(@"grounded sucka");
     static float iceTimer=.15f;
@@ -2055,7 +2055,7 @@ extern Vector fpoint;
         [Graphics drawCube:bx
                           :by
                           :bz
-                          :TYPE_CLOUD:1];	
+                          :TYPE_GRADIENT:1];
         glPopMatrix();
 	//[Graphics drawTexCube:bx:by:bz:boxbase:[[Resources getResources] getTex:0]];
 

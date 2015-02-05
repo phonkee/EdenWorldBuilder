@@ -1753,7 +1753,7 @@ float last_etime;
 		//hashmap_remove_all(oldChunkMap, FALSE);
 		
 		do_reload=3;
-        
+        printf("test1123\n");
 				
 		
 		return FALSE;
@@ -1852,6 +1852,7 @@ static double time1,time2,time3,time4;
         }
        
         if(count>140) {
+            
             [[World getWorld].fm saveWorld];
             
             [World getWorld].fm.chunkOffsetX=m_chunkOffsetX;

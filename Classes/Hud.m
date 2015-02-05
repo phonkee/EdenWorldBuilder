@@ -520,6 +520,9 @@ int flamecount=0;
                         mode=MODE_PAINT;
                         
                     }
+                    if(mode==MODE_CAMERA){
+                        mode=lmode;
+                    }
                     pressed=-1;
                 }else{
                     
@@ -833,7 +836,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 		if(!SUPPORTS_OGL2){
             [Graphics setZFAR:75];
         }
-		else P_ZFAR=200.0f;
+		else [Graphics setZFAR:120];
         inmenu=false;
 		handled=TRUE;
 	}

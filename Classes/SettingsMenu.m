@@ -19,7 +19,7 @@ enum  {
 	S_PLAY_MUSIC=4,
 	S_PLAY_SOUND=3,
     S_HEALTH=2,
-	S_GRAPHICS=1,
+	S_AUTOJUMP=1,
     S_CREATURES=0,
 };
 static NSString* pnames[NUM_PROP]={
@@ -27,7 +27,7 @@ static NSString* pnames[NUM_PROP]={
 //	[S_LEFTY_MODE]=@"Lefty Controls",
 	[S_PLAY_MUSIC]=@"Music",
 	[S_PLAY_SOUND]=@"Sound Effects",
-	[S_GRAPHICS]=@"Graphics",
+	[S_AUTOJUMP]=@"Autojump",
     [S_CREATURES]=@"Creatures"
 };
 static const int pdefaults[NUM_PROP]={
@@ -35,7 +35,7 @@ static const int pdefaults[NUM_PROP]={
 //	[S_LEFTY_MODE]=FALSE,
 	[S_PLAY_MUSIC]=TRUE,
 	[S_PLAY_SOUND]=TRUE,
-	[S_GRAPHICS]=TRUE,
+	[S_AUTOJUMP]=TRUE,
     [S_CREATURES]=TRUE,
 };
 extern float SCREEN_WIDTH; 
@@ -63,12 +63,12 @@ extern float P_ASPECT_RATIO;
 		else if(i==S_PLAY_SOUND){
 		properties[i].box.size.width=200;
 		properties[i].tex=[[Resources getResources] getMenuTex:MENU_SOUND_EFFECTS];			
-		}else if(i==S_GRAPHICS){
+		}else if(i==S_AUTOJUMP){
 			properties[i].box.size.width=120;
 			
-			properties[i].tex=[[Resources getResources] getMenuTex:MENU_GRAPHICS];			
+			properties[i].tex=[[Resources getResources] getMenuTex:MENU_AUTOJUMP];
 			
-		}else if(i==S_GRAPHICS){
+		}else if(i==S_AUTOJUMP){
             properties[i].box.size.width=120;
 			
 			properties[i].tex=[[Resources getResources] getMenuTex:MENU_CREATURES];	
@@ -114,7 +114,7 @@ extern float P_ASPECT_RATIO;
 	rect_off.origin.y=0;
 	
     if(LOW_MEM_DEVICE){
-        properties[S_GRAPHICS].value=false;
+        //properties[S_GRAPHICS].value=false;
         properties[S_CREATURES].value=false;
     }
 	
@@ -182,14 +182,15 @@ static const int usage_id=3;
 	[Resources getResources].playmusic=properties[S_PLAY_MUSIC].value;
 	[Resources getResources].playsound=properties[S_PLAY_SOUND].value;
 	//[World getWorld].hud.leftymode=properties[S_LEFTY_MODE].value;
-   [World getWorld].player.autojump_option=TRUE;
+   [World getWorld].player.autojump_option=properties[S_AUTOJUMP].value;
     [World getWorld].player.health_option=properties[S_HEALTH].value;
 	[World getWorld].player.invertcam=FALSE;
 	[World getWorld].hud.use_joystick=TRUE;
     [World getWorld].terrain.tgen.genCaves=FALSE;
-    [World getWorld].bestGraphics=properties[S_GRAPHICS].value;
+    [World getWorld].bestGraphics=properties[S_AUTOJUMP].value;
     CREATURES_ON=properties[S_CREATURES].value;
     
+    [World getWorld].bestGraphics=TRUE;
     if(LOW_MEM_DEVICE){
         [World getWorld].bestGraphics=FALSE;
     }
@@ -229,8 +230,8 @@ static const int usage_id=3;
 		}
 		else if(i==S_PLAY_SOUND){
 			[[[Resources getResources] getMenuTex:MENU_SOUND_EFFECTS] drawText:properties[i].box];			
-		}else if(i==S_GRAPHICS){
-			[[[Resources getResources] getMenuTex:MENU_GRAPHICS] drawText:properties[i].box];			
+		}else if(i==S_AUTOJUMP){
+			[[[Resources getResources] getMenuTex:MENU_AUTOJUMP] drawText:properties[i].box];
 			
 		}else if(i==S_CREATURES){
             [[[Resources getResources] getMenuTex:MENU_CREATURES] drawText:properties[i].box];	

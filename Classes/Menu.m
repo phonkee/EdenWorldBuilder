@@ -491,10 +491,10 @@ static const int usage_id=7;
                                     [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
                                     
                                 }*/
-        
-                                [alertDeleteConfirm setMessage:[NSString stringWithFormat:@"Are you sure you want to delete \"%@\"?",selected_world->display_name] ];
+                                 [alertDeleteConfirm setMessage:[NSString stringWithFormat:@"Are you sure you want to delete \"%@\"?",selected_world->display_name] ];
                                 [alertDeleteConfirm show];
                                 
+
                                 delete_mode=FALSE;
 							}
 							break;

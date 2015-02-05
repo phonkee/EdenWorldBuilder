@@ -214,6 +214,11 @@ extern BOOL SUPPORTS_OGL2;
 }
 +(void)setZFAR:(float)zfar{
     zfar=120;
+    if(LOW_MEM_DEVICE){
+        zfar=80;
+    }else if(LOW_GRAPHICS){
+        zfar=97;
+    }
     changedFog=TRUE;
     if(zfar!=P_ZFAR){
         
@@ -817,6 +822,7 @@ extern const GLfloat cubeNormals[36*3];
             glColor4f(1.0f,1.0f,1.0f,0.5f);
         }
     }
+   // glColor4f(1.0f,0.0f,0.0f,1.0f);
 	//}
     glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
 	glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(vertexStruct)*CUBE_VERTICES,vertices);

@@ -303,6 +303,7 @@ int ComputeExtreme(const float *bound,const FrustumPlane* plane,int istate, int 
 
 int ViewTestAABB(const float *bound,int state)
 {
+    //return VT_INSIDE;
 	unsigned int istate = state;
 	istate&=~VT_PARTIAL; // turn off the partial bit...
 	

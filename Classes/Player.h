@@ -63,7 +63,7 @@
 @property(nonatomic,assign) BOOL move_back,jumping;
 @property(nonatomic,assign) BOOL autojump_option,health_option;
 @property(nonatomic,assign) BOOL dead;
-@property(nonatomic,assign) Polyhedra pbox;
+@property(nonatomic,assign) Polyhedra pbox,testbox;
 
 Vector getFlowDirection(int x,int z,int y);
 

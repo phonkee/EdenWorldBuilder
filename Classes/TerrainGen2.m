@@ -2765,7 +2765,7 @@ extern int regionSkyColors[4][4];
 void updateSkyColor1(Player* player,BOOL force){
     updateSkyColor2(player,force,0);
 }
-static float timeSinceLastChange=0;
+//static float timeSinceLastChange=0;
 void updateSkyColor2(Player* player,BOOL force,float etime){
     extern int g_offcx;
     if(force){
@@ -2792,7 +2792,7 @@ void updateSkyColor2(Player* player,BOOL force,float etime){
         if(lrx!=ppx||lrz!=ppz){
             if(lrx==-1||regionSkyColors[ppz][ppx]!=regionSkyColors[lrz][lrx]){
                 
-                timeSinceLastChange=0;
+                //timeSinceLastChange=0;
                 int rct=regionSkyColors[(int)(ppz+64)%4][(int)(ppx+64)%4];
                 if(!LOW_MEM_DEVICE)
                 if((v_equals([World getWorld].terrain.final_skycolor,colorTable[54])&&rct!=54)||
@@ -2805,7 +2805,7 @@ void updateSkyColor2(Player* player,BOOL force,float etime){
                 }
                 [World getWorld].terrain.final_skycolor=colorTable[rct];
                 if(force){
-                    [World getWorld].terrain.skycolor=MakeVector([World getWorld].terrain.final_skycolor.x,[World getWorld].terrain.final_skycolor.y,[World getWorld].terrain.final_skycolor.z+.05f);
+                    [World getWorld].terrain.skycolor=MakeVector([World getWorld].terrain.final_skycolor.x,[World getWorld].terrain.final_skycolor.y,[World getWorld].terrain.final_skycolor.z+.03f);
                     
                 }
                 
@@ -2824,7 +2824,7 @@ void updateSkyColor2(Player* player,BOOL force,float etime){
 }
 void paintSky(int color){
     if( v_equals([World getWorld].terrain.final_skycolor,colorTable[color]))return;
-    timeSinceLastChange=0;
+   // timeSinceLastChange=0;
     if(!LOW_MEM_DEVICE)
     if((v_equals([World getWorld].terrain.final_skycolor,colorTable[54])&&color!=54)||
         (!v_equals([World getWorld].terrain.final_skycolor,colorTable[54])&&color==54)){

@@ -156,7 +156,10 @@ FileDownload* reportmanager=NULL;
 	NSLog(@"share world %@",file_name);
 	
 	NSLog(@"attempting upload");
-	NSURL* serverUrl=[[NSURL alloc] initWithString:UPLOAD_URL];
+    NSString* uuid=[[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    NSString* nsurl=[NSString stringWithFormat:@"%@?uuid=%@",UPLOAD_URL,uuid ] ;
+    
+	NSURL* serverUrl=[[NSURL alloc] initWithString:nsurl];
 	FileUpload* fu=[[FileUpload alloc] initWithURL:serverUrl 
 										  filePath:file_name 
                                            imgPath:[NSString stringWithFormat:@"%@.png",file_name]

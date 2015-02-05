@@ -38,13 +38,16 @@
     [(EAGLView *)self.view setContext:context];
     [(EAGLView *)self.view setFramebuffer];
     unsigned long long memtotal=[NSProcessInfo processInfo].physicalMemory;
-    
-    if(memtotal<314572800){
-        printg("low mem device=true\n");
-        LOW_MEM_DEVICE=TRUE;
-    }else{
-        LOW_MEM_DEVICE=FALSE;
-    }
+    if(memtotal<654572800){
+        
+        LOW_GRAPHICS=TRUE;
+        if(memtotal<314572800){
+            printg("low mem device=true\n");
+            LOW_MEM_DEVICE=TRUE;
+            }else{
+                LOW_MEM_DEVICE=FALSE;
+            }
+    }else LOW_GRAPHICS=FALSE;
     printg("mem total: %llu\n",memtotal);
     
     

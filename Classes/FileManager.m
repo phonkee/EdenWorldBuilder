@@ -1549,6 +1549,8 @@ extern float P_ZFAR;
     [[World getWorld].effects clearAllEffects];
     [[World getWorld].hud worldLoaded];
 	updateSkyColor1([World getWorld].player,TRUE);
+    extern BOOL loaded_new_terrain;
+    loaded_new_terrain=TRUE;
 
 }
 @end
