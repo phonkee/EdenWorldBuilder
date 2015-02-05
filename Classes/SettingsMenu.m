@@ -191,7 +191,7 @@ static const int usage_id=3;
     CREATURES_ON=properties[S_CREATURES].value;
     
     [World getWorld].bestGraphics=TRUE;
-    if(LOW_MEM_DEVICE){
+    if(LOW_MEM_DEVICE||LOW_GRAPHICS){
         [World getWorld].bestGraphics=FALSE;
     }
     extern BOOL IS_WIDESCREEN;
