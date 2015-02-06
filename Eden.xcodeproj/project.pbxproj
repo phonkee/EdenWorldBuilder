@@ -34,7 +34,6 @@
 		194671691A805F5000B0E5A3 /* creature_destruction_05.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 194671641A805F5000B0E5A3 /* creature_destruction_05.mp3 */; };
 		194EDC361A7722B300342AEB /* Flame_256.png in Resources */ = {isa = PBXBuildFile; fileRef = 194EDC351A7722B300342AEB /* Flame_256.png */; };
 		194EDC381A788E2300342AEB /* Flame_512.png in Resources */ = {isa = PBXBuildFile; fileRef = 194EDC371A788E2300342AEB /* Flame_512.png */; };
-		194EDC3C1A79C9D700342AEB /* libFlurry_6.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 194EDC3B1A79C9D700342AEB /* libFlurry_6.0.0.a */; };
 		194EDC3E1A79CAA200342AEB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 194EDC3D1A79CAA200342AEB /* Security.framework */; };
 		1967D00A1639F26100C03DF0 /* Charger.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D0091639F26100C03DF0 /* Charger.pod */; };
 		1967D0101639F3A900C03DF0 /* Batty.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00B1639F3A900C03DF0 /* Batty.pod */; };
@@ -164,7 +163,8 @@
 		19D546A31A3D43B500E61041 /* jump_button_press.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D546691A3D43B500E61041 /* jump_button_press.mp3 */; };
 		19D546A41A3D43B500E61041 /* jump_button_release.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5466A1A3D43B500E61041 /* jump_button_release.mp3 */; };
 		19D546A51A3D43B500E61041 /* door close.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5466B1A3D43B500E61041 /* door close.mp3 */; };
-		19DF68C61A842FD800E462A1 /* libCocosDenshion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19DF68C51A842FD800E462A1 /* libCocosDenshion.a */; };
+		19E52AE11A84418200C9CD48 /* libFlurry_6.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E52AE01A84418200C9CD48 /* libFlurry_6.0.0.a */; };
+		19E52AE21A84427D00C9CD48 /* libCocosDenshion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19DF68C51A842FD800E462A1 /* libCocosDenshion.a */; };
 		1D13502E15C4AE2A0038CE4C /* uisave.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13502D15C4AE2A0038CE4C /* uisave.png */; };
 		1D13503615C58F000038CE4C /* uiexit.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13503315C58F000038CE4C /* uiexit.png */; };
 		1D13503715C58F000038CE4C /* uihome.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13503415C58F000038CE4C /* uihome.png */; };
@@ -875,7 +875,6 @@
 		194EDC351A7722B300342AEB /* Flame_256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flame_256.png; sourceTree = "<group>"; };
 		194EDC371A788E2300342AEB /* Flame_512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flame_512.png; sourceTree = "<group>"; };
 		194EDC3A1A79C9D700342AEB /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
-		194EDC3B1A79C9D700342AEB /* libFlurry_6.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_6.0.0.a; sourceTree = "<group>"; };
 		194EDC3D1A79CAA200342AEB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1967D0091639F26100C03DF0 /* Charger.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Charger.pod; path = models/Charger.pod; sourceTree = "<group>"; };
 		1967D00B1639F3A900C03DF0 /* Batty.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Batty.pod; path = models/Batty.pod; sourceTree = "<group>"; };
@@ -1017,6 +1016,7 @@
 		19DF68CF1A84302B00E462A1 /* CDOpenALSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDOpenALSupport.h; sourceTree = "<group>"; };
 		19DF68D11A84302B00E462A1 /* CocosDenshion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocosDenshion.h; sourceTree = "<group>"; };
 		19DF68D21A84302B00E462A1 /* SimpleAudioEngine_objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleAudioEngine_objc.h; sourceTree = "<group>"; };
+		19E52AE01A84418200C9CD48 /* libFlurry_6.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_6.0.0.a; sourceTree = "<group>"; };
 		1D13502D15C4AE2A0038CE4C /* uisave.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uisave.png; path = uitext/uisave.png; sourceTree = "<group>"; };
 		1D13503315C58F000038CE4C /* uiexit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uiexit.png; path = uitext/uiexit.png; sourceTree = "<group>"; };
 		1D13503415C58F000038CE4C /* uihome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uihome.png; path = uitext/uihome.png; sourceTree = "<group>"; };
@@ -1790,6 +1790,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19E52AE21A84427D00C9CD48 /* libCocosDenshion.a in Frameworks */,
 				194EDC3E1A79CAA200342AEB /* Security.framework in Frameworks */,
 				C6AE407713C3919E0068685C /* CFNetwork.framework in Frameworks */,
 				C6AE407513C3917D0068685C /* SystemConfiguration.framework in Frameworks */,
@@ -1797,9 +1798,8 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */,
 				28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */,
-				19DF68C61A842FD800E462A1 /* libCocosDenshion.a in Frameworks */,
+				19E52AE11A84418200C9CD48 /* libFlurry_6.0.0.a in Frameworks */,
 				C68DD0F712637D470072CBF0 /* CoreGraphics.framework in Frameworks */,
-				194EDC3C1A79C9D700342AEB /* libFlurry_6.0.0.a in Frameworks */,
 				C6E46669127E210800D509D1 /* OpenAL.framework in Frameworks */,
 				C6E46680127E22AE00D509D1 /* CoreAudio.framework in Frameworks */,
 				C6E46688127E22C600D509D1 /* AudioToolbox.framework in Frameworks */,
@@ -1893,9 +1893,9 @@
 		194EDC391A79C9D700342AEB /* flurry */ = {
 			isa = PBXGroup;
 			children = (
+				19E52AE01A84418200C9CD48 /* libFlurry_6.0.0.a */,
 				19DF68C51A842FD800E462A1 /* libCocosDenshion.a */,
 				194EDC3A1A79C9D700342AEB /* Flurry.h */,
-				194EDC3B1A79C9D700342AEB /* libFlurry_6.0.0.a */,
 			);
 			path = flurry;
 			sourceTree = "<group>";
@@ -4022,7 +4022,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "library/include//**";
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
 		};
@@ -4046,7 +4046,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "library/include//**";
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
 		};
@@ -4072,7 +4072,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "library/include//**";
 				VALIDATE_PRODUCT = NO;
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = "Adhoc Distribution";
 		};
@@ -4136,7 +4136,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "library/include//**";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = "Appstore Distribution";
 		};
