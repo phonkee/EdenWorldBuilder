@@ -38,9 +38,10 @@
     [(EAGLView *)self.view setContext:context];
     [(EAGLView *)self.view setFramebuffer];
     unsigned long long memtotal=[NSProcessInfo processInfo].physicalMemory;
-    if(memtotal<654572800){
+    if(memtotal<504572800||(memtotal<654572800&&!SUPPORTS_RETINA)){
         
         LOW_GRAPHICS=TRUE;
+        printf("low graphics device\n");
         if(memtotal<314572800){
             printg("low mem device=true\n");
             LOW_MEM_DEVICE=TRUE;

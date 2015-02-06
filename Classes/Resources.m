@@ -10,7 +10,7 @@
 #import "glu.h"
 #import "Vector.h"
 #import "CDAudioManager.h"
-#import "SimpleAudioEngine.h"
+#import "SimpleAudioEngine_objc.h"
 #import "World.h"
 static Resources* singleton;
 
@@ -632,7 +632,7 @@ extern Vector colorTable[256];
         distance_fade=sqrtf(distance_fade);
         float vol=(distance_fade-sqrtf(sqrtf(distance)))/(distance_fade);
         
-         [[SimpleAudioEngine sharedEngine] playEffect:voFiles[type][action][variation] pitch:1.0f pan:0.0f gain:vol*1.4f];
+        [[SimpleAudioEngine sharedEngine] playEffect:voFiles[type][action][variation] loop:FALSE pitch:1.0f pan:0.0f gain:vol*1.4f];
     }
     
     
@@ -708,7 +708,7 @@ bool firstframe=FALSE;
         }
         sfxLastVariation[soundid]=variation;
             
-		return [[SimpleAudioEngine sharedEngine] playEffect:soundFiles[soundid][variation]];
+        return [[SimpleAudioEngine sharedEngine] playEffect:soundFiles[soundid][variation] loop:FALSE];
 	}
     
 	
