@@ -35,6 +35,7 @@
 		194EDC361A7722B300342AEB /* Flame_256.png in Resources */ = {isa = PBXBuildFile; fileRef = 194EDC351A7722B300342AEB /* Flame_256.png */; };
 		194EDC381A788E2300342AEB /* Flame_512.png in Resources */ = {isa = PBXBuildFile; fileRef = 194EDC371A788E2300342AEB /* Flame_512.png */; };
 		194EDC3E1A79CAA200342AEB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 194EDC3D1A79CAA200342AEB /* Security.framework */; };
+		19552EE41A8475DD003A829B /* kingly_games2.mobileprovision in Resources */ = {isa = PBXBuildFile; fileRef = 19552EE31A8475DD003A829B /* kingly_games2.mobileprovision */; };
 		1967D00A1639F26100C03DF0 /* Charger.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D0091639F26100C03DF0 /* Charger.pod */; };
 		1967D0101639F3A900C03DF0 /* Batty.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00B1639F3A900C03DF0 /* Batty.pod */; };
 		1967D0121639F3A900C03DF0 /* Moof.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00D1639F3A900C03DF0 /* Moof.pod */; };
@@ -876,6 +877,7 @@
 		194EDC371A788E2300342AEB /* Flame_512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flame_512.png; sourceTree = "<group>"; };
 		194EDC3A1A79C9D700342AEB /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		194EDC3D1A79CAA200342AEB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		19552EE31A8475DD003A829B /* kingly_games2.mobileprovision */ = {isa = PBXFileReference; lastKnownFileType = file; name = kingly_games2.mobileprovision; path = ../../Downloads/kingly_games2.mobileprovision; sourceTree = "<group>"; };
 		1967D0091639F26100C03DF0 /* Charger.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Charger.pod; path = models/Charger.pod; sourceTree = "<group>"; };
 		1967D00B1639F3A900C03DF0 /* Batty.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Batty.pod; path = models/Batty.pod; sourceTree = "<group>"; };
 		1967D00D1639F3A900C03DF0 /* Moof.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Moof.pod; path = models/Moof.pod; sourceTree = "<group>"; };
@@ -2483,6 +2485,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				19552EE31A8475DD003A829B /* kingly_games2.mobileprovision */,
 				194EDC391A79C9D700342AEB /* flurry */,
 				1902C8301A63A8D800D8E67F /* report_flag.png */,
 				19AECD14192EA99F00F8DD91 /* Eden.eden */,
@@ -3732,6 +3735,7 @@
 				1D27123315151BC100C7059F /* golden_cube_bw.png in Resources */,
 				1D27123415151BC100C7059F /* golden_cube.png in Resources */,
 				1D27124215166F5200C7059F /* flowers_blue.png in Resources */,
+				19552EE41A8475DD003A829B /* kingly_games2.mobileprovision in Resources */,
 				1D271245151680ED00C7059F /* grass_04.png in Resources */,
 				1D2712471516F46500C7059F /* portal.png in Resources */,
 				1D9D03A3154B28B000E975AC /* sphere_map.png in Resources */,
@@ -3948,7 +3952,7 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5..0;
 				LIBRARY_SEARCH_PATHS = (
 					testflight/,
 					"$(PROJECT_DIR)/flurry",
@@ -3985,7 +3989,7 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5..0;
 				LIBRARY_SEARCH_PATHS = (
 					testflight/,
 					"$(PROJECT_DIR)/flurry",
@@ -4018,11 +4022,11 @@
 				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lz";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "ba9c8dfa-b648-4490-be92-740cdc281aae";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "library/include//**";
-				VALID_ARCHS = "armv7 armv7s arm64";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -4042,11 +4046,11 @@
 				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-lz";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "ba9c8dfa-b648-4490-be92-740cdc281aae";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "library/include//**";
-				VALID_ARCHS = "armv7 armv7s arm64";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -4066,13 +4070,13 @@
 				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-lz";
-				PROVISIONING_PROFILE = "ba9c8dfa-b648-4490-be92-740cdc281aae";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ba9c8dfa-b648-4490-be92-740cdc281aae";
+				PROVISIONING_PROFILE = "82e12cd3-a9e2-48a9-bd4e-e44898a5392e";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "82e12cd3-a9e2-48a9-bd4e-e44898a5392e";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "library/include//**";
 				VALIDATE_PRODUCT = NO;
-				VALID_ARCHS = "armv7 armv7s arm64";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = "Adhoc Distribution";
 		};
@@ -4083,8 +4087,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CODE_SIGN_ENTITLEMENTS = "~/Documents/Eden/Entitlements.plist";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Kingly Software Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Kingly Software Inc";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1.9.1;
 				GCC_INPUT_FILETYPE = automatic;
@@ -4098,14 +4102,14 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5..0;
 				LIBRARY_SEARCH_PATHS = (
 					testflight/,
 					"$(PROJECT_DIR)/flurry",
 				);
 				PRODUCT_NAME = Eden;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ba9c8dfa-b648-4490-be92-740cdc281aae";
+				PROVISIONING_PROFILE = "82e12cd3-a9e2-48a9-bd4e-e44898a5392e";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "82e12cd3-a9e2-48a9-bd4e-e44898a5392e";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4136,7 +4140,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "library/include//**";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv7 armv7s arm64";
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = "Appstore Distribution";
 		};
@@ -4162,7 +4166,7 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5..0;
 				LIBRARY_SEARCH_PATHS = (
 					testflight/,
 					"$(PROJECT_DIR)/flurry",
