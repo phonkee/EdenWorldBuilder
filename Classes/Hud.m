@@ -199,8 +199,9 @@ extern BOOL IS_WIDESCREEN;
 
 	test_a=0;
 	CGRect sbrect;
-	sbrect.origin.x=0;
+	sbrect.origin.x=20;
 	sbrect.size.width=SCREEN_WIDTH-40;
+    
 	sbrect.origin.y=0;
 	sbrect.size.height=25;
 	m_joy=TRUE;

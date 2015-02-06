@@ -760,7 +760,7 @@ static float bkgtargetvolume=0;
             bkgtargetvolume*=2;
         if(target_ambient>=6||target_ambient==AMBIENT_OPEN){
             bkgtargetvolume*=.35f;
-            if(target_ambient==AMBIENT_BEACH){
+            if(target_ambient==AMBIENT_OASIS){
                 bkgtargetvolume*=.2f;
 
             }

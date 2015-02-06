@@ -1133,27 +1133,27 @@ static BOOL lastOnIce;
 #define AMBIENT_SNOWMOUNTAIN 16
             */
             if([World getWorld].terrain.tgen.LEVEL_SEED!=DEFAULT_LEVEL_SEED){
-                 [[Resources getResources] soundEvent:AMBIENT_OPEN];
+                 [[Resources getResources] soundEvent:AMBIENT_OPEN:pos];
             }else
             if(ppx==0&&ppz==0){
-                [[Resources getResources] soundEvent:AMBIENT_SNOWMOUNTAIN];
+                [[Resources getResources] soundEvent:AMBIENT_SNOWMOUNTAIN:pos];
             }else if(ppx==0&&ppz==1){
-                [[Resources getResources] soundEvent:AMBIENT_PYRAMID];
+                [[Resources getResources] soundEvent:AMBIENT_PYRAMID:pos];
             }else if(ppx==0&&ppz==2){
-                [[Resources getResources] soundEvent:AMBIENT_OASIS];
+                [[Resources getResources] soundEvent:AMBIENT_OASIS:pos];
             }else if((ppx==1||ppx==2)&&ppz==3){
-                [[Resources getResources] soundEvent:AMBIENT_BEACH];
+                [[Resources getResources] soundEvent:AMBIENT_BEACH:pos];
             }else if(ppx==3&&ppz==3){
-                 [[Resources getResources] soundEvent:AMBIENT_LAVABADLANDS];
+                 [[Resources getResources] soundEvent:AMBIENT_LAVABADLANDS:pos];
             }else if(ppx==3&&ppz==2){
-                [[Resources getResources] soundEvent:AMBIENT_MARSHBADLANDS];
+                [[Resources getResources] soundEvent:AMBIENT_MARSHBADLANDS:pos];
             }else if(ppx==3&&ppz==1){
-                [[Resources getResources] soundEvent:AMBIENT_GRASSBADLANDS];
+                [[Resources getResources] soundEvent:AMBIENT_GRASSBADLANDS:pos];
             }else if((ppx==3||ppx==2||ppx==1)&&ppz==0){
-                [[Resources getResources] soundEvent:AMBIENT_GRASSBADLANDS];
+                [[Resources getResources] soundEvent:AMBIENT_GRASSBADLANDS:pos];
             }else
            // printg("region: %d,%d\n",ppx,ppz);
-         [[Resources getResources] soundEvent:AMBIENT_OPEN];
+         [[Resources getResources] soundEvent:AMBIENT_OPEN:pos];
         }
     found:
         ;

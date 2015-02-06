@@ -1798,6 +1798,7 @@ float last_etime;
                
 }
 static double time1,time2,time3,time4;
+static int hit_load_counter=0;
 - (void)prepareAndLoadGeometry{
     time1=time2=-[start timeIntervalSinceNow];
     World* world=[World getWorld];
@@ -1850,40 +1851,54 @@ static double time1,time2,time3,time4;
                 
             }
         }
-       
+        
         if(count>140) {
-            
-            [[World getWorld].fm saveWorld];
-            
-            [World getWorld].fm.chunkOffsetX=m_chunkOffsetX;
-            [World getWorld].fm.chunkOffsetZ=m_chunkOffsetZ;
-
-            
-         printg("chunks to load:%d\n",count);
-        NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm.documents,world.terrain.world_name];
-        
-        //[sf_lock lock];
-        NSFileHandle* saveFile=[NSFileHandle fileHandleForReadingAtPath:file_name];
-        
-        for(int x=0;x<2*r;x++){
-            for(int z=0;z<2*r;z++){
-                if(!isloaded[x][z]){
-                    //removeLights
-                    [world.fm readColumn: x+m_chunkOffsetX:z+m_chunkOffsetZ:saveFile];
-                    //addlights
+            hit_load_counter++;
+            if(hit_load_counter==1){
+                [[World getWorld].hud.sb setStatus:@"Loading" :999];
+                if(count>300){
+                    hit_load_counter++;
                 }
+            
             }
-        }
-        
-        [saveFile closeFile];
-            //void calculateLighting();
-           
-            addMoreCreaturesIfNeeded();
-            update_lighting=TRUE;
-            extern BOOL loaded_new_terrain;
-            loaded_new_terrain=TRUE;
-        }
+            if(hit_load_counter>=2){
+                hit_load_counter=0;
+                [[World getWorld].hud.sb clear];
+                [[World getWorld].fm saveWorld];
+                
+                [World getWorld].fm.chunkOffsetX=m_chunkOffsetX;
+                [World getWorld].fm.chunkOffsetZ=m_chunkOffsetZ;
+                
+                
+                printf("chunks to load:%d\n",count);
+                NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm.documents,world.terrain.world_name];
+                
+                //[sf_lock lock];
+                NSFileHandle* saveFile=[NSFileHandle fileHandleForReadingAtPath:file_name];
+                
+                for(int x=0;x<2*r;x++){
+                    for(int z=0;z<2*r;z++){
+                        if(!isloaded[x][z]){
+                            //removeLights
+                            [world.fm readColumn: x+m_chunkOffsetX:z+m_chunkOffsetZ:saveFile];
+                            //addlights
+                        }
+                    }
+                }
+                
+                [saveFile closeFile];
+                //void calculateLighting();
+                
+                addMoreCreaturesIfNeeded();
+                update_lighting=TRUE;
+                extern BOOL loaded_new_terrain;
+                loaded_new_terrain=TRUE;
+            }
             time2=-[start timeIntervalSinceNow];
+            
+        }else{
+            
+        }
         //[sf_lock unlock];
         
         
@@ -2015,6 +2030,7 @@ static double time1,time2,time3,time4;
         void calculateLighting();
         calculateLighting();
         update_lighting=FALSE;
+        hit_load_counter=0;
     }
         time3=-[start timeIntervalSinceNow];
     
