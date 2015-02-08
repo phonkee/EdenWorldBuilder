@@ -1419,7 +1419,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
             
             if(collided>=TYPE_STONE_RAMP1&&collided<=TYPE_ICE_RAMP4){
                 if(collided>=TYPE_ICE_RAMP1&&collided<=TYPE_ICE_RAMP4){
-                    //onIce=TRUE;
+                    onIce=TRUE;
                     //onIceRamp=TRUE;
                 }
                 if(absf(lpos.y-pos.y)<.1f||(collided<TYPE_ICE_RAMP1||collided>TYPE_ICE_RAMP4)){
@@ -1448,7 +1448,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
             }
      
              
-            if(jumping||vel.y<-1.0f){
+            if(!onIce&&(jumping||vel.y<-1.0f)){
                 if(collided==TYPE_STONE||collided==TYPE_DARK_STONE||
                    collided==TYPE_WOOD||collided==TYPE_LADDER||
                    collided==TYPE_VINE||collided==TYPE_CRYSTAL||

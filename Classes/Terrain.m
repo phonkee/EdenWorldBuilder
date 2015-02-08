@@ -308,6 +308,11 @@ int extraGeneration(any_t passedIn,any_t chunkToGen){
 	return MAP_OK;
 }
 static BOOL update_lighting=FALSE;
+void updateLightingBegin(){
+    if(LOW_MEM_DEVICE)return;
+    update_lighting=TRUE;
+    memset(lightarray,0,sizeof(Vector8)*T_SIZE*T_SIZE*T_HEIGHT);
+}
 - (void)loadTerrain:(NSString*)name:(BOOL)fromArchive{
     
     double start_time=-[start timeIntervalSinceNow];
@@ -346,9 +351,9 @@ static BOOL update_lighting=FALSE;
     firstframe=TRUE;
     //hashmap_iterate(chunkMap,extraGeneration,NULL);
 	//[self startDynamics];
-    void calculateLighting();
-   // calculateLighting();
-    update_lighting=TRUE;
+   
+    void updateLightingBegin();
+    updateLightingBegin();
     double end_time=-[start timeIntervalSinceNow];
     extern BOOL loaded_new_terrain;
     loaded_new_terrain=TRUE;
@@ -1890,7 +1895,8 @@ static int hit_load_counter=0;
                 //void calculateLighting();
                 
                 addMoreCreaturesIfNeeded();
-                update_lighting=TRUE;
+                void updateLightingBegin();
+                updateLightingBegin();
                 extern BOOL loaded_new_terrain;
                 loaded_new_terrain=TRUE;
             }
@@ -2030,9 +2036,11 @@ static int hit_load_counter=0;
         void calculateLighting();
         calculateLighting();
         update_lighting=FALSE;
-       // hit_load_counter=0;
+        // hit_load_counter=0;
     }
-        time3=-[start timeIntervalSinceNow];
+
+    
+    time3=-[start timeIntervalSinceNow];
     
     
     

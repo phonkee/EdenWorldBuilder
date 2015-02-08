@@ -862,6 +862,10 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         [[Input getInput] clearAll];
         [[World getWorld].terrain startDynamics];
 		[sb setStatus:@"World Saved" :3];
+        
+        
+        
+        
         inmenu=false;
 		handled=TRUE;
 	}

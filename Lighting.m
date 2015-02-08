@@ -49,7 +49,7 @@ extern Vector colorTable[256];
 void calculateLighting(){
     //printf("calculating lighting first load\n");
     if(LOW_MEM_DEVICE)return;
-     memset(lightarray,0,sizeof(Vector8)*T_SIZE*T_SIZE*T_HEIGHT);
+    
     extern TerrainChunk** chunkTablec;
    /* extern BOOL* chunksToUpdate;
     extern BOOL* columnsToUpdate;
