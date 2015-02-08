@@ -19,6 +19,7 @@
 
 }
 +(void)setZFAR:(float)zfar;
++(void)setCameraFog:(float)zfar;
 + (void)initGraphics;
 + (void)drawText:(NSString*)text :(float)x :(float)y;
 + (void)drawRect:(float)x1 :(float)y1 :(float)x2 :(float)y2;
@@ -37,6 +38,7 @@
 + (void)endTerrain;
 + (void)beginHud;
 + (void)drawSkybox;
++(void)setCameraFog:(float)zfar;
 + (void)drawTexCubep:(float)x :(float)y :(float)z :(float)len :(Texture2D*)tex;
 + (void)endHud;
 @end

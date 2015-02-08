@@ -1724,6 +1724,7 @@ static int lmode=MODE_NONE;
 	//if(mode==MODE_MINE)return;
     [Graphics beginHud];
 	if(mode==MODE_CAMERA){
+        [Graphics setCameraFog:40];
 		if(take_screenshot){
 			if(!SUPPORTS_OGL2){
                  [Graphics setZFAR:40];
@@ -1751,6 +1752,8 @@ static int lmode=MODE_NONE;
             if([World getWorld].terrain.tgen.LEVEL_SEED== 0){
                 [Graphics setZFAR:55];
             }
+        }else{
+            [Graphics setZFAR:40];
         }
        // if(!SUPPORTS_OGL2)P_ZFAR= 20.0f;
        // else P_ZFAR=70.0f;

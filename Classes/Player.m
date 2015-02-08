@@ -850,10 +850,10 @@ static BOOL lastOnIce;
         hspeed*=10;
     }
     
-	//static int mcc=0;
-    //mcc++;
-    //if(mcc%5==0)
-     // printg("onground:%d  climbing:%d  inLiquid:%d  onramp:%d  onIce:%d\n",onground,climbing,inLiquid,onramp,onIce);
+	static int mcc=0;
+    mcc++;
+   // if(mcc%5==0)
+   //   printf("onground:%d  climbing:%d  inLiquid:%d  onramp:%d  onIce:%d\n",onground,climbing,inLiquid,onramp,onIce);
     
 	/*if([World getWorld].hud.mode==MODE_BURN){
 	speed=MOVE_SPEED*10;
@@ -962,9 +962,7 @@ static BOOL lastOnIce;
     }
     
 	//if(sinPitch*speed>0)vy=sinPitch*speed;
-    if(onIce){
-         accel.y+=-gravity*1.2f;
-    }else
+    
     if(climbing){
        
         accel.y+=vspeed;
@@ -1891,6 +1889,8 @@ float poffsetz=0;
     poffsetx=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
     poffsetz=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
     [self vertc];
+    
+    if(inLiquid)onIce=FALSE;
    // if(onground)NSLog(@"grounded sucka");
     static float iceTimer=.15f;
     if(!onIce&&!lastOnIce){

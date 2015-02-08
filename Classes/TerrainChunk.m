@@ -700,6 +700,7 @@ extern int g_offcz;
     }
     
     float skylight=1.0f;
+    float light[3]={1.0f,1.0f,1.0f};
     if(!LOW_MEM_DEVICE&&v_equals([World getWorld].terrain.final_skycolor,colorTable[54]))
         skylight=.35f;
     
@@ -1060,7 +1061,7 @@ extern int g_offcz;
              
         }*/
         float paint[3];
-        float light[3];
+        
         color8 clr=colors[idx];
         if(blockinfo[type]&IS_PORTAL){
             clr=0;
@@ -1075,9 +1076,11 @@ extern int g_offcz;
        
        
         //float shadow=0.5f;//getShadow(x+bounds[0],z+bounds[2],y+bounds[1]);
+        if(skylight!=1.0f){
         light[0]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],skylight,0);
         light[1]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],skylight,1);
         light[2]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],skylight,2);
+        }
         /*lightsf[CC(x,z,y)]+*/
     //    Vector lightv=lighting[(x)*CHUNK_SIZE*CHUNK_SIZE+(z)*CHUNK_SIZE+(y)];
     //    light[0]=lightv.x;
@@ -1361,7 +1364,7 @@ extern int g_offcz;
                     if(type==TYPE_LIGHTBOX||getBaseType(type)==TYPE_LAVA){
                         color=paint[coord]*255;
                     }
-                    if( color>255) vert_array[vert_c].colors[coord]=255;
+                    if( color>paint[coord]*255) vert_array[vert_c].colors[coord]=paint[coord]*255;
                     else vert_array[vert_c].colors[coord]=color;
                 }
                 

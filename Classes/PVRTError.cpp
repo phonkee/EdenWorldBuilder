@@ -72,7 +72,7 @@ void PVRTErrorOutputDebug(char const * const format, ...)
 	#elif defined(_WIN32) && !defined(UNDER_CE)
 		OutputDebugString(pszString);
 	#else
-		vfprintf(stderr, "%s", pszString);
+		printf( "%s", pszString);
 	#endif
 #endif
 }

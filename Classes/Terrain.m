@@ -2030,7 +2030,7 @@ static int hit_load_counter=0;
         void calculateLighting();
         calculateLighting();
         update_lighting=FALSE;
-        hit_load_counter=0;
+       // hit_load_counter=0;
     }
         time3=-[start timeIntervalSinceNow];
     

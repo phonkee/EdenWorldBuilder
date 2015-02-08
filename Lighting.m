@@ -87,7 +87,7 @@ void calculateLighting(){
                 for(int cy=0;cy<CHUNKS_PER_COLUMN;cy++){
                     TerrainChunk* chunk=chunkTablec[threeToOne(cx,cy,cz)];
                    
-                    if(chunk&&chunk.has_light)
+                    if(chunk)
                     for(int y=chunk.pbounds[1];y<CHUNK_SIZE+chunk.pbounds[1];y++){
                         for(int x=chunk.pbounds[0];x<CHUNK_SIZE+chunk.pbounds[0];x++){
                             for(int z=chunk.pbounds[2];z<CHUNK_SIZE+chunk.pbounds[2];z++){
@@ -96,6 +96,8 @@ void calculateLighting(){
                                     addlight(x,z,y,1.0f,colorTable[getColorc(x,z,y)]);
                                     [[World getWorld].terrain refreshChunksInRadius:x:z:y:LIGHT_RADIUS];
                                 }
+                                
+                                
                             }
                         }
                     }

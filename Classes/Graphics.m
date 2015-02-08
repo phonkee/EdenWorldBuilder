@@ -212,12 +212,19 @@ extern BOOL SUPPORTS_OGL2;
    
 	
 }
++(void)setCameraFog:(float)zfar{
+     zfar=190;
+     changedFog=TRUE;
+     P_ZFAR=zfar;
+}
 +(void)setZFAR:(float)zfar{
-    zfar=120;
+    
     if(LOW_MEM_DEVICE){
         zfar=80;
     }else if(LOW_GRAPHICS){
-        zfar=97;
+        zfar=102;
+    }else{
+        zfar=140;
     }
     changedFog=TRUE;
     if(zfar!=P_ZFAR){

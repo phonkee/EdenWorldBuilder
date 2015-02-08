@@ -552,6 +552,15 @@ void addMoreCreaturesIfNeeded(){
         if(guys[i].model_type!=-1&&(guys[i].update==TRUE||(guys[i].touched==TRUE&&nTouched<150))){
             if(guys[i].touched==TRUE){
                 nTouched++;
+                
+                float adjx=guys[i].pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
+                float adjz=guys[i].pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+                if(adjx>0&&adjx<T_SIZE&&adjz>0&&adjz<T_SIZE ){
+                    
+                    
+                    totalactive++;
+                    guys[i].update=TRUE;
+                }
                
             }else{
                 totalactive++;
@@ -563,7 +572,7 @@ void addMoreCreaturesIfNeeded(){
     if(totalactive<15)
     printg("adding more creatures");
     while(totalactive<15&&gc<nguys){
-        if(guys[gc].model_type==-1||!guys[gc].update||!guys[gc].alive){
+        if(guys[gc].touched==FALSE&&(guys[gc].model_type==-1||!guys[gc].update||!guys[gc].alive)){
           ResetModel(gc);
         }else{
             gc++;
