@@ -220,11 +220,11 @@ extern BOOL SUPPORTS_OGL2;
 +(void)setZFAR:(float)zfar{
     
     if(LOW_MEM_DEVICE){
-        zfar=80;
+        zfar=90;
     }else if(LOW_GRAPHICS){
-        zfar=102;
+        zfar=115;
     }else{
-        zfar=140;
+        zfar=145;
     }
     changedFog=TRUE;
     if(zfar!=P_ZFAR){

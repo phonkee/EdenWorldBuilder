@@ -42,3 +42,6 @@ extern const int blockTypeFaces[NUM_BLOCKS+1][6];
 extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 extern const int blockinfo[NUM_BLOCKS+1];
 @end
+
+
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)

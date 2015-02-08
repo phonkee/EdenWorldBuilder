@@ -62,7 +62,9 @@ static NSString* POPULAR_URL=@"http://files.edengame.net/popularlist.txt";
 FileDownload* reportmanager=NULL;
 -(void)reportWorld:(NSString*)file_name{
     
-    NSString* uuid=[[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    NSString* uuid=@"lowmemdevice";
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0"))
+    uuid=[[[UIDevice currentDevice] identifierForVendor] UUIDString];
     NSString* nsurl=[NSString stringWithFormat:@"%@?map=%@&uuid=%@",REPORT_URL,file_name,uuid ] ;
     NSURL* url = [[NSURL alloc] initWithString:nsurl];
     if(reportmanager){
@@ -156,7 +158,11 @@ FileDownload* reportmanager=NULL;
 	NSLog(@"share world %@",file_name);
 	
 	NSLog(@"attempting upload");
-    NSString* uuid=[[[UIDevice currentDevice] identifierForVendor] UUIDString];
+
+
+    NSString* uuid=@"lowmem";
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0"))
+        uuid=[[[UIDevice currentDevice] identifierForVendor] UUIDString];
     NSString* nsurl=[NSString stringWithFormat:@"%@?uuid=%@",UPLOAD_URL,uuid ] ;
     
 	NSURL* serverUrl=[[NSURL alloc] initWithString:nsurl];
