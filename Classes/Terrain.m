@@ -1875,7 +1875,7 @@ static int hit_load_counter=0;
                 [World getWorld].fm.chunkOffsetZ=m_chunkOffsetZ;
                 
                 
-                printf("chunks to load:%d\n",count);
+              //  printf("chunks to load:%d\n",count);
                 NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm.documents,world.terrain.world_name];
                 
                 //[sf_lock lock];

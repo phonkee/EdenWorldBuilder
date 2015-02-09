@@ -1216,7 +1216,7 @@ BOOL TestPoint(Polyhedra* A,float x,float y,float z){
 }
 BOOL collidePolyhedra(Polyhedra A,Polyhedra B)
 {
-    minTranDist=MakeVector(9999,9999,9999);
+    minTranDist=MakeVector(999999,999999,999999);
     float minLength=v_length2(minTranDist);
     for(int i=0;i<A.n_faces;i++)
     {

@@ -1189,7 +1189,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         ladderExists=FALSE;
         for(int x=(int)(left-.5f);x<=(int)(right+.5f);x++){
             for(int z=(int)(front-.5f);z<=(int)(back+.5f);z++){
-                for(int y=(int)(bot-.2f);y<=(int)(top+.5f);y++){
+                for(int y=(int)(bot);y<=(int)(top+.5f);y++){
                     int type=getLandc2(x,z,y);
                     if(type<=0)continue;
                     if(type==TYPE_LADDER||
@@ -1448,7 +1448,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
             }
      
              
-            if(!onIce&&(jumping||vel.y<-1.0f)){
+            if((jumping||vel.y<-1.0f)){
                 if(collided==TYPE_STONE||collided==TYPE_DARK_STONE||
                    collided==TYPE_WOOD||collided==TYPE_LADDER||
                    collided==TYPE_VINE||collided==TYPE_CRYSTAL||
@@ -1457,8 +1457,10 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
                    collided==TYPE_FIREWORK||collided==TYPE_BEDROCK||
                    (blockinfo[collided]&IS_RAMPORSIDE)) {
                     if((blockinfo[collided]&IS_HARD)){
+                        if(!onIce)
               [[Resources getResources] playSound:S_LAND_HARD];	
                     }else{
+                        if(!onIce)
                      [[Resources getResources] playSound:S_LAND_SOFT];
                     }
                 }
@@ -1937,7 +1939,7 @@ float poffsetz=0;
         vel.x*=mag;
         vel.z*=mag;
         vel.y*=mag;
-        //vel=dir;
+       // vel=dir;
         }else{
              //vel=v_div(v_sub(pos,lpos),etime);
         }
@@ -2029,7 +2031,7 @@ float poffsetz=0;
     
 	//[self horizc];
 		
-		
+   
 	if(pos.y <-10){ //darn, popped out of bounds
 		pos.y=T_HEIGHT+3;
         vel.y=0;
