@@ -100,6 +100,7 @@ static int count=0;
 }
 -(void)LoadCreatures{
     printg("start load:%d\n",1);
+   
     if(sfh->version<3){
         for(int i=0;i<MAX_CREATURES_SAVED;i++){
             creatureData[i].type=-1;

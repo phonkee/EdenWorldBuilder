@@ -11,10 +11,10 @@ public class Report extends HttpServlet
         /** 
 	 * 
 	 */
-	String path;
+	static String path;
 	private static final long serialVersionUID = 1L;
 		
-		FileWriter rfh;
+		public static FileWriter rfh;
         public void init(ServletConfig cfg) throws ServletException{
                 super.init(cfg);
                 path =cfg.getServletContext().getRealPath("/")+"/";
@@ -27,8 +27,10 @@ public class Report extends HttpServlet
                
         
         }
+   
     protected void doGet( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException
     {
+    	
         PrintWriter outp = resp.getWriter();
         
         String q=req.getQueryString();
@@ -53,8 +55,10 @@ public class Report extends HttpServlet
         
         System.out.println("report recieved map:"+map +"  uuid:"+uuid);
         outp.write("report recieved map:"+map +"  uuid:"+uuid);
+        synchronized(Moderate.rfhMutex){
         rfh.append(uuid+" "+map+"\n");
         rfh.flush();
+    	}
     }
 
     protected void doPost( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException

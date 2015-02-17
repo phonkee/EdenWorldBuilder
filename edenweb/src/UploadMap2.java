@@ -76,6 +76,22 @@ public class UploadMap2 extends HttpServlet implements Runnable
 		Iterator<Part> itp=parts.iterator();
 		Part file1=itp.next();
 		Part file2=itp.next();
+		String q=req.getQueryString();
+		int uidx=q.indexOf("=");
+		String id;
+		if(uidx!=-1){
+			String uuid=q.substring(uidx+1);
+			if(!uuid.equals("lowmem")){
+				id=uuid;
+			}else id =req.getRemoteAddr();
+			
+		}else id =req.getRemoteAddr();
+		if(Moderate.bannedlist.contains(id)){
+			outp.write( "YES"+buff );
+			System.out.println("banned user attempted upload:"+id);
+			activeupload--;
+			return;
+		}
 		boolean corrupt=false;
 		
 		if(file1==null||file2==null){
@@ -204,7 +220,7 @@ public class UploadMap2 extends HttpServlet implements Runnable
 					openc++;
 					fw=new FileWriter(path+"file_list2.txt",true);
 					
-					fw.append(file_name+" "+display_name+"\n");
+					fw.append("!"+id+" "+file_name+" "+display_name+"\n");
 				}catch(IOException ex){
 					ex.printStackTrace();
 				}finally{
@@ -221,8 +237,9 @@ public class UploadMap2 extends HttpServlet implements Runnable
 			o.file_name=file_name;
 			o.file1=outputFile;
 			o.file2=outputFile2;
+			o.id=id;
 			System.out.println("Adding:"+outputFile.getName()+ " and "+ outputFile2.getName()+ " to list. "+
-			" Display_name:"+display_name+"  File name:"+file_name);
+			" Display_name:"+display_name+"  File name:"+file_name +" uploader_id:"+id);
 			synchronized(filelist){
 			filelist.add(o);
 			if(filelist.size()>200){
@@ -356,7 +373,7 @@ public void run() {
 
 
 			synchronized(List2.singleton){
-				List2.singleton.parseLine(o.file_name+" "+o.display_name);
+				List2.singleton.parseLine("!"+o.id+" "+o.file_name+" "+o.display_name);
 				List2.singleton.updateBuffers();
 				filesuploaded++;
 			}
@@ -393,7 +410,7 @@ public void run() {
 class UploadObject{
 	public String file_name,display_name;
 	public File file1,file2;
-	
+	public String id;
 	
 	
 	

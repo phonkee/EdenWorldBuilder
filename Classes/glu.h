@@ -165,6 +165,8 @@ GLAPI GLUtesselator* GLAPIENTRY gluNewTess (void);
 GLAPI void GLAPIENTRY gluNextContour (GLUtesselator* tess, GLenum type);
 GLAPI void GLAPIENTRY gluOrtho2D (GLdouble left, GLdouble right, GLdouble bottom, GLdouble top);
 GLAPI void GLAPIENTRY gluPerspective (GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar);
+    void glhPerspectivef2( float fovyInDegrees, float aspectRatio,
+                          float znear, float zfar);
 GLAPI void GLAPIENTRY gluPickMatrix (GLdouble x, GLdouble y, GLdouble delX, GLdouble delY, GLint *viewport);
 GLAPI GLint GLAPIENTRY gluProject (GLdouble objX, GLdouble objY, GLdouble objZ, const GLdouble *model, const GLdouble *proj, const GLint *view, GLdouble* winX, GLdouble* winY, GLdouble* winZ);
 GLAPI void GLAPIENTRY gluTessBeginContour (GLUtesselator* tess);

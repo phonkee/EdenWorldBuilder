@@ -821,6 +821,8 @@ TerrainChunk* rebuildList[13000];
         }
     }
 	[[World getWorld].effects addBlockExplode:x :z :y :[self getLand:x :z :y] :[self getColor:x:z:y]];
+    
+    //[self updateChunks:x :z :y :TYPE_BRICK];
 	//[self updateChunks:x :z :y :TYPE_NONE];
 }
 

@@ -28,8 +28,10 @@ public class List2 extends HttpServlet
 	static Map<Long,String> filesByDate=new ConcurrentSkipListMap<Long,String>();
 	static Map<String,String> filesByName=new ConcurrentSkipListMap<String,String>();
 	
+	public static Map<String,String> mapTitles=new ConcurrentHashMap<String,String>();
+	public static Map<String,ArrayList<String>> mapUUID=new ConcurrentHashMap<String,ArrayList<String>>();
 	
-	
+	public static Map<String,String> uuidlookup=new HashMap<String,String>();
 	static Map<String,ArrayList<EdenMap>> searchTable=new ConcurrentHashMap<String,ArrayList<EdenMap>>();
 	Random r;
 	static  String[] listBuffers=new String[3];
@@ -70,7 +72,15 @@ public class List2 extends HttpServlet
         		int n=0;
         		while(n<150){
         			if(!it.hasNext())break;
-        			buff.append(it.next());
+        			String line=it.next();
+        			String map=line.substring(0,line.indexOf("\n"));
+        			
+        			if(Moderate.removedlist.contains(map)){
+        				//System.out.println("removed:"+map);
+        				continue;
+        			}
+        			
+        			buff.append(line);
         			n++;
         		}
         	}
@@ -88,16 +98,36 @@ public class List2 extends HttpServlet
 				uploads=searches=listrequests=0;
 			}
 			uploads++;
+		String uuid="";
+		if(line.charAt(0)=='!'){
+			uuid=line.substring(1,line.indexOf(" "));
+			System.out.println("parsed uuid:"+uuid);
+			line=line.substring(line.indexOf(" ")+1,line.length());
+			System.out.println("line:'"+line+"'");
+
+		}
 		String file_name=line.substring(0,line.indexOf(" "));
 		String display_name=line.substring(line.indexOf(" ")+1);
-		
+
+		if(uuid.length()>0){
+			ArrayList<String>  userMaps=null;
+			if(mapUUID.containsKey(uuid)){
+				userMaps=mapUUID.get(uuid);
+			}else{
+				userMaps=new ArrayList<String>();
+				mapUUID.put(uuid,userMaps);
+			}
+			userMaps.add(file_name);
+			uuidlookup.put(file_name,uuid);
+		}
+		mapTitles.put(file_name, display_name);
 		
 		
 		String timestamp=file_name.substring(0,file_name.length()-5);
 		String listing=file_name+"\n"+display_name+".name\n";
 		display_name=display_name.toUpperCase();
 		if(filesByDate.containsKey(Long.parseLong(timestamp)))return;
-		if(!addToSearchTable(display_name,listing,Long.parseLong(timestamp)))
+		if(!addToSearchTable(display_name,listing,Long.parseLong(timestamp),file_name))
 			return;
 		filesByDate.put(Long.parseLong(timestamp),listing);
 		if(filesByDate.size()>150){
@@ -138,7 +168,7 @@ public class List2 extends HttpServlet
 		
 	
 	}
-	private boolean addToSearchTable(String display_name, String listing,long date) {
+	private boolean addToSearchTable(String display_name, String listing,long date,String file_name) {
 		StringBuilder b=new StringBuilder();
 		for(int i=0;i<display_name.length();i++){
 			char c=display_name.charAt(i);
@@ -148,8 +178,10 @@ public class List2 extends HttpServlet
 				b.append(' ');
 			
 		}
+		if(Moderate.removedlist.contains(file_name))return false;
 		EdenMap map=new EdenMap();
 		map.listing=listing;
+		map.file_name=file_name;
 		map.date=date;
 		map.count=0;
 		String[] words=b.toString().split(" ");
@@ -306,6 +338,8 @@ public class List2 extends HttpServlet
 
     		for(int i=0;i<150;i++){
     			if(i>=results.length)break;
+    			if(Moderate.removedlist.contains(results[i].file_name))
+    				continue;
     			buff.append(results[i].listing);
     			//System.out.print(results[i].count+" :::"+results[i].listing);
     		}
@@ -341,6 +375,7 @@ public class List2 extends HttpServlet
 }
 class EdenMap implements Comparable<Object>{
 	public String listing;
+	public String file_name;
 	public long date;
 	public int count;
 	
