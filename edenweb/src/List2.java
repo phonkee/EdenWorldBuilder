@@ -79,6 +79,9 @@ public class List2 extends HttpServlet
         				//System.out.println("removed:"+map);
         				continue;
         			}
+        			if(!Moderate.whitelist.contains(map)){
+        				continue;
+        			}
         			
         			buff.append(line);
         			n++;
@@ -130,7 +133,7 @@ public class List2 extends HttpServlet
 		if(!addToSearchTable(display_name,listing,Long.parseLong(timestamp),file_name))
 			return;
 		filesByDate.put(Long.parseLong(timestamp),listing);
-		if(filesByDate.size()>150){
+		if(filesByDate.size()>10000){
 			synchronized(filesByDate){
 				Iterator<Long> iterator=filesByDate.keySet().iterator();
 				filesByDate.remove(iterator.next());
@@ -353,8 +356,11 @@ public class List2 extends HttpServlet
         	 return;
         }
         if(sort>=0&&sort<3){ 
-        	if(listBuffers[sort]!=null)
-            outp.write(listBuffers[sort]);
+        	if(listBuffers[sort]!=null){
+        		
+        		outp.write(listBuffers[sort]);
+        	}
+            //
         }else      	
         	
         	outp.write("");

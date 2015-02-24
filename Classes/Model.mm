@@ -7,7 +7,7 @@
 #import "PVRTResourceFile.h"
 #import "PVRTString.h"
 #import "PVRTTextureAPI.h"
-extern "C" {
+
 #import "Model.h"
 #import "Util.h"
 #import "Graphics.h"
@@ -15,7 +15,7 @@ extern "C" {
 #import "Globals.h"
 #import "Frustum.h"
 
-}
+
 #import "Resources.h"
 #import "TerrainGen2.h"
 

@@ -43,6 +43,7 @@
 + (void)endHud;
 @end
 
+
 typedef struct _vertexStruct
 {
     float position[3];

@@ -730,7 +730,7 @@ TerrainChunk* rebuildList[13000];
        // [liquids checkPoint:x:z:y];
     }
     int paint=[self getColor:x:z:y];;
-    if((cur==TYPE_TNT||cur==TYPE_FIREWORK)||isOnFire(x,z,y)){
+    if((cur==TYPE_TNT||cur==TYPE_FIREWORK||cur==TYPE_BLOCK_TNT)||isOnFire(x,z,y)){
         paint=[self getColor:x:z:y];//save color so it can be used when explosion is triggered
     }
     [[World getWorld].effects addBlockBreak:x :z :y :[self getLand:x :z :y]:[self getColor:x:z:y]];
@@ -780,7 +780,7 @@ TerrainChunk* rebuildList[13000];
     }
     
     int paint=[self getColor:x:z:y];;
-    if((cur==TYPE_TNT||cur==TYPE_FIREWORK)||isOnFire(x,z,y)){
+    if((cur==TYPE_TNT||cur==TYPE_FIREWORK||cur==TYPE_BLOCK_TNT)||isOnFire(x,z,y)){
         paint=[self getColor:x:z:y];//save color so it can be used when explosion is triggered
     }
     if(cur==TYPE_LIGHTBOX){
@@ -855,8 +855,8 @@ bool isOnFire(int x ,int z, int y){
 		node->y=y;
 		node->z=z;
 		node->type=type;
-		if(type==TYPE_TNT||type==TYPE_FIREWORK){
-            if(type==TYPE_TNT&&causedByExplosion){
+		if(type==TYPE_TNT||type==TYPE_FIREWORK||type==TYPE_BLOCK_TNT){
+            if((type==TYPE_TNT||type==TYPE_BLOCK_TNT)&&causedByExplosion){
                 node->life=.5+randf(.3f);
             }
             else
@@ -1533,6 +1533,63 @@ int getColorc(int x,int z,int y){
     [self destroyBlock:x :z :y];
     printg("shooting firework, color:%d\n",[self getColor:x:z:y]);
 }
+- (void)blocktntexplode:(int)x :(int)z :(int)y :(int)type{
+    
+    
+    int color=[self getColor:x:z:y];
+    //if(color!=0)
+    //    [[Resources getResources] playSound:S_GOOP_EXPLODE];
+    //else
+        [[Resources getResources] playSound:S_EXPLODE];
+    
+    Vector v=MakeVector(x+.5f,y+.5f,z+.5f);
+    ExplodeModels(v,color);
+    [[World getWorld].effects addCreatureVanish:x+.5f:z+.5f:y+.5f:color:TYPE_TNT];
+    
+    BOOL painting=false;
+    BOOL building =true;
+    
+    if(color!=0)painting=true;
+    //[self destroyBlock:x :z :y];
+    int er=2;
+   	for(int i=0;i<=er;i++){
+        for(int j=x-er;j<=x+er;j++){
+            for(int k=z-er;k<=z+er;k++){
+                int yy=er-i;
+                
+              //  int ox=j-x;
+              //  int oz=k-z;
+              //  int oy=yy;
+                
+                
+                    int type=getLandc(j, k, y-yy);
+                    if(type==0){
+                        if(![[World getWorld].player test:j :y-yy :k:1]){
+                            [self updateChunks:j :k :y-yy :TYPE_BRICK];
+                            [self paintBlock:j :k :y-yy:color];
+                        }
+                    }else if(type==TYPE_BLOCK_TNT){
+                        [self burnBlock:j :k :y-yy :TRUE];
+                    }
+                    
+                    type=getLandc(j, k, y+yy);
+                    
+                    if(type==0){
+                        if(![[World getWorld].player test:j :y+yy:k:1]){
+                            [self updateChunks:j :k :y+yy :TYPE_BRICK];
+                            [self paintBlock:j :k :y+yy:color];
+                        }
+                    }else if(type==TYPE_BLOCK_TNT){
+                        [self burnBlock:j :k :y+yy :TRUE];
+                    }
+                    
+                
+                
+            }
+        }
+        
+    }	
+}
 
 - (void)explode:(int)x :(int)z :(int)y{
     
@@ -1548,6 +1605,8 @@ int getColorc(int x,int z,int y){
     [[World getWorld].effects addCreatureVanish:x+.5f:z+.5f:y+.5f:color:TYPE_TNT];
     
     BOOL painting=false;
+    BOOL building =false;
+   
     if(color!=0)painting=true;
 	//[self destroyBlock:x :z :y];
    	for(int i=1;i<=EXPLOSION_RADIUS;i++){
@@ -1560,6 +1619,7 @@ int getColorc(int x,int z,int y){
 				int oy=yy;
 				if(ox*ox+oz*oz+oy*oy>EXPLOSION_RADIUS*EXPLOSION_RADIUS)
 					continue;
+                
                 if(painting){
                     int type=getLandc(j, k, y-yy);
                     if(type!=-1)
@@ -1673,7 +1733,7 @@ float last_etime;
 	BurnNode* prev=NULL;
 	BurnNode* node=burnList;
 	while(node!=NULL){
-		if(node->time > node->life-BURN_SPREAD_TIME &&node->time-etime<=node->life-BURN_SPREAD_TIME){
+		if(node->time > node->life-BURN_SPREAD_TIME &&node->time-etime<=node->life-BURN_SPREAD_TIME&&node->type!=TYPE_BLOCK_TNT){
 			[self burnBlock:node->x+1 :node->z :node->y :FALSE];
 			[self burnBlock:node->x-1 :node->z :node->y :FALSE];
 			[self burnBlock:node->x :node->z+1 :node->y :FALSE];
@@ -1702,6 +1762,8 @@ float last_etime;
 			}else if(node->type==TYPE_FIREWORK){
             
                 [self shootFirework:node->x :node->z :node->y];
+            }else if(node->type==TYPE_BLOCK_TNT){
+                [self blocktntexplode:node->x :node->z :node->y :node->type];
             }
 			nburn--;
 			[[Resources getResources] endBurnId:node->sid];

@@ -5,19 +5,19 @@
 //  Created by Ari Ronen on 11/2/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
-extern "C" {
+
 #import "BlockBreak.h"
 #import "Globals.h"
 #import "Terrain.h"
 #import "Graphics.h"
-}
+
 #import "PVRTVector.h"
 //#import "SpecialEffects.h"
 
 #define BREAKP 10
 #define VANISHP 60
 #define EXPP 1
-#define pbuffer_size2 10000
+#define pbuffer_size2 20000
 #define max_bparticles pbuffer_size2
 
 #define PT_GRAV 0

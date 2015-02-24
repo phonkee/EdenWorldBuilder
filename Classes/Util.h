@@ -15,6 +15,7 @@
 }
 
 @end
+
 typedef struct _worldnode{
 	NSString* display_name;
 	NSString* file_name;
@@ -38,6 +39,8 @@ typedef struct tnode{
 	BOOL hasChildren;
 	struct tnode* children[8];
 }TreeNode;
+    
+
 enum FC_MODES {
 	FC_PLACE=1,
 	FC_DESTROY=2
@@ -95,7 +98,7 @@ void VectorMatrixMultiply(Vector* vDest, Vector vSrc,const float mat[16]);
 void NormalizeVector(Vector* v);
 float absf(float f);
 BOOL inbox(float x,float y,CGRect rect);
-BOOL inbox2(float x,float y,Button* rect);
+extern BOOL inbox2(float x,float y,Button* rect);
 BOOL inbox3(float x,float y,Button* rect);
 BOOL interpolatev(Vector* vec,Vector final_vec,float speed,float etime);
 Button ButtonMake(float x,float y,float width,float height);

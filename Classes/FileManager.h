@@ -21,6 +21,8 @@
 
 #define FILE_VERSION 4
 #define SIZEOF_COLUMN CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*CHUNKS_PER_COLUMN*(sizeof(block8)+sizeof(color8))
+
+
 typedef struct{
 	int level_seed;
 	Vector pos;

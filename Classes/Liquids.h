@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "hashmap.h"
 #import "Globals.h"
+
+
 typedef struct wnode{
 	int x,y,z;
     
@@ -37,6 +39,7 @@ typedef struct _pnode2{
 	struct _pnode2* next;
     struct _pnode2* prev;
 }PNode2;
+
 
 @interface Liquids : NSObject {
     

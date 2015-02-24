@@ -14,7 +14,7 @@
 #import "Input.h"
 #import "OpenGL_Internal.h"
 
-#define MAX_FIREWORK 40
+#define MAX_FIREWORK 80
 typedef struct _firework{
     Vector pos;
     int color;

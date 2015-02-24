@@ -83,7 +83,8 @@ public class UploadMap2 extends HttpServlet implements Runnable
 			String uuid=q.substring(uidx+1);
 			if(!uuid.equals("lowmem")){
 				id=uuid;
-			}else id =req.getRemoteAddr();
+			}else ;
+			id =req.getRemoteAddr();
 			
 		}else id =req.getRemoteAddr();
 		if(Moderate.bannedlist.contains(id)){
@@ -305,6 +306,7 @@ public  String getMD5Checksum(String filename) throws Exception {
 
 float timert=500;
 long curtime=System.currentTimeMillis();
+HashMap<String,Long> lastuploadtime=new HashMap<String,Long>();
 @Override
 public void run() {
 	
@@ -374,6 +376,21 @@ public void run() {
 
 			synchronized(List2.singleton){
 				List2.singleton.parseLine("!"+o.id+" "+o.file_name+" "+o.display_name);
+				long lastupload=0;
+				if(lastuploadtime.containsKey(o.id)){
+					lastupload=lastuploadtime.get(o.id);
+				}
+				long cur=System.currentTimeMillis();
+				if((cur-lastupload)/1000>60*60){
+					
+				
+				  synchronized(Moderate.rfhMutex){
+				        Report.rfh.append("server "+o.file_name+"\n");
+				        Report.rfh.flush();
+				    	}
+				}
+				
+				lastuploadtime.put(o.id, cur);
 				List2.singleton.updateBuffers();
 				filesuploaded++;
 			}

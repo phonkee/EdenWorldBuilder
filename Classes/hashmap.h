@@ -15,7 +15,9 @@
  * any_t is a pointer.  This allows you to put arbitrary structures in
  * the hashmap.
  */
-typedef void *any_t;
+
+
+typedef void* any_t;
 
 /*
  * PFany is a pointer to a function that can take two any_t arguments
@@ -78,3 +80,4 @@ extern int hashmap_length(map_t in);
 extern int hashmap_remove_all(map_t in,BOOL shouldFree);
 
 extern int hashmap_iterate_range(map_t in, PFany f, any_t item,int start,int frac);
+
