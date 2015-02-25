@@ -56,7 +56,7 @@ void Firework::update(float etime) {
     if(frot>M_PI*2)frot-=M_PI*2;
 }
 void Firework::render(){
-    [Graphics startPreview];
+    Graphics::startPreview();
     glEnableClientState(GL_NORMAL_ARRAY);  
     glEnable(GL_LIGHTING);
     
@@ -78,12 +78,13 @@ void Firework::render(){
                       :fireworks[i].pos.z
                       :TYPE_FIREWORK
                       :1];*/
-         [Graphics drawFirework:fireworks[i].pos.x
-                               :fireworks[i].pos.y
-                               :fireworks[i].pos.z
-                               :fireworks[i].color
-                               :0.5f
-                               :frot];
+         Graphics::drawFirework(fireworks[i].pos.x,
+                                fireworks[i].pos.y,
+                                fireworks[i].pos.z,
+                                fireworks[i].color,
+                                0.5f,
+                                frot);
+        
          
          if(fireworks[i].fuse<0){
              [[Resources getResources] playSound:S_FIREWORK_EXPLODE];
@@ -106,6 +107,7 @@ void Firework::render(){
 
     glDisableClientState(GL_NORMAL_ARRAY);  
     glDisable(GL_LIGHTING);
-    [Graphics endPreview];
+    Graphics::endPreview();
+    
 }
 

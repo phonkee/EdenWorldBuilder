@@ -364,9 +364,9 @@ void CalcEnvMap(vertexObject* vert){
     // pV, pN and pTC point to the XYZ, Normal and Texture Coordinate attributes of a single vertex.
     
      // Calculate the vector from Object Space Eye to the Vertex
-        PVRTVec3 _refFrameEye([World getWorld].player.pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE,
+        PVRTVec3 _refFrameEye([World getWorld].player.pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE,
                               [World getWorld].player.pos.y+3*1.85f/10,
-                              [World getWorld].player.pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE);
+                              [World getWorld].player.pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE);
     PVRTVec3 pV(vert->position[0]/4.0f,vert->position[1]/4.0f,vert->position[2]/4.0f);
     
         PVRTVec3 viewVec = _refFrameEye - pV;
@@ -553,8 +553,8 @@ void addMoreCreaturesIfNeeded(){
             if(guys[i].touched==TRUE){
                 nTouched++;
                 
-                float adjx=guys[i].pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
-                float adjz=guys[i].pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+                float adjx=guys[i].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
+                float adjz=guys[i].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
                 if(adjx>0&&adjx<T_SIZE&&adjz>0&&adjz<T_SIZE ){
                     
                     
@@ -586,7 +586,7 @@ void addMoreCreaturesIfNeeded(){
         int ly=-1;
         //guys[gc].pos=PVRTVec3(arc4random()%25+90,arc4random()%5+32,T_HEIGHT);
         for(int i=0;i<20;i++){
-        guys[gc].pos=PVRTVec3(arc4random()%T_SIZE+[World getWorld].fm.chunkOffsetX*CHUNK_SIZE,T_HEIGHT-15,arc4random()%T_SIZE+[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE);
+        guys[gc].pos=PVRTVec3(arc4random()%T_SIZE+[World getWorld].fm->chunkOffsetX*CHUNK_SIZE,T_HEIGHT-15,arc4random()%T_SIZE+[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE);
             for(int y=T_HEIGHT-1;y>0;y--){
                 int t=getLandc(guys[gc].pos.x,guys[gc].pos.z,y);
                 if(t>0){
@@ -743,8 +743,8 @@ void LoadModels2(){
                 guys[gc].touched=FALSE;
             guys[gc].life=START_LIFE;
             
-            float adjx=creatureData[i].pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
-            float adjz=creatureData[i].pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+            float adjx=creatureData[i].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
+            float adjz=creatureData[i].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
             if(adjx>0&&adjx<T_SIZE&&adjz>0&&adjz<T_SIZE ){
                 
                
@@ -1304,8 +1304,8 @@ void Move(Entity* e,float etime){
     e->inLiquid=FALSE;
     float mag=0;
     mag=e->vel.length();
-    poffsetx=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
-    poffsetz=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+    poffsetx=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
+    poffsetz=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
     CheckCollision(e);  
     
     
@@ -1402,8 +1402,8 @@ void UpdateModels(float etime){
     for(int i=0;i<nguys;i++){     
         if(!guys[i].alive||!guys[i].update)continue;
         
-        float adjx=guys[i].pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
-        float adjz=guys[i].pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+        float adjx=guys[i].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
+        float adjz=guys[i].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
         
         
         if(adjx>0&&adjx<T_SIZE&&adjz>0&&adjz<T_SIZE ){
@@ -2179,8 +2179,8 @@ void DrawShadows(){
        	}
         Vector vpos=MakeVector(guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
         //if(guys[i].model_type==M_GREEN)vpos.x-=.5f;
-        float x=ABS(vpos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE);
-        float z=ABS(vpos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE);
+        float x=ABS(vpos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE);
+        float z=ABS(vpos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE);
         float y=(int)(min[guys[i].model_type].y*scale+vpos.y+.01)+.01f;
          Vector point;
         point.x=x;
@@ -2429,8 +2429,8 @@ bool RenderModels()
           
         int i=renderlistc[j];
         
-        guys[i].pos.x-=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
-        guys[i].pos.z-=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+        guys[i].pos.x-=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
+        guys[i].pos.z-=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
         
      //   printg("rendering model: (%f,%f,%f)\n",guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
         if(guys[i].color==0||guys[i].ragetimer>0){
@@ -2475,8 +2475,8 @@ bool RenderModels()
             glColor4f(1,1,1,1);
         }
         
-        guys[i].pos.x+=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
-        guys[i].pos.z+=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+        guys[i].pos.x+=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
+        guys[i].pos.z+=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
     
     }
     
@@ -2485,11 +2485,11 @@ bool RenderModels()
         glEnable(GL_BLEND);
         //if(guys[nguys].color==0)
             glColor4f(1.0f,1.0f,1.0f,.5f);
-        guys[nguys].pos.z-=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
-        guys[nguys].pos.x-=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
+        guys[nguys].pos.z-=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
+        guys[nguys].pos.x-=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
         DrawModel(nguys);
-       guys[nguys].pos.z+=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
-        guys[nguys].pos.x+=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
+       guys[nguys].pos.z+=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
+        guys[nguys].pos.x+=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
         glDisable(GL_BLEND);
     }
 	glDisableClientState(GL_NORMAL_ARRAY);
@@ -2519,8 +2519,8 @@ bool RenderModels()
       
         
         
-        guys[i].pos.x-=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
-        guys[i].pos.z-=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+        guys[i].pos.x-=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
+        guys[i].pos.z-=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
       //  Vector vpos=MakeVector(guys[i].pos.x*1/scale,guys[i].pos.y*1/scale,guys[i].pos.z*1/scale);
         
        // DrawBox(v_add(min[guys[i].model_type],vpos),v_add(max[guys[i].model_type],vpos));
@@ -2556,8 +2556,8 @@ bool RenderModels()
         
       
         
-        guys[i].pos.x+=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
-        guys[i].pos.z+=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+        guys[i].pos.x+=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
+        guys[i].pos.z+=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
         //DrawBox(&guys[i].box);
         
     }

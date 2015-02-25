@@ -15,33 +15,34 @@
 #import "Resources.h"
 
 
-@interface Graphics : NSObject {
+class Graphics{
+public:
+    static void setZFAR(float zfar);
+    static void setCameraFog(float zfar);
+    static void initGraphics();
+    static void drawText(NSString* text,float x,float y);
+    static void drawRect(float x1,float y1,float x2,float y2);
+    static void drawRectOutline(CGRect rect);
+    static void prepareScene();
+    static void prepareMenu();
+    static void endMenu();
+    static void setLighting();
+    static void drawTexCube(float x,float y,float z,float len, Texture2D* tex);
+    static void drawFirework(float x,float y,float z, int color, float scale,float rot);
+    static void drawCube(float x,float y,float z,int type,int buildsize);
+    static void startPreview();
+    static void endPreview();
+    static void setPerspective();
+    static void beginTerrain();
+    static void endTerrain();
+    static void beginHud();
+    static void drawSkybox();
+    
+    static void drawTexCubep(float x,float y,float z,float len, Texture2D* tex);
+    static void endHud();
+    
+};
 
-}
-+(void)setZFAR:(float)zfar;
-+(void)setCameraFog:(float)zfar;
-+ (void)initGraphics;
-+ (void)drawText:(NSString*)text :(float)x :(float)y;
-+ (void)drawRect:(float)x1 :(float)y1 :(float)x2 :(float)y2;
-+ (void)drawRectOutline:(CGRect)rect;
-+ (void)prepareScene;
-+ (void)prepareMenu;
-+ (void)endMenu;
-+ (void)setLighting;
-+ (void)drawTexCube:(float)x :(float)y :(float)z :(float)len :(Texture2D*)tex;
-+ (void)drawFirework:(float)x :(float)y :(float)z :(int) color :(float) scale: (float) rot;
-+ (void)drawCube:(float)x :(float)y :(float)z :(int)type :(int)buildsize;
-+ (void)startPreview;
-+ (void)endPreview;
-+ (void)setPerspective;
-+ (void)beginTerrain;
-+ (void)endTerrain;
-+ (void)beginHud;
-+ (void)drawSkybox;
-+(void)setCameraFog:(float)zfar;
-+ (void)drawTexCubep:(float)x :(float)y :(float)z :(float)len :(Texture2D*)tex;
-+ (void)endHud;
-@end
 
 
 typedef struct _vertexStruct

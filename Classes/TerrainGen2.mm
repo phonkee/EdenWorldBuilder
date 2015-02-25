@@ -2901,7 +2901,8 @@ void tg2_render(){
                     }
                 //color=colorTable[10];
                     glColor4f(color.x,color.y,color.z,1.0f);
-                    [Graphics drawRect:sx:GSIZE/increment-sz:sx+1:GSIZE/increment-sz+1];
+                Graphics::drawRect(sx,GSIZE/increment-sz,sx+1,GSIZE/increment-sz+1);
+                
                     
                     
                     break;

@@ -148,20 +148,20 @@ extern EAGLView* G_EAGL_VIEW;
 }
 - (BOOL)textField:(UITextField *)textField 
 		shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-	[[Input getInput] keyTyped:string];
+	Input::getInput()->keyTyped(string);
 	return FALSE;
 }
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-	[[Input getInput] touchesBegan:touches withEvent:event];	 
+	Input::getInput()->touchesBegan(touches,event);
 }
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-	[[Input getInput] touchesMoved:touches withEvent:event];
+	Input::getInput()->touchesMoved(touches,event);
 }
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-	[[Input getInput] touchesEnded:touches withEvent:event];
+	Input::getInput()->touchesEnded(touches,event);
 }
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
-	[[Input getInput] touchesCancelled:touches withEvent:event];
+	Input::getInput()->touchesCancelled(touches,event);
 	
 }
 - (BOOL)canBecomeFirstResponder{

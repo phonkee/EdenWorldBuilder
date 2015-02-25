@@ -247,7 +247,7 @@ static float fade_out=0;
 	NSError* err;
 	NSArray* dirContents = [[NSFileManager defaultManager] 
 							
-							contentsOfDirectoryAtPath:[World getWorld].fm.documents error:&err];
+							contentsOfDirectoryAtPath:[World getWorld].fm->documents error:&err];
     
     
     //readIndex();
@@ -267,7 +267,7 @@ static float fade_out=0;
     if(reloadDir){
         dirContents=[[NSFileManager defaultManager]
          
-         contentsOfDirectoryAtPath:[World getWorld].fm.documents error:&err];
+         contentsOfDirectoryAtPath:[World getWorld].fm->documents error:&err];
         dirc=[dirContents count];
     }
     
@@ -285,7 +285,7 @@ static float fade_out=0;
         if(![wut isEqualToString:@"EDEN"])
             continue;
         
-		NSString* real_name=[[World getWorld].fm getName:file_name];
+		NSString* real_name=[World getWorld].fm->getName(file_name);
         if(real_name==NULL){
             real_name=@"Unknown World";
         }
@@ -453,8 +453,8 @@ static const int usage_id=7;
 		}
 		
 	}
-	Input* input=[Input getInput];	
-	itouch* touches=[input getTouches];	
+	Input* input=Input::getInput();
+    itouch* touches=input->getTouches();
 	sbar->update(etime);
     
    
@@ -503,7 +503,7 @@ static const int usage_id=7;
 							share_mode=FALSE;
 							
 							
-							if([[World getWorld].fm worldExists:node->file_name:TRUE]){
+							if([World getWorld].fm->worldExists(node->file_name,TRUE)){
 								sbar->setStatus(@"Sharing world..." ,2);
 								is_sharing=TRUE;
 								[share_menu beginShare:node];
@@ -603,7 +603,7 @@ static const int usage_id=7;
 			NSString* wname=selected_world->file_name;
             [self removeWorld:selected_world];
             
-            if([[World getWorld].fm deleteWorld:wname])
+            if([World getWorld].fm->deleteWorld(wname))
                 sbar->setStatus(@"World deleted" ,2);
             else{
                 NSLog(@"delete failed\n");
@@ -621,12 +621,12 @@ static const int usage_id=7;
                 NSLog(@"button idx %d",buttonIndex);
             case 0:
             {
-                [World getWorld].fm.genflat=TRUE;
+                [World getWorld].fm->genflat=TRUE;
                 break;
             }
             case 1:
             {
-                 [World getWorld].fm.genflat=FALSE;             
+                 [World getWorld].fm->genflat=FALSE;
                 break;
             }
                 
@@ -640,7 +640,7 @@ static const int usage_id=7;
     }
 }
 -(BOOL)loadShared:(SharedListNode*)sharedNode{
-    NSString* rfile_name=[NSString stringWithFormat:@"%@/%@",[World getWorld].fm.documents,sharedNode->file_name];
+    NSString* rfile_name=[NSString stringWithFormat:@"%@/%@",[World getWorld].fm->documents,sharedNode->file_name];
 
     const char* fname=[rfile_name cStringUsingEncoding:NSUTF8StringEncoding];
   //  NSString* new_name=[NSString stringWithFormat:@"%@/%@.archive",[World getWorld].fm.documents,sharedNode->file_name];
@@ -648,7 +648,7 @@ static const int usage_id=7;
     
     
   //  rename(fname,cnewname);
-    NSString* temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents];
+    NSString* temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm->documents];
     const char* tname=[temp_name cStringUsingEncoding:NSUTF8StringEncoding];
     
     
@@ -706,7 +706,8 @@ static const int usage_id=7;
 	
 }
 -(void)render{
-	[Graphics prepareMenu];
+    Graphics::prepareMenu();
+	
     
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -720,17 +721,20 @@ static const int usage_id=7;
 	
 	if(showsettings){
 		settings->render();
-		[Graphics endMenu];
+        Graphics::endMenu();
+		
 		return;
 	}
 	if(showlistscreen){
 		[shared_list render];
-		[Graphics endMenu];	
+        Graphics::endMenu();
+		
 		return;
 	}
 	if(is_sharing==1){
 		[share_menu render];
-		[Graphics endMenu];	
+        Graphics::endMenu();
+		
 		return;
 	}
 		glColor4f(1.0, 1.0, 1.0, 1.0f);
@@ -834,7 +838,7 @@ static const int usage_id=7;
 			if(selected_world!=NULL){
 				
 				//NSString* wname=selected_world->file_name;
-                if([[World getWorld].fm worldExists:selected_world->file_name:TRUE]){
+                if([World getWorld].fm->worldExists(selected_world->file_name,TRUE)){
 				//[[World getWorld] loadWorld:wname];
                     loading=4;
                 }
@@ -899,15 +903,18 @@ static const int usage_id=7;
         glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         if(IS_IPAD){
             if(IS_RETINA){
-                [Graphics drawRect:0:0:SCREEN_WIDTH*2:SCREEN_HEIGHT*2];
+                Graphics::drawRect(0,0,SCREEN_WIDTH*2,SCREEN_HEIGHT*2);
             }else
-                [Graphics drawRect:0:0:IPAD_WIDTH:IPAD_HEIGHT];
-        }else
-            [Graphics drawRect:0:0:SCREEN_WIDTH:SCREEN_HEIGHT];
+                Graphics::drawRect(0,0,IPAD_WIDTH,IPAD_HEIGHT);
+        }else{
+            Graphics::drawRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+            
+        }
         glEnable(GL_TEXTURE_2D);
         sbar->render();
     }
 	glDisable(GL_BLEND);
-    [Graphics endMenu];
+    Graphics::endMenu();
+    
 }
 @end

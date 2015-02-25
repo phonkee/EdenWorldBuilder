@@ -19,8 +19,7 @@
 
 
 
-@implementation FileManager
-@synthesize chunkOffsetX,chunkOffsetZ,documents,convertingWorld,genflat;
+
 
 
 static map_t indexes;
@@ -46,8 +45,8 @@ int regionSkyColors[4][4]={
     {COLOR_PURPLE1,COLOR_NORMAL_BLUE,COLOR_NORMAL_BLUE,COLOR_RED5}};
 
 EntityData creatureData[MAX_CREATURES_SAVED];
--(id)init{
-	single=self;
+FileManager::FileManager(){
+	single=this;
     genflat=FALSE;
     imgHash=NULL;
     convertingWorld=FALSE;
@@ -59,11 +58,11 @@ EntityData creatureData[MAX_CREATURES_SAVED];
 	indexes=hashmap_new();
     indexes_hmm=indexes;
     
-    fmh_init(self);
+    fmh_init(this);
 	
-	return self;
+	
 }
--(BOOL)worldExists:(NSString*)name:(BOOL)appendArchive{
+BOOL FileManager::worldExists(NSString* name,BOOL appendArchive){
 	NSString* file_name=appendArchive?[NSString stringWithFormat:@"%@/%@",documents,name]:[NSString stringWithFormat:@"%@/%@",documents,name];
 	NSFileManager* fm=[NSFileManager defaultManager];
 	if(![fm fileExistsAtPath:file_name]){
@@ -76,8 +75,7 @@ EntityData creatureData[MAX_CREATURES_SAVED];
 }
 static int count=0;
 
-
--(BOOL)deleteWorld:(NSString*)name{
+BOOL FileManager::deleteWorld(NSString* name){
     NSFileManager* fm=[NSFileManager defaultManager];
     NSString* img_name=[NSString stringWithFormat:@"%@/%@.png",documents,name];
     if([fm fileExistsAtPath:img_name]){
@@ -98,7 +96,7 @@ static int count=0;
 	
 	
 }
--(void)LoadCreatures{
+void FileManager::LoadCreatures(){
     printg("start load:%d\n",1);
    
     if(sfh->version<3){
@@ -121,7 +119,7 @@ static int count=0;
     LoadModels2();
      printg("end load:%d\n",2);
 }
--(void)saveCreatures{
+void FileManager::saveCreatures(){
   //  printg("start save:%d\n",sfh->version);
     if(sfh->version<3){
     [saveFile seekToFileOffset:sfh->directory_offset];
@@ -144,18 +142,18 @@ static int count=0;
 //	 printg("end save:%d\n",sfh->version);
 }
 
--(void)saveWorld{
-    [self saveWorld:[World getWorld].player.pos];
+void FileManager::saveWorld(){
+    this->saveWorld([World getWorld].player.pos);
     
     
 }
--(void)compressLastPlayed{
+void FileManager::compressLastPlayed(){
   //  NSString* name=[World getWorld].terrain.world_name;
 	//NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
    // CompressWorld([name cStringUsingEncoding:NSUTF8StringEncoding]);
     
 }
--(void)loadGenFromDisk{
+void FileManager::loadGenFromDisk(){
     NSString *path =@"test.png";
     
    
@@ -245,7 +243,7 @@ static int count=0;
     
     
 }
--(void)writeGenToDisk{
+void FileManager::writeGenToDisk(){
     printg("writing gen to disk\n");
     NSString* name=@"Eden.eden";
 	NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
@@ -313,7 +311,7 @@ static int count=0;
     
 	//////////////////////////
 	count=0;
-	[self readDirectory];
+	this->readDirectory();
 	
     
     
@@ -324,7 +322,7 @@ static int count=0;
     if(!NOBLOCKGEN)
     for(int x=0;x<GEN_CWIDTH;x++){
         for(int z=0;z<GEN_CDEPTH;z++){
-            [[World getWorld].fm saveGenColumn:x+centerChunk-r:z+centerChunk-r:centerChunk-r];
+            this->saveGenColumn(x+centerChunk-r,z+centerChunk-r,centerChunk-r);
         }
     }
     
@@ -342,17 +340,18 @@ static int count=0;
 		
 		
 		count=0;
-		[self writeDirectory];
+		this->fwriteDirectory();
 		
 	}
 	
-	[self readDirectory];
+	this->readDirectory();
 	free(sfh);
 	[saveFile closeFile];
     printg("finished writing gen to disk\n");
 
 }
--(void)saveWorld:(Vector)warp{
+
+void FileManager::saveWorld(Vector warp){
     //[TestFlight passCheckpoint:[NSString stringWithFormat:@"header_size:%d",(int)sizeof(WorldFileHeader)]];
     printf("sizeof(WFH)=%d",(int)sizeof(WorldFileHeader));
 	[[World getWorld].terrain endDynamics:TRUE];
@@ -409,7 +408,7 @@ static int count=0;
 	
     
 	count=0;
-	[self readDirectory];
+	this->readDirectory();
 	NSLog(@"read %d colidx's",count);
  //   Player* player=[World getWorld].player;
   //  int scox=player.pos.x/CHUNK_SIZE-T_RADIUS;
@@ -435,8 +434,8 @@ static int count=0;
         {
             TerrainChunk* chunk=ter.chunkTable[threeToOne(x,0,z)];
             if(chunk.pbounds[1]==0){
-                [single saveColumn:chunk.pbounds[0]/CHUNK_SIZE
-                                  :chunk.pbounds[2]/CHUNK_SIZE];
+                this->saveColumn(chunk.pbounds[0]/CHUNK_SIZE
+                                  ,chunk.pbounds[2]/CHUNK_SIZE);
                 
             }else{
                 printg("trying to save column with unexpected chunk bound[1]: %d\n",chunk.pbounds[1]);
@@ -447,7 +446,7 @@ static int count=0;
 
   
 	//hashmap_iterate(ter.chunkMap, saveChunk, NULL);
-	[self saveCreatures];
+	this->saveCreatures();
     
     sfh->version=FILE_VERSION;
     file_version=FILE_VERSION;
@@ -460,11 +459,11 @@ static int count=0;
 		
 		
 		count=0;
-		[self writeDirectory];
+		this->fwriteDirectory();
 		NSLog(@"wrote %d colidx's",count);
 	}
 	cur_dir_offset=sfh->directory_offset;
-	[self readDirectory];
+	this->readDirectory();
 	free(sfh);
 	[saveFile closeFile];
    
@@ -488,14 +487,14 @@ int saveColIdx(any_t passedIn,any_t colToSave){
 	}
 	return MAP_OK;
 }
--(void)writeDirectory{
+void FileManager::fwriteDirectory(){
 	[saveFile seekToFileOffset:sfh->directory_offset];
 	hashmap_iterate(indexes, saveColIdx, NULL);
 		
 	
 }
--(void)readDirectory{
-	[self clearDirectory];
+void FileManager::readDirectory(){
+	this->clearDirectory();
 	[saveFile seekToFileOffset:sfh->directory_offset];
 	while(TRUE){		
 		NSData* data=[saveFile readDataOfLength:sizeof(ColumnIndex)];		
@@ -515,7 +514,7 @@ int saveColIdx(any_t passedIn,any_t colToSave){
 		
 	}
 }
--(void)clearDirectory{
+void FileManager::clearDirectory(){
 	hashmap_remove_all(indexes,TRUE);
 	//NSLog(@"hash %d",hashmap_length(indexes));
 }	
@@ -580,8 +579,8 @@ int saveColIdx(any_t passedIn,any_t colToSave){
 	
 }*/
 
--(void)saveGenColumn:(int)cx:(int)cz:(int)origin{
-    
+void FileManager::saveGenColumn(int cx,int cz,int origin){
+  
 	
 	ColumnIndex* colIndex=NULL;
 	
@@ -704,8 +703,7 @@ int saveColIdx(any_t passedIn,any_t colToSave){
 	}
 	
 }
--(void)saveColumn:(int)cx:(int)cz{
-    
+void FileManager::saveColumn(int cx,int cz){
 	Terrain* ter=[[World getWorld] terrain];
 	ColumnIndex* colIndex=NULL;
 	
@@ -787,8 +785,7 @@ int saveColIdx(any_t passedIn,any_t colToSave){
 extern block8* blockarray;
 extern int g_offcx;
 extern int g_offcz;
--(void)readColumn:(int)cx:(int)cz:(NSFileHandle*)rcfile{
-     
+void FileManager::readColumn(int cx,int cz,NSFileHandle* rcfile){
 	Terrain* ter=[[World getWorld] terrain];
 	ColumnIndex* colIndex=NULL;
 	int n= twoToOne(cx,cz);
@@ -996,7 +993,7 @@ extern int g_offcz;
     
 	
 }
--(void)setName:(NSString*)file_name:(NSString*)display_name{
+void FileManager::setName(NSString* file_name,NSString* display_name){
    //file_name=[file_name stringByDeletingPathExtension];
     NSLog(@"set name request on:%@",file_name);
    // NSString* nofp=file_name;
@@ -1026,7 +1023,7 @@ extern int g_offcz;
    // CompressWorld([nofp cStringUsingEncoding:NSUTF8StringEncoding]);
 	
 }
--(void)setImageHash:(NSString*)hash{
+void FileManager::setImageHash(NSString* hash){
     NSString* name=[World getWorld].terrain.world_name;
 	NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
     if(imgHash!=NULL){
@@ -1069,8 +1066,8 @@ extern int g_offcz;
 	
 }*/
 
--(NSString*)getName:(NSString*)name{
-	if(![[World getWorld].fm worldExists:name:FALSE]) return @"error~";
+NSString* FileManager::getName(NSString* name){
+	if(!this->worldExists(name,FALSE)) return @"error~";
 	NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];	
 	
 	saveFile=[NSFileHandle fileHandleForReadingAtPath:file_name];		
@@ -1239,7 +1236,7 @@ int convertColumnIdx(any_t passedIn,any_t colToConvert){
      [pool release];
 	return MAP_OK;
 }
--(void)convertFile:(NSString*) file_name{
+void FileManager::convertFile(NSString* file_name){
     NSFileManager* fm=[NSFileManager defaultManager];
     oldFile=[NSFileHandle fileHandleForReadingAtPath:file_name];    
     NSString* temp_name=[NSString stringWithFormat:@"%@/temp.map",documents];
@@ -1252,7 +1249,7 @@ int convertColumnIdx(any_t passedIn,any_t colToConvert){
     file_version=2;
     saveFile=oldFile;
     count=0;
-	[self readDirectory];
+	this->readDirectory();
 	NSLog(@"read %d old colidx's newfile: %@",count,newFile);  
     
     
@@ -1262,7 +1259,7 @@ int convertColumnIdx(any_t passedIn,any_t colToConvert){
     
     sfh->directory_offset=convert_offset;    
     saveFile=newFile;
-    [self writeDirectory];
+    this->fwriteDirectory();
     
     [newFile seekToFileOffset:0];
     NSData* dh=[NSData dataWithBytesNoCopy:sfh length:sizeof(WorldFileHeader) freeWhenDone:FALSE];
@@ -1282,9 +1279,9 @@ int convertColumnIdx(any_t passedIn,any_t colToConvert){
 extern bool SUPPORTS_OGL2;
 extern float P_ZFAR;
   static int last_spawn_location=-1;
--(void)loadWorld:(NSString*)name:(BOOL)fromArchive{
+
+void FileManager::loadWorld(NSString* name,BOOL fromArchive){
     
-   
 	Terrain* ter=[[World getWorld] terrain];
 		[ter clearBlocks];
 	Player* player=[[World getWorld] player];
@@ -1293,7 +1290,7 @@ extern float P_ZFAR;
         imgHash=NULL;
     }
     [[World getWorld].player reset];
-	if(![[World getWorld].fm worldExists:name:fromArchive]){
+	if(!this->worldExists(name,fromArchive)){
      
         
         extern int g_terrain_type;
@@ -1327,7 +1324,7 @@ extern float P_ZFAR;
             gen_default=TRUE;
         }
 
-		[self clearDirectory];
+		this->clearDirectory();
         if(genflat)ter.tgen->LEVEL_SEED= 0;
         else if(gen_default){
            
@@ -1387,7 +1384,7 @@ extern float P_ZFAR;
             
             for(int z=centerChunk-r;z<centerChunk+r;z++){
                 
-                [[World getWorld].fm readColumn:x:z:saveFile];
+                this->readColumn(x,z,saveFile);
                 [World getWorld].terrain.counter++;
             }
         }
@@ -1431,7 +1428,7 @@ extern float P_ZFAR;
         }
         
         LoadModels2();
-		[[World getWorld].fm saveWorld];
+		this->saveWorld();
 		//[ter unloadTerrain:FALSE];
 		//[self loadWorld:name];
 	}else{
@@ -1452,7 +1449,7 @@ extern float P_ZFAR;
            
             NSLog(@"converting file");
             convertingWorld=TRUE;
-            [self convertFile:file_name];
+            this->convertFile(file_name);
             
             NSLog(@"done converting file");
           
@@ -1502,7 +1499,7 @@ extern float P_ZFAR;
 
         
         
-		[self readDirectory];
+		this->readDirectory();
 		//NSLog(@"indexes: %d",hashmap_length(indexes));
 		//NSLog(@"loading level_seed: %d",ter.level_seed);
 		//NSLog(@"directory offset: %d entries: %d",(int)sfh->directory_offset,hashmap_length(indexes));
@@ -1527,12 +1524,12 @@ extern float P_ZFAR;
 		for(int x=chunkOffsetX;x<chunkOffsetX+2*r;x++){
 			for(int z=chunkOffsetZ;z<chunkOffsetZ+2*r;z++){
 			//	NSLog(@"lch:%d",asdf++);
-				[[World getWorld].fm readColumn:x:z:saveFile];
+				this->readColumn(x,z,saveFile);
                 [World getWorld].terrain.counter++;
 			}
 		}
         //if(CREATURES_ON)
-        [self LoadCreatures];
+        this->LoadCreatures();
 		//[ter updateAllImportantChunks];
 		NSLog(@"done");
 		[saveFile closeFile];
@@ -1542,17 +1539,18 @@ extern float P_ZFAR;
 	}
     if(!SUPPORTS_OGL2){
         if(ter.tgen->LEVEL_SEED== 0)
-        [Graphics setZFAR:55];
+            Graphics::setZFAR(55);
+       
         else 
-        [Graphics setZFAR:40];
+         Graphics::setZFAR(40);
     }else{
         if(ter.tgen->LEVEL_SEED== 0)
-        [Graphics setZFAR:120];
+         Graphics::setZFAR(120);
         else 
-        [Graphics setZFAR:120];
+        Graphics::setZFAR(120);
     }
 
-           [[Input getInput] clearAll];
+    Input::getInput()->clearAll();
     [World getWorld].effects->clearAllEffects();
     [[World getWorld].hud worldLoaded];
 	updateSkyColor1([World getWorld].player,TRUE);
@@ -1560,4 +1558,4 @@ extern float P_ZFAR;
     loaded_new_terrain=TRUE;
 
 }
-@end
+

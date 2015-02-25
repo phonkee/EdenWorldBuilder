@@ -88,7 +88,7 @@ FileDownload* reportmanager=NULL;
 	
 	
     NSString* fullString=[NSString stringWithFormat:@"%@%@.png",MAPS_URL,file_name];	
-    NSString* realfile_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents];
+    NSString* realfile_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm->documents];
 
     NSURL* url = [[NSURL alloc] initWithString:fullString];
     if(dlmanager){
@@ -118,7 +118,7 @@ FileDownload* reportmanager=NULL;
     //NSData* theData = [FileDownload downloadFile:fullString];
     
 	//NSData* newData=[self gzipInflate:theData];
-	NSString* realfile_name=[NSString stringWithFormat:@"%@/%@",[World getWorld].fm.documents,file_name];
+	NSString* realfile_name=[NSString stringWithFormat:@"%@/%@",[World getWorld].fm->documents,file_name];
    
 	//[newData writeToFile:realfile_name atomically:FALSE];
 	

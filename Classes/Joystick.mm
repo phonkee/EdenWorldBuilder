@@ -34,9 +34,9 @@ Joystick::Joystick(){
 static const int usage_id=999;
 
 BOOL Joystick::update(float etime){
-	Input* input=[Input getInput];	
+	Input* input=Input::getInput();
 	//Hud* hud=[World getWorld].hud;
-	itouch* touches=[input getTouches];
+    itouch* touches=input->getTouches();
 	BOOL handled=FALSE;	
 	for(int i=0;i<MAX_TOUCHES;i++){
 			

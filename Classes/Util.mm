@@ -404,7 +404,7 @@ void takeScreenshot(){
     free(buffer2);
     Terrain* ter=[[World getWorld] terrain];
 	NSString* name=ter.world_name;
-    NSString* file_name=[NSString stringWithFormat:@"%@/%@.png",[World getWorld].fm.documents,name];
+    NSString* file_name=[NSString stringWithFormat:@"%@/%@.png",[World getWorld].fm->documents,name];
     NSFileManager* fm=[NSFileManager defaultManager];
 	if([fm fileExistsAtPath:file_name])
         if(![fm removeItemAtPath:file_name error:NULL])
@@ -415,7 +415,7 @@ void takeScreenshot(){
     FileMD5HashCreateWithPath((CFStringRef)file_name, 
                               FileHashDefaultChunkSizeForReadingData);
   
-    [[World getWorld].fm setImageHash:(NSString *)md5hash];
+    [World getWorld].fm->setImageHash((NSString *)md5hash);
     //CFRelease(md5hash);
 
 }

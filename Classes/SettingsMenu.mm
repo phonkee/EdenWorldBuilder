@@ -126,8 +126,8 @@ SettingsMenu::SettingsMenu(){
 static const int usage_id=3;
 void SettingsMenu::update(float etime){
 
-	Input* input=[Input getInput];	
-	itouch* touches=[input getTouches];	
+	Input* input=Input::getInput();
+    itouch* touches=input->getTouches();
 	
 	for(int i=0;i<MAX_TOUCHES;i++){
 		if(touches[i].inuse==0&&touches[i].down==M_DOWN){

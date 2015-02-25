@@ -335,7 +335,7 @@ void updateLightingBegin(){
     
 	world_name=name;
 	[world_name retain];
-	[[World getWorld].fm loadWorld:name:fromArchive];
+	[World getWorld].fm->loadWorld(name,fromArchive);
     
    /* for(int x=0;x<T_SIZE;x++){
         for(int z=0;z<T_SIZE;z++){
@@ -377,7 +377,7 @@ void updateLightingBegin(){
 	pp.z=(z+.5f);
 	pp.y=(y+1);
 	//[World getWorld].player.pos=pp;
-	[[World getWorld].fm saveWorld:pp];
+    [World getWorld].fm->saveWorld(pp);
 	[self unloadTerrain:FALSE];
     
 	[self loadTerrain:world_name:FALSE];
@@ -391,7 +391,7 @@ void updateLightingBegin(){
 	pp.z=(home.z+.5f);
 	pp.y=(home.y+1);
 	//[World getWorld].player.pos=pp;
-	[[World getWorld].fm saveWorld:pp];
+	[World getWorld].fm->saveWorld(pp);
 	[self unloadTerrain:FALSE];
     
 	[self loadTerrain:world_name:FALSE];
@@ -1814,7 +1814,7 @@ float last_etime;
     }
 	else if(do_reload==2){
         do_reload=0;
-		[[World getWorld].fm saveWorld];
+		[World getWorld].fm->saveWorld();
 		[self unloadTerrain:FALSE];
 		//oldChunkMap=chunkMap;	
 		//chunkMapc=chunkMap=hashmap_new();
@@ -1936,14 +1936,14 @@ static int hit_load_counter=0;
             if(hit_load_counter>=2){
                 hit_load_counter=0;
                 [World getWorld].hud.sb->clear();
-                [[World getWorld].fm saveWorld];
+                [World getWorld].fm->saveWorld();
                 
-                [World getWorld].fm.chunkOffsetX=m_chunkOffsetX;
-                [World getWorld].fm.chunkOffsetZ=m_chunkOffsetZ;
+                [World getWorld].fm->chunkOffsetX=m_chunkOffsetX;
+                [World getWorld].fm->chunkOffsetZ=m_chunkOffsetZ;
                 
                 
               //  printf("chunks to load:%d\n",count);
-                NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm.documents,world.terrain.world_name];
+                NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm->documents,world.terrain.world_name];
                 
                 //[sf_lock lock];
                 NSFileHandle* saveFile=[NSFileHandle fileHandleForReadingAtPath:file_name];
@@ -1952,7 +1952,7 @@ static int hit_load_counter=0;
                     for(int z=0;z<2*r;z++){
                         if(!isloaded[x][z]){
                             //removeLights
-                            [world.fm readColumn: x+m_chunkOffsetX:z+m_chunkOffsetZ:saveFile];
+                            world.fm->readColumn( x+m_chunkOffsetX,z+m_chunkOffsetZ,saveFile);
                             //addlights
                         }
                     }
@@ -2368,7 +2368,8 @@ int lolc=0;
 - (void)render{		
     if(do_reload==-1)return;
    //  NSLog(@"rendering!!");
-	[Graphics beginTerrain];
+    Graphics::beginTerrain();
+	
 	vertices_rendered=0;
 	faces_rendered=0;
 	chunks_rendered=chunks_rendered2=0;
@@ -2561,9 +2562,9 @@ int lolc=0;
             if(vc.z>4)vc.z=4;
             /*if(vc.x>4)vc.x=4;
              if(vc.z>4)vc.z=4;*/
-            objVertices[vert].position[0]=4*(door->pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)+vc.x;
+            objVertices[vert].position[0]=4*(door->pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+vc.x;
             objVertices[vert].position[1]=4*door->pos.y+vc.y;
-            objVertices[vert].position[2]=4*(door->pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)+vc.z;
+            objVertices[vert].position[2]=4*(door->pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+vc.z;
             if(k==0){
                 /* printg("door objVertices[%d]= (%d,%d,%d) suggested offsets(%d,%d),\n",j,door->pos[0]
                  ,door->pos[1]
@@ -2677,9 +2678,9 @@ int lolc=0;
                             objVertices[vert].normal[2]=vn.z;
                             
                             
-                            objVertices[vert].position[0]=4*(renderList[i].rtobjects[j].pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)+1+2.3*vc.x;
+                            objVertices[vert].position[0]=4*(renderList[i].rtobjects[j].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+1+2.3*vc.x;
                             objVertices[vert].position[1]=4*renderList[i].rtobjects[j].pos.y+1+2.3*vc.y;
-                            objVertices[vert].position[2]=4*(renderList[i].rtobjects[j].pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)+1+2.3*vc.z;
+                            objVertices[vert].position[2]=4*(renderList[i].rtobjects[j].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+1+2.3*vc.z;
                             
                             CalcEnvMap(&objVertices[vert]);
                             
@@ -2794,9 +2795,9 @@ int lolc=0;
                 //if(vc.x>4)vc.x=4;
                 //if(vc.z>4)vc.z=4;
                // vc=rotateVertice(MakeVector(0,rot,0),vc);
-                objVertices[vert].position[0]=4*(renderList[i].rtobjects[j].pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)+vc.x;
+                objVertices[vert].position[0]=4*(renderList[i].rtobjects[j].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+vc.x;
                 objVertices[vert].position[1]=4*renderList[i].rtobjects[j].pos.y+vc.y;
-                objVertices[vert].position[2]=4*(renderList[i].rtobjects[j].pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)+vc.z;
+                objVertices[vert].position[2]=4*(renderList[i].rtobjects[j].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+vc.z;
                 
                
                 if(k>=12){
@@ -3013,9 +3014,9 @@ int lolc=0;
                 vc.z+=offsets.z;
                 
                 
-                objVertices[vert].position[0]=4*(portal->pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)+vc.x;
+                objVertices[vert].position[0]=4*(portal->pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+vc.x;
                 objVertices[vert].position[1]=4*portal->pos.y+vc.y;
-                objVertices[vert].position[2]=4*(portal->pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)+vc.z;
+                objVertices[vert].position[2]=4*(portal->pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+vc.z;
                 
                 
                 vc=MakeVector((cubeTextureCustom[k*2+0]*(.723-.276f)+.276f)-.5f,(cubeTextureCustom[k*2+1]*(.947-.053f)+.053f)-.5f,0);
@@ -3087,7 +3088,8 @@ int lolc=0;
 	//printg("chunks: %d, faces: %d, vertices: %d\n",chunks_rendered,faces_rendered,vertices_rendered);
 		frame_counter=0;
 	}
-	[Graphics endTerrain];	
+    Graphics::endTerrain();
+	
 }
 int getFlowerIndex(int color){
     if(color==0)return 31;
@@ -3201,9 +3203,9 @@ int getFlowerIndex(int color){
              objVertices[vert].normal[1]=vn.y;
              objVertices[vert].normal[2]=vn.z;*/
             
-            objVertices[vert].position[0]=4*(flowerList[i].pos.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)+4*vc.x;
+            objVertices[vert].position[0]=4*(flowerList[i].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+4*vc.x;
             objVertices[vert].position[1]=4*flowerList[i].pos.y+4*vc.y;
-            objVertices[vert].position[2]=4*(flowerList[i].pos.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)+4*vc.z;
+            objVertices[vert].position[2]=4*(flowerList[i].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+4*vc.z;
             
             
             int sidx=getFlowerIndex(flowerList[i].color);
@@ -3281,7 +3283,8 @@ int getFlowerIndex(int color){
     
     
 	glPopMatrix();
-    [Graphics endTerrain];	
+    Graphics::endTerrain();
+    
     
 }
 - (void)dealloc{

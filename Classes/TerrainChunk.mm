@@ -1832,7 +1832,7 @@ extern int g_offcz;
   //  if([World getWorld].hud.heartbeat)
    // printg("rtbounds %f  proposedoffset %d\n",rbounds[0],[World getWorld].fm.chunkOffsetX*CHUNK_SIZE);
     //glTranslatef((rtbounds[0])*4, rtbounds[1]*4, (rtbounds[2])*4);
-	glTranslatef((rtbounds[0]-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)*4, rtbounds[1]*4, (rtbounds[2]-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)*4);
+	glTranslatef((rtbounds[0]-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)*4, rtbounds[1]*4, (rtbounds[2]-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)*4);
     
     
 	/*offsets[0]=BLOCK_SIZE*x+rbounds[0];
@@ -1951,7 +1951,7 @@ extern int g_offcz;
 -(void) render2{
    
     glPushMatrix();
-	glTranslatef((rtbounds[0]-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)*4, rtbounds[1]*4, (rtbounds[2]-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)*4);
+	glTranslatef((rtbounds[0]-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)*4, rtbounds[1]*4, (rtbounds[2]-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)*4);
 	/*offsets[0]=BLOCK_SIZE*x+rbounds[0];
      offsets[1]=BLOCK_SIZE*y+rbounds[1];
      offsets[2]=BLOCK_SIZE*z+rbounds[2];*/

@@ -172,7 +172,8 @@ void Camera::render(){
 			  look.x-px,look.y-py,look.z-pz,
 			  0,1,0);
 	
-	[Graphics drawSkybox];
+    Graphics::drawSkybox();
+	
 	glPopMatrix();
 
 	if(mode==1){
@@ -187,11 +188,11 @@ void Camera::render(){
 		float ly=py+sinPitch;
 		float lz=pz+sinYaw;*/
 		float n=0.5f;
-		gluLookAt(px+n*cosYaw-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE, py+0.5f, pz+n*sinYaw-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE, px-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE, py, pz-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);
+		gluLookAt(px+n*cosYaw-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE, py+0.5f, pz+n*sinYaw-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE, px-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE, py, pz-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);
 	}else{
        //gluLookAt(px, py, pz, look.x, look.y, look.z, 0, 1, 0);
         
-		gluLookAt(px-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE, py, pz-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE, look.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE, look.y, look.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);
+		gluLookAt(px-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE, py, pz-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE, look.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE, look.y, look.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);
 	}
 		
 }

@@ -10,21 +10,22 @@
 #import "Globals.h"
 #import "World.h"
 #import "Hud.h"
-static Input* singleton;
-@implementation Input
+static Input* singleton=NULL;
+
 extern float SCREEN_WIDTH; 
 extern float SCREEN_HEIGHT;
 extern float P_ASPECT_RATIO;
 extern BOOL IS_WIDESCREEN;
 
-+ (Input*)getInput{
-	if(!singleton){
-		singleton=[[Input alloc] init];
-	}	
-	return singleton;	
+Input* Input::getInput(){
+    if(!singleton){
+        singleton=new Input();
+    }
+    return singleton;
 }
-- (id)init{
-	[self clearAll];	
+
+Input::Input(){
+	this->clearAll();
     if(IS_IPAD&&!IS_RETINA){
         scr_width=IPAD_WIDTH;
         scr_height=IPAD_HEIGHT;
@@ -37,10 +38,9 @@ extern BOOL IS_WIDESCREEN;
         //IPHONE_WIDTH;
         scr_height=IPHONE_HEIGHT;
     }
-	return self;
-}
-- (void)clearAll{
 	
+}
+void Input::clearAll(){
 	for(int i=0;i<MAX_TOUCHES;i++){
 		touches[i].mx=touches[i].my=0;	
 		touches[i].pmx=touches[i].pmy=0;	
@@ -57,19 +57,19 @@ extern BOOL IS_WIDESCREEN;
 	pmy=my;
 }*/
 
-- (void)keyTyped:(NSString*) key{
+void Input::keyTyped(NSString* key){
 	char ch=[key characterAtIndex:0];
 	if(ch=='h'){
 		[World getWorld].hud.hideui=![World getWorld].hud.hideui;	
 	}
 	
 }
-- (itouch*) getTouches{
+itouch* Input::getTouches(){
 	return touches;
 	
 }
-- (void)touchesBegan:(NSSet *)mtouches withEvent:(UIEvent *)event{
-	for(UITouch* touch in mtouches){	
+void Input::touchesBegan(NSSet* mtouches, UIEvent* event){
+	for(UITouch* touch in mtouches){
 		
 		int idx=-1;
 		for(int i=0;i<MAX_TOUCHES;i++){
@@ -114,8 +114,8 @@ extern BOOL IS_WIDESCREEN;
 	}
 }
 
-- (void)touchesMoved:(NSSet *)mtouches withEvent:(UIEvent *)event{
-	for(UITouch* touch in mtouches){			
+void Input::touchesMoved(NSSet* mtouches, UIEvent* event){
+	for(UITouch* touch in mtouches){
 	//	NSLog(@"touchm %@",touch);
 		int idx=-1;
 		for(int i=0;i<MAX_TOUCHES;i++){
@@ -146,8 +146,8 @@ extern BOOL IS_WIDESCREEN;
         }
 	}		
 }
-- (void)touchesEnded:(NSSet *)mtouches withEvent:(UIEvent *)event{
-	for(UITouch* touch in mtouches){			
+void Input::touchesEnded(NSSet* mtouches, UIEvent* event){
+	for(UITouch* touch in mtouches){
 		//
 		int idx=-1;
 		for(int i=0;i<MAX_TOUCHES;i++){
@@ -185,8 +185,9 @@ extern BOOL IS_WIDESCREEN;
 
 	}
 }
-- (void)touchesCancelled:(NSSet *)mtouches withEvent:(UIEvent *)event{
-	[self clearAll];	
+void Input::touchesCancelled(NSSet* mtouches, UIEvent* event){
+    this->clearAll();
+	
 }
-@end
+
 

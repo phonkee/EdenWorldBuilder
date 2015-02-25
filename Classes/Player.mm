@@ -147,9 +147,9 @@ extern int fwc_result;
 
 extern bool hitCustom;
 - (void)processInput:(float)etime{
-	Input* input=[Input getInput];
+	Input* input=Input::getInput();
 	int mode=[World getWorld].hud.mode;
-	itouch* touches=[input getTouches];
+	itouch* touches=input->getTouches();
 	
 	if(jumpandbuild){
         if(vel.y>0&&jumping&&!onground){
@@ -1059,7 +1059,7 @@ static BOOL lastOnIce;
 	cam->mode=1;
 	}
 	
-	itouch* touches=[[Input getInput] getTouches];
+	itouch* touches=Input::getInput()->getTouches();
 	for(int i=0;i<MAX_TOUCHES;i++){
 		if(touches[i].inuse==usage_id&&
 		   touches[i].down==M_DOWN&&
@@ -1888,8 +1888,8 @@ float poffsetz=0;
     nest_count=0;
     onground=FALSE;
     onramp=FALSE;
-    poffsetx=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE;
-    poffsetz=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE;
+    poffsetx=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
+    poffsetz=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
     [self vertc];
     
     if(inLiquid)onIce=FALSE;
@@ -2043,7 +2043,8 @@ float poffsetz=0;
 }
 extern Vector fpoint;
 - (void)render{
-    [Graphics startPreview];
+    Graphics::startPreview();
+    
 	if(THIRD_PERSON){
 	float bx= pos.x-boxbase/2;
 	float by= pos.y-boxheight/2;
@@ -2054,17 +2055,15 @@ extern Vector fpoint;
 	//glScalef(0, <#GLfloat y#>, <#GLfloat z#>)
         glPushMatrix();
       
-        [Graphics drawCube:bx
-                          :by
-                          :bz
-                          :TYPE_GRADIENT:1];
+        Graphics::drawCube(bx,by,bz,TYPE_GRADIENT,1);
+       
         glPopMatrix();
 	//[Graphics drawTexCube:bx:by:bz:boxbase:[[Resources getResources] getTex:0]];
 
 	glEnable(GL_CULL_FACE);
 	}
-	Input* input=[Input getInput];
-	itouch* touches=[input getTouches];
+    Input* input=Input::getInput();
+	itouch* touches=input->getTouches();
 	glColor4f(1.0, 1.0, 1.0, .4f);
 	
     BOOL drewPreview=FALSE;
@@ -2077,11 +2076,11 @@ extern Vector fpoint;
             if([World getWorld].hud.holding_creature&&touches[i].previewtype==TYPE_CLOUD&&[World getWorld].hud.mode==MODE_BUILD){
                 PlaceModel(-1,fpoint);
             }else{
-			[Graphics drawCube:touches[i].preview.x*BLOCK_SIZE
-							  :touches[i].preview.y*BLOCK_SIZE
-							  :touches[i].preview.z*BLOCK_SIZE
-							  :touches[i].previewtype
-                              :touches[i].build_size];	
+                Graphics::drawCube(touches[i].preview.x*BLOCK_SIZE
+							  ,touches[i].preview.y*BLOCK_SIZE
+							  ,touches[i].preview.z*BLOCK_SIZE
+							  ,touches[i].previewtype
+                              ,touches[i].build_size);
                 //printg("%d:(%d,%d)\n",i,touches[i].preview.x,touches[i].preview.z);
             }
         }
@@ -2090,7 +2089,8 @@ extern Vector fpoint;
     if(!drewPreview){
         PlaceModel(-2,fpoint);
     }
-	[Graphics endPreview];
+    Graphics::endPreview();
+	
 	
 
 }

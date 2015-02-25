@@ -459,7 +459,7 @@ static float cursor_blink=0;
             [previewScreenshot release];
         }
         previewScreenshot=[[Texture2D alloc] 
-                         initWithImagePath:[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents] sizeToFit:FALSE];
+                         initWithImagePath:[NSString stringWithFormat:@"%@/temp",[World getWorld].fm->documents] sizeToFit:FALSE];
         if(previewScreenshot==NULL){
             sbar->setStatus(@"Error: map not found",4);
         }else{
@@ -507,8 +507,8 @@ static float cursor_blink=0;
         }
 
     }
-	Input* input=[Input getInput];	
-	itouch* touches=[input getTouches];	
+	Input* input=Input::getInput();
+    itouch* touches=input->getTouches();
 	sbar->update(etime);
 	sort_bar->update(etime);
     name_bar->update(etime);

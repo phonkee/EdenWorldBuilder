@@ -476,7 +476,7 @@ int flamecount=0;
 		}else if(delayedaction==5){
             mode=MODE_NONE;
            // printg("trying to exit\n!!!");
-			[[World getWorld].fm saveWorld];
+			[World getWorld].fm->saveWorld();
 			[[World getWorld] exitToMenu];
             
 			
@@ -492,8 +492,8 @@ int flamecount=0;
     
     if(delayedtimer>1){delayedtimer--; return FALSE;}
 	
-	Input* input=[Input getInput];	
-	itouch* touches=[input getTouches];
+	Input* input=Input::getInput();
+    itouch* touches=input->getTouches();
 	
 	
 	
@@ -564,7 +564,8 @@ int flamecount=0;
                 handled=TRUE;
             }
                        if(handled){
-                           [[Input getInput] clearAll];
+                           Input::getInput()->clearAll();
+                          
                 touches[i].down=M_NONE;
             }
              touches[i].down=M_NONE;
@@ -649,7 +650,8 @@ int flamecount=0;
                         mode=MODE_BUILD;
                 
                 pressed=-1;
-                [input clearAll];
+                Input::getInput()->clearAll();
+                
                 break;
                 inmenu=FALSE;
 				handled=TRUE;
@@ -662,7 +664,8 @@ int flamecount=0;
                 }else 
                     mode=MODE_PAINT;
                 pressed=-1;
-                [input clearAll];
+                input->clearAll();
+                
                 break;
                 inmenu=FALSE;
 				handled=TRUE;
@@ -835,9 +838,10 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         
 		mode=MODE_CAMERA;
 		if(!SUPPORTS_OGL2){
-            [Graphics setZFAR:75];
+            Graphics::setZFAR(75);
+           
         }
-		else [Graphics setZFAR:120];
+		else Graphics::setZFAR(120);
         inmenu=false;
 		handled=TRUE;
 	}
@@ -856,10 +860,11 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 	}
 	if(inbox2(x,y,&rsave)||inbox2(x,y,&rtSave)){	
         rsave.pressed=rtSave.pressed=FALSE;
-		[[World getWorld].fm saveWorld];
+		[World getWorld].fm->saveWorld();
         //[[World getWorld].terrain updateAllImportantChunks];
       //  NSLog(@"saving..");
-        [[Input getInput] clearAll];
+        Input::getInput()->clearAll();
+        
         [[World getWorld].terrain startDynamics];
 		sb->setStatus(@"World Saved" ,3);
         
@@ -1733,15 +1738,19 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 static int lmode=MODE_NONE;
 - (void)render{	
 	//if(mode==MODE_MINE)return;
-    [Graphics beginHud];
+    Graphics::beginHud();
+   
 	if(mode==MODE_CAMERA){
-        [Graphics setCameraFog:40];
+        Graphics::setCameraFog(40);
+        
 		if(take_screenshot){
 			if(!SUPPORTS_OGL2){
-                 [Graphics setZFAR:40];
+                Graphics::setZFAR(40);
+                
               
                 if([World getWorld].terrain.tgen->LEVEL_SEED== 0){
-                    [Graphics setZFAR:55];
+                     Graphics::setZFAR(55);
+                    
                 }
             }
 			//else P_ZFAR=70.0f;
@@ -1754,25 +1763,29 @@ static int lmode=MODE_NONE;
 		}
         glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         sb->render();
-		[Graphics endHud];
+        Graphics::endHud();
+		
 		return;
 	}else{
         if(!SUPPORTS_OGL2){
-            [Graphics setZFAR:40];
+            Graphics::setZFAR(40);
+            
             
             if([World getWorld].terrain.tgen->LEVEL_SEED== 0){
-                [Graphics setZFAR:55];
+                Graphics::setZFAR(55);
+                
             }
         }else{
-            [Graphics setZFAR:40];
+            Graphics::setZFAR(40);
+            
         }
        // if(!SUPPORTS_OGL2)P_ZFAR= 20.0f;
        // else P_ZFAR=70.0f;
     }
     lmode=mode;
 	if(hideui){
-        
-        [Graphics endHud];
+        Graphics::endHud();
+       
       return;  
     }
 	
@@ -1919,12 +1932,15 @@ static int lmode=MODE_NONE;
 		glColor4f(liquidColor.x, liquidColor.y, liquidColor.z, 0.5f);
         if(IS_IPAD){
             if(IS_RETINA){
-                [Graphics drawRect:0:0:SCREEN_WIDTH*2:SCREEN_HEIGHT*2];
+                Graphics::drawRect(0,0,SCREEN_WIDTH*2,SCREEN_HEIGHT*2);
+                
             }else
-                [Graphics drawRect:0:0:IPAD_WIDTH:IPAD_HEIGHT];
+                Graphics::drawRect(0,0,IPAD_WIDTH,IPAD_HEIGHT);
+            
            
         }else
-            [Graphics drawRect:0:0:SCREEN_WIDTH:SCREEN_HEIGHT];
+            Graphics::drawRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+        
 		glEnable(GL_TEXTURE_2D);
 
     }
@@ -1941,11 +1957,15 @@ static int lmode=MODE_NONE;
         
         if(IS_IPAD){
             if(IS_RETINA){
-                 [Graphics drawRect:0:0:SCREEN_WIDTH*2:SCREEN_HEIGHT*2];
-            }else
-            [Graphics drawRect:0:0:IPAD_WIDTH:IPAD_HEIGHT];
+                Graphics::drawRect(0,0,SCREEN_WIDTH*2,SCREEN_HEIGHT*2);
+                
+            }else{
+            
+                Graphics::drawRect(0,0,IPAD_WIDTH,IPAD_HEIGHT);
+            }
+            
         }else
-            [Graphics drawRect:0:0:SCREEN_WIDTH:SCREEN_HEIGHT];
+            Graphics::drawRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
 		glEnable(GL_TEXTURE_2D);
         
 		
@@ -1956,11 +1976,14 @@ static int lmode=MODE_NONE;
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         if(IS_IPAD){
             if(IS_RETINA){
-                [Graphics drawRect:0:0:SCREEN_WIDTH*2:SCREEN_HEIGHT*2];
-            }else
-                [Graphics drawRect:0:0:IPAD_WIDTH:IPAD_HEIGHT];
+                Graphics::drawRect(0,0,SCREEN_WIDTH*2,SCREEN_HEIGHT*2);
+                
+            }else{
+                
+                Graphics::drawRect(0,0,IPAD_WIDTH,IPAD_HEIGHT);
+            }
         }else
-            [Graphics drawRect:0:0:SCREEN_WIDTH:SCREEN_HEIGHT];
+            Graphics::drawRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
 		glEnable(GL_TEXTURE_2D);
 
     }
@@ -1977,7 +2000,8 @@ static int lmode=MODE_NONE;
   
     glEnable(GL_TEXTURE_2D);
     
-     [Graphics endHud];
+    Graphics::endHud();
+    
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	//NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -1996,10 +2020,11 @@ static int lmode=MODE_NONE;
                 thome.z=pp.z-.5f;
                 thome.y=pp.y-1; 
                 [World getWorld].terrain.home=thome;
-                [[World getWorld].fm saveWorld];
+                [World getWorld].fm->saveWorld();
                 //[[World getWorld].terrain updateAllImportantChunks];
                 //NSLog(@"saving..");
-                [[Input getInput] clearAll];
+                Input::getInput()->clearAll();
+               
                 [[World getWorld].terrain startDynamics];
                 sb->setStatus(@"World Saved",3);
                 break;

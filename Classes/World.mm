@@ -159,32 +159,34 @@ void RLETEST(){
         RLETEST();
         double start=CFAbsoluteTimeGetCurrent();
         printg("Terrain gen started\n");
-        fm=[[FileManager alloc] init];
+        fm=new FileManager();
         [Hud genColorTable];
-        [[World getWorld].fm loadGenFromDisk];
+        fm->loadGenFromDisk();
         tg2_init();
         
         printg("Terrain gen finished %f\n",(CFAbsoluteTimeGetCurrent()-start));
         start=CFAbsoluteTimeGetCurrent();
-         [[World getWorld].fm writeGenToDisk];
+         fm->writeGenToDisk();
         printg("File write finished %f\n",(CFAbsoluteTimeGetCurrent()-start));
         
         
         bestGraphics=TRUE;
-        [Graphics initGraphics];
+        Graphics::initGraphics();
+       
         return self;
     }
     tc_initGeometry();
     game_mode=GAME_MODE_MENU;
     
     bestGraphics=TRUE;
-    [Graphics initGraphics];
+    Graphics::initGraphics();
+    
     terrain=[[Terrain alloc] init];	
     cam=new Camera();
     res=[Resources getResources];
     player=[[Player alloc] initWithWorld:self];
     hud=[[Hud alloc] init];
-    fm=[[FileManager alloc] init];
+    fm=new FileManager();
     effects=new SpecialEffects();
     menu=[[Menu alloc] init];
    
@@ -261,7 +263,7 @@ void RLETEST(){
             }
             if(count==0) goto cleanup;
             // printg("chunks to load:%d\n",count);
-            NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm.documents,world.terrain.world_name];		
+            NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm->documents,world.terrain.world_name];
             
            
             NSFileHandle* saveFile=[NSFileHandle fileHandleForReadingAtPath:file_name];
@@ -269,7 +271,7 @@ void RLETEST(){
             for(int x=0;x<2*r;x++){
                 for(int z=0;z<2*r;z++){
                     if(!isloaded[x][z]){
-                        [world.fm readColumn: x+chunkOffsetX:z+chunkOffsetZ:saveFile];
+                        world.fm->readColumn( x+chunkOffsetX,z+chunkOffsetZ,saveFile);
                     }
                 }
             }
@@ -361,7 +363,7 @@ extern int chunk_load_count;
         int pct=100.0f*(float)(terrain.counter)/324.0f;
         
         if(pct>100)pct=100;
-        if(fm.convertingWorld){
+        if(fm->convertingWorld){
             menu.sbar->setStatus(@"Converting World...",100);
         }else{
             //if(pct==100){
@@ -440,7 +442,7 @@ extern int chunk_load_count;
 	target_game_mode=GAME_MODE_WAIT;
     game_mode=GAME_MODE_WAIT;
     
-    [fm compressLastPlayed];
+    fm->compressLastPlayed();
    
 //printg("hi\n");
 	
@@ -456,7 +458,7 @@ extern int chunk_load_count;
     [res release];
 	[hud release];
 	[menu release];
-	[fm release];
+    delete fm;
     delete effects;
 	
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
@@ -528,8 +530,9 @@ extern int chunk_load_count;
 - (void)render{
     if(JUST_TERRAIN_GEN){
         glClearColor(.39f, .25f, .39f, 1.0f);
-        [Graphics prepareScene];
-        [Graphics prepareMenu];
+        Graphics::prepareScene();
+        Graphics::prepareMenu();
+        
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glColor4f(1.0,0.0, 0.0, 1.0f);
@@ -547,7 +550,8 @@ extern int chunk_load_count;
         
         glEnable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);
-        [Graphics endMenu];
+        Graphics::endMenu();
+        
         
         //printg("hi");
     }
@@ -560,8 +564,9 @@ extern int chunk_load_count;
 	if(game_mode==GAME_MODE_MENU){
        // [[World getWorld] loadWorld:menu.selected_world->file_name];	
 		[menu render];
-	}else if(game_mode==GAME_MODE_PLAY){	
-		[Graphics prepareScene];	
+	}else if(game_mode==GAME_MODE_PLAY){
+        Graphics::prepareScene();
+		
         
         cam->render();
 		
@@ -580,7 +585,7 @@ extern int chunk_load_count;
         glBindBuffer(GL_ARRAY_BUFFER,0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
         glPushMatrix();
-        glTranslatef(-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE,0,-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE);
+        glTranslatef(-fm->chunkOffsetX*CHUNK_SIZE,0,-fm->chunkOffsetZ*CHUNK_SIZE);
 		effects->render();
         [World getWorld].terrain.fireworks->render();
 		[player render];		

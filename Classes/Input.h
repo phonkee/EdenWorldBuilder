@@ -33,20 +33,20 @@ enum MSTATE {
 	M_NONE=0
 };
 
-@interface Input : NSObject {
-	itouch touches[MAX_TOUCHES];
+class Input{
+public:
+    Input();
+    itouch touches[MAX_TOUCHES];
     int scr_width;
     int scr_height;
-}
+    static Input* getInput();
+    itouch* getTouches();
+    void touchesBegan(NSSet* touches,UIEvent* event);
+    void touchesMoved(NSSet* touches,UIEvent* event);
+    void touchesEnded(NSSet* touches,UIEvent* event);
+    void keyTyped(NSString* key);
+    void clearAll();
+   void touchesCancelled(NSSet* touches,UIEvent* event);
+    
+};
 
-+ (Input*)getInput;
-- (itouch*) getTouches;
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
-- (void)keyTyped:(NSString*) key;
-- (void)clearAll;
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
-
-@end
-//@property (nonatomic, retain) EAGLContext *context;

@@ -158,11 +158,11 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
 	[node->display_name retain];
 	[name release];
     name=NULL;
-    [[World getWorld].fm setName:node->file_name:node->display_name];
+    [World getWorld].fm->setName(node->file_name,node->display_name);
     NSString* file_name=[NSString stringWithFormat:@"%@/%@",
-                         [World getWorld].fm.documents,node->file_name];
+                         [World getWorld].fm->documents,node->file_name];
     NSString* image_file_name=[NSString stringWithFormat:@"%@/%@.png",
-                               [World getWorld].fm.documents,node->file_name];
+                               [World getWorld].fm->documents,node->file_name];
     NSFileManager* fm=[NSFileManager defaultManager];
     NSLog(@"Sharing \"%@\"",node->display_name);
     if(![fm fileExistsAtPath:image_file_name]){
@@ -207,8 +207,8 @@ static float cursor_blink=0;
 		[world_name_field resignFirstResponder];
 		[world_name_field becomeFirstResponder];
 	}*/
-	Input* input=[Input getInput];	
-	itouch* touches=[input getTouches];	
+	Input* input=Input::getInput();
+    itouch* touches=input->getTouches();
 	
 	for(int i=0;i<MAX_TOUCHES;i++){
 		if(touches[i].inuse==0&&touches[i].down==M_DOWN){

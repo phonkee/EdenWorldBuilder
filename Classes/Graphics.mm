@@ -13,7 +13,7 @@
 
 #define M_SQRT3 1.732050808
 static UIFont* thefont=NULL;//move this to resources sometime
-@implementation Graphics
+
 #define CUBE_VERTICES 36
 extern float SCREEN_WIDTH; 
 extern float SCREEN_HEIGHT;
@@ -146,7 +146,7 @@ static GLuint    vertexBuffer, vertexBuffer2;
 bool changedFog=FALSE;
 extern float P_ZFAR;
 extern BOOL SUPPORTS_OGL2;
-+ (void)initGraphics
+void Graphics::initGraphics()
 {
 	
 	for(int f=0;f<6;f++){	
@@ -199,7 +199,7 @@ extern BOOL SUPPORTS_OGL2;
         glFogfv(GL_FOG_COLOR,clr2);
         
         P_ZFAR--;
-        [Graphics setZFAR:P_ZFAR+1];
+    Graphics::setZFAR(P_ZFAR+1);
         //glHint(GL_FOG_HINT,GL_NICEST);
         glFogf(GL_FOG_START, P_ZFAR-P_ZFAR/1.6f);
         glFogf(GL_FOG_END, P_ZFAR-30);
@@ -212,12 +212,13 @@ extern BOOL SUPPORTS_OGL2;
    
 	
 }
-+(void)setCameraFog:(float)zfar{
+void Graphics::setCameraFog(float zfar){
      zfar=190;
      changedFog=TRUE;
      P_ZFAR=zfar;
 }
-+(void)setZFAR:(float)zfar{
+void Graphics::setZFAR(float zfar){
+
     
     if(LOW_MEM_DEVICE){
         zfar=90;
@@ -233,7 +234,7 @@ extern BOOL SUPPORTS_OGL2;
         
     }
 }
-+(void)prepareMenu{
+void Graphics::prepareMenu(){
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);  	
@@ -259,7 +260,8 @@ extern BOOL SUPPORTS_OGL2;
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//glDisableClientState(GL_NORMAL_ARRAY);
 }
-+(void)endMenu{
+void Graphics::endMenu(){
+
 	glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_LIGHTING);	
@@ -268,7 +270,7 @@ extern BOOL SUPPORTS_OGL2;
 	//glEnableClientState(GL_NORMAL_ARRAY);
 }
 
-+ (void)beginTerrain{
+void Graphics::beginTerrain(){
 			
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
    // glDisable(GL_CULL_FACE);
@@ -297,7 +299,7 @@ extern BOOL SUPPORTS_OGL2;
 	//glAlphaFunc(GL_GREATER, 0.50f);
 	
 }
-+ (void)endTerrain{
+void Graphics::endTerrain(){
 	//glDisable(GL_ALPHA_TEST);
     glDisable(GL_BLEND);
     glPopMatrix();
@@ -308,8 +310,8 @@ extern BOOL SUPPORTS_OGL2;
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	
 }
-+ (void)endHud
-{
+void Graphics::endHud(){
+
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
    
@@ -324,8 +326,8 @@ extern BOOL SUPPORTS_OGL2;
 	//glEnableClientState(GL_NORMAL_ARRAY);
 	
 }
-+ (void)beginHud
-{
+
+void Graphics::beginHud(){
     
     glMatrixMode(GL_PROJECTION);			
 	glPushMatrix();							
@@ -358,7 +360,7 @@ extern BOOL SUPPORTS_OGL2;
 	//glDisableClientState(GL_NORMAL_ARRAY);
 }
 
-+ (void)prepareScene{
+void Graphics::prepareScene(){
 	//glClearColor(.29f, .65f, .79f, 1.0f);
 	glClear(GL_DEPTH_BUFFER_BIT);  
 	//glClear();
@@ -378,7 +380,7 @@ extern BOOL SUPPORTS_OGL2;
 	
 	
 }
-+ (void)setLighting{
+void Graphics::setLighting(){
 	const float ambientLight[]={0.2f,0.2f,0.2f,1.0f};
 	//float ambientLightModel[]={1.0f,1.0f,1.0f,1.0f};
 	//glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambientLightModel);
@@ -390,20 +392,9 @@ extern BOOL SUPPORTS_OGL2;
 	glEnable(GL_LIGHT0);
 	
 }
-+ (void)destroyGraphics
-{
-	
-    glDeleteBuffers(1, &vertexBuffer);
-	
-	
-	
-	
-	
-	
-}
 
 
-+ (void)drawText:(NSString*)text :(float)x :(float)y{ 
+void Graphics::drawText(NSString* text,float x,float y){
 	
 	
 		
@@ -424,19 +415,15 @@ extern BOOL SUPPORTS_OGL2;
 	
 	
 }
-
-+ (void)setPerspective{
+void Graphics::setPerspective(){
 	glLoadIdentity();
 	//GLAPI void GLAPIENTRY gluPerspective (GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar);
 
 	//gluPerspective(60,P_ASPECT_RATIO,P_ZNEAR,P_ZFAR-25);
 }
 
-+ (void)drawSquare:(float)x1 :(float)y1 :(float)z1 :(float)len{
-//	[Graphics drawRect:x1:y1:z1:x1+len:y1+len:z1+len];
-}
 
-+ (void)drawRect:(float)x1 :(float)y1 :(float)x2 :(float)y2{	
+void Graphics::drawRect(float x1,float y1,float x2,float y2){
 	GLfloat rectVertices[] = {
 		x1	  ,y1	 ,-.5   ,
 		x2    ,y1    ,-.5   ,		
@@ -446,7 +433,7 @@ extern BOOL SUPPORTS_OGL2;
 	glVertexPointer(3, GL_FLOAT, 0, rectVertices);   
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
-+ (void)drawRectOutline:(CGRect)rect{
+void Graphics::drawRectOutline(CGRect rect){
 	int x1=rect.origin.x;
 	int x2=rect.origin.x+rect.size.width;
 	int y1=rect.origin.y;
@@ -462,7 +449,8 @@ extern BOOL SUPPORTS_OGL2;
 	
 }
 
-+ (void)drawTexCubep:(float)x :(float)y :(float)z :(float)len :(Texture2D*)tex{
+void Graphics::drawTexCubep(float x,float y,float z,float len,Texture2D* tex){
+
 	
 	glBindTexture(GL_TEXTURE_2D, tex.name);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
@@ -487,7 +475,8 @@ extern BOOL SUPPORTS_OGL2;
 	
 }
 
-+ (void)drawTexCube:(float)x :(float)y :(float)z :(float)len :(Texture2D*)tex{
+void Graphics::drawTexCube(float x,float y,float z,float len,Texture2D* tex){
+    
 	
 	glBindTexture(GL_TEXTURE_2D, tex.name);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
@@ -511,7 +500,7 @@ extern BOOL SUPPORTS_OGL2;
 	glPopMatrix();
 	
 }
-+ (void) startPreview{
+void Graphics::startPreview(){
 	glEnable(GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    
@@ -519,12 +508,11 @@ extern BOOL SUPPORTS_OGL2;
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	
 }
-+ (void) endPreview{
+void Graphics::endPreview(){
 	glDisable(GL_BLEND);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
-+(void) drawSkybox{
-	
+void Graphics::drawSkybox(){
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer2);
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
@@ -604,7 +592,8 @@ extern GLshort side3ShortVertices[3*6*6];
 extern GLshort side4ShortVertices[3*6*6];
 extern const GLshort side1ShortVertices[];
 extern const GLfloat cubeNormals[36*3];
-+ (void)drawFirework:(float)x :(float)y :(float)z :(int) color :(float) scale: (float) rot{
+
+void Graphics::drawFirework(float x,float y,float z, int color, float scale, float rot){
    
         glBindTexture(GL_TEXTURE_2D, [Resources getResources].atlas.name);
   
@@ -677,8 +666,8 @@ extern const GLfloat cubeNormals[36*3];
 	glPopMatrix();
     
 }
-+ (void)drawCube:(float)x :(float)y :(float)z :(int)type :(int)buildsize {	
- // printg("drawCube: %f, %f, %f\n",x,y,z);
+void Graphics::drawCube(float x,float y,float z,int type,int buildsize){
+    // printg("drawCube: %f, %f, %f\n",x,y,z);
     if(!(blockinfo[type]&IS_ATLAS2))
         glBindTexture(GL_TEXTURE_2D, [Resources getResources].atlas.name);
     else
@@ -885,6 +874,3 @@ extern const GLfloat cubeNormals[36*3];
 	
 }
 
-
-
-@end
