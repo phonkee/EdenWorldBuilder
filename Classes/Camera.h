@@ -12,19 +12,19 @@
 #import "Glu.h"
 #import "Util.h"
 
-@interface Camera : NSObject {
+class Camera {
+public:
+    Camera();
+    ~Camera();
+    void reset();
+    BOOL update(float etime);
+    void render();
+    void render2();
+    
 	float px,py,pz;
 	float vx,vy,vz;
 	Vector look;
 	float yaw,pitch;	
 	float speed;
 	int mode;
-}
-@property(nonatomic,assign) float px,py,pz,vx,vy,vz,yaw,pitch,speed;
-@property(nonatomic,assign) int mode;
-@property(nonatomic,readonly) Vector look;
-- (void)reset;
-- (BOOL)update:(float)etime;
-- (void)render;
-- (void)render2;
-@end
+};

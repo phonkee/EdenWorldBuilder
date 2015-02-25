@@ -55,7 +55,7 @@
     Button rcam,rexit,rsave,rhome,rmenu;
     
 	int leftymode;
-	Gamepad* gamepad;
+	//Gamepad* gamepad;
 	Joystick* joystick;
 	statusbar* sb;
     CGRect rpaintframe;

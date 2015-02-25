@@ -645,7 +645,7 @@ void addMoreCreaturesIfNeeded(){
         
       
         
-        if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
+        if([World getWorld].terrain.tgen->LEVEL_SEED==DEFAULT_LEVEL_SEED){
             
             int ppx=guys[gc].pos.x-4096*CHUNK_SIZE+GSIZE/2;
             int ppz=guys[gc].pos.z-4096*CHUNK_SIZE+GSIZE/2;

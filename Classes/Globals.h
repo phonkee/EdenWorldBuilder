@@ -21,9 +21,7 @@ typedef unsigned char ubyte;
 typedef signed char sbyte;
 
 
-@interface Globals : NSObject {
 
-}
 extern float P_ZFAR;
 //The EAGL view is stored in the nib file. When it's unarchived it's sent -initWithCoder:.
 extern float SCREEN_WIDTH; 
@@ -41,7 +39,7 @@ extern bool LOW_GRAPHICS;
 extern const int blockTypeFaces[NUM_BLOCKS+1][6];
 extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 extern const int blockinfo[NUM_BLOCKS+1];
-@end
+
 
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)

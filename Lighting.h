@@ -10,10 +10,9 @@
 #import "Vector.h"
 
 
-@interface Lighting : NSObject
 
 void calculateLighting();
 void addlight(int xx,int zz,int yy,float brightness,Vector color);
 
 
-@end
+

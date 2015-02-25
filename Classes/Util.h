@@ -10,11 +10,7 @@
 //#import <UIKit/UIKit.h>
 #import "Texture2D.h"
 #import "Vector.h"
-@interface Util : NSObject {
 
-}
-
-@end
 
 typedef struct _worldnode{
 	NSString* display_name;

@@ -23,7 +23,7 @@
 //#import "Constants.h"
 @class Player;
 @class TerrainChunk;
-@class TerrainGenerator;
+class TerrainGenerator;
 class Portal;
 class Firework;
 

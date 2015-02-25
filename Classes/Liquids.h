@@ -40,22 +40,19 @@ typedef struct _pnode2{
     struct _pnode2* prev;
 }PNode2;
 
-
-@interface Liquids : NSObject {
+class Liquids{
+public:
+    Liquids();
+    BOOL update(float etime);
+    void render();
+    void clearLiquids();
+    void addSource(int x,int z,int y);
+    void removeSource(int x,int z,int y,int type);
     
-  
-}
+};
+
 int getLevel(int type);
 int getBaseType(int type);
 int genLevel(int type,int level);
 
-- (BOOL)update:(float)etime;
-- (void)render;
-- (void)clearLiquids;
-- (void)addSource:(int)x:(int)z:(int)y;
-
-
-
--(void) removeSource:(int)x:(int)z:(int)y:(int)type;
-@end
 

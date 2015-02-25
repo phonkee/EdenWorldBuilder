@@ -17,7 +17,14 @@ typedef struct{
 	Texture2D* tex;
 }property;
 #define NUM_PROP 5
-@interface SettingsMenu : NSObject {
+class SettingsMenu{
+public:
+    SettingsMenu();
+    void update(float etime);
+    void render();
+    void save();
+    void load();
+    NSString* getNewWorldName();
 	
 	CGRect rect_settings;
 	
@@ -30,10 +37,6 @@ typedef struct{
 	CGRect rect_off;	
 	int world_counter;
 	property properties[NUM_PROP];
-}
--(void)update:(float)etime;
--(void)render;
--(void)save;
--(void)load;
--(NSString*)getNewWorldName;
-@end
+};
+
+

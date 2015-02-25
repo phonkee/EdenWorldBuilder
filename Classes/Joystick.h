@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 
 
-@interface Joystick : NSObject {
-
-}
-- (BOOL)update:(float)etime;
-- (void)render;
-@end
+class Joystick{
+    public:
+    Joystick();
+    BOOL update(float etime);
+    void render();
+};

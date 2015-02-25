@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "FileManager.h"
-@interface FileManagerHelper : NSObject
+
+
 void fmh_init(FileManager* tfm);
 void fmh_readColumnFromDefault(int cx,int cz);
 
 
-@end
+

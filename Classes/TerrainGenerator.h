@@ -9,19 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "Terrain.h"
 
-@interface TerrainGenerator : NSObject {
+class TerrainGenerator{
+public:
+    TerrainGenerator(Terrain* parent);
+    void generateColumn(int x,int z, BOOL bgthread);
+    void generateEmptyColumn(int cx,int cz);
+    void generateCloud();
+    void placeTree(int x,int z,int y);
+    
+   
 	int LEVEL_SEED;
     bool genCaves;
-}
-- (id)init:(Terrain*)parent;
-- (void)generateColumn:(int)x:(int)z:(BOOL)bgthread;
-- (void)generateEmptyColumn:(int)cx:(int)cz;
-- (void)generateCloud;
-- (void)placeTree:(int)x :(int)z :(int)y;
+};
+
 float noise3(float vec[3]);
 float noise2(float vec[2]);
 void tgenInit();
 
-@property(nonatomic,assign) int LEVEL_SEED;
-@property(nonatomic,assign) bool genCaves;
-@end
+

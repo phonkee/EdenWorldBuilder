@@ -9,9 +9,13 @@
 #import <Foundation/Foundation.h>
 
 
-@interface Menu_background : NSObject {
+class Menu_background {
+    
+public:
+    Menu_background();
+    void update(float etime);
+    void render();
+private:
 CGRect clouds[3];
-}
--(void)update:(float)etime;
--(void)render;
-@end
+};
+
