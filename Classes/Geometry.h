@@ -14,6 +14,7 @@
 #import <OpenGLES/ES1/glext.h>
 #define INDICES_MAX 32768
 
+
 void tc_initGeometry();
 
 #endif

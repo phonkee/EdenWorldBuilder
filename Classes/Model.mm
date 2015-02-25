@@ -1360,7 +1360,7 @@ void Move(Entity* e,float etime){
         e->runaway=0;
         e->life=START_LIFE;
           PlaySound(e->idx,VO_RELIEVED);
-        [[World getWorld].effects removeFire:e->fireidx];
+        [World getWorld].effects->removeFire(e->fireidx);
     }
     
     
@@ -1372,7 +1372,7 @@ void Move(Entity* e,float etime){
         sigh.x=upos.x;
         sigh.y=upos.y+centers[e->model_type].y;
         sigh.z=upos.z;
-        [[World getWorld].effects updateFire:e->fireidx:sigh];
+        [World getWorld].effects->updateFire(e->fireidx,sigh);
     }
     
     
@@ -1894,7 +1894,7 @@ void BurnModel(int idx){
     Entity* e=&guys[idx];
     if(e->onfire)return;
     PVRTVec3 upos=unwrap(e->pos);
-    e->fireidx=[[World getWorld].effects addFire:upos.x :e->pos.z :upos.y+centers[e->model_type].y :1 :e->life*2];
+    e->fireidx=[World getWorld].effects->addFire(upos.x ,e->pos.z ,upos.y+centers[e->model_type].y ,1 ,e->life*2);
     e->onfire=TRUE;
     e->runaway= e->life*2;
     if(e->model_type==M_CHARGER||e->model_type==M_STALKER){
@@ -1938,7 +1938,7 @@ void killCreature(int idx){
     guys[idx].alive=FALSE;
     [[Resources getResources] playSound:S_CREATURE_VANISH];
     PVRTVec3 upos=unwrap(guys[idx].pos);
-    [[World getWorld].effects addCreatureVanish:upos.x:upos.z:guys[idx].pos.y:guys[idx].color:guys[idx].model_type];
+    [World getWorld].effects->addCreatureVanish(upos.x,upos.z,guys[idx].pos.y,guys[idx].color,guys[idx].model_type);
     
     
 }

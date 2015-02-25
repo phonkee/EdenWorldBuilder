@@ -48,7 +48,7 @@ typedef struct _cnode{
 
 
 
-@implementation BlockBreak
+
 
 static cnode list[max_bparticles];
 static int list_size;
@@ -71,7 +71,7 @@ void mf(int i,int p1,int p2,int p3){
     polyfn[i][1]=polyn[p2];
     polyfn[i][2]=polyn[p3];
 }
--(id) init{
+BlockBreak::BlockBreak(){
 	
     trail_count=0;
 	updateIndexes=TRUE;
@@ -93,10 +93,9 @@ void mf(int i,int p1,int p2,int p3){
     mf(2,0,3,2);
     mf(3,1,2,3);
 
-	return self;
+	
 }
-
-- (int)update: (float)etime{
+int BlockBreak::update(float etime){
     trail_count=0;
 	for(int k=0;k<list_size;k++){
        
@@ -190,7 +189,7 @@ void mf(int i,int p1,int p2,int p3){
 		}
 		list[k].life-=etime;
 		if(list[k].life<=0){
-            [self removeNode:k]; 
+            this->removeNode(k);
 						
 		}
 	}
@@ -215,7 +214,8 @@ void mf(int i,int p1,int p2,int p3){
 
 return FALSE;
 }
--(void)removeNode:(int)idx{
+
+void BlockBreak::removeNode(int idx){
    
     updateIndexes=TRUE;
     num_particles-=list[idx].n_particles;
@@ -232,7 +232,7 @@ return FALSE;
 static PVRTVec4 lightPosition = PVRTVec4(0.0f,0.0f, 0.0f, 1.0f);
 static PVRTVec4 lightAmbient  = PVRTVec4(0.3f, 0.3f, 0.3f, 1.0f);
 static PVRTVec4 lightDiffuse  = PVRTVec4(0.7f, 0.7f, 0.7f, 1.0f);
-- (void)render{ 
+void BlockBreak::render(){
     
    // glEnable(GL_TEXTURE_2D);
    // glEnable(GL_SMOOTH);
@@ -315,10 +315,11 @@ extern Vector colorTable[256];
 extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 extern const GLubyte creatureColor[NUM_CREATURES][3];
 extern const int blockTypeFaces[NUM_BLOCKS+1][6];
-- (void)addBlockExplode:(int)x:(int)z:(int)y:(int)type:(int)color{
+
+void BlockBreak::addBlockExplode(int x,int z,int y,int type, int color) {
     if(type<=0)return;
 	while(num_particles*12+EXPP*12>max_bparticles){
-		[self removeNode:arc4random()%list_size];
+		this->removeNode(arc4random()%list_size);
 	}
 	    //NSLog(@"%d %d type:%d",x,z,type);
 	cnode p;
@@ -414,9 +415,10 @@ extern const int blockTypeFaces[NUM_BLOCKS+1][6];
 
 	
 }
-- (void)addFirework:(float)x:(float)z:(float)y:(int)color{
+
+void BlockBreak::addFirework(float x,float z,float y,int color){
     while(num_particles*12+VANISHP*12>max_bparticles){
-		[self removeNode:arc4random()%list_size];
+		this->removeNode(arc4random()%list_size);
 	}
 	
     cnode p;
@@ -510,11 +512,12 @@ extern const int blockTypeFaces[NUM_BLOCKS+1][6];
     list_size++;
     
 }
-- (void)addCreatureVanish2:(float)x:(float)z:(float)y:(int)color:(int)type{
+void BlockBreak::addCreatureVanish2(float x,float z,float y,int color,int type){
+    
 	
     
 	while(num_particles*12+VANISHP*12>max_bparticles){
-		[self removeNode:arc4random()%list_size];
+		this->removeNode(arc4random()%list_size);
 	}
 	
     //NSLog(@"%d %d type:%d",x,z,type);
@@ -651,11 +654,11 @@ extern const int blockTypeFaces[NUM_BLOCKS+1][6];
     
 	
 }
-- (void)addBlockBreak:(int)x:(int)z:(int)y:(int)type:(int)color{
+void BlockBreak::addBlockBreak(int x,int z,int y,int type,int color){
 	if(type<=0)return;
     
 	while(num_particles*12+BREAKP*12>max_bparticles){
-		[self removeNode:arc4random()%list_size];
+		this->removeNode(arc4random()%list_size);
 	}
 	
 //NSLog(@"%d %d type:%d",x,z,type);
@@ -752,7 +755,8 @@ extern const int blockTypeFaces[NUM_BLOCKS+1][6];
     
 	
 }
-- (void)clearAllEffects{
+void BlockBreak::clearAllEffects(){
+
 	updateIndexes=TRUE;
     num_particles=0;
     num_vertices=0;
@@ -761,4 +765,4 @@ extern const int blockTypeFaces[NUM_BLOCKS+1][6];
 	
 	
 }
-@end
+

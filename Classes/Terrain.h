@@ -24,8 +24,8 @@
 @class Player;
 @class TerrainChunk;
 @class TerrainGenerator;
-@class Portal;
-@class Firework;
+class Portal;
+class Firework;
 
 #define GBLOCKIDXCLEAN(x,z,y)  ((x+g_offcx)%T_SIZE)*(T_SIZE*T_HEIGHT) + ((z+g_offcz)%T_SIZE)*T_HEIGHT + y
 #define GBLOCKIDX(x,z,y) GBLOCKIDXCLEAN((x),(z),(y))
@@ -93,8 +93,8 @@
 
 float getShadow(int x,int z,int y);
 float calcLight(int x,int z,int y,float shadow,int coord);
-int getLandc(int x,int z,int y);
-int getLandc2(int x,int z,int y);
+ int getLandc(int x,int z,int y);
+ int getLandc2(int x,int z,int y);
 int getColorc(int x,int z,int y);
 bool isOnFire(int x ,int z, int y);
 int getRampType(int x,int z,int y, int t);

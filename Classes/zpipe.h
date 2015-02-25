@@ -8,6 +8,10 @@
 #include <stdio.h>
 #include <assert.h>
 #include "zlib.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 /* Decompress from file source to file dest until stream ends or EOF.
  inf() returns Z_OK on success, Z_MEM_ERROR if memory could not be
  allocated for processing, Z_DATA_ERROR if the deflate data is
@@ -24,3 +28,7 @@ int decompressFile(FILE *source, FILE *dest);
 int compressFile(FILE *source, FILE *dest, int level);
 
 void zerr(int ret);
+
+    #ifdef __cplusplus
+}
+#endif

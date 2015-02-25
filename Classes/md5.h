@@ -7,5 +7,14 @@
 //
 #include <CoreFoundation/CoreFoundation.h>
 #define FileHashDefaultChunkSizeForReadingData 4096
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 CFStringRef FileMD5HashCreateWithPath(CFStringRef filePath, 
                                       size_t chunkSizeForReadingData);
+
+#ifdef __cplusplus
+    }
+#endif

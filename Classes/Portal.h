@@ -20,19 +20,19 @@ typedef struct _portal{
     int x,y,z,dir,color;
     
 }sportal;
-@interface Portal : NSObject {
-   
+
+class Portal{
+public:
+    Portal();
+    void addPortal(int x,int y,int z,int dir,int color);
+    void paintPortal(int x,int y,int z,int color);
+    void removePortal(int x,int y,int z);
+    void removeAllPortals();
+    Vector2 enterPortal(int x,int y,int z,Vector vel);
+private:
    int n_portal;
    sportal portals[MAX_PORTAL];
+
     
-    
-}
+};
 
-
--(void)addPortal:(int) x:(int) y:(int) z:(int) dir:(int)color;
--(void)paintPortal:(int) x:(int) y:(int) z:(int) color;
--(void)removePortal:(int) x:(int) y:(int) z;
--(void)removeAllPortals;
--(Vector2)enterPortal:(int) x:(int) y:(int) z:(Vector) vel;
-
-@end

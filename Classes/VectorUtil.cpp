@@ -1,7 +1,7 @@
 
-extern "C" {
+
 #include "VectorUtil.h"
-}
+
 #include "PVRTVector.h"
 
 Vector rotateVertice(Vector rot,Vector v){

@@ -9,16 +9,23 @@
 #import <Foundation/Foundation.h>
 #import "Vector.h"
 
-@interface Fire : NSObject {
-	
-}
-- (BOOL)update: (float)etime;
-- (int)addFire:(float)x:(float)z:(float)y:(int)type:(float)life;
-- (void)render;
--(void)removeFire:(int)ppid;
 
--(void)removeNode:(int)idx;
--(void)updateFire:(int)idx:(Vector)pos;
-- (void)clearAllEffects;
-- (int)addSmoke:(float)x:(float)z:(float)y;
-@end
+class Fire
+{
+public:
+    Fire();
+    BOOL update(float etime);
+    int addFire(float x,float z, float y, int type, float life);
+    void render();
+    void removeFire(int ppid);
+    void removeNode(int idx);
+    void updateFire(int idx,Vector pos);
+    void clearAllEffects();
+    int addSmoke(float x,float z,float y);
+    
+private:
+    void renderFireSprites();
+    
+};
+
+
