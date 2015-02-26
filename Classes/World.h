@@ -20,7 +20,7 @@
 #import "FileManager.h"
 #import "SpecialEffects.h"
 class FileManager;
-@class Player;
+class Player;
 @class Terrain;
 @class Hud;
 @class Menu;

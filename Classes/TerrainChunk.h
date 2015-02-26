@@ -34,8 +34,9 @@ typedef struct _small_block{
 }SmallBlock;
 #define CC(x,z,y) ((int)(x)*(CHUNK_SIZE*CHUNK_SIZE)+(int)(z)*(CHUNK_SIZE)+(int)(y))
 
-@interface TerrainChunk : NSObject {
+class TerrainChunk {
 	
+public:
 	
 	//block8 blocks[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
     
@@ -94,13 +95,28 @@ typedef struct _small_block{
     ;
 	GLuint    vertexBuffer,vertexBuffer2,elementBuffer;
    // BOOL needsRebuild;
-@public
+
 	int bounds[6];
     int rtbounds[6];
 	float rbounds[6];	
     int* pbounds;
     float* prbounds;
-}
+    
+    TerrainChunk(const int* boundz,int rcx,int rcy,Terrain* terrain);
+    TerrainChunk(const int* boundz,int rcx,int rcy,Terrain* terrain,BOOL genblocks);
+    ~TerrainChunk();
+    int getLand(int x,int z,int y);
+    void setLand(int x,int z,int y,int type);
+    void resetForReuse();
+    int rebuild2();
+    void setBounds(int* boundz);
+    void clearMeshes();
+    int render();
+    void render2();
+    void unbuild();
+    void prepareVBO();
+};
+
 typedef struct bnode{
 	int x,y,z;
 	float time;	
@@ -110,42 +126,9 @@ typedef struct bnode{
 	int type;
 	struct bnode* next;
 }BurnNode;
-@property(nonatomic,assign) BOOL needsRebuild,needsGen,loaded,in_view,needsVBO,modified,has_light;
-@property(nonatomic,readonly) int* pbounds;
-@property(nonatomic,assign) block8* pblocks;
-//@property(nonatomic,assign) block8* pblocks2;
-@property(nonatomic,assign) color8* pcolors;
 
-@property(nonatomic,readonly) SmallBlock** psblocks;
-
-@property(nonatomic,assign) StaticObject* rtobjects;
-@property(nonatomic,assign) int idxn;
-@property(nonatomic,assign) int rebuildCounter;
-@property(nonatomic,assign) int rtn_vertices,rtn_vertices2,rtnum_objects;
-@property(nonatomic,readonly) float* prbounds;
-@property(nonatomic,assign) TreeNode* m_treenode;
-@property(nonatomic,assign) ListNode* m_listnode;
-
-
-- (id)init:(const int*)boundz:(int)rcx:(int)rcy:(Terrain*)terrain;
-- (id)initWithBlocks:(const int*)boundz:(int)rcx:(int)rcy:(Terrain*)terrain:(BOOL)genblocks;
-- (int)getLand:(int)x:(int)z:(int)y;
-- (void)setLand:(int)x:(int)z:(int)y:(int)type;
--(void) resetForReuse;
-
-//- (int)getCustom:(int)x:(int)z:(int)y;
-//- (int)getCustomColor:(int)x:(int)z:(int)y;
-//- (int) setCustom:(int)x:(int)z:(int)y:(int)type:(int)color;
-- (int)rebuild2;
--(void)setBounds:(int*) boundz;
-- (void)clearMeshes;
-- (int)render;
-- (void)render2;
-
--(void) unbuild;
-- (void)prepareVBO;
 
 void tc_initGeometry();
 
-@end
+
 

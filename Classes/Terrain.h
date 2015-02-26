@@ -21,8 +21,8 @@
 #import "Portal.h"
 #import "Firework.h"
 //#import "Constants.h"
-@class Player;
-@class TerrainChunk;
+class Player;
+class TerrainChunk;
 class TerrainGenerator;
 class Portal;
 class Firework;

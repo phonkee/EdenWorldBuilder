@@ -16,8 +16,8 @@
 #import "OpenGL_Internal.h"
 @class World;
 
-@interface Player : NSObject {
-	
+class Player {
+public:
 	float boxbase;
 	float boxheight;
     float max_walk_speed;
@@ -29,7 +29,7 @@
 	BOOL jumping;
     BOOL doublejump;
 	World* world;
-    Polyhedra pbox;
+    
 	int invertcam;
     BOOL inPortal;
     BOOL climbing;
@@ -40,31 +40,28 @@
     BOOL autojump_option;
     BOOL health_option;
     float life;
-    //BOOL onIceRamp;
-}
-- (void)groundPlayer;
-- (void)reset;
-- (void)horizc;
--(BOOL) preupdate:(float)etime;
-- (BOOL)vertc;
-- (void)processInput:(float)etime;
-- (BOOL)update:(float)etime;
-- (id)initWithWorld:(World*)world;
-- (BOOL)test:(int)x:(int)y:(int)z:(float)r; 
-- (void)move:(float)etime;
-- (void)takeDamage:(float)damage;
-- (void)render;
-- (void)setSpeed:(Vector)svel:(float)speed;
+    
+    void groundPlayer();
+    void reset();
+    void horizc();
+    BOOL preupdate(float etime);
+    BOOL vertc();
+    void processInput(float etime);
+    BOOL update(float etime);
+    Player(World* world);
+    BOOL test(int x,int y,int z,float r);
+    void move(float etime);
+    void takeDamage(float damage);
+    void render();
+    void setSpeed(Vector svel,float speed);
+    BOOL checkCollision();
+    Vector lol[50];
+    
+    Vector lol1[50];
+   // Polyhedra testbox;
+    Vector lol2[50];
+};
 
-@property(nonatomic,assign) float life;
-@property(nonatomic,assign) int invertcam;
-@property(nonatomic,assign) Vector pos,vel;
-@property(nonatomic,assign) float yaw,pitch,flash;
-@property(nonatomic,assign) BOOL move_back,jumping;
-@property(nonatomic,assign) BOOL autojump_option,health_option;
-@property(nonatomic,assign) BOOL dead;
-@property(nonatomic,assign) Polyhedra pbox,testbox;
 
 Vector getFlowDirection(int x,int z,int y);
 
-@end

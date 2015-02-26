@@ -184,7 +184,7 @@ void RLETEST(){
     terrain=[[Terrain alloc] init];	
     cam=new Camera();
     res=[Resources getResources];
-    player=[[Player alloc] initWithWorld:self];
+    player=new Player(self);
     hud=[[Hud alloc] init];
     fm=new FileManager();
     effects=new SpecialEffects();
@@ -222,8 +222,8 @@ void RLETEST(){
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
        // goto cleanup;
         if(world.terrain.loaded){
-            int chunkOffsetX=player.pos.x/CHUNK_SIZE-T_RADIUS;
-            int chunkOffsetZ=player.pos.z/CHUNK_SIZE-T_RADIUS;
+            int chunkOffsetX=player->pos.x/CHUNK_SIZE-T_RADIUS;
+            int chunkOffsetZ=player->pos.z/CHUNK_SIZE-T_RADIUS;
             int r=T_RADIUS;
             bool isloaded[T_RADIUS*2][T_RADIUS*2];
             int count=0;
@@ -237,8 +237,8 @@ void RLETEST(){
                     if(chunk){
                        
                         
-                        if( chunk.pbounds[0]!=(x+chunkOffsetX)*CHUNK_SIZE||
-                            chunk.pbounds[2]!=(z+chunkOffsetZ)*CHUNK_SIZE)
+                        if( chunk->pbounds[0]!=(x+chunkOffsetX)*CHUNK_SIZE||
+                            chunk->pbounds[2]!=(z+chunkOffsetZ)*CHUNK_SIZE)
                        
                         
                         {
@@ -390,7 +390,7 @@ extern int chunk_load_count;
             doneLoading=0;
             cam->reset();
         
-            [player reset];
+            player->reset();
             game_mode=GAME_MODE_WAIT;
             target_game_mode=GAME_MODE_PLAY;
             menu.loading=0;
@@ -453,7 +453,7 @@ extern int chunk_load_count;
 }
 - (void)dealloc{
 	[terrain release];
-	[player release];
+    delete player;
     delete cam;
     [res release];
 	[hud release];
@@ -510,11 +510,11 @@ extern int chunk_load_count;
         if(game_mode==GAME_MODE_WAIT){
             return FALSE;
         }
-         if(CREATURES_ON&&![World getWorld].player.dead)
+         if(CREATURES_ON&&![World getWorld].player->dead)
         UpdateModels(etime);
        
-		[player preupdate:etime];
-         if(![World getWorld].player.dead)
+		player->preupdate(etime);
+         if(![World getWorld].player->dead)
 		effects->update(etime);
         
         
@@ -588,7 +588,8 @@ extern int chunk_load_count;
         glTranslatef(-fm->chunkOffsetX*CHUNK_SIZE,0,-fm->chunkOffsetZ*CHUNK_SIZE);
 		effects->render();
         [World getWorld].terrain.fireworks->render();
-		[player render];		
+        player->render();
+				
          glPopMatrix();
 		[hud render]; //render hud last
 		

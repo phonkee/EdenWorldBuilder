@@ -370,7 +370,7 @@ void Fire::renderFireSprites(){
     poof=1.1;
     float epoof=1.0f;
     vert=0;
-    Vector  camp=[World getWorld].player.pos;
+    Vector  camp=[World getWorld].player->pos;
     
     for(int i=0;i<list_size;i++){
         firenode* node=&list[i];

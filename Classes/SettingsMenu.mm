@@ -183,9 +183,9 @@ void SettingsMenu::load(){
 	[Resources getResources].playmusic=properties[S_PLAY_MUSIC].value;
 	[Resources getResources].playsound=properties[S_PLAY_SOUND].value;
 	//[World getWorld].hud.leftymode=properties[S_LEFTY_MODE].value;
-   [World getWorld].player.autojump_option=properties[S_AUTOJUMP].value;
-    [World getWorld].player.health_option=properties[S_HEALTH].value;
-	[World getWorld].player.invertcam=FALSE;
+   [World getWorld].player->autojump_option=properties[S_AUTOJUMP].value;
+    [World getWorld].player->health_option=properties[S_HEALTH].value;
+	[World getWorld].player->invertcam=FALSE;
 	[World getWorld].hud.use_joystick=TRUE;
     [World getWorld].terrain.tgen->genCaves=FALSE;
     [World getWorld].bestGraphics=properties[S_AUTOJUMP].value;

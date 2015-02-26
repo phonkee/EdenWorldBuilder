@@ -619,7 +619,7 @@ extern Vector colorTable[256];
    
     
     
-    float distance=v_length2(v_sub(location,[World getWorld].player.pos));
+    float distance=v_length2(v_sub(location,[World getWorld].player->pos));
     float distance_fade=12.0f;
     if(distance<distance_fade*distance_fade){
        // distance=sqrtf(distance);
@@ -722,7 +722,7 @@ extern int flamecount;
             flamecount=0;
         }
     }*/
-    [self soundEvent:actionid:[World getWorld].player.pos];
+    [self soundEvent:actionid:[World getWorld].player->pos];
 }
 static int target_ambient;
 static BOOL songisplaying=FALSE;
@@ -738,7 +738,7 @@ static float bkgtargetvolume=0;
         bkgtargetvolume=0.0f;
     }
     if(target_ambient!=current_ambient&&(bkgvolume==0||target_ambient==AMBIENT_UNDERWATER)){
-        float distance=sqrtf(v_length2(v_sub(location,[World getWorld].player.pos)));
+        float distance=sqrtf(v_length2(v_sub(location,[World getWorld].player->pos)));
         float distance_fade=12.0f;
         
         if(distance>distance_fade)distance=distance_fade;
@@ -752,7 +752,7 @@ static float bkgtargetvolume=0;
     [[SimpleAudioEngine sharedEngine] playBackgroundMusic:ambientFiles[target_ambient]
                                                      loop:-1];
     }else if(target_ambient==current_ambient){
-        float distance=sqrtf(v_length2(v_sub(location,[World getWorld].player.pos)));
+        float distance=sqrtf(v_length2(v_sub(location,[World getWorld].player->pos)));
         float distance_fade=12.0f;
          if(distance>distance_fade)distance=distance_fade;
         bkgtargetvolume=2.0f*(distance_fade-distance)/distance_fade;

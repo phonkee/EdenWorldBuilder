@@ -141,12 +141,12 @@ void fmh_readColumnFromDefault(int cx,int cz){
         //issue #3 continued
         TerrainChunk* old=ter.chunkTable[threeToOne(cx,cy,cz)];
         if(old){chunk=old;
-            [chunk setBounds:bounds];
+            chunk->setBounds(bounds);
             
         }
         else
-            chunk=[[TerrainChunk alloc] initWithBlocks:
-                                                bounds:cx:cz:ter:TRUE];
+            chunk=new TerrainChunk(bounds,cx,cz,ter,TRUE);
+                                   
         columns[cy]=chunk;
         
         
@@ -201,8 +201,8 @@ void fmh_readColumnFromDefault(int cx,int cz){
                 for(int z=0;z<CHUNK_SIZE;z++)
                     for(int x=0;x<CHUNK_SIZE;x++)
                         for(int y=0;y<CHUNK_SIZE;y++){
-                            chunk.pblocks[CC(x,z,y)]=tblocks[CC(y,z,x)];
-                            chunk.pcolors[CC(x,z,y)]=tcolors[CC(y,z,x)];
+                            chunk->pblocks[CC(x,z,y)]=tblocks[CC(y,z,x)];
+                            chunk->pcolors[CC(x,z,y)]=tcolors[CC(y,z,x)];
                         }
                 
                 
@@ -236,7 +236,7 @@ void fmh_readColumnFromDefault(int cx,int cz){
                        blockarray+
                        ((x+bounds[0]+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+
                        ((z+bounds[2]+g_offcz)%T_SIZE)*T_HEIGHT+bounds[1],
-                       chunk.pblocks+(x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE),
+                       chunk->pblocks+(x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE),
                        CHUNK_SIZE);
                 
             }

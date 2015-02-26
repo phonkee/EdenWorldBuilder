@@ -410,7 +410,7 @@ static BOOL updateNode(PNode* pnode){
     if(ntype==TYPE_NONE||blockinfo[ntype]&IS_LIQUID){
         if(ntype==TYPE_WATER||ntype==TYPE_LAVA)return TRUE;
        
-        if(getBaseType(type)!=TYPE_LAVA||![[World getWorld].player test:nx:ny:nz:1]){
+        if(getBaseType(type)!=TYPE_LAVA||![World getWorld].player->test(nx,ny,nz,1)){
             
             if(blockinfo[type]&IS_WATER)
                 [[World getWorld].terrain updateChunks:nx:nz:ny:TYPE_WATER];
@@ -458,7 +458,7 @@ static BOOL updateNode(PNode* pnode){
          ny=pnode->y;
          ntype=getLandc(nx, nz, ny);
          if(ntype==TYPE_NONE||(blockinfo[ntype]&IS_LIQUID&&getLevel(ntype)<level-1)){
-             if(btype!=TYPE_LAVA||![[World getWorld].player test:nx:ny:nz:1]){
+             if(btype!=TYPE_LAVA||![World getWorld].player->test(nx,ny,nz,1)){
              [[World getWorld].terrain updateChunks:nx:nz:ny:genLevel(btype,level-1)];
              
              [[World getWorld].terrain setColor:nx:nz:ny:color];

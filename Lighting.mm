@@ -88,9 +88,9 @@ void calculateLighting(){
                     TerrainChunk* chunk=chunkTablec[threeToOne(cx,cy,cz)];
                    
                     if(chunk)
-                    for(int y=chunk.pbounds[1];y<CHUNK_SIZE+chunk.pbounds[1];y++){
-                        for(int x=chunk.pbounds[0];x<CHUNK_SIZE+chunk.pbounds[0];x++){
-                            for(int z=chunk.pbounds[2];z<CHUNK_SIZE+chunk.pbounds[2];z++){
+                    for(int y=chunk->pbounds[1];y<CHUNK_SIZE+chunk->pbounds[1];y++){
+                        for(int x=chunk->pbounds[0];x<CHUNK_SIZE+chunk->pbounds[0];x++){
+                            for(int z=chunk->pbounds[2];z<CHUNK_SIZE+chunk->pbounds[2];z++){
                                 
                                 if(getLandc(x,z,y)==TYPE_LIGHTBOX){
                                     addlight(x,z,y,1.0f,colorTable[getColorc(x,z,y)]);

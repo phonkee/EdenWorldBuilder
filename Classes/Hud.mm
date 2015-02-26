@@ -359,10 +359,10 @@ int flamecount=0;
 	if(flash>0){
 		flash-=etime;
 	}
-    if([World getWorld].player.flash>0){
+    if([World getWorld].player->flash>0){
        // [World getWorld].player.flash-=etime;
     }
-	if([World getWorld].player.dead){
+	if([World getWorld].player->dead){
         if(fade_out<1){
             fade_out+=etime/4;
         }else if(fade_out>=1){
@@ -1944,7 +1944,7 @@ static int lmode=MODE_NONE;
 		glEnable(GL_TEXTURE_2D);
 
     }
-	if(flash>0||[World getWorld].player.flash>0){
+	if(flash>0||[World getWorld].player->flash>0){
 		//NSLog(@"%f",flash);
 		glDisable(GL_TEXTURE_2D);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1953,7 +1953,7 @@ static int lmode=MODE_NONE;
             
 		glColor4f(flashcolor.x, flashcolor.y, flashcolor.z, flash);
         }else
-         glColor4f(1.0, 0.0, 0.0, [World getWorld].player.flash);
+         glColor4f(1.0, 0.0, 0.0, [World getWorld].player->flash);
         
         if(IS_IPAD){
             if(IS_RETINA){
@@ -2015,7 +2015,7 @@ static int lmode=MODE_NONE;
             case 1:
             {
                 Vector thome;		
-                Vector pp=[World getWorld].player.pos;
+                Vector pp=[World getWorld].player->pos;
                 thome.x=pp.x-.5f;
                 thome.z=pp.z-.5f;
                 thome.y=pp.y-1; 

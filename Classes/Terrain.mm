@@ -235,6 +235,10 @@ extern int g_offcz;
 - (void)allocateMemory{
     if(chunkTablec!=NULL)return;
     chunkTablec=chunkTable=(TerrainChunk**)malloc(sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+    //for(int i=0;i<CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN;i++)
+   // {
+   //     chunkTable[i]=new TerrainChunk();
+   // }
     memset(chunkTable,0,sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
     chunksToUpdate=(BOOL*)malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
     columnsToUpdate=(BOOL*)malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE);
@@ -247,7 +251,8 @@ extern int g_offcz;
 -(void) deallocateMemory{
     for(int i=0;i<CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN;i++){
         if(chunkTablec[i]!=NULL){
-            [chunkTablec[i] release];
+            delete chunkTablec[i];
+            
             chunkTablec[i]=NULL;
         }
     }
@@ -264,14 +269,14 @@ free(lightarray);
 
 int freeOldChunks(any_t passedIn,any_t chunkToUnload){	
 	TerrainChunk* chunk=(TerrainChunk*)chunkToUnload;
-	[chunk release];
+    delete chunk;
 	return MAP_OK;
 }
 int unloadChunk(any_t passedIn,any_t chunkToUnload){
 	//BOOL partial=(BOOL)(int)passedIn;
 	//if(partial)NSLog(@"lololol");
 	TerrainChunk* chunk=(TerrainChunk*)chunkToUnload;
-	[chunk release];
+    delete chunk;
 	return MAP_OK;
 }
 
@@ -300,7 +305,7 @@ int unloadChunk(any_t passedIn,any_t chunkToUnload){
 int extraGeneration(any_t passedIn,any_t chunkToGen){
 	
 	TerrainChunk* chunk=(TerrainChunk*)chunkToGen;
-    if(chunk.needsGen){
+    if(chunk->needsGen){
        // [chunk doGen];
     //    chunk.needsGen=FALSE;
     }
@@ -383,7 +388,7 @@ void updateLightingBegin(){
 	[self loadTerrain:world_name:FALSE];
     //[[World getWorld].player reset];
     
-    [[World getWorld].player groundPlayer];
+    [World getWorld].player->groundPlayer();
 }
 - (void)warpToHome{
 	Vector pp;
@@ -397,7 +402,7 @@ void updateLightingBegin(){
 	[self loadTerrain:world_name:FALSE];
     //[[World getWorld].player reset];
 
-    [[World getWorld].player groundPlayer];	
+    [World getWorld].player->groundPlayer();
 }
 - (void)addToUpdateList:(int)cx:(int)cy:(int)cz{
      //issue #1 continued
@@ -595,9 +600,9 @@ TerrainChunk* rebuildList[13000];
     chunkTable[threeToOne(cx,cy,cz)]=chunk;
 	//hashmap_put(chunkMap,threeToOne(cx,cy,cz),chunk);
 	if(readdtree){
-	chunk.m_treenode=addToTree(&troot,chunk.pbounds,chunkIdx);
-    if(chunk.m_treenode){
-        chunk.m_listnode=chunk.m_treenode->dataList;
+	chunk->m_treenode=addToTree(&troot,chunk->pbounds,chunkIdx);
+    if(chunk->m_treenode){
+        chunk->m_listnode=chunk->m_treenode->dataList;
     }
     }
 	//@synchronized(chunksToUpdate){
@@ -677,8 +682,8 @@ TerrainChunk* rebuildList[13000];
             }
         }*/
        
-            chunk.pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]=type;
-        chunk.modified=TRUE;
+            chunk->pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]=type;
+        chunk->modified=TRUE;
         
 		
 	}
@@ -703,10 +708,10 @@ TerrainChunk* rebuildList[13000];
     x-=cx*CHUNK_SIZE;
     y-=cy*CHUNK_SIZE;
     z-=cz*CHUNK_SIZE;
-    color8 c1=chunk.pcolors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];
+    color8 c1=chunk->pcolors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];
     if(c1==color) return FALSE;
-    chunk.modified=TRUE;
-    chunk.pcolors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]=color;
+    chunk->modified=TRUE;
+    chunk->pcolors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]=color;
 		
 	// NSLog(@"hi! %f,%f,%f",color.x,color.y,color.z);
     return TRUE;
@@ -930,7 +935,7 @@ int getRampType(int x,int z,int y, int t){
             return type;
         }
     }
-    int yaw=[World getWorld].player.yaw;
+    int yaw=[World getWorld].player->yaw;
     int r=0;
     yaw+=360;
     yaw%=360;
@@ -995,7 +1000,7 @@ int getRampType(int x,int z,int y, int t){
         [self updateChunks:x :z :boty+1 :TYPE_DOOR_TOP];
         [self setColor:x :z :boty+1 : [World getWorld].hud.block_paintcolor ];
         
-        int yaw=[World getWorld].player.yaw;
+        int yaw=[World getWorld].player->yaw;
         int r=0;
         yaw+=360;
         yaw%=360;
@@ -1024,7 +1029,7 @@ int getRampType(int x,int z,int y, int t){
         [self updateChunks:x :z :boty+1 :TYPE_PORTAL_TOP];
         [self setColor:x :z :boty+1 : [World getWorld].hud.block_paintcolor ];
         
-        int yaw=[World getWorld].player.yaw;
+        int yaw=[World getWorld].player->yaw;
         int r=0;
         yaw+=360;
         yaw%=360;
@@ -1486,7 +1491,7 @@ int getColorc(int x,int z,int y){
 	x-=cx*CHUNK_SIZE;
 	y-=cy*CHUNK_SIZE;
 	z-=cz*CHUNK_SIZE;
-	return chunk.pcolors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];
+	return chunk->pcolors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];
    
 }
 - (int)getLand:(int)x :(int)z :(int)y{
@@ -1507,7 +1512,7 @@ int getColorc(int x,int z,int y){
 	x-=cx*CHUNK_SIZE;
 	y-=cy*CHUNK_SIZE;
 	z-=cz*CHUNK_SIZE;
-	return chunk.pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];													 
+	return chunk->pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];
 	
 }
 - (int)getColor:(int)x :(int)z :(int)y{
@@ -1524,7 +1529,7 @@ int getColorc(int x,int z,int y){
 	x-=cx*CHUNK_SIZE;
 	y-=cy*CHUNK_SIZE;
 	z-=cz*CHUNK_SIZE;
-	return chunk.pcolors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];													 
+	return chunk->pcolors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];
 	
 }
 - (void)shootFirework:(int)x :(int)z :(int)y{
@@ -1566,7 +1571,7 @@ int getColorc(int x,int z,int y){
                 
                     int type=getLandc(j, k, y-yy);
                     if(type==0){
-                        if(![[World getWorld].player test:j :y-yy :k:1]){
+                        if(![World getWorld].player->test(j ,y-yy ,k,1)){
                             [self updateChunks:j :k :y-yy :TYPE_BRICK];
                             [self paintBlock:j :k :y-yy:color];
                         }
@@ -1577,7 +1582,7 @@ int getColorc(int x,int z,int y){
                     type=getLandc(j, k, y+yy);
                     
                     if(type==0){
-                        if(![[World getWorld].player test:j :y+yy:k:1]){
+                        if(![World getWorld].player->test(j ,y+yy,k,1)){
                             [self updateChunks:j :k :y+yy :TYPE_BRICK];
                             [self paintBlock:j :k :y+yy:color];
                         }
@@ -1692,8 +1697,8 @@ extern float P_ZFAR;
     return;  //disabled?
 	float radius=T_SIZE/8;//(P_ZFAR/2)/BLOCK_SIZE;
 	Player* player=[World getWorld].player;
-	if(player.pos.x/BLOCK_SIZE-radius<0||player.pos.x/BLOCK_SIZE+radius>T_SIZE||
-	   player.pos.z/BLOCK_SIZE-radius<0||player.pos.z/BLOCK_SIZE+radius>T_SIZE){
+	if(player->pos.x/BLOCK_SIZE-radius<0||player->pos.x/BLOCK_SIZE+radius>T_SIZE||
+	   player->pos.z/BLOCK_SIZE-radius<0||player->pos.z/BLOCK_SIZE+radius>T_SIZE){
 		do_reload=1;
 		[World getWorld].hud.sb->setStatus(@"Loading ",999);
        
@@ -1883,8 +1888,8 @@ static int hit_load_counter=0;
     
     ///////////load geom from file or gen
     if(world.terrain.loaded){
-        m_chunkOffsetX=player.pos.x/CHUNK_SIZE-T_RADIUS;
-       m_chunkOffsetZ=player.pos.z/CHUNK_SIZE-T_RADIUS;
+        m_chunkOffsetX=player->pos.x/CHUNK_SIZE-T_RADIUS;
+       m_chunkOffsetZ=player->pos.z/CHUNK_SIZE-T_RADIUS;
 
                 int r=T_RADIUS;
         bool isloaded[T_RADIUS*2][T_RADIUS*2];
@@ -1899,8 +1904,8 @@ static int hit_load_counter=0;
                 if(chunk){
                     
                     
-                    if( chunk.pbounds[0]!=(x+m_chunkOffsetX)*CHUNK_SIZE||
-                       chunk.pbounds[2]!=(z+m_chunkOffsetZ)*CHUNK_SIZE)
+                    if( chunk->pbounds[0]!=(x+m_chunkOffsetX)*CHUNK_SIZE||
+                       chunk->pbounds[2]!=(z+m_chunkOffsetZ)*CHUNK_SIZE)
                         
                         
                     {
@@ -2063,7 +2068,7 @@ static int hit_load_counter=0;
                 //=malloc(sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
                 if(chunk){
                     rebuildList[idxrl++]=chunk;
-                    chunk.idxn=list[i];
+                    chunk->idxn=list[i];
                 }else{
                     printg("null chunk marked for updating??\n");
                 }
@@ -2076,17 +2081,17 @@ static int hit_load_counter=0;
             
                 
               
-                   if([rebuildList[i] rebuild2]==-1){
+                   if(rebuildList[i]->rebuild2()==-1){
                     //    chunksToUpdate[rebuildList[i].idxn]=TRUE;
                      //   columnsToUpdate[rebuildList[i].idxn/CHUNKS_PER_COLUMN]=TRUE;
                        printg("fail update on chunk: %d    bounds %d %d %d   rebuildCounter: %d\n",i,rebuildList[i].pbounds[0],rebuildList[i].pbounds[1],rebuildList[i].pbounds[2],rebuildList[i].rebuildCounter);
                     }else{
                         
-                        rebuildList[i].needsRebuild=FALSE;
-                        if(LOW_MEM_DEVICE)[rebuildList[i] prepareVBO];
+                      //  rebuildList[i]->needsRebuild=FALSE;
+                        if(LOW_MEM_DEVICE)rebuildList[i]->prepareVBO();
                         else
                         //issue #2 chunksToUpdateImmediatley shared data access with main thread, not synchronized
-                        chunksToUpdateImmediatley[rebuildList[i].idxn]=TRUE;
+                        chunksToUpdateImmediatley[rebuildList[i]->idxn]=TRUE;
                     }
               
                 
@@ -2134,7 +2139,7 @@ static int hit_load_counter=0;
                     
                     if(chunk){
                         
-                        [chunk prepareVBO];
+                        chunk->prepareVBO();
                         count++;
                         
                     }
@@ -2204,13 +2209,13 @@ void renderTree(TreeNode* node,int state){
 		//hashmap_get(chunkMapc, [chunkIdx intValue],(any_t)&chunk);
             if(chunk){
                
-                chunk.in_view=FALSE;
-                if((chunk.rtn_vertices>0||chunk.rtn_vertices2>0)){
+                chunk->in_view=FALSE;
+                if((chunk->rtn_vertices>0||chunk->rtn_vertices2>0)){
                     int cstate=ViewTestAABB(chunk->rbounds,state);
                     if(!(cstate&VT_OUTSIDE)) {
-                        chunk.in_view=TRUE;
+                        chunk->in_view=TRUE;
                         if(secondPass){
-                            if(chunk.rtn_vertices2>0){
+                            if(chunk->rtn_vertices2>0){
                                 renderList2[chunks_rendered2]=chunk;
                                 //[chunk render2];
                                 chunks_rendered2+=1;
@@ -2218,7 +2223,7 @@ void renderTree(TreeNode* node,int state){
                             }
                         }
                         else{
-                            if(chunk.rtn_vertices>0||chunk.rtnum_objects>0){
+                            if(chunk->rtn_vertices>0||chunk->rtnum_objects>0){
                                 renderList[chunks_rendered]=chunk;
                                 // [chunk render];
                                 
@@ -2247,25 +2252,25 @@ int compare_rebuild_order (const void *a, const void *b)
 {
     TerrainChunk* first=*((TerrainChunk**)(a));
     TerrainChunk* second=*((TerrainChunk**)(b));
-    Vector cam=[World getWorld].player.pos;
-    Vector center=MakeVector((first.pbounds[3]+first.pbounds[0])/2.0f,
-                             (first.pbounds[4]+first.pbounds[1])/2.0f,
-                             (first.pbounds[5]+first.pbounds[2])/2.0f);
+    Vector cam=[World getWorld].player->pos;
+    Vector center=MakeVector((first->pbounds[3]+first->pbounds[0])/2.0f,
+                             (first->pbounds[4]+first->pbounds[1])/2.0f,
+                             (first->pbounds[5]+first->pbounds[2])/2.0f);
     
     float dist=(cam.x-center.x)*(cam.x-center.x)+
     (cam.y-center.y)*(cam.y-center.y)+
     (cam.z-center.z)*(cam.z-center.z);
     
-    if(first.in_view)dist/=4;
+    if(first->in_view)dist/=4;
     
-    center=MakeVector((second.pbounds[3]+second.pbounds[0])/2.0f,
-                      (second.pbounds[4]+second.pbounds[1])/2.0f,
-                      (second.pbounds[5]+second.pbounds[2])/2.0f);
+    center=MakeVector((second->pbounds[3]+second->pbounds[0])/2.0f,
+                      (second->pbounds[4]+second->pbounds[1])/2.0f,
+                      (second->pbounds[5]+second->pbounds[2])/2.0f);
     float dist2=((cam.x-center.x)*(cam.x-center.x)+
            (cam.y-center.y)*(cam.y-center.y)+
            (cam.z-center.z)*(cam.z-center.z));
     
-    if(second.in_view)dist2/=4;
+    if(second->in_view)dist2/=4;
     dist-=dist2;
     
     if (dist > 0)
@@ -2282,18 +2287,18 @@ int compare_front2back (const void *a, const void *b)
 {
     TerrainChunk* first=*((TerrainChunk**)(a));
     TerrainChunk* second=*((TerrainChunk**)(b));
-    Vector cam=[World getWorld].player.pos;
-    Vector center=MakeVector((first.pbounds[3]+first.pbounds[0])/2.0f,
-                             (first.pbounds[4]+first.pbounds[1])/2.0f,
-                             (first.pbounds[5]+first.pbounds[2])/2.0f);
+    Vector cam=[World getWorld].player->pos;
+    Vector center=MakeVector((first->pbounds[3]+first->pbounds[0])/2.0f,
+                             (first->pbounds[4]+first->pbounds[1])/2.0f,
+                             (first->pbounds[5]+first->pbounds[2])/2.0f);
     
     float dist=(cam.x-center.x)*(cam.x-center.x)+
              (cam.y-center.y)*(cam.y-center.y)+
     (cam.z-center.z)*(cam.z-center.z);
     
-    center=MakeVector((second.pbounds[3]+second.pbounds[0])/2.0f,
-                      (second.pbounds[4]+second.pbounds[1])/2.0f,
-                      (second.pbounds[5]+second.pbounds[2])/2.0f);
+    center=MakeVector((second->pbounds[3]+second->pbounds[0])/2.0f,
+                      (second->pbounds[4]+second->pbounds[1])/2.0f,
+                      (second->pbounds[5]+second->pbounds[2])/2.0f);
     dist-=((cam.x-center.x)*(cam.x-center.x)+
     (cam.y-center.y)*(cam.y-center.y)+
     (cam.z-center.z)*(cam.z-center.z));
@@ -2309,18 +2314,18 @@ int compare_back2front (const void *a, const void *b)
 {
     TerrainChunk* first=*((TerrainChunk**)(a));
     TerrainChunk* second=*((TerrainChunk**)(b));
-    Vector cam=[World getWorld].player.pos;
-    Vector center=MakeVector((first.pbounds[3]+first.pbounds[0])/2.0f,
-                             (first.pbounds[4]+first.pbounds[1])/2.0f,
-                             (first.pbounds[5]+first.pbounds[2])/2.0f);
+    Vector cam=[World getWorld].player->pos;
+    Vector center=MakeVector((first->pbounds[3]+first->pbounds[0])/2.0f,
+                             (first->pbounds[4]+first->pbounds[1])/2.0f,
+                             (first->pbounds[5]+first->pbounds[2])/2.0f);
     
     float dist=(cam.x-center.x)*(cam.x-center.x)+
     (cam.y-center.y)*(cam.y-center.y)+
     (cam.z-center.z)*(cam.z-center.z);
     
-    center=MakeVector((second.pbounds[3]+second.pbounds[0])/2.0f,
-                      (second.pbounds[4]+second.pbounds[1])/2.0f,
-                      (second.pbounds[5]+second.pbounds[2])/2.0f);
+    center=MakeVector((second->pbounds[3]+second->pbounds[0])/2.0f,
+                      (second->pbounds[4]+second->pbounds[1])/2.0f,
+                      (second->pbounds[5]+second->pbounds[2])/2.0f);
     dist-=((cam.x-center.x)*(cam.x-center.x)+
            (cam.y-center.y)*(cam.y-center.y)+
            (cam.z-center.z)*(cam.z-center.z));
@@ -2336,7 +2341,7 @@ int compare_objects_back2front (const void *a, const void *b)
 {
     StaticObject first=*((StaticObject*)(a));
     StaticObject second=*((StaticObject*)(b));
-    Vector cam=[World getWorld].player.pos;
+    Vector cam=[World getWorld].player->pos;
     Vector center=first.pos;
     
     float dist=(cam.x-center.x)*(cam.x-center.x)+
@@ -2391,7 +2396,7 @@ int lolc=0;
     int chunksr=chunks_rendered;
     for(int i=0;i<chunks_rendered;i++){
         
-        vertices_rendered+=[renderList[i] render];
+        vertices_rendered+=renderList[i]->render();
         /*if(vertices_rendered>=max_vertices&&[World getWorld].hud.fps<40){
             if([World getWorld].hud.mode!=MODE_CAMERA){
             [Graphics setZFAR:P_ZFAR-.5f];
@@ -2460,9 +2465,9 @@ int lolc=0;
     StaticObject* doorso[500];
     int num_doors=0;
     for(int i=0;i<chunksr;i++){
-        for(int j=0;j<renderList[i].rtnum_objects;j++){
-            if(renderList[i].rtobjects[j].type!=TYPE_DOOR_TOP)continue;
-            doorso[num_doors++]=&renderList[i].rtobjects[j];
+        for(int j=0;j<renderList[i]->rtnum_objects;j++){
+            if(renderList[i]->rtobjects[j].type!=TYPE_DOOR_TOP)continue;
+            doorso[num_doors++]=&renderList[i]->rtobjects[j];
         }
     }
    // printg("chunksr %d   num doors:%d\n",chunksr,num_doors);
@@ -2472,7 +2477,7 @@ int lolc=0;
     
    
         setViewNow();
-    Vector ppos=[World getWorld].player.pos;
+    Vector ppos=[World getWorld].player->pos;
     for(int clr=0;clr<60;clr++){
         vert=0;
         object=0;
@@ -2645,8 +2650,8 @@ int lolc=0;
     
     float tessf=1.0f/(float)tess;
     for(int i=0;i<chunksr;i++){
-        for(int j=0;j<renderList[i].rtnum_objects;j++){
-            if(renderList[i].rtobjects[j].type!=TYPE_GOLDEN_CUBE)continue;
+        for(int j=0;j<renderList[i]->rtnum_objects;j++){
+            if(renderList[i]->rtobjects[j].type!=TYPE_GOLDEN_CUBE)continue;
             for(int f=0;f<6;f++)
                 
                 for(int x=0;x<tess;x++){
@@ -2678,9 +2683,9 @@ int lolc=0;
                             objVertices[vert].normal[2]=vn.z;
                             
                             
-                            objVertices[vert].position[0]=4*(renderList[i].rtobjects[j].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+1+2.3*vc.x;
-                            objVertices[vert].position[1]=4*renderList[i].rtobjects[j].pos.y+1+2.3*vc.y;
-                            objVertices[vert].position[2]=4*(renderList[i].rtobjects[j].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+1+2.3*vc.z;
+                            objVertices[vert].position[0]=4*(renderList[i]->rtobjects[j].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+1+2.3*vc.x;
+                            objVertices[vert].position[1]=4*renderList[i]->rtobjects[j].pos.y+1+2.3*vc.y;
+                            objVertices[vert].position[2]=4*(renderList[i]->rtobjects[j].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+1+2.3*vc.z;
                             
                             CalcEnvMap(&objVertices[vert]);
                             
@@ -2689,8 +2694,8 @@ int lolc=0;
                             
                             
                             extern Vector colorTable[256];
-                            Vector color=colorTable[renderList[i].rtobjects[j].color];
-                            if(renderList[i].rtobjects[j].color==0){
+                            Vector color=colorTable[renderList[i]->rtobjects[j].color];
+                            if(renderList[i]->rtobjects[j].color==0){
                                 color.x=color.y=color.z=1;
                                 
                             }
@@ -2748,12 +2753,12 @@ int lolc=0;
     vert=0;
    object=0;
     for(int i=0;i<chunksr;i++){
-        for(int j=0;j<renderList[i].rtnum_objects;j++){
-            if(renderList[i].rtobjects[j].type!=TYPE_PORTAL_TOP)continue;
+        for(int j=0;j<renderList[i]->rtnum_objects;j++){
+            if(renderList[i]->rtobjects[j].type!=TYPE_PORTAL_TOP)continue;
            // printg("drawing portal\n");
             
             float rot=0;
-            int dir=(renderList[i].rtobjects[j].dir+3)%4;
+            int dir=(renderList[i]->rtobjects[j].dir+3)%4;
             Vector offsets=MakeVector(0,0,0);
             if(dir==0){
                 offsets.x=4;
@@ -2795,9 +2800,9 @@ int lolc=0;
                 //if(vc.x>4)vc.x=4;
                 //if(vc.z>4)vc.z=4;
                // vc=rotateVertice(MakeVector(0,rot,0),vc);
-                objVertices[vert].position[0]=4*(renderList[i].rtobjects[j].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+vc.x;
-                objVertices[vert].position[1]=4*renderList[i].rtobjects[j].pos.y+vc.y;
-                objVertices[vert].position[2]=4*(renderList[i].rtobjects[j].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+vc.z;
+                objVertices[vert].position[0]=4*(renderList[i]->rtobjects[j].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+vc.x;
+                objVertices[vert].position[1]=4*renderList[i]->rtobjects[j].pos.y+vc.y;
+                objVertices[vert].position[2]=4*(renderList[i]->rtobjects[j].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+vc.z;
                 
                
                 if(k>=12){
@@ -2816,8 +2821,8 @@ int lolc=0;
                     }
                 }
                 extern Vector colorTable[256];
-                Vector color=colorTable[renderList[i].rtobjects[j].color];
-                if(true||renderList[i].rtobjects[j].color==0){
+                Vector color=colorTable[renderList[i]->rtobjects[j].color];
+                if(true||renderList[i]->rtobjects[j].color==0){
                     color.x=color.y=color.z=1;
                     
                 }
@@ -2960,9 +2965,9 @@ int lolc=0;
     StaticObject* portalso[200];
     int num_portals=0;
     for(int i=0;i<chunksr;i++){
-        for(int j=0;j<renderList[i].rtnum_objects;j++){
-            if(renderList[i].rtobjects[j].type!=TYPE_PORTAL_TOP)continue;
-            portalso[num_portals++]=&renderList[i].rtobjects[j];
+        for(int j=0;j<renderList[i]->rtnum_objects;j++){
+            if(renderList[i]->rtobjects[j].type!=TYPE_PORTAL_TOP)continue;
+            portalso[num_portals++]=&renderList[i]->rtobjects[j];
         }
     }
     
@@ -3139,7 +3144,7 @@ int getFlowerIndex(int color){
     qsort (renderList2, chunks_rendered2, sizeof (TerrainChunk*), compare_back2front);
     
     for(int i=0;i<chunks_rendered2;i++){
-        [renderList2[i] render2];
+        renderList2[i]->render2();
     }
     glMatrixMode(GL_TEXTURE);
     glTranslatef(0,-(int)(frame/16),0);
@@ -3165,10 +3170,10 @@ int getFlowerIndex(int color){
     object=0;
     int flowers=0;
     for(int i=0;i<chunks_rendered;i++){
-        for(int j=0;j<renderList[i].rtnum_objects;j++){
-            if(renderList[i].rtobjects[j].type!=TYPE_FLOWER)continue;
+        for(int j=0;j<renderList[i]->rtnum_objects;j++){
+            if(renderList[i]->rtobjects[j].type!=TYPE_FLOWER)continue;
             if(flowers>=MAX_FLOWERS)break;
-            flowerList[flowers]=renderList[i].rtobjects[j];
+            flowerList[flowers]=renderList[i]->rtobjects[j];
             flowers++;
         }
     }
@@ -3184,8 +3189,8 @@ int getFlowerIndex(int color){
             Vector vc=MakeVector((cubeVertices[k*3]-.5f)*.5f,cubeVertices[k*3+1],cubeVertices[k*3+2]);
             Vector dir;
             dir.y=0;
-            dir.x=flowerList[i].pos.x+.5f-[World getWorld].player.pos.x;
-            dir.z=flowerList[i].pos.z+.5f-[World getWorld].player.pos.z;
+            dir.x=flowerList[i].pos.x+.5f-[World getWorld].player->pos.x;
+            dir.z=flowerList[i].pos.z+.5f-[World getWorld].player->pos.z;
             
             float targetangle=(atan2(dir.z,dir.x)-atan2(0,1))-M_PI_2;
             

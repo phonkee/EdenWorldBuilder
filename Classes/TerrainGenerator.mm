@@ -58,7 +58,7 @@ inline static int getLandt(int x,int z,int y){
  
     if(x>=0&&y>=0&&z>=0&&x<CHUNK_SIZE&&z<CHUNK_SIZE&&y<T_HEIGHT)
     
-        return column[(int)y/CHUNK_SIZE].pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
+        return column[(int)y/CHUNK_SIZE]->pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
     return 0;
 }
 
@@ -66,12 +66,12 @@ inline static int getLandt(int x,int z,int y){
 inline static void setLandt(int x,int z,int y,int type){  
   
     
-    	column[(int)y/CHUNK_SIZE].pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)]=type;
+    	column[(int)y/CHUNK_SIZE]->pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)]=type;
 	
 }
 
 inline static void setColort(int x,int z,int y,int color){  
-	column[(int)y/CHUNK_SIZE].pcolors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)]=color;
+	column[(int)y/CHUNK_SIZE]->pcolors[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)]=color;
 	
 }
 extern int g_offcx,g_offcz;
@@ -94,14 +94,14 @@ void TerrainGenerator::generateEmptyColumn(int cx,int cz){
         TerrainChunk* chunk;
         TerrainChunk* old=ter.chunkTable[threeToOne(ocx,cy,ocz)];  //crash count: 1
         if(old){chunk=old;
-            [chunk resetForReuse];
-            [chunk setBounds:bounds];
-            
+            chunk->resetForReuse();
+            chunk->setBounds(bounds);
         }
         else
-            chunk=[[TerrainChunk alloc] init:bounds:ocx:ocz:ter];
+            chunk=new TerrainChunk(bounds,ocx,ocz,ter);
         
-        chunk.needsGen=TRUE;
+        chunk->needsGen=TRUE;
+        
 		column[cy]=chunk;
         /*  if(bgthread){
          if(cy==0){
@@ -118,7 +118,7 @@ void TerrainGenerator::generateEmptyColumn(int cx,int cz){
             for(int y=0;y<T_HEIGHT;y++)
                 GBLOCK(x+boundx,z+boundz,y)=
                 
-                column[(int)y/CHUNK_SIZE].pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
+                column[(int)y/CHUNK_SIZE]->pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
             
         }
     }
@@ -153,14 +153,16 @@ void TerrainGenerator::generateColumn(int cx,int cz,BOOL bgthread){
         TerrainChunk* chunk;
         TerrainChunk* old=ter.chunkTable[threeToOne(ocx,cy,ocz)];  //crash count: 1
         if(old){chunk=old;
-           [chunk resetForReuse];
-            [chunk setBounds:bounds];
+           chunk->resetForReuse();
+            chunk->setBounds(bounds);
+            printf("found old chunk\n");
              
         }
-        else
-		chunk=[[TerrainChunk alloc] init:bounds:ocx:ocz:ter];
+        else{
+		chunk= new TerrainChunk(bounds,ocx,ocz,ter);
+        }
         
-        chunk.needsGen=TRUE;
+        chunk->needsGen=TRUE;
 		column[cy]=chunk;
       /*  if(bgthread){
             if(cy==0){
@@ -189,7 +191,7 @@ void TerrainGenerator::generateColumn(int cx,int cz,BOOL bgthread){
         for(int x=0;x<CHUNK_SIZE;x++){
             for(int z=0;z<CHUNK_SIZE;z++){
                 for(int y=0;y<T_HEIGHT;y++){
-                    GBLOCK(x+boundx,z+boundz,y)=column[(int)y/CHUNK_SIZE].pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
+                    GBLOCK(x+boundx,z+boundz,y)=column[(int)y/CHUNK_SIZE]->pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
                     
                     
                 }
@@ -322,7 +324,7 @@ void TerrainGenerator::generateColumn(int cx,int cz,BOOL bgthread){
                 for(int y=0;y<T_HEIGHT;y++)
                     GBLOCK(x+boundx,z+boundz,y)=
                     
-                    column[(int)y/CHUNK_SIZE].pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
+                    column[(int)y/CHUNK_SIZE]->pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
                 
             }			
         }
@@ -508,7 +510,7 @@ void TerrainGenerator::generateColumn(int cx,int cz,BOOL bgthread){
         for(int x=0;x<CHUNK_SIZE;x++){
             for(int z=0;z<CHUNK_SIZE;z++){
                 for(int y=0;y<T_HEIGHT;y++){
-                 GBLOCK(x+boundx,z+boundz,y)=column[(int)y/CHUNK_SIZE].pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
+                 GBLOCK(x+boundx,z+boundz,y)=column[(int)y/CHUNK_SIZE]->pblocks[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+(y-((int)y/CHUNK_SIZE)*CHUNK_SIZE)];
                                
           
                 }

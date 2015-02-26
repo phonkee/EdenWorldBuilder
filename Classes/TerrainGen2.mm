@@ -2777,8 +2777,8 @@ void updateSkyColor2(Player* player,BOOL force,float etime){
      loaded_new_terrain=FALSE;
     //if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
        
-        int ppx=player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
-        int ppz=player.pos.z-4096*CHUNK_SIZE+GSIZE/2;
+        int ppx=player->pos.x-4096*CHUNK_SIZE+GSIZE/2;
+        int ppz=player->pos.z-4096*CHUNK_SIZE+GSIZE/2;
         ppx=ppx/(GSIZE/4);
         ppz=ppz/(GSIZE/4);
         if(ppx>4)ppx=4;
@@ -2836,8 +2836,8 @@ void paintSky(int color){
     }
     [World getWorld].terrain.final_skycolor=colorTable[color];
     
-    int ppx=[World getWorld].player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
-    int ppz=[World getWorld].player.pos.z-4096*CHUNK_SIZE+GSIZE/2;
+    int ppx=[World getWorld].player->pos.x-4096*CHUNK_SIZE+GSIZE/2;
+    int ppz=[World getWorld].player->pos.z-4096*CHUNK_SIZE+GSIZE/2;
     ppx=ppx/(GSIZE/4);
     ppz=ppz/(GSIZE/4);
     if(ppx>4)ppx=4;

@@ -67,7 +67,7 @@ BOOL Joystick::update(float etime){
                 if(mag>1.3f)mag=1.3f;
 				//pos.x*=mag;
 				//pos.y*=mag;
-				[[World getWorld].player setSpeed:pos:mag];
+				[World getWorld].player->setSpeed(pos,mag);
                // printg("magnitude:%f\n",mag);
 				handled=TRUE;	
 				touches[i].inuse=usage_id;	
@@ -80,7 +80,7 @@ BOOL Joystick::update(float etime){
 			joystick_pos.origin.y=default_pos.origin.y;
 			pos.x=0;
 			pos.y=0;
-			[[World getWorld].player setSpeed:pos:0];
+			[World getWorld].player->setSpeed(pos,0);
 		}
 		
 		if(touches[i].inuse==usage_id&&touches[i].down==M_RELEASE){			

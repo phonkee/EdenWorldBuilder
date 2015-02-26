@@ -24,8 +24,6 @@
 #define FLOW_SPEED 5
 #define THREE_TO_ONE(x,y,z) 
 
-@implementation Player
-@synthesize pos,yaw,pitch,move_back,jumping,invertcam,autojump_option,vel,flash,pbox,life,dead,health_option,testbox;
 static int nest_count;
 static bool onground;
 static bool onramp;
@@ -36,16 +34,21 @@ bool FLY_UP=false;
 bool FLY_DOWN=false;
 static Point3D buildpoint;
 float yawanimation;
-- (id)initWithWorld:(World*) lworld{
+
+Polyhedra testbox;
+Polyhedra pbox;
+Player::Player(World* lworld){
 	world=lworld;
 	boxbase=(BLOCK_SIZE*2.0f)/3.0f;
 	boxheight=(BLOCK_SIZE*1.85f);
 	autojump_option=TRUE;
 	doublejump=FALSE;
-	return self;
+    testbox=makeBox(0,0,0,0,0,0);
+   
+	
 }
 
-- (void)reset{
+void Player::reset(){
 	jumpandbuild=FALSE;
 	lpos.x=pos.x;
 	lpos.y=pos.y;
@@ -77,7 +80,8 @@ float yawanimation;
 	
 }
 extern Vector minTranDist;
-- (BOOL)test:(int)tx:(int)ty:(int)tz:(float)r{
+
+BOOL Player::test(int tx,int ty,int tz,float r){
     float bot=pos.y-boxheight/2;
 	float top=pos.y+boxheight/2;
 	float left=pos.x-boxbase/2;
@@ -86,6 +90,7 @@ extern Vector minTranDist;
 	float back=pos.z+boxbase/2;
     int type=[World getWorld].hud.blocktype;
     testbox=makeBox(left,right,back,front,bot,top);
+    //printf("npoints player box:%d\n",testbox.n_points);
     Polyhedra pbox2;
     if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
         
@@ -137,7 +142,7 @@ extern Vector minTranDist;
 
 static const int usage_id=10;
 extern int fwc_result;
-- (void)setSpeed:(Vector)walk_dir:(float)walk_speed{
+void Player::setSpeed(Vector walk_dir, float walk_speed){
     walk_force=walk_dir;
     walk_force.z=walk_force.y;
     walk_force.y=0;
@@ -146,7 +151,8 @@ extern int fwc_result;
 }
 
 extern bool hitCustom;
-- (void)processInput:(float)etime{
+
+void Player::processInput(float etime){
 	Input* input=Input::getInput();
 	int mode=[World getWorld].hud.mode;
 	itouch* touches=input->getTouches();
@@ -161,9 +167,9 @@ extern bool hitCustom;
             }
             BOOL collidesWithPlayer=FALSE;
             if([World getWorld].hud.build_size==2)
-                collidesWithPlayer=[[World getWorld].player test:testpoint.x:testpoint.y:testpoint.z:2];
+                collidesWithPlayer=this->test(testpoint.x,testpoint.y,testpoint.z,2);
             else
-                collidesWithPlayer=[[World getWorld].player test:testpoint.x:testpoint.y:testpoint.z:1];
+                collidesWithPlayer=this->test(testpoint.x,testpoint.y,testpoint.z,1);
             
             if(!collidesWithPlayer){
                 
@@ -404,9 +410,9 @@ extern bool hitCustom;
                             }
                             BOOL collidesWithPlayer=FALSE;
                             if([World getWorld].hud.build_size==2)
-                            collidesWithPlayer=[[World getWorld].player test:testpoint.x:testpoint.y:testpoint.z:2];
+                            collidesWithPlayer=test(testpoint.x,testpoint.y,testpoint.z,2);
                             else
-                             collidesWithPlayer=[[World getWorld].player test:testpoint.x:testpoint.y:testpoint.z:1];
+                             collidesWithPlayer=test(testpoint.x,testpoint.y,testpoint.z,1);
                                 
 							if(!collidesWithPlayer){
                                 int type=[World getWorld].hud.blocktype;
@@ -702,7 +708,8 @@ static float walkCount=0;
 static BOOL ladderSound=FALSE;
 static BOOL ladderIsVine=FALSE;
 static BOOL lastOnIce;
-- (void)takeDamage:(float)damage{
+
+void Player::takeDamage(float damage){
     life-=damage;
     if(!health_option){
         if(life<.36){
@@ -724,7 +731,7 @@ static BOOL lastOnIce;
     
 }
 
--(BOOL) preupdate:(float)etime{
+BOOL Player::preupdate(float etime){
     if(life<0){
         flash=1;
         
@@ -737,12 +744,13 @@ static BOOL lastOnIce;
     }
     
     if(!dead)
-        return [self update:etime];
+        return this->update(etime);
     else
         return TRUE;
 }
-- (BOOL)update:(float)etime{
-  
+
+BOOL Player::update(float etime){
+ 
 	//if(etime>1.0f/30.0f)etime=1.0f/30.0f;
     float displacement=etime*sqrt(v_length2(vel));
     if(displacement>.1f&&1.0f/etime<500/*180*/){
@@ -750,16 +758,18 @@ static BOOL lastOnIce;
             NormalizeVector(&vel);
             vel=v_mult(vel,JUMP_SPEED*15);
         }
+        this->update(etime/2.0f);
+        this->update(etime/2.0f);
         
-        [self update:etime/2.0f];
-        [self update:etime/2.0f];
         /*
          */
         return TRUE;
     }
    // NSLog(@"displacement: %f cps:%f",displacement,1/etime);
 	static float gravity=GRAVITY;
-	[self processInput:etime];
+    
+    this->processInput(etime);
+	
     
     if(yawanimation!=0){
         float dyaw=0;
@@ -1028,7 +1038,8 @@ static BOOL lastOnIce;
 	lpos.x=pos.x;
 	lpos.y=pos.y;
 	lpos.z=pos.z;
-	[self move:etime];
+    this->move(etime);
+	
     if([World getWorld].terrain.tgen->LEVEL_SEED==DEFAULT_LEVEL_SEED){
         if(pos.x<4096*CHUNK_SIZE-GSIZE/2){
            pos.x=4096*CHUNK_SIZE-GSIZE/2;
@@ -1042,7 +1053,7 @@ static BOOL lastOnIce;
             pos.z=4096*CHUNK_SIZE+GSIZE/2;
         }
     }
-    updateSkyColor2(self,FALSE,etime);
+    updateSkyColor2(this,FALSE,etime);
 	//NSLog(@"%f %f %f",pos.x,pos.y,pos.z);
 	
 	Camera* cam=world.cam;
@@ -1110,8 +1121,8 @@ static BOOL lastOnIce;
             v.y=6;
             [[Resources getResources] soundEvent:AMBIENT_CAVE:v];
         }else{
-            int ppx=[World getWorld].player.pos.x-4096*CHUNK_SIZE+GSIZE/2;
-            int ppz=[World getWorld].player.pos.z-4096*CHUNK_SIZE+GSIZE/2;
+            int ppx=pos.x-4096*CHUNK_SIZE+GSIZE/2;
+            int ppz=pos.z-4096*CHUNK_SIZE+GSIZE/2;
             ppx=ppx/(GSIZE/4);
             ppz=ppz/(GSIZE/4);
             if(ppx>4)ppx=4;
@@ -1172,7 +1183,9 @@ extern Vector colorTable[256];
 extern Vector tranDist;
 //extern Vector minTranDist;
 extern const GLubyte blockColor[NUM_BLOCKS+1][3];
-- (BOOL)vertc{
+float poffsetx=0;
+float poffsetz=0;
+BOOL Player::vertc(){
     nest_count++;
     if(nest_count>10){/*printg("hit nest limit");*/ nest_count--; return false;}
 	Terrain* ter=world.terrain;
@@ -1383,7 +1396,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
       //  NSLog(@"before-vel:(%f,%f,%f)  normal:(%f,%f,%f) dotp: %f",vel.x,vel.y,vel.z,normal.x,normal.y,normal.z,n);
         if(blockinfo[collided]&IS_LAVA){
             
-            [self takeDamage:.08f];
+            takeDamage(.08f);
             n*=1.8;
             
             [[Resources getResources] playSound:S_LAVA_BURN];	
@@ -1475,7 +1488,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
         
        // printg("collison recursion nest count: %d  type:%d\n",nest_count,collided);
         
-        [self vertc];
+        vertc();
         
         
         
@@ -1656,7 +1669,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 	
 }
 
-- (void)horizc{/*
+void Player::horizc(){/*
 	int bx=(int)roundf(pos.x/BLOCK_SIZE-.5f);
 	int bz=(int)roundf(pos.z/BLOCK_SIZE-.5f);
 	Terrain* ter=world.terrain;
@@ -1772,7 +1785,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     endClimb=FALSE;
     */
 }
--(BOOL) checkCollision{
+BOOL Player::checkCollision(){
     int bx=(int)roundf(pos.x/BLOCK_SIZE-.5f);
 	int bz=(int)roundf(pos.z/BLOCK_SIZE-.5f);
 	Terrain* ter=world.terrain;
@@ -1800,19 +1813,18 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     return FALSE;
 
 }
--(void)groundPlayer{
-    while(![self checkCollision]&&pos.y>=0){
+void Player::groundPlayer(){
+    while(!checkCollision()&&pos.y>=0){
         pos.y-=1;
     }
-    while([self checkCollision]&&pos.y<=100){
+    while(checkCollision()&&pos.y<=100){
         pos.y+=1;
     }
 }
 static int icesound=0;
-float poffsetx=0;
-float poffsetz=0;
-- (void)move:(float)etime{
-    
+
+
+void Player::move(float etime){
 //	Terrain* ter=world.terrain;
 	
 	
@@ -1890,7 +1902,7 @@ float poffsetz=0;
     onramp=FALSE;
     poffsetx=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
     poffsetz=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
-    [self vertc];
+    vertc();
     
     if(inLiquid)onIce=FALSE;
    // if(onground)NSLog(@"grounded sucka");
@@ -2042,7 +2054,8 @@ float poffsetz=0;
     
 }
 extern Vector fpoint;
-- (void)render{
+
+void Player::render(){
     Graphics::startPreview();
     
 	if(THIRD_PERSON){
@@ -2094,4 +2107,4 @@ extern Vector fpoint;
 	
 
 }
-@end
+

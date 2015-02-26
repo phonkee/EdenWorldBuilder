@@ -348,13 +348,13 @@ void setViewNow(){
     
 }
 PVRTVec3 unwrap(PVRTVec3 upos){
-    PVRTVec3 player_pos=MakePVR([World getWorld].player.pos);
+    PVRTVec3 player_pos=MakePVR([World getWorld].player->pos);
     player_pos.x=wrapx(player_pos.x);
     player_pos.z=wrapz(player_pos.z);
     
     float tempy=upos.y;
     upos=upos-player_pos;
-    upos=upos+MakePVR([World getWorld].player.pos);
+    upos=upos+MakePVR([World getWorld].player->pos);
     upos.y=tempy;
     return upos;
 }
@@ -364,9 +364,9 @@ void CalcEnvMap(vertexObject* vert){
     // pV, pN and pTC point to the XYZ, Normal and Texture Coordinate attributes of a single vertex.
     
      // Calculate the vector from Object Space Eye to the Vertex
-        PVRTVec3 _refFrameEye([World getWorld].player.pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE,
-                              [World getWorld].player.pos.y+3*1.85f/10,
-                              [World getWorld].player.pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE);
+        PVRTVec3 _refFrameEye([World getWorld].player->pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE,
+                              [World getWorld].player->pos.y+3*1.85f/10,
+                              [World getWorld].player->pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE);
     PVRTVec3 pV(vert->position[0]/4.0f,vert->position[1]/4.0f,vert->position[2]/4.0f);
     
         PVRTVec3 viewVec = _refFrameEye - pV;
@@ -414,7 +414,7 @@ void SortModels(){
 }
 bool isFacingPlayer(int idx){
     int a=R2D(guys[idx].angle);
-    int b=[World getWorld].player.yaw;
+    int b=[World getWorld].player->yaw;
     
     a=(a+360+90+180)%360;
     b=(b+360)%360;
@@ -918,7 +918,7 @@ void ExplodeModels(Vector p,int color){
         
     }
     Player* e=[World getWorld].player;
-    PVRTVec3 player_pos=MakePVR([World getWorld].player.pos);
+    PVRTVec3 player_pos=MakePVR([World getWorld].player->pos);
    // player_pos.x=wrapx(player_pos.x);
    // player_pos.z=wrapz(player_pos.z);
     PVRTVec3 pos=PVRTVec3(p);
@@ -939,16 +939,16 @@ void ExplodeModels(Vector p,int color){
         pos=pos.normalize();
         
         pos*=hit_force;
-        Vector vel=e.vel;
+        Vector vel=e->vel;
         vel.x+=pos.x;
         vel.y+=pos.y+6;
         vel.z+=pos.z;
-        e.vel=vel;
+        e->vel=vel;
          [[Resources getResources] playSound:S_HIT];
-            if([World getWorld].player.life>.5f)
-                [[World getWorld].player takeDamage:.38f];
+            if([World getWorld].player->life>.5f)
+                [World getWorld].player->takeDamage(.38f);
             else
-                [[World getWorld].player takeDamage:.05f];
+                [World getWorld].player->takeDamage(.05f);
        
         }
     }
@@ -956,6 +956,7 @@ void ExplodeModels(Vector p,int color){
     
 }
 void UpdateBoxes(Entity* e);
+extern Polyhedra testbox;
 bool CheckCollision(Entity* e){
     nest_count++;
     if(nest_count>10)return false;
@@ -972,25 +973,13 @@ bool CheckCollision(Entity* e){
     UpdateBoxes(e);
     
     if(e->ragetimer>0){
-        Polyhedra ppbox=[World getWorld].player.testbox;
-        //Face faces[6];
-        //Vector points[8];
-        for(int i=0;i<8;i++){
-            ppbox.points[i].x=wrapx(ppbox.points[i].x);
-            ppbox.points[i].z=wrapz(ppbox.points[i].z);
-        }
-        for(int j=0;j<6;j++){
-            for(int i=0;i<4;i++){
-                ppbox.faces[j].points[i].x=wrapx(ppbox.faces[j].points[i].x);
-                ppbox.faces[j].points[i].z=wrapz(ppbox.faces[j].points[i].z);
-            }
-        }
-        if(collidePolyhedra(e->box,ppbox)){
+    
+        if(collidePolyhedra(e->box,testbox)){
             
             e->ragetimer=0;
         
             Player* ep=[World getWorld].player;
-            PVRTVec3 player_pos=MakePVR([World getWorld].player.pos);
+            PVRTVec3 player_pos=MakePVR([World getWorld].player->pos);
             player_pos.x=wrapx(player_pos.x);
             player_pos.z=wrapz(player_pos.z);
             PVRTVec3 pos=PVRTVec3(e->pos);
@@ -1001,17 +990,17 @@ bool CheckCollision(Entity* e){
                 pos=pos.normalize();
                 
                 pos*=hit_force;
-                Vector vel=ep.vel;
+                Vector vel=ep->vel;
                 vel.x+=pos.x;
                 vel.y+=pos.y+4;
                 vel.z+=pos.z;
-                ep.vel=vel;
+                ep->vel=vel;
                 if(e->model_type==M_CHARGER||e->model_type==M_STALKER)
-                [ep takeDamage:.33333333f];
+                ep->takeDamage(.33333333f);
                 else
-                [ep takeDamage:.5f];
+                ep->takeDamage(.5f);
             
-                ep.flash=0.6f;
+                ep->flash=0.6f;
                 [[Resources getResources] playSound:S_HIT];
             
         }
@@ -1086,20 +1075,8 @@ bool CheckCollision(Entity* e){
         }
     }
     if(!collided){
-        Polyhedra ppbox=[World getWorld].player.testbox;
-        //Face faces[6];
-        //Vector points[8];
-        for(int i=0;i<8;i++){
-            ppbox.points[i].x=wrapx(ppbox.points[i].x);
-            ppbox.points[i].z=wrapz(ppbox.points[i].z);
-        }
-        for(int j=0;j<6;j++){
-            for(int i=0;i<4;i++){
-                ppbox.faces[j].points[i].x=wrapx(ppbox.faces[j].points[i].x);
-                ppbox.faces[j].points[i].z=wrapz(ppbox.faces[j].points[i].z);
-            }
-        }
-    if(collidePolyhedra(e->box,ppbox)){
+       
+    if(collidePolyhedra(e->box,testbox)){
        
         if(v_length2(minTranDist)>v_length2(minminTranDist)){
            
@@ -1502,7 +1479,7 @@ void UpdateModels(float etime){
         if(guys[i].onground&&(guys[i].justhit||guys[i].runaway>0||guys[i].ragetimer>0)&&guys[i].state!=DEFAULT_WALK){
             endCycle=TRUE;
         }
-        PVRTVec3 player_pos=MakePVR([World getWorld].player.pos);
+        PVRTVec3 player_pos=MakePVR([World getWorld].player->pos);
         player_pos.x=wrapx(player_pos.x);
         player_pos.z=wrapz(player_pos.z);
         if((guys[i].onground||guys[i].inLiquid)&&endCycle&&!guys[i].onIce){
@@ -1869,7 +1846,7 @@ void PlaceModel(int idx,Vector pos){
     guys[idx].pos.x=wrapx(fpoint.x);
     guys[idx].pos.y=fpoint.y;//+centers[guys[idx].model_type].y;
     guys[idx].pos.z=wrapz(fpoint.z);
-    guys[idx].angle=D2R([World getWorld].player.yaw+90);
+    guys[idx].angle=D2R([World getWorld].player->yaw+90);
     guys[idx].targetangle=guys[idx].angle;
     guys[idx].color=[World getWorld].hud.creature_color;
     if(idx!=nguys)
@@ -2258,7 +2235,7 @@ int compare_creatures (const void *a, const void *b)
     int first=*((int*)(a));
     int second=*((int*)(b));
     
-    Vector player_pos=[World getWorld].player.pos;
+    Vector player_pos=[World getWorld].player->pos;
  
     
     Vector cam=player_pos;
@@ -2288,7 +2265,7 @@ int compare_creatures2 (const void *a, const void *b)
     int first=((Entity*)(a))->idx;
     int second=((Entity*)(b))->idx;
     
-    Vector player_pos=[World getWorld].player.pos;
+    Vector player_pos=[World getWorld].player->pos;
     player_pos.x=wrapx(player_pos.x);
     player_pos.z=wrapz(player_pos.z);
     Vector cam=player_pos;

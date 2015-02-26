@@ -143,7 +143,7 @@ void FileManager::saveCreatures(){
 }
 
 void FileManager::saveWorld(){
-    this->saveWorld([World getWorld].player.pos);
+    this->saveWorld([World getWorld].player->pos);
     
     
 }
@@ -367,13 +367,13 @@ void FileManager::saveWorld(Vector warp){
     sfh->goldencubes=[World getWorld].hud.goldencubes;
 	sfh->directory_offset=cur_dir_offset;
 	sfh->home=ter.home;
-	sfh->pos=[World getWorld].player.pos;
+	sfh->pos=[World getWorld].player->pos;
 	//sfh->pos.x/=BLOCK_SIZE;
 	//sfh->pos.z/=BLOCK_SIZE;
 	//sfh->pos.x+=CHUNK_SIZE*chunkOffsetX;
 	//sfh->pos.z+=CHUNK_SIZE*chunkOffsetZ;
     printg("saving at player pos: %f,%f   co: %d,%d wfh_size:%d\n",sfh->pos.x,sfh->pos.z,chunkOffsetX,chunkOffsetZ,(int)sizeof(WorldFileHeader));
-	sfh->yaw=[World getWorld].player.yaw;
+	sfh->yaw=[World getWorld].player->yaw;
     sfh->version=file_version;
     
     for(int i=0;i<4;i++){
@@ -433,9 +433,9 @@ void FileManager::saveWorld(Vector warp){
         for(int z=0;z<CHUNKS_PER_SIDE;z++)
         {
             TerrainChunk* chunk=ter.chunkTable[threeToOne(x,0,z)];
-            if(chunk.pbounds[1]==0){
-                this->saveColumn(chunk.pbounds[0]/CHUNK_SIZE
-                                  ,chunk.pbounds[2]/CHUNK_SIZE);
+            if(chunk->pbounds[1]==0){
+                this->saveColumn(chunk->pbounds[0]/CHUNK_SIZE
+                                  ,chunk->pbounds[2]/CHUNK_SIZE);
                 
             }else{
                 printg("trying to save column with unexpected chunk bound[1]: %d\n",chunk.pbounds[1]);
@@ -712,7 +712,7 @@ void FileManager::saveColumn(int cx,int cz){
 		TerrainChunk* chunk;
         //issue #3 continued
         chunk=ter.chunkTable[threeToOne(cx, cy, cz)];
-        if(chunk.modified){needsSave=TRUE; chunk.modified=FALSE;}
+        if(chunk->modified){needsSave=TRUE; chunk->modified=FALSE;}
     }
     if(!needsSave)return;
     
@@ -768,11 +768,11 @@ void FileManager::saveColumn(int cx,int cz){
 								freeWhenDone:FALSE];
 			[saveFile writeData:data];*/
             
-			NSData* data=[NSData dataWithBytesNoCopy:chunk.pblocks
+			NSData* data=[NSData dataWithBytesNoCopy:chunk->pblocks
 											  length:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(block8))
 										freeWhenDone:FALSE];
 			[saveFile writeData:data];
-            data=[NSData dataWithBytesNoCopy:chunk.pcolors
+            data=[NSData dataWithBytesNoCopy:chunk->pcolors
                                       length:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(color8))
                                 freeWhenDone:FALSE];
 			[saveFile writeData:data];
@@ -886,12 +886,13 @@ void FileManager::readColumn(int cx,int cz,NSFileHandle* rcfile){
              //issue #3 continued
             TerrainChunk* old=ter.chunkTable[threeToOne(cx,cy,cz)];
             if(old){chunk=old;
-                [chunk setBounds:bounds];
+                chunk->setBounds(bounds);
 
             }
             else
-           chunk=[[TerrainChunk alloc] initWithBlocks:
-                                                              bounds:cx:cz:ter:TRUE];
+           chunk=new TerrainChunk(bounds,cx,cz,ter,TRUE);
+             
+             
             columns[cy]=chunk;
             
            
@@ -946,8 +947,8 @@ void FileManager::readColumn(int cx,int cz,NSFileHandle* rcfile){
                      for(int z=0;z<CHUNK_SIZE;z++)
                      for(int x=0;x<CHUNK_SIZE;x++)
                          for(int y=0;y<CHUNK_SIZE;y++){
-                             chunk.pblocks[CC(x,z,y)]=tblocks[CC(y,z,x)];
-                             chunk.pcolors[CC(x,z,y)]=tcolors[CC(y,z,x)];
+                             chunk->pblocks[CC(x,z,y)]=tblocks[CC(y,z,x)];
+                             chunk->pcolors[CC(x,z,y)]=tcolors[CC(y,z,x)];
                          }
                              
                      
@@ -956,10 +957,10 @@ void FileManager::readColumn(int cx,int cz,NSFileHandle* rcfile){
                  
              }else{
                  NSData* data=[rcfile readDataOfLength:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(block8))];
-                 [data getBytes:chunk.pblocks length:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(block8))];
+                 [data getBytes:chunk->pblocks length:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(block8))];
                  
                  NSData* data2=[rcfile readDataOfLength:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(color8))];
-                 [data2 getBytes:chunk.pcolors length:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(color8))];
+                 [data2 getBytes:chunk->pcolors length:(CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*sizeof(color8))];
              }
             
            /*
@@ -976,7 +977,7 @@ void FileManager::readColumn(int cx,int cz,NSFileHandle* rcfile){
                 blockarray+
             ((x+bounds[0]+g_offcx)%T_SIZE)*T_SIZE*T_HEIGHT+
                 ((z+bounds[2]+g_offcz)%T_SIZE)*T_HEIGHT+bounds[1],
-                               chunk.pblocks+(x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE),
+                               chunk->pblocks+(x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE),
                                CHUNK_SIZE);
                         
                     }			
@@ -1289,7 +1290,7 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
         [imgHash release];
         imgHash=NULL;
     }
-    [[World getWorld].player reset];
+    [World getWorld].player->reset();
 	if(!this->worldExists(name,fromArchive)){
      
         
@@ -1395,13 +1396,13 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
 		temp2.x=BLOCK_SIZE*(ter.home.x+.5f);
 		temp2.y=BLOCK_SIZE*(ter.home.y+1);	
 		temp2.z=BLOCK_SIZE*(ter.home.z+.5f);
-            player.pos=temp2;
+            player->pos=temp2;
         
         if(ter.tgen->LEVEL_SEED==0){
             temp2.x=BLOCK_SIZE*(ter.home.x+.5f);
             temp2.y=34;
             temp2.z=BLOCK_SIZE*(ter.home.z+.5f);
-            player.pos=temp2;
+            player->pos=temp2;
             for(int i=0;i<4;i++){
                 for(int j=0;j<4;j++){
                     regionSkyColors[i][j]=COLOR_NORMAL_BLUE;
@@ -1419,7 +1420,7 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
         
 		//printg("player pos init save: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
 		//NSLog(@"chunkOffsets: %d %d",chunkOffsetX,chunkOffsetZ);
-        player.yaw=tempyaw;
+        player->yaw=tempyaw;
         file_version=2;
 		//[ter updateAllImportantChunks];
 		
@@ -1479,8 +1480,8 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
 		cur_dir_offset=sfh->directory_offset;
        [World getWorld].hud.goldencubes= sfh->goldencubes;
 		ter.home=sfh->home;
-		player.pos=sfh->pos;
-		player.yaw=sfh->yaw;
+		player->pos=sfh->pos;
+		player->yaw=sfh->yaw;
          extern Vector colorTable[256];
        /* if(sfh->skycolor<=0||sfh->skycolor>NUM_COLORS){
            [World getWorld].terrain.final_skycolor=colorTable[14];
@@ -1506,15 +1507,15 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
 		oldOffsetX=chunkOffsetX;
 		oldOffsetZ=chunkOffsetZ;
 		
-		chunkOffsetX=player.pos.x/CHUNK_SIZE-T_RADIUS;
-		chunkOffsetZ=player.pos.z/CHUNK_SIZE-T_RADIUS;
+		chunkOffsetX=player->pos.x/CHUNK_SIZE-T_RADIUS;
+		chunkOffsetZ=player->pos.z/CHUNK_SIZE-T_RADIUS;
 		//NSLog(@"chunkOffsets: %d %d",chunkOffsetX,chunkOffsetZ);
 		/*sfh->pos.x-=chunkOffsetX*CHUNK_SIZE;
 		sfh->pos.z-=chunkOffsetZ*CHUNK_SIZE;
 		sfh->pos.x*=BLOCK_SIZE; 
 		sfh->pos.z*=BLOCK_SIZE;
           
-		*/player.pos=sfh->pos;
+		*/player->pos=sfh->pos;
        
         printg("reading at co %d, %d    player pos %d, %d)\n",chunkOffsetX,chunkOffsetZ,(int)player.pos.x,(int)player.pos.z);
         		//NSLog(@"player pos load: %f %f %f",player.pos.x,player.pos.y,player.pos.z);

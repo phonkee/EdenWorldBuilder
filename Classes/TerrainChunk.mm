@@ -12,9 +12,7 @@
 #import "Terrain.h"
 #import "Geometry.h"
 
-@implementation TerrainChunk
-@synthesize pbounds,prbounds,rtn_vertices,rtn_vertices2,pblocks,needsGen,rtobjects,rtnum_objects,idxn,loaded,m_treenode,m_listnode,in_view,psblocks,needsVBO,rebuildCounter,modified,has_light;
-@synthesize pcolors;
+
 
 extern Vector colorTable[256];
 static int v_idx=0;
@@ -49,7 +47,7 @@ extern GLfloat zzzzColors[3*6*6];
 extern GLfloat cubeNormals[3*6*6];
 
 
--(void) resetForReuse{
+void TerrainChunk::resetForReuse(){
     
     memset(blocks,0,sizeof(block8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
    // printg("leaking memory freeing small blocks\n");
@@ -61,7 +59,7 @@ extern GLfloat cubeNormals[3*6*6];
    
     
 }
--(id) initWithBlocks:(const int*)boundz:(int)rrcx:(int)rrcz:(Terrain*)terrain:(BOOL)genblocks{
+TerrainChunk::TerrainChunk(const int* boundz,int rrcx,int rrcz,Terrain* terrain,BOOL genblocks){
     rebuildCounter=0;
 	if(genblocks){
         blocks=blocks1;
@@ -103,18 +101,23 @@ extern GLfloat cubeNormals[3*6*6];
     isTesting=0;
 	n_vertices=0;
     n_vertices2=0;
+    verticesbg=NULL;
+    verticesbg2=NULL;
+   
+        rtobjects=NULL;
+        
   //  needsRebuild=FALSE;//just a flag for terrain to use right now, not used internally
     
     loaded=TRUE;
-	return self;
+	
 }
--(id) init:(const int*)boundz:(int)rrcx:(int)rrcz:(Terrain*)terrain{
+TerrainChunk::TerrainChunk(const int* boundz,int rrcx,int rrcz, Terrain* terrain){
 	
     needsGen=FALSE;
-	
-   	return [self initWithBlocks:boundz:rrcx:rrcz:terrain:TRUE];
+    TerrainChunk(boundz,rrcx,rrcz,terrain,TRUE);
+   	
 }
--(void)setBounds:(int*) boundz{
+void TerrainChunk::setBounds(int* boundz){
     modified=FALSE;
 	for(int i=0;i<6;i++){
 		bounds[i]=boundz[i];
@@ -188,7 +191,8 @@ extern int getLevel(int type);
 extern int getBaseType(int type);
 extern int g_offcx;
 extern int g_offcz;
-- (int)rebuild2{   //here be dragons//
+
+int TerrainChunk::rebuild2(){   //here be dragons//
     rebuildCounter++;
     
     if(needsVBO){
@@ -227,7 +231,7 @@ extern int g_offcz;
    
     
    // self.rtnum_objects=self.rtn_vertices=self.rtn_vertices2=0;
-	[self clearMeshes];
+	clearMeshes();
     memset(hasBlocky,0,sizeof(bool)*CHUNK_SIZE);
    /* memset(lighting,0,sizeof(Vector)*CHUNK_SIZE);
     for(int y=0;y<CHUNK_SIZE;y++){
@@ -250,7 +254,7 @@ extern int g_offcz;
                     //type=TYPE_GRASS;
                 }
 				if(type<0||type>NUM_BLOCKS){
-					[self setLand:x:z:y:TYPE_STONE];
+					setLand(x,z,y,TYPE_STONE);
                     
                     hasAnything=TRUE;
                     hasBlocky[y]=TRUE;
@@ -1428,7 +1432,7 @@ extern int g_offcz;
     return 1;
 	
 }
-- (void)prepareVBO{
+void TerrainChunk::prepareVBO(){
     rebuildCounter=0;
     if(clearOldVerticesOnly){
        // printg("clearing some old vertices\n");
@@ -1454,7 +1458,7 @@ extern int g_offcz;
            
             if(oldmem){
                 free(oldmem);
-                
+                oldmem=NULL;
             }
             
             
@@ -1469,13 +1473,17 @@ extern int g_offcz;
         vertexBuffer=0;
         vertexBuffer2=0;
         elementBuffer=0;
-     
+        
+        if(verticesbg)
         free(verticesbg);
+        if(verticesbg2)
         free(verticesbg2);
         verticesbg=NULL;
         verticesbg2=NULL;
         if(rtnum_objects>0){
+            if(rtobjects)
             free(rtobjects);
+            rtobjects=NULL;
             rtnum_objects=0;
             //printg("not freeing %d objects2\n",rtnum_objects);
 
@@ -1492,7 +1500,9 @@ extern int g_offcz;
     
     if(rtnum_objects>0){
         //printg("not freeing %d objects\n",rtnum_objects);
-        free(rtobjects);
+        if(rtobjects)
+            free(rtobjects);
+        rtobjects=NULL;
         
     }
     rtnum_objects=num_objects;
@@ -1554,15 +1564,17 @@ extern int g_offcz;
         
         
     } 
-    free(verticesbg);
-    free(verticesbg2);
+    if(verticesbg)
+        free(verticesbg);
+    if(verticesbg2)
+        free(verticesbg2);
+   
     verticesbg=NULL;
     verticesbg2=NULL;
     needsVBO=FALSE;
 }
 
-
-- (int)getLand:(int)x:(int)z:(int)y{
+int TerrainChunk::getLand(int x,int z,int y){
 	if(x<0||x>=CHUNK_SIZE||y<0||y>=CHUNK_SIZE||z<0||z>=CHUNK_SIZE)
 	return getLandc(x+bounds[0] ,z+bounds[2] ,y+bounds[1]);
 	return blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
@@ -1677,8 +1689,8 @@ extern int g_offcz;
  
     
 }*/
-- (void)setLand:(int)x:(int)z:(int)y:(int)type{
-    
+void TerrainChunk::setLand(int x,int z,int y,int type){
+   
 	if(x<0||x>=CHUNK_SIZE||y<0||y>=CHUNK_SIZE||z<0||z>=CHUNK_SIZE){
 		//NSLog(@"setting out of bounds chunks");
         [ter setLand:x+bounds[0] :z+bounds[2] :y+bounds[1] :type :TRUE];
@@ -1692,9 +1704,10 @@ extern int g_offcz;
 }
 
 
--(void)unbuild{
+void TerrainChunk::unbuild(){
+
     loaded=FALSE;
-    [self clearMeshes];
+    clearMeshes();
     
     rtnum_objects=0;//disable objects for now
 	rtn_vertices=n_vertices=0;
@@ -1734,10 +1747,11 @@ extern int g_offcz;
     vertexBuffer2=0;
     elementBuffer=0;
 }
--(void)dealloc{
+
+TerrainChunk::~TerrainChunk(){
 	
 	loaded=FALSE;
-    [self clearMeshes];
+    clearMeshes();
     
     rtnum_objects=0;//disable objects for now
 	rtn_vertices=n_vertices=0;
@@ -1776,15 +1790,17 @@ extern int g_offcz;
     vertexBuffer=0;
     vertexBuffer2=0;
     elementBuffer=0;
-	[super dealloc];
+	
 }
 
-- (void)clearMeshes{
+void TerrainChunk::clearMeshes(){
    // printg("vb %d, %d, %d",vertexBuffer,vertexBuffer2,elementBuffer);
     
     num_objects=0;
     objects=NULL;
+    if(verticesbg)
     free(verticesbg);
+    if(verticesbg2)
     free(verticesbg2);
     verticesbg=NULL;
     verticesbg2=NULL;
@@ -1805,7 +1821,7 @@ extern int g_offcz;
 }
 
 
--(int) render{
+int TerrainChunk::render(){
 	if(rtn_vertices==0)
         return 0;
     
@@ -1948,7 +1964,7 @@ extern int g_offcz;
 
 	
 }
--(void) render2{
+void TerrainChunk::render2(){
    
     glPushMatrix();
 	glTranslatef((rtbounds[0]-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)*4, rtbounds[1]*4, (rtbounds[2]-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)*4);
@@ -1988,5 +2004,5 @@ extern int g_offcz;
 	glPopMatrix();
 	
 }
-@end
+
 
