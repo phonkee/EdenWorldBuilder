@@ -170,7 +170,7 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
 		return FALSE;
 	}else{
         char c=[string characterAtIndex:0];
-		NSLog(@"%d",[search_string length]);
+		NSLog(@"%d",(int)[search_string length]);
 		if(!isalnum(c)&&c!=' '&&c!='\'')return FALSE;
 		[search_string appendString:string];	   
 	}

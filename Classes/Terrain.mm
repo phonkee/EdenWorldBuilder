@@ -133,7 +133,9 @@ TreeNode* addToTree(TreeNode* node,int* bounds,NSNumber* data){
 	//const static int childLocation[3][8]={{0,0,0,0,1,1,1,1},
 	//								     {1,1,0,0,1,1,0,0},
 	//									 {1,0,1,0,1,0,1,0}};
-	
+    
+        //printf("addint to tree\n");
+    
 	if(!node->hasChildren)genChildren(node);
 	
 	/*for(int i=0;i<8;i++){
@@ -232,14 +234,23 @@ extern int g_offcz;
     
 	return self;
 }
+TreeNode* addToTree(TreeNode* node,int* bounds,NSNumber* data);
 - (void)allocateMemory{
     if(chunkTablec!=NULL)return;
     chunkTablec=chunkTable=(TerrainChunk**)malloc(sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
-    //for(int i=0;i<CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN;i++)
-   // {
-   //     chunkTable[i]=new TerrainChunk();
-   // }
-    memset(chunkTable,0,sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+    const int tbounds[6]={-1,-1,-1,-1,-1,-1};
+    for(int i=0;i<CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN;i++)
+    {
+        chunkTable[i]=new TerrainChunk(tbounds,self);
+       /* TerrainChunk* chunk=chunkTable[i];
+            chunk->m_treenode=addToTree(&troot,chunk->pbounds,(NSNumber*)(long)i);
+            if(chunk->m_treenode){
+                chunk->m_listnode=chunk->m_treenode->dataList;
+            }*/
+        
+    }
+    //memset(chunkTable,0,sizeof(TerrainChunk*)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
+    printf("allocated and zeroed chunks");
     chunksToUpdate=(BOOL*)malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
     columnsToUpdate=(BOOL*)malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE);
     chunksToUpdateImmediatley=(BOOL*)malloc(sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
@@ -257,14 +268,20 @@ extern int g_offcz;
         }
     }
     free(chunkTablec);
+    chunkTablec=NULL;
+    chunkTable=NULL;
     
     free(chunksToUpdate);
+    chunksToUpdate=NULL;
     free(columnsToUpdate);
+    columnsToUpdate=NULL;
     free(chunksToUpdateImmediatley);
+    chunksToUpdateImmediatley=NULL;
     free(blockarray);
+    blockarray=NULL;
     if(!LOW_MEM_DEVICE)
 free(lightarray);
-    chunkTablec=NULL;
+    
 }
 
 int freeOldChunks(any_t passedIn,any_t chunkToUnload){	
@@ -304,12 +321,8 @@ int unloadChunk(any_t passedIn,any_t chunkToUnload){
 
 int extraGeneration(any_t passedIn,any_t chunkToGen){
 	
-	TerrainChunk* chunk=(TerrainChunk*)chunkToGen;
-    if(chunk->needsGen){
-       // [chunk doGen];
-    //    chunk.needsGen=FALSE;
-    }
-	
+	//TerrainChunk* chunk=(TerrainChunk*)chunkToGen;
+   	
 	return MAP_OK;
 }
 static BOOL update_lighting=FALSE;
@@ -580,12 +593,12 @@ TerrainChunk* rebuildList[13000];
 }*/
 - (void)addChunk:(TerrainChunk*)chunk:(int)cx:(int)cy:(int)cz:(BOOL)rebuild{
 	
-	NSNumber* chunkIdx=[NSNumber numberWithInt:threeToOne(cx,cy,cz)];
+	//NSNumber* chunkIdx=[NSNumber numberWithInt:threeToOne(cx,cy,cz)];
 	
      //issue #3 continued
-    TerrainChunk* old=chunkTable[threeToOne(cx,cy,cz)];
-    BOOL readdtree=TRUE;
-    if(old){
+   // TerrainChunk* old=chunkTable[threeToOne(cx,cy,cz)];
+    
+   /* if(old){
         if(old==chunk){
            //chunk.m_listnode->dead=TRUE;
             readdtree=FALSE;
@@ -596,18 +609,13 @@ TerrainChunk* rebuildList[13000];
         
         //[old release];
         
-    }
-    chunkTable[threeToOne(cx,cy,cz)]=chunk;
+    }*/
+    //chunkTable[threeToOne(cx,cy,cz)]=chunk;
 	//hashmap_put(chunkMap,threeToOne(cx,cy,cz),chunk);
-	if(readdtree){
-	chunk->m_treenode=addToTree(&troot,chunk->pbounds,chunkIdx);
-    if(chunk->m_treenode){
-        chunk->m_listnode=chunk->m_treenode->dataList;
-    }
-    }
+	
 	//@synchronized(chunksToUpdate){
 	if(rebuild){
-        [self addToUpdateList:cx:cy:cz];
+       [self addToUpdateList:cx:cy:cz];
        
         
        
@@ -1902,7 +1910,7 @@ static int hit_load_counter=0;
                 chunk=world.terrain.chunkTable[threeToOne(x+m_chunkOffsetX,0,z+m_chunkOffsetZ)];
                 // hashmap_get(world.terrain.chunkMap, threeToOne(x+chunkOffsetX, 0, z+chunkOffsetZ), (any_t)&chunk);
                 if(chunk){
-                    
+                   // printf("found chunk with wrong bounds");
                     
                     if( chunk->pbounds[0]!=(x+m_chunkOffsetX)*CHUNK_SIZE||
                        chunk->pbounds[2]!=(z+m_chunkOffsetZ)*CHUNK_SIZE)
@@ -2084,7 +2092,7 @@ static int hit_load_counter=0;
                    if(rebuildList[i]->rebuild2()==-1){
                     //    chunksToUpdate[rebuildList[i].idxn]=TRUE;
                      //   columnsToUpdate[rebuildList[i].idxn/CHUNKS_PER_COLUMN]=TRUE;
-                       printg("fail update on chunk: %d    bounds %d %d %d   rebuildCounter: %d\n",i,rebuildList[i].pbounds[0],rebuildList[i].pbounds[1],rebuildList[i].pbounds[2],rebuildList[i].rebuildCounter);
+                       printg("fail update on chunk: %d    bounds %d %d %d   rebuildCounter: %d\n",i,rebuildList[i]->pbounds[0],rebuildList[i]->pbounds[1],rebuildList[i]->pbounds[2],rebuildList[i]->rebuildCounter);
                     }else{
                         
                       //  rebuildList[i]->needsRebuild=FALSE;
@@ -2189,64 +2197,39 @@ static int hit_load_counter=0;
 static TerrainChunk* renderList[(T_SIZE/CHUNK_SIZE)*(T_SIZE/CHUNK_SIZE)*(T_HEIGHT/CHUNK_SIZE)];
 static TerrainChunk* renderList2[(T_SIZE/CHUNK_SIZE)*(T_SIZE/CHUNK_SIZE)*(T_HEIGHT/CHUNK_SIZE)];
 void renderTree(TreeNode* node,int state){
-	int istate=ViewTestAABB(node->rbounds,state);
-    if(node==&troot){
-        istate=VT_INSIDE;
+    //once upon a time this descended an oct-tree, profiling showed it was useless, now just iterates through chunk list
+    for(int i=0;i<CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN;i++){
+        TerrainChunk* chunk=chunkTablec[i];
+        chunk->in_view=FALSE;
+        if(secondPass){
+        if(chunk->rtn_vertices2==0){
+            continue;
+        }
+        }else if(chunk->rtn_vertices==0&&chunk->rtnum_objects==0){
+            continue;
+        }
+        int istate=ViewTestAABB(chunk->rbounds,state);
+        if(node==&troot){
+            istate=VT_INSIDE;
         
-    }
-	if(istate&VT_OUTSIDE) return;
-	//if(istate&VT_)return;	
-	ListNode* list=node->dataList;
-    int leafnodes=0;
-	while(list!=NULL){
-		leafnodes++;
-        if(!list->dead){
-            
+        }
+        if(istate&VT_OUTSIDE) continue;
+        chunk->in_view=TRUE;
         
-		NSNumber* chunkIdx=(NSNumber*)(list->data);
-		TerrainChunk* chunk;
-        chunk=chunkTablec[[chunkIdx intValue]];
-		//hashmap_get(chunkMapc, [chunkIdx intValue],(any_t)&chunk);
-            if(chunk){
-               
-                chunk->in_view=FALSE;
-                if((chunk->rtn_vertices>0||chunk->rtn_vertices2>0)){
-                    int cstate=ViewTestAABB(chunk->rbounds,state);
-                    if(!(cstate&VT_OUTSIDE)) {
-                        chunk->in_view=TRUE;
-                        if(secondPass){
-                            if(chunk->rtn_vertices2>0){
+        if(secondPass){
                                 renderList2[chunks_rendered2]=chunk;
                                 //[chunk render2];
                                 chunks_rendered2+=1;
-                                
-                            }
-                        }
-                        else{
-                            if(chunk->rtn_vertices>0||chunk->rtnum_objects>0){
+            
+        }else{
+        
                                 renderList[chunks_rendered]=chunk;
                                 // [chunk render];
                                 
                                 chunks_rendered+=1;
-                                
-                                // faces_rendered+=chunk.n_faces;
-                                //vertices_rendered+=chunk.n_vertices;
-                            }
-                        }
-                        
-                        
-                    }
-                }
-            }
         }
-		list=list->next;
-	}
-    //if(leafnodes!=0)
-    //printg("chunks in this node: %d\n",leafnodes);
-	for(int i=0;i<8;i++){
-		if(node->children[i])
-		renderTree(node->children[i],istate);
-	}
+    }
+		
 }
 int compare_rebuild_order (const void *a, const void *b)
 {
@@ -2395,7 +2378,7 @@ int lolc=0;
   //  glDisable(GL_TEXTURE_2D);
     int chunksr=chunks_rendered;
     for(int i=0;i<chunks_rendered;i++){
-        
+      
         vertices_rendered+=renderList[i]->render();
         /*if(vertices_rendered>=max_vertices&&[World getWorld].hud.fps<40){
             if([World getWorld].hud.mode!=MODE_CAMERA){

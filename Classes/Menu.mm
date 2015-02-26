@@ -252,7 +252,7 @@ static float fade_out=0;
     
     //readIndex();
 	world_list_end=world_list;
-    int dirc=[dirContents count];
+    int dirc=(int)[dirContents count];
     BOOL reloadDir=FALSE;
     
   /*  for(int i=0;i<dirc;i++){
@@ -268,7 +268,7 @@ static float fade_out=0;
         dirContents=[[NSFileManager defaultManager]
          
          contentsOfDirectoryAtPath:[World getWorld].fm->documents error:&err];
-        dirc=[dirContents count];
+        dirc=(int)[dirContents count];
     }
     
 	for(int i=0;i<dirc;i++){
@@ -618,7 +618,7 @@ static const int usage_id=7;
 	}
     }else if(alertView==alertWorldType){
         switch (buttonIndex) {
-                NSLog(@"button idx %d",buttonIndex);
+                NSLog(@"button idx %d",(int)buttonIndex);
             case 0:
             {
                 [World getWorld].fm->genflat=TRUE;

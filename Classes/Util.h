@@ -101,7 +101,7 @@ Button ButtonMake(float x,float y,float width,float height);
 CGRect RectFromButton(Button b);
 Button ButtonFromRect(CGRect b);
 
-int threeToOne(int cx,int cy,int cz);
+//int threeToOne(int cx,int cy,int cz);
 int getColIndex(int cx,int cz);
 int twoToOne(int cx,int cz);
 int twoToOneTest(int cx,int cz);
@@ -111,3 +111,8 @@ NSString* genhash();
 void takeScreenshot();
 void RGBtoHSV( float r, float g, float b, float *h, float *s, float *v );
 void HSVtoRGB( float *r, float *g, float *b, float h, float s, float v );
+
+#define threeToOne(cx,cy,cz) (((cx+CHUNKS_PER_SIDE*50)%CHUNKS_PER_SIDE)*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN+\
+((cz+CHUNKS_PER_SIDE*50)%CHUNKS_PER_SIDE)*CHUNKS_PER_COLUMN+cy)
+
+

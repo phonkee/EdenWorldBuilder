@@ -114,54 +114,54 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 			
 			case kTexture2DPixelFormat_RGBA8888:
                
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)width, (int)height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 			break;
 			
 			case kTexture2DPixelFormat_RGBA4444:
                 
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)width, (int)height, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, data);
 			break;
 			
 			case kTexture2DPixelFormat_RGBA5551:
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_SHORT_5_5_5_1, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)width, (int)height, 0, GL_RGBA, GL_UNSIGNED_SHORT_5_5_5_1, data);
 			break;
 			
 			case kTexture2DPixelFormat_RGB565:
 				
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, (int)width, (int)height, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, data);
 		
 			break;
 			
 			case kTexture2DPixelFormat_RGB888:
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,(int)width, (int)height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 			break;
 			
 			case kTexture2DPixelFormat_L8:
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, (int)width, (int)height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
 			break;
 			
 			case kTexture2DPixelFormat_A8:
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, (int)width, (int)height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);
 			break;
 			
 			case kTexture2DPixelFormat_LA88:
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, (int)width, (int)height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, data);
 			break;
 			
 			case kTexture2DPixelFormat_RGB_PVRTC2:
-			glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG, width, height, 0, (width * height) / 4, data);
+			glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG, (int)width, (int)height, 0, ((int)width * (int)height) / 4, data);
 			break;
 			
 			case kTexture2DPixelFormat_RGB_PVRTC4:
-			glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG, width, height, 0, (width * height) / 2, data);
+			glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG, (int)width, (int)height, 0, ((int)width * (int)height) / 2, data);
 			break;
 			
 			case kTexture2DPixelFormat_RGBA_PVRTC2:
-			glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG, width, height, 0, (width * height) / 4, data);
+			glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG, (int)width, (int)height, 0, ((int)width * (int)height) / 4, data);
 			break;
 			
 			case kTexture2DPixelFormat_RGBA_PVRTC4:
-			glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, width, height, 0, (width * height) / 2, data);
+			glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, (int)width, (int)height, 0, ((int)width * (int)height) / 2, data);
 			break;
 			
 			default:
@@ -198,7 +198,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %@ | Name = %i | Dimensions = %ix%i | Coordinates = (%.2f, %.2f)>", [self class], self, _name, _width, _height, _maxS, _maxT];
+	return [NSString stringWithFormat:@"<%@ = %@ | Name = %i | Dimensions = %ix%i | Coordinates = (%.2f, %.2f)>", [self class], self, _name, (int)_width, (int)_height,(double) _maxS, (double)_maxT];
 }
 
 @end
@@ -233,8 +233,8 @@ CGContextRef CreateARGBBitmapContext (CGImageRef inImage)
     // Declare the number of bytes per row. Each pixel in the bitmap in this
     // example is represented by 4 bytes; 8 bits each of red, green, blue, and
     // alpha.
-    bitmapBytesPerRow   = (pixelsWide * 4);
-    bitmapByteCount     = (bitmapBytesPerRow * pixelsHigh);
+    bitmapBytesPerRow   = (int)(pixelsWide * 4);
+    bitmapByteCount     = (int)(bitmapBytesPerRow * pixelsHigh);
     
     // Use the generic RGB color space.
     colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -802,7 +802,7 @@ int realStoredSkinCounter=0;
 	[uiImage release];
 	
 	if(self == nil)
-	REPORT_ERROR(@"Failed loading image at path \"%@\" %@", path,opath);
+	REPORT_ERROR(@"Failed loading image at path \"%@\" %@", path,path);
     //else
    // REPORT_ERROR(@"loaded image at path \"%@\" %@", path,opath);
 	

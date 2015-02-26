@@ -114,7 +114,7 @@
 
 
 void makeDirt();
-void makeMars();
+//void makeMars();
 void makeRiverTrees(int sx,int sz,int ex,int ez,int SEED);
 void makeMountains(int sx,int sz,int ex,int ez,int SEED);
 void makeTransition(int sx,int sz,int ex,int ez);

@@ -3045,7 +3045,7 @@ void PVRTModelPODDataConvert(CPODData &data, const unsigned int nCnt, const EPVR
 	case EPODDataShortNorm:
 	case EPODDataByte:
 	case EPODDataByteNorm:
-		data.n = old.n * PVRTModelPODDataTypeComponentCount(old.eType);
+		data.n = old.n * (unsigned)PVRTModelPODDataTypeComponentCount(old.eType);
 		break;
 	case EPODDataRGBA:
 	case EPODDataARGB:
@@ -3071,7 +3071,7 @@ void PVRTModelPODDataConvert(CPODData &data, const unsigned int nCnt, const EPVR
 	for(i = 0; i < nCnt; ++i)
 	{
 		PVRTVertexRead(&v, old.pData + i * old.nStride, old.eType, old.n);
-		PVRTVertexWrite(data.pData + i * data.nStride, eNewType, data.n * PVRTModelPODDataTypeComponentCount(data.eType), &v);
+		PVRTVertexWrite(data.pData + i * data.nStride, eNewType, data.n * (unsigned)PVRTModelPODDataTypeComponentCount(data.eType), &v);
 	}
 
 	if(old.nStride != data.nStride)
@@ -3208,7 +3208,7 @@ EPVRTError PVRTModelPODScaleAndConvertVtxData(SPODMesh &mesh, const EPVRTDataTyp
 		_ASSERT(fabs(res.w - 1.0) <= 0.02);
 #endif
 
-		PVRTVertexWrite(mesh.sVertex.pData + i * mesh.sVertex.nStride, mesh.sVertex.eType, mesh.sVertex.n * PVRTModelPODDataTypeComponentCount(mesh.sVertex.eType), &o);
+		PVRTVertexWrite(mesh.sVertex.pData + i * mesh.sVertex.nStride, mesh.sVertex.eType, mesh.sVertex.n * (unsigned)PVRTModelPODDataTypeComponentCount(mesh.sVertex.eType), &o);
 	}
 
 	// Convert the data to the chosen format
@@ -3276,7 +3276,7 @@ void PVRTModelPODDataShred(CPODData &data, const unsigned int nCnt, const int * 
 			po[nCh] = 0;
 
 		// Write the vector
-		PVRTVertexWrite((char*)data.pData + i * data.nStride, data.eType, data.n * PVRTModelPODDataTypeComponentCount(data.eType), &o);
+		PVRTVertexWrite((char*)data.pData + i * data.nStride, data.eType, data.n * (unsigned)PVRTModelPODDataTypeComponentCount(data.eType), &o);
 	}
 
 	FREE(old.pData);

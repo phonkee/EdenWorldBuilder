@@ -47,11 +47,7 @@ static NSString * const FORM_FLE_INPUT2 = @"uploaded2";
 progressSelector: (SEL)aProgressSelector
 {
     if ((self = [super init])) {
-        ASSERT(aServerURL);
-        ASSERT(aFilePath);
-        ASSERT(aDelegate);
-        ASSERT(aDoneSelector);
-        ASSERT(anErrorSelector);
+        
 		
         serverURL = [aServerURL retain];
         filePath = [aFilePath retain];
@@ -193,7 +189,7 @@ progressSelector: (SEL)aProgressSelector
       dataUsingEncoding:NSUTF8StringEncoding]];
     [postData appendData:imgData];
 
-    NSLog(@"img length: %d",[imgData length]);
+    NSLog(@"img length: %d",(int)[imgData length]);
     
     //
     [postData appendData:
@@ -242,7 +238,7 @@ progressSelector: (SEL)aProgressSelector
 	strm.opaque = Z_NULL;
 	strm.total_out = 0;
 	strm.next_in=(Bytef *)[data bytes];
-	strm.avail_in = [data length];
+	strm.avail_in = (unsigned)[data length];
 	
 	// Compresssion Levels:
 	//   Z_NO_COMPRESSION
@@ -260,7 +256,7 @@ progressSelector: (SEL)aProgressSelector
 			[compressed increaseLengthBy: 16384];
 		
 		strm.next_out = ((Bytef*)[compressed mutableBytes]) + strm.total_out;
-		strm.avail_out = [compressed length] - strm.total_out;
+		strm.avail_out = (unsigned)[compressed length] - (unsigned)strm.total_out;
 		
 		deflate(&strm, Z_FINISH);  
 		
@@ -313,7 +309,7 @@ static int dataSize=0;
 {
     NSLog(@"%s: self:0x%p\n", __func__, self);
     dataSize=0;
-    downloadSize = [response expectedContentLength];
+    downloadSize = (int)[response expectedContentLength];
     
 }
 

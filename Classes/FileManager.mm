@@ -433,12 +433,14 @@ void FileManager::saveWorld(Vector warp){
         for(int z=0;z<CHUNKS_PER_SIDE;z++)
         {
             TerrainChunk* chunk=ter.chunkTable[threeToOne(x,0,z)];
+            
             if(chunk->pbounds[1]==0){
                 this->saveColumn(chunk->pbounds[0]/CHUNK_SIZE
                                   ,chunk->pbounds[2]/CHUNK_SIZE);
                 
             }else{
-                printg("trying to save column with unexpected chunk bound[1]: %d\n",chunk.pbounds[1]);
+                printg("trying to save column with unexpected chunk bound[1]: %d\n",chunk->pbounds[1]);
+            
             }
         }
     }
@@ -889,8 +891,10 @@ void FileManager::readColumn(int cx,int cz,NSFileHandle* rcfile){
                 chunk->setBounds(bounds);
 
             }
-            else
-           chunk=new TerrainChunk(bounds,cx,cz,ter,TRUE);
+            else{
+                printf("crittcler error re-allocating terrain chunk\n");
+          // chunk=new TerrainChunk(bounds,cx,cz,ter,TRUE);
+            }
              
              
             columns[cy]=chunk;
@@ -908,7 +912,7 @@ void FileManager::readColumn(int cx,int cz,NSFileHandle* rcfile){
                  [datat getBytes:buft length:2];
                  int chunk_data_length= buft[0]*256+buft[1]-2;
                  NSData* data=[rcfile readDataOfLength:chunk_data_length];
-                 int n=[data length];
+                 int n=(int)[data length];
                  if(n<chunk_data_length){
                      printg("not enough file left, only read %d bytes\n",n);
                  }//else
@@ -1304,7 +1308,7 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
         if(g_terrain_type==0){
             makeDirt();
         }else if(g_terrain_type==1){
-            makeMars();
+           // makeMars();
         }else if(g_terrain_type==2){
             makeRiverTrees(T_SIZE/2,0,T_SIZE,T_SIZE,550);
         }else if(g_terrain_type==3){
@@ -1385,7 +1389,7 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
             
             for(int z=centerChunk-r;z<centerChunk+r;z++){
                 
-                this->readColumn(x,z,saveFile);
+                readColumn(x,z,saveFile);
                 [World getWorld].terrain.counter++;
             }
         }
@@ -1450,7 +1454,7 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
            
             NSLog(@"converting file");
             convertingWorld=TRUE;
-            this->convertFile(file_name);
+            convertFile(file_name);
             
             NSLog(@"done converting file");
           
@@ -1517,7 +1521,7 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
           
 		*/player->pos=sfh->pos;
        
-        printg("reading at co %d, %d    player pos %d, %d)\n",chunkOffsetX,chunkOffsetZ,(int)player.pos.x,(int)player.pos.z);
+        printg("reading at co %d, %d    player pos %d, %d)\n",chunkOffsetX,chunkOffsetZ,(int)player->pos.x,(int)player->pos.z);
         		//NSLog(@"player pos load: %f %f %f",player.pos.x,player.pos.y,player.pos.z);
 		int r=T_RADIUS;
 	//	int asdf=0;
@@ -1525,7 +1529,7 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
 		for(int x=chunkOffsetX;x<chunkOffsetX+2*r;x++){
 			for(int z=chunkOffsetZ;z<chunkOffsetZ+2*r;z++){
 			//	NSLog(@"lch:%d",asdf++);
-				this->readColumn(x,z,saveFile);
+				readColumn(x,z,saveFile);
                 [World getWorld].terrain.counter++;
 			}
 		}

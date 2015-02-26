@@ -1013,12 +1013,17 @@ float rsqrt( float number )
     
     return y;
 }
-int threeToOne(int cx,int cy,int cz){
+
+
+/*int threeToOne(int cx,int cy,int cz){
     cx+=CHUNKS_PER_SIDE*50;
     cz+=CHUNKS_PER_SIDE*50;
     
     int num=(cx%CHUNKS_PER_SIDE)*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN+(cz%CHUNKS_PER_SIDE)*CHUNKS_PER_COLUMN+cy;
    
+    if(num>CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN||num<0){
+        printf("wtf\n");
+    }
     return num;
     cx+=64;
     cy+=64;
@@ -1033,7 +1038,7 @@ int threeToOne(int cx,int cy,int cz){
 		return 0;
 	}
 	return n;
-}
+}*/
 int twoToOne(int cx,int cz){
 	if(cx<0||cz<0||cx>=(1<<15)||cz>=(1<<15)){
 		printg("overflowing! %d,%d \n",cx,cz);	

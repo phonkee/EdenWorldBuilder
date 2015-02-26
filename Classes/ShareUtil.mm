@@ -250,14 +250,14 @@ FileDownload* reportmanager=NULL;
 	NSLog(@"upload error: %@",obj);
 }
 -(void)uploadProgress:(id)ipct{
-    int pct=(int)ipct;
+    int pct=(int)(long)ipct;
     if(pct==100)
         [World getWorld].menu.sbar->setStatus(@"Upload Complete, Processing...",10);
     else
       [World getWorld].menu.sbar->setStatus([NSString stringWithFormat:@"Uploading world %d%%",pct] ,5);
 }
 -(void)downloadProgress:(id)ipct{
-    int pct=(int)ipct;
+    int pct=(int)(long)ipct;
     if(isWorldlist){
          [World getWorld].menu.shared_list.sbar->setStatus([NSString stringWithFormat:@"Getting List... %d%%",pct] ,5);
          [World getWorld].menu.sbar->setStatus([NSString stringWithFormat:@"Getting List... %d%%",pct] ,5);
@@ -333,8 +333,8 @@ FileDownload* reportmanager=NULL;
 {
 	if ([data length] == 0) return data;
 	
-	unsigned full_length = [data length];
-	unsigned half_length = [data length] / 2;
+	unsigned full_length = (unsigned)[data length];
+	unsigned half_length = (unsigned)[data length] / 2;
 	
 	NSMutableData *decompressed = [NSMutableData dataWithLength: full_length + half_length];
 	BOOL done = NO;
@@ -342,7 +342,7 @@ FileDownload* reportmanager=NULL;
 	
 	z_stream strm;
 	strm.next_in = (Bytef *)[data bytes];
-	strm.avail_in = [data length];
+	strm.avail_in = (unsigned)[data length];
 	strm.total_out = 0;
 	strm.zalloc = Z_NULL;
 	strm.zfree = Z_NULL;
@@ -354,7 +354,7 @@ FileDownload* reportmanager=NULL;
 		if (strm.total_out >= [decompressed length])
 			[decompressed increaseLengthBy: half_length];
 		strm.next_out = ((Bytef *)[decompressed mutableBytes]) + strm.total_out;
-		strm.avail_out = [decompressed length] - strm.total_out;
+		strm.avail_out = (unsigned)[decompressed length] - (unsigned)strm.total_out;
 		
 		// Inflate another chunk.
 		status = inflate (&strm, Z_SYNC_FLUSH);

@@ -49,27 +49,22 @@ extern GLfloat cubeNormals[3*6*6];
 
 void TerrainChunk::resetForReuse(){
     
-    memset(blocks,0,sizeof(block8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
+    memset(pblocks,0,sizeof(block8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
    // printg("leaking memory freeing small blocks\n");
  //   memset(sblocks,0,sizeof(SmallBlock*)*CHUNK_SIZE3);
-    memset(colors,0,sizeof(color8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
+    memset(pcolors,0,sizeof(color8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
     rtnum_objects=0;
     rtobjects=NULL;
     rtn_vertices=0;
    
     
 }
-TerrainChunk::TerrainChunk(const int* boundz,int rrcx,int rrcz,Terrain* terrain,BOOL genblocks){
+TerrainChunk::TerrainChunk(const int* boundz,Terrain* terrain){
     rebuildCounter=0;
-	if(genblocks){
-        blocks=blocks1;
-		pblocks=blocks;
-        
+	 
      //   psblocks=sblocks;
-		memset(blocks,0,sizeof(block8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
-       
-        
-	}
+		memset(pblocks,0,sizeof(block8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
+    
   //  pblocks2=blocks2;
     
     rtnum_objects=0;
@@ -78,20 +73,19 @@ TerrainChunk::TerrainChunk(const int* boundz,int rrcx,int rrcz,Terrain* terrain,
     needsVBO=FALSE;
     modified=FALSE;
  //   memset(sblocks,0,sizeof(SmallBlock*)*CHUNK_SIZE3);
-    pcolors=colors;
-    memset(colors,0,sizeof(color8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
+    
+    memset(pcolors,0,sizeof(color8)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
     indices=NULL;
     rtindices=NULL;
 	ter=terrain;
 	vertexBuffer=vertexBuffer2=elementBuffer=0;
-	rcx=rrcx;
-	rcz=rrcz;
+	
     num_objects=0;
-	pbounds=bounds;
-	prbounds=rbounds;
+	
+	
 	for(int i=0;i<6;i++){
-		bounds[i]=boundz[i];
-		rbounds[i]=(float)bounds[i]*BLOCK_SIZE;
+		pbounds[i]=boundz[i];
+		rbounds[i]=(float)pbounds[i]*BLOCK_SIZE;
 		
 	}
     /*for(int i=0;i<CHUNK_SIZE3;i++){
@@ -108,21 +102,16 @@ TerrainChunk::TerrainChunk(const int* boundz,int rrcx,int rrcz,Terrain* terrain,
         
   //  needsRebuild=FALSE;//just a flag for terrain to use right now, not used internally
     
-    loaded=TRUE;
+    
 	
 }
-TerrainChunk::TerrainChunk(const int* boundz,int rrcx,int rrcz, Terrain* terrain){
-	
-    needsGen=FALSE;
-    TerrainChunk(boundz,rrcx,rrcz,terrain,TRUE);
-   	
-}
-void TerrainChunk::setBounds(int* boundz){
+
+void TerrainChunk::setBounds( int* boundz){
     modified=FALSE;
 	for(int i=0;i<6;i++){
-		bounds[i]=boundz[i];
+		pbounds[i]=boundz[i];
        
-		rbounds[i]=(float)bounds[i]*BLOCK_SIZE;		
+		rbounds[i]=(float)pbounds[i]*BLOCK_SIZE;
 	}	
 }
 static int face_visibility[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
@@ -200,25 +189,13 @@ int TerrainChunk::rebuild2(){   //here be dragons//
         return -1;
     }
     needsVBO=TRUE;
-    pblocks=blocks1;
+   
     
-   /* if(flip){
-    if(blocks==blocks2){
-    blocks=blocks1;
-        pblocks=blocks2;}
-    else if(blocks==blocks1){
-        blocks=blocks2;
-		pblocks=blocks1;
-    }else{
-        printg("WHAT!\n");
-    }
-    }else{
-        memcpy(pblocks,
-    }*/
+   
     
     clearOldVerticesOnly=FALSE;
     has_light=FALSE;
-    needsGen=FALSE;
+    
    
     v_idx=0;
     v_idx2=0;
@@ -247,7 +224,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
     for(int y=0;y<CHUNK_SIZE;y++){
         for(int x=0;x<CHUNK_SIZE;x++){
 			for(int z=0;z<CHUNK_SIZE;z++){
-				int type=blocks[CC(x,z,y)];
+				int type=pblocks[CC(x,z,y)];
                 if( type==TYPE_LIGHTBOX){
                     has_light=TRUE;
                     //[self setLand:x:z:y:TYPE_GRASS];
@@ -337,30 +314,30 @@ int TerrainChunk::rebuild2(){   //here be dragons//
     if(!hasAnything){//printg("return early 1\n");
          //printg("im gonna clear some old vertices\n");
         clearOldVerticesOnly=TRUE;
-        pblocks=blocks1;
+        
         return 0;}
     hasAnything=FALSE;
     memset(face_visibility,0,sizeof(int)*CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE);
     memset(hasVisy,0,sizeof(bool)*CHUNK_SIZE);
-    int ex=bounds[0]+CHUNK_SIZE;
-    int ez=bounds[2]+CHUNK_SIZE;
-    int ey=bounds[1]+CHUNK_SIZE;
+    int ex=pbounds[0]+CHUNK_SIZE;
+    int ez=pbounds[2]+CHUNK_SIZE;
+    int ey=pbounds[1]+CHUNK_SIZE;
     
    
     if(hasSeeThrough){
-        for(int gy=bounds[1];gy<ey;gy++){
-            if(!hasBlocky[gy-bounds[1]])continue;
-            for(int gx=bounds[0];gx<ex;gx++){
+        for(int gy=pbounds[1];gy<ey;gy++){
+            if(!hasBlocky[gy-pbounds[1]])continue;
+            for(int gx=pbounds[0];gx<ex;gx++){
                 
-                for(int gz=bounds[2];gz<ez;gz++){
+                for(int gz=pbounds[2];gz<ez;gz++){
                    
                     int idx1= GBLOCKIDX(gx,gz,gy);
                     if(!blockarray[idx1])continue;       
                     if((blockinfo[blockarray[idx1]]&IS_RAMPORSIDE)){
                         hasAnything=TRUE;
-                        hasVisy[gy-bounds[1]]=TRUE;
+                        hasVisy[gy-pbounds[1]]=TRUE;
                         
-                        face_visibility[(gx-bounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-bounds[2])*(CHUNK_SIZE)+(gy-bounds[1])]=FACE_ALL;
+                        face_visibility[(gx-pbounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-pbounds[2])*(CHUNK_SIZE)+(gy-pbounds[1])]=FACE_ALL;
                         
                         continue;
                     }
@@ -377,13 +354,13 @@ int TerrainChunk::rebuild2(){   //here be dragons//
                             if(blockinfo[type]&IS_ATLAS2){
                                 if(blockinfo[type]&IS_LIQUID){
                                     if(blockinfo[type]==blockinfo[blockarray[idx1]]) 
-                                        if((f==4||f==5||getLevel(type)>=getLevel(blockarray[idx1]))&&pcolors[(gx-bounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-bounds[2])*(CHUNK_SIZE)+(gy-bounds[1])]==getColorc(gx+dx2[f] ,gz+dz2[f] ,gy+dy2[f])){
+                                        if((f==4||f==5||getLevel(type)>=getLevel(blockarray[idx1]))&&pcolors[(gx-pbounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-pbounds[2])*(CHUNK_SIZE)+(gy-pbounds[1])]==getColorc(gx+dx2[f] ,gz+dz2[f] ,gy+dy2[f])){
                                             isvisible&=~(1<<f);
                                         }
                                     
                                 }else 
                                     if(type==blockarray[idx1]){
-                                        if(pcolors[(gx-bounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-bounds[2])*(CHUNK_SIZE)+(gy-bounds[1])]==getColorc(gx+dx2[f],gz+dz2[f],gy+dy2[f])){
+                                        if(pcolors[(gx-pbounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-pbounds[2])*(CHUNK_SIZE)+(gy-pbounds[1])]==getColorc(gx+dx2[f],gz+dz2[f],gy+dy2[f])){
                                             
                                             
                                             isvisible&=~(1<<f);
@@ -396,18 +373,18 @@ int TerrainChunk::rebuild2(){   //here be dragons//
                         
                     }
                     if(isvisible){hasAnything=TRUE;
-                        hasVisy[gy-bounds[1]]=TRUE;
+                        hasVisy[gy-pbounds[1]]=TRUE;
                     }
-                    face_visibility[(gx-bounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-bounds[2])*(CHUNK_SIZE)+(gy-bounds[1])]=isvisible;
+                    face_visibility[(gx-pbounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-pbounds[2])*(CHUNK_SIZE)+(gy-pbounds[1])]=isvisible;
                 }
             }
         }       
     }else
-        for(int gy=bounds[1];gy<ey;gy++){
-            if(!hasBlocky[gy-bounds[1]])continue;
-            for(int gx=bounds[0];gx<ex;gx++){
+        for(int gy=pbounds[1];gy<ey;gy++){
+            if(!hasBlocky[gy-pbounds[1]])continue;
+            for(int gx=pbounds[0];gx<ex;gx++){
                 
-                for(int gz=bounds[2];gz<ez;gz++){
+                for(int gz=pbounds[2];gz<ez;gz++){
                     
 
                     
@@ -436,22 +413,22 @@ int TerrainChunk::rebuild2(){   //here be dragons//
                     if((IS_NOTSOLID&blockinfo[GBLOCK(gx,gz-1,gy)]))isvisible|=FACE_FRONT;
                     
                     if(isvisible){hasAnything=TRUE;
-                        hasVisy[gy-bounds[1]]=TRUE;
+                        hasVisy[gy-pbounds[1]]=TRUE;
                     }
-                    face_visibility[(gx-bounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-bounds[2])*(CHUNK_SIZE)+(gy-bounds[1])]=isvisible;
+                    face_visibility[(gx-pbounds[0])*(CHUNK_SIZE*CHUNK_SIZE)+(gz-pbounds[2])*(CHUNK_SIZE)+(gy-pbounds[1])]=isvisible;
                 }
             }
         }
     
     
-    if(bounds[1]==0){
+    if(pbounds[1]==0){
         for(int x=0;x<CHUNK_SIZE;x++)
             for(int z=0;z<CHUNK_SIZE;z++)
                 face_visibility[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+0]&=~FACE_BOTTOM;
-    }else if(bounds[1]+CHUNK_SIZE==T_HEIGHT){
+    }else if(pbounds[1]+CHUNK_SIZE==T_HEIGHT){
         for(int x=0;x<CHUNK_SIZE;x++)
             for(int z=0;z<CHUNK_SIZE;z++)
-                if(blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+CHUNK_SIZE-1]){
+                if(pblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+CHUNK_SIZE-1]){
                     face_visibility[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+CHUNK_SIZE-1]|=FACE_TOP;
                     hasAnything=TRUE;
                     hasVisy[CHUNK_SIZE-1]=TRUE;
@@ -461,7 +438,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
     
     if(!hasAnything){   
        
-         pblocks=blocks1;
+        
         clearOldVerticesOnly=TRUE;
         return 0;
     }
@@ -472,7 +449,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
 			for(int z=0;z<CHUNK_SIZE;z++){
                 if(!face_visibility[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y])continue;
                 
-				int type=blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];    
+				int type=pblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
                 if((blockinfo[type]&IS_OBJECT)||(blockinfo[type]&IS_PORTAL)){
                     for(int f=0;f<6;f++)
                     face_size[x*(CHUNK_SIZE*CHUNK_SIZE*6)+z*(CHUNK_SIZE*6)+y*6+f]=1;
@@ -536,21 +513,21 @@ int TerrainChunk::rebuild2(){   //here be dragons//
 			for(int z=0;z<CHUNK_SIZE;z++){
                 if(!face_visibility[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y])continue; 
                 
-                int type=blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];                
+                int type=pblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
                 int isvisible=face_visibility[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y];
                 if(blockinfo[type]&IS_PORTAL){
                    
                     if(type==TYPE_PORTAL_TOP){
                         
-                        objects[objidx].color=colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
+                        objects[objidx].color=pcolors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
                        
                         objects[objidx].open=FALSE;
                         objects[objidx].type=TYPE_PORTAL_TOP;
-                        objects[objidx].dir=getLandc(x+bounds[0],z+bounds[2],y+bounds[1]-1)-TYPE_PORTAL1;
-                        objects[objidx].pos.x=x+bounds[0];
-                        objects[objidx].pos.y=y-1+bounds[1];
-                        objects[objidx].pos.z=z+bounds[2];
-                        [World getWorld].terrain.portals->addPortal(x+bounds[0],y+bounds[1],z+bounds[2],objects[objidx].dir,  objects[objidx].color);
+                        objects[objidx].dir=getLandc(x+pbounds[0],z+pbounds[2],y+pbounds[1]-1)-TYPE_PORTAL1;
+                        objects[objidx].pos.x=x+pbounds[0];
+                        objects[objidx].pos.y=y-1+pbounds[1];
+                        objects[objidx].pos.z=z+pbounds[2];
+                        [World getWorld].terrain.portals->addPortal(x+pbounds[0],y+pbounds[1],z+pbounds[2],objects[objidx].dir,  objects[objidx].color);
                         
                         objidx++;
                     }
@@ -570,16 +547,16 @@ int TerrainChunk::rebuild2(){   //here be dragons//
                         face_visibility[x*(CHUNK_SIZE*CHUNK_SIZE)+z*(CHUNK_SIZE)+y]=0;
                         if(type==TYPE_DOOR_TOP){
                             
-                            objects[objidx].color=colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
+                            objects[objidx].color=pcolors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
                             objects[objidx].open=FALSE;
                             objects[objidx].type=TYPE_DOOR_TOP;
-                            objects[objidx].dir=getLandc(x+bounds[0],z+bounds[2],y+bounds[1]-1)-TYPE_DOOR1;
+                            objects[objidx].dir=getLandc(x+pbounds[0],z+pbounds[2],y+pbounds[1]-1)-TYPE_DOOR1;
                             objects[objidx].dir=ABS(objects[objidx].dir)%4;
                             objects[objidx].rot=M_PI/2;
                             objects[objidx].ani=0;
-                            objects[objidx].pos.x=x+bounds[0];
-                            objects[objidx].pos.y=y-1+bounds[1];
-                            objects[objidx].pos.z=z+bounds[2];
+                            objects[objidx].pos.x=x+pbounds[0];
+                            objects[objidx].pos.y=y-1+pbounds[1];
+                            objects[objidx].pos.z=z+pbounds[2];
                             
                           // printg("door[%d] %f, %f, %f \n", objidx, objects[objidx].pos.x,  objects[objidx].pos.y,  objects[objidx].pos.z);
 
@@ -587,24 +564,24 @@ int TerrainChunk::rebuild2(){   //here be dragons//
                             objidx++;
                         }else if(type==TYPE_GOLDEN_CUBE){
                             // printg("got cube\n");
-                            objects[objidx].color=colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
+                            objects[objidx].color=pcolors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
                             objects[objidx].open=FALSE;
                             objects[objidx].type=TYPE_GOLDEN_CUBE;
                             objects[objidx].dir=0;
-                            objects[objidx].pos.x=x+bounds[0];
-                            objects[objidx].pos.y=y+bounds[1];
-                            objects[objidx].pos.z=z+bounds[2];
+                            objects[objidx].pos.x=x+pbounds[0];
+                            objects[objidx].pos.y=y+pbounds[1];
+                            objects[objidx].pos.z=z+pbounds[2];
                             
                             objidx++;
                         }else if(type==TYPE_FLOWER){
                             // printg("got flower\n");
-                            objects[objidx].color=colors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
+                            objects[objidx].color=pcolors[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
                             objects[objidx].open=FALSE;
                             objects[objidx].type=TYPE_FLOWER;
                             objects[objidx].dir=0;
-                            objects[objidx].pos.x=x+bounds[0];
-                            objects[objidx].pos.y=y+bounds[1];
-                            objects[objidx].pos.z=z+bounds[2];
+                            objects[objidx].pos.x=x+pbounds[0];
+                            objects[objidx].pos.y=y+pbounds[1];
+                            objects[objidx].pos.z=z+pbounds[2];
                             
                             objidx++;
                             
@@ -686,7 +663,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
     if(!n_vertices&&!n_vertices2){//printg("return early 3\n");
      //    printg("im gonna clear some old vertices\n");
         clearOldVerticesOnly=TRUE;
-         pblocks=blocks1;
+        
         return 0;}
     //face_idx[0]=0;
     //face_idx2[0]=0;
@@ -713,13 +690,13 @@ int TerrainChunk::rebuild2(){   //here be dragons//
         if(!face_visibility[idx])continue;
         
         int isvisible=face_visibility[idx];        
-        int type=blocks[idx];
+        int type=pblocks[idx];
         int y=idx%CHUNK_SIZE;
         int z=(idx/CHUNK_SIZE)%CHUNK_SIZE;
         int x=(idx/CHUNK_SIZE2)%CHUNK_SIZE;        
         
         BOOL burned=FALSE;
-        if(IS_FLAMMABLE&blockinfo[type]&&isOnFire(x+bounds[0],z+bounds[2],y+bounds[1])){
+        if(IS_FLAMMABLE&blockinfo[type]&&isOnFire(x+pbounds[0],z+pbounds[2],y+pbounds[1])){
             burned=TRUE;
             
         }
@@ -1066,7 +1043,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
         }*/
         float paint[3];
         
-        color8 clr=colors[idx];
+        color8 clr=pcolors[idx];
         if(blockinfo[type]&IS_PORTAL){
             clr=0;
           
@@ -1081,9 +1058,9 @@ int TerrainChunk::rebuild2(){   //here be dragons//
        
         //float shadow=0.5f;//getShadow(x+bounds[0],z+bounds[2],y+bounds[1]);
         if(skylight!=1.0f){
-        light[0]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],skylight,0);
-        light[1]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],skylight,1);
-        light[2]=calcLight(x+bounds[0],z+bounds[2],y+bounds[1],skylight,2);
+        light[0]=calcLight(x+pbounds[0],z+pbounds[2],y+pbounds[1],skylight,0);
+        light[1]=calcLight(x+pbounds[0],z+pbounds[2],y+pbounds[1],skylight,1);
+        light[2]=calcLight(x+pbounds[0],z+pbounds[2],y+pbounds[1],skylight,2);
         }
         /*lightsf[CC(x,z,y)]+*/
     //    Vector lightv=lighting[(x)*CHUNK_SIZE*CHUNK_SIZE+(z)*CHUNK_SIZE+(y)];
@@ -1145,7 +1122,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
             for(int f=0;f<6;f++){
                 if(!( isvisible&(1<<f) ) ){
                     if(f!=4&&f!=5){
-                        int type2=getLandc((bounds[0]+x+dx2[f]),(bounds[2]+z+dz2[f]),(bounds[1]+y+dy2[f]));
+                        int type2=getLandc((pbounds[0]+x+dx2[f]),(pbounds[2]+z+dz2[f]),(pbounds[1]+y+dy2[f]));
                         int level2=getLevel(type2);
                         if(level2>maxlevel){
                             maxlevel=level2;
@@ -1156,7 +1133,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
                 }
                 int sf=f*6*3;
                 if(f!=4&&f!=5){
-                    int type2=getLandc(bounds[0]+x+dx2[f],(bounds[2]+z+dz2[f]),(bounds[1]+y+dy2[f]));
+                    int type2=getLandc(pbounds[0]+x+dx2[f],(pbounds[2]+z+dz2[f]),(pbounds[1]+y+dy2[f]));
                     int level2=getLevel(type2);
                     if(level2<level){
                         if(getBaseType(type2)==getBaseType(type)){
@@ -1427,7 +1404,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
     vis_vertices=0;
    
     needsVBO=TRUE;
-     pblocks=blocks1;
+    
     
     return 1;
 	
@@ -1448,8 +1425,7 @@ void TerrainChunk::prepareVBO(){
             rtvisibleFaces[i]=visibleFaces[i]=0;
             
         }
-        for(int i=0;i<6;i++)
-            rtbounds[i]=bounds[i];
+        
         
         if(n_vertices){
             
@@ -1494,6 +1470,7 @@ void TerrainChunk::prepareVBO(){
     if(!needsVBO){return;}
    
    	rtn_vertices=n_vertices;
+  
     rtn_vertices2=n_vertices2;
     rtvis_vertices=vis_vertices;
     
@@ -1522,8 +1499,7 @@ void TerrainChunk::prepareVBO(){
         rtvisibleFaces[i]=visibleFaces[i];
         
     }
-    for(int i=0;i<6;i++)
-    rtbounds[i]=bounds[i];
+   
     
     if(n_vertices){
        
@@ -1572,12 +1548,13 @@ void TerrainChunk::prepareVBO(){
     verticesbg=NULL;
     verticesbg2=NULL;
     needsVBO=FALSE;
+    
 }
 
 int TerrainChunk::getLand(int x,int z,int y){
 	if(x<0||x>=CHUNK_SIZE||y<0||y>=CHUNK_SIZE||z<0||z>=CHUNK_SIZE)
-	return getLandc(x+bounds[0] ,z+bounds[2] ,y+bounds[1]);
-	return blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
+	return getLandc(x+pbounds[0] ,z+pbounds[2] ,y+pbounds[1]);
+	return pblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y];
 	
 }
 
@@ -1693,11 +1670,11 @@ void TerrainChunk::setLand(int x,int z,int y,int type){
    
 	if(x<0||x>=CHUNK_SIZE||y<0||y>=CHUNK_SIZE||z<0||z>=CHUNK_SIZE){
 		//NSLog(@"setting out of bounds chunks");
-        [ter setLand:x+bounds[0] :z+bounds[2] :y+bounds[1] :type :TRUE];
+        [ter setLand:x+pbounds[0] :z+pbounds[2] :y+pbounds[1] :type :TRUE];
 	}else{		
         
-		blocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=type;
-		[ter setLand:x+bounds[0] :z+bounds[2] :y+bounds[1] :type :FALSE];
+		pblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=type;
+		[ter setLand:x+pbounds[0] :z+pbounds[2] :y+pbounds[1] :type :FALSE];
 	}
 
 	
@@ -1706,7 +1683,7 @@ void TerrainChunk::setLand(int x,int z,int y,int type){
 
 void TerrainChunk::unbuild(){
 
-    loaded=FALSE;
+   
     clearMeshes();
     
     rtnum_objects=0;//disable objects for now
@@ -1721,8 +1698,7 @@ void TerrainChunk::unbuild(){
         rtvisibleFaces[i]=visibleFaces[i]=0;
         
     }
-    for(int i=0;i<6;i++)
-        rtbounds[i]=bounds[i]=0;
+    
     
     
         void* oldmem=rtindices;
@@ -1750,7 +1726,7 @@ void TerrainChunk::unbuild(){
 
 TerrainChunk::~TerrainChunk(){
 	
-	loaded=FALSE;
+	
     clearMeshes();
     
     rtnum_objects=0;//disable objects for now
@@ -1766,7 +1742,7 @@ TerrainChunk::~TerrainChunk(){
         
     }
     for(int i=0;i<6;i++)
-        rtbounds[i]=bounds[i]=0;
+        pbounds[i]=0;
     
     
     void* oldmem=rtindices;
@@ -1822,9 +1798,10 @@ void TerrainChunk::clearMeshes(){
 
 
 int TerrainChunk::render(){
+    
 	if(rtn_vertices==0)
         return 0;
-    
+   
     /*if(isTesting==0){
         
         glBeginQueryEXT( GL_ANY_SAMPLES_PASSED_EXT,query);
@@ -1848,7 +1825,7 @@ int TerrainChunk::render(){
   //  if([World getWorld].hud.heartbeat)
    // printg("rtbounds %f  proposedoffset %d\n",rbounds[0],[World getWorld].fm.chunkOffsetX*CHUNK_SIZE);
     //glTranslatef((rtbounds[0])*4, rtbounds[1]*4, (rtbounds[2])*4);
-	glTranslatef((rtbounds[0]-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)*4, rtbounds[1]*4, (rtbounds[2]-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)*4);
+	glTranslatef((pbounds[0]-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)*4, pbounds[1]*4, (pbounds[2]-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)*4);
     
     
 	/*offsets[0]=BLOCK_SIZE*x+rbounds[0];
@@ -1881,23 +1858,23 @@ int TerrainChunk::render(){
 	0,1,0, //top face*/
     bool rebuildIndices=FALSE;
     bool curVis[7];
-    curVis[5]=cam->py>=rtbounds[1]&&rtnum_vertices[5]!=0;
+    curVis[5]=cam->py>=pbounds[1]&&rtnum_vertices[5]!=0;
     
-    curVis[1]=cam->pz>=rtbounds[2]&&rtnum_vertices[1]!=0;
+    curVis[1]=cam->pz>=pbounds[2]&&rtnum_vertices[1]!=0;
      
     
-    curVis[0]=cam->pz<=rtbounds[5]&&rtnum_vertices[0]!=0;
+    curVis[0]=cam->pz<=pbounds[5]&&rtnum_vertices[0]!=0;
    
     
     
     
-    curVis[3]=cam->px>=rtbounds[0]&&rtnum_vertices[3]!=0;
+    curVis[3]=cam->px>=pbounds[0]&&rtnum_vertices[3]!=0;
     
     
-    curVis[2]=cam->px<=rtbounds[3]&&rtnum_vertices[2]!=0;
+    curVis[2]=cam->px<=pbounds[3]&&rtnum_vertices[2]!=0;
     
     
-    curVis[4]=cam->py<=rtbounds[4]&&rtnum_vertices[4]!=0;
+    curVis[4]=cam->py<=pbounds[4]&&rtnum_vertices[4]!=0;
     
     
     curVis[6]=rtnum_vertices[6]!=0;
@@ -1967,7 +1944,7 @@ int TerrainChunk::render(){
 void TerrainChunk::render2(){
    
     glPushMatrix();
-	glTranslatef((rtbounds[0]-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)*4, rtbounds[1]*4, (rtbounds[2]-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)*4);
+	glTranslatef((pbounds[0]-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)*4, pbounds[1]*4, (pbounds[2]-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)*4);
 	/*offsets[0]=BLOCK_SIZE*x+rbounds[0];
      offsets[1]=BLOCK_SIZE*y+rbounds[1];
      offsets[2]=BLOCK_SIZE*z+rbounds[2];*/
@@ -1981,24 +1958,24 @@ void TerrainChunk::render2(){
 	
      Camera* cam=[World getWorld].cam;
 	
-    if(cam->py>=rtbounds[1]&&rtnum_vertices2[5]!=0)
+    if(cam->py>=pbounds[1]&&rtnum_vertices2[5]!=0)
         glDrawArrays(GL_TRIANGLES, rtface_idx2[5], rtnum_vertices2[5]);
     
-    if(cam->pz>=rtbounds[2]&&rtnum_vertices2[1]!=0)
+    if(cam->pz>=pbounds[2]&&rtnum_vertices2[1]!=0)
         glDrawArrays(GL_TRIANGLES, rtface_idx2[1], rtnum_vertices2[1]);
     
-    if(cam->pz<=rtbounds[5]&&rtnum_vertices2[0]!=0)
+    if(cam->pz<=pbounds[5]&&rtnum_vertices2[0]!=0)
         glDrawArrays(GL_TRIANGLES, rtface_idx2[0], rtnum_vertices2[0]);
     
     
     
-    if(cam->px>=rtbounds[0]&&rtnum_vertices2[3]!=0)
+    if(cam->px>=pbounds[0]&&rtnum_vertices2[3]!=0)
         glDrawArrays(GL_TRIANGLES, rtface_idx2[3], rtnum_vertices2[3]);
     
-    if(cam->px<=rtbounds[3]&&rtnum_vertices2[2]!=0)
+    if(cam->px<=pbounds[3]&&rtnum_vertices2[2]!=0)
         glDrawArrays(GL_TRIANGLES, rtface_idx2[2], rtnum_vertices2[2]);
     
-    if(cam->py<=rtbounds[4]&&rtnum_vertices2[4]!=0)
+    if(cam->py<=pbounds[4]&&rtnum_vertices2[4]!=0)
         glDrawArrays(GL_TRIANGLES, rtface_idx2[4], rtnum_vertices2[4]);
 
 	glPopMatrix();

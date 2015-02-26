@@ -113,7 +113,7 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
 		return FALSE;
 	}else{
 				char c=[string characterAtIndex:0];
-		NSLog(@"%d",[name length]);
+		NSLog(@"%d",(int)[name length]);
 		if(!isalnum(c)&&c!=' '&&c!='\'')return FALSE;
 		[name appendFormat:@"%c",c];	   
 	}

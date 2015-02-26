@@ -97,10 +97,11 @@ void TerrainGenerator::generateEmptyColumn(int cx,int cz){
             chunk->resetForReuse();
             chunk->setBounds(bounds);
         }
-        else
-            chunk=new TerrainChunk(bounds,ocx,ocz,ter);
+        else{
+            printf("criticle errror re-allocating terrain chunk\n");
+        }
         
-        chunk->needsGen=TRUE;
+       
         
 		column[cy]=chunk;
         /*  if(bgthread){
@@ -155,14 +156,14 @@ void TerrainGenerator::generateColumn(int cx,int cz,BOOL bgthread){
         if(old){chunk=old;
            chunk->resetForReuse();
             chunk->setBounds(bounds);
-            printf("found old chunk\n");
+            //printf("found old chunk\n");
              
         }
         else{
-		chunk= new TerrainChunk(bounds,ocx,ocz,ter);
+            printf("criticle errror re-allocating terrain chunk\n");
         }
         
-        chunk->needsGen=TRUE;
+       
 		column[cy]=chunk;
       /*  if(bgthread){
             if(cy==0){

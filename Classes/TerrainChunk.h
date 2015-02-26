@@ -40,26 +40,26 @@ public:
 	
 	//block8 blocks[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
     
-    block8* blocks;
-    block8 blocks1[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
+   
+    block8 pblocks[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
     //block8 blocks2[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
-    color8 colors[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
+    color8 pcolors[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
     //float lightsf[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
     
-    block8* pblocks;
+   
   //  block8* pblocks2;
-    color8* pcolors;
+   
    // SmallBlock* sblocks[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE];
    // SmallBlock** psblocks;
-    
+   // float test[100];
     
     vertexStructSmall* verticesbg;
     vertexStructSmall* verticesbg2;
-    
+    // float test2[100];
     unsigned short* indices;
     unsigned short* rtindices;
     	int rcx,rcz;
-    BOOL loaded;
+   
     StaticObject* objects;
      StaticObject* rtobjects;
      int num_objects;
@@ -83,7 +83,7 @@ public:
     int rtvis_vertices;
     TreeNode* m_treenode;
 	ListNode* m_listnode;
-    BOOL needsGen;
+    
     BOOL needsVBO;
     BOOL clearOldVerticesOnly;
     
@@ -96,14 +96,14 @@ public:
 	GLuint    vertexBuffer,vertexBuffer2,elementBuffer;
    // BOOL needsRebuild;
 
-	int bounds[6];
-    int rtbounds[6];
-	float rbounds[6];	
-    int* pbounds;
-    float* prbounds;
+	int pbounds[6];
     
-    TerrainChunk(const int* boundz,int rcx,int rcy,Terrain* terrain);
-    TerrainChunk(const int* boundz,int rcx,int rcy,Terrain* terrain,BOOL genblocks);
+	float rbounds[6];	
+    
+   
+    
+   
+    TerrainChunk(const int* boundz,Terrain* terrain);
     ~TerrainChunk();
     int getLand(int x,int z,int y);
     void setLand(int x,int z,int y,int type);

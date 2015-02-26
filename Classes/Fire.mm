@@ -375,7 +375,7 @@ void Fire::renderFireSprites(){
     for(int i=0;i<list_size;i++){
         firenode* node=&list[i];
         if(node==NULL)continue;
-        if(node->type==2||node->type==0){
+        if(node->type==0){
            
             continue;}
         if(node->life>0){
@@ -478,7 +478,7 @@ void Fire::renderFireSprites(){
     for(int i=0;i<list_size;i++){
         
         firenode* node=&list[i];
-        if(node->type==2||node->type==0){
+        if(node->type==0){
             
             continue;}
         

@@ -143,7 +143,7 @@ static int dataSize=0;
 {
     NSLog(@"%s: self:0x%p\n", __func__, self);
     dataSize=0;
-    downloadSize = [response expectedContentLength];
+    downloadSize = (int)[response expectedContentLength];
      NSLog(@"%d,%d  %f%%",downloadSize,dataSize,((float)dataSize/downloadSize));
     
 }
@@ -177,7 +177,7 @@ static int dataSize=0;
     bytesWrittenSoFar = 0;
     if(fileStream!=NULL){
     do {
-        NSLog(@"%d",bytesWrittenSoFar);
+        NSLog(@"%d",(int)bytesWrittenSoFar);
         bytesWritten = [fileStream write:&dataBytes[bytesWrittenSoFar] maxLength:dataLength - bytesWrittenSoFar];
         assert(bytesWritten != 0);
         if (bytesWritten == -1) {
@@ -193,7 +193,7 @@ static int dataSize=0;
     if(dataSize==downloadSize){
         downloadDidSucceed=TRUE;
     }
-    [delegate performSelector:progressSelector withObject:(id)(100*dataSize/downloadSize)];
+    [delegate performSelector:progressSelector withObject:(id)(long)(100*dataSize/downloadSize)];
  
 	
     

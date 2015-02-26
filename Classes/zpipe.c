@@ -47,7 +47,7 @@ int compressFile(FILE *source, FILE *dest, int level)
     
     /* compress until end of file */
     do {
-        strm.avail_in = fread(in, 1, CHUNK, source);
+        strm.avail_in = (unsigned)fread(in, 1, CHUNK, source);
         if (ferror(source)) {
             (void)deflateEnd(&strm);
             return Z_ERRNO;
@@ -105,7 +105,7 @@ int decompressFile(FILE *source, FILE *dest)
     
     /* decompress until deflate stream ends or end of file */
     do {
-        strm.avail_in = fread(in, 1, CHUNK, source);
+        strm.avail_in = (unsigned)fread(in, 1, CHUNK, source);
         if (ferror(source)) {
             (void)inflateEnd(&strm);
             return Z_ERRNO;
