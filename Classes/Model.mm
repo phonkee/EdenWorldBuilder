@@ -929,8 +929,8 @@ void ExplodeModels(Vector p,int color){
     extern Vector colorTable[256];
     if(pos.lenSqr()<EXPLOSION_RADIUS*EXPLOSION_RADIUS){
         if(color!=0){
-            [World getWorld].hud.flash=.9f;
-             [World getWorld].hud.flashcolor=colorTable[color];
+            [World getWorld].hud->flash=.9f;
+             [World getWorld].hud->flashcolor=colorTable[color];
             
         }else{
             
@@ -1848,13 +1848,13 @@ void PlaceModel(int idx,Vector pos){
     guys[idx].pos.z=wrapz(fpoint.z);
     guys[idx].angle=D2R([World getWorld].player->yaw+90);
     guys[idx].targetangle=guys[idx].angle;
-    guys[idx].color=[World getWorld].hud.creature_color;
+    guys[idx].color=[World getWorld].hud->creature_color;
     if(idx!=nguys)
      [[Resources getResources] playSound:S_BUILD_GENERIC];  
     if(idx!=nguys){
     guys[idx].vel.y=3;
-    [World getWorld].hud.blocktype=TYPE_CLOUD;       
-    [World getWorld].hud.holding_creature=FALSE;
+    [World getWorld].hud->blocktype=TYPE_CLOUD;
+    [World getWorld].hud->holding_creature=FALSE;
        
     }else{
         guys[idx].vel.y=0;
@@ -1966,9 +1966,9 @@ void ColorModel(int idx,int color){
 void PickupModel(int idx){
     if(idx>=0&&idx<nguys){
         guys[idx].alive=FALSE;
-        [World getWorld].hud.blocktype=TYPE_CLOUD;
-        [World getWorld].hud.creature_color=guys[idx].color;
-        [World getWorld].hud.holding_creature=idx+1;
+        [World getWorld].hud->blocktype=TYPE_CLOUD;
+        [World getWorld].hud->creature_color=guys[idx].color;
+        [World getWorld].hud->holding_creature=idx+1;
         inventory.pos=MakeVector(guys[idx].pos.x,guys[idx].pos.y,guys[idx].pos.z);
         inventory.color=guys[idx].color;
         inventory.type=guys[idx].model_type;

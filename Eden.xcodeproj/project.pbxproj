@@ -87,6 +87,7 @@
 		19B3B14616A6225300E86E8D /* door_icon2_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B14216A6225200E86E8D /* door_icon2_active.png */; };
 		19B3B14716A6225300E86E8D /* portal_icon2_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B14316A6225300E86E8D /* portal_icon2_active.png */; };
 		19B3B14816A6225300E86E8D /* goldcube_icon_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 19B3B14416A6225300E86E8D /* goldcube_icon_active.png */; };
+		19B6CF171A9FBC7D001BB1DC /* Alert.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19B6CF161A9FBC7D001BB1DC /* Alert.mm */; };
 		19C93C8B1672DEE7006ADF33 /* Stalker.pod in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C851672DEE7006ADF33 /* Stalker.pod */; };
 		19C93C8C1672DEE7006ADF33 /* Charger_Blink.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C861672DEE7006ADF33 /* Charger_Blink.png */; };
 		19C93C8D1672DEE7006ADF33 /* Charger_Rage.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C93C871672DEE7006ADF33 /* Charger_Rage.png */; };
@@ -930,6 +931,8 @@
 		19B3B14216A6225200E86E8D /* door_icon2_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = door_icon2_active.png; sourceTree = "<group>"; };
 		19B3B14316A6225300E86E8D /* portal_icon2_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portal_icon2_active.png; sourceTree = "<group>"; };
 		19B3B14416A6225300E86E8D /* goldcube_icon_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goldcube_icon_active.png; sourceTree = "<group>"; };
+		19B6CF161A9FBC7D001BB1DC /* Alert.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Alert.mm; sourceTree = "<group>"; };
+		19B6CF181A9FBC95001BB1DC /* Alert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Alert.h; sourceTree = "<group>"; };
 		19C93C851672DEE7006ADF33 /* Stalker.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Stalker.pod; path = models/Stalker.pod; sourceTree = "<group>"; };
 		19C93C861672DEE7006ADF33 /* Charger_Blink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Charger_Blink.png; path = models/Charger_Blink.png; sourceTree = "<group>"; };
 		19C93C871672DEE7006ADF33 /* Charger_Rage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Charger_Rage.png; path = models/Charger_Rage.png; sourceTree = "<group>"; };
@@ -1810,6 +1813,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				19B6CF151A9FBC3C001BB1DC /* alerts */,
 				19DF68C71A842FFE00E462A1 /* sound */,
 				C6F314031263F2F100890361 /* Camera.h */,
 				C6F314041263F2F100890361 /* Camera.mm */,
@@ -2013,6 +2017,15 @@
 				19B3B13C16A5EF2500E86E8D /* portal_icon2_mask.png */,
 			);
 			name = uimasks;
+			sourceTree = "<group>";
+		};
+		19B6CF151A9FBC3C001BB1DC /* alerts */ = {
+			isa = PBXGroup;
+			children = (
+				19B6CF161A9FBC7D001BB1DC /* Alert.mm */,
+				19B6CF181A9FBC95001BB1DC /* Alert.h */,
+			);
+			name = alerts;
 			sourceTree = "<group>";
 		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
@@ -3860,6 +3873,7 @@
 				C6591EEE12809F7000136044 /* SpecialEffects.mm in Sources */,
 				C6591EFF1280A51B00136044 /* BlockBreak.mm in Sources */,
 				C67D15BD1281EB9B000EF2D5 /* Fire.mm in Sources */,
+				19B6CF171A9FBC7D001BB1DC /* Alert.mm in Sources */,
 				C6B192341283226000A48E22 /* SettingsMenu.mm in Sources */,
 				C62C2CE512862AA500C84AD7 /* Gamepad.mm in Sources */,
 				C6E21D111289F3B700300458 /* statusbar.mm in Sources */,

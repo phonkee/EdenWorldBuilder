@@ -364,7 +364,7 @@ void FileManager::saveWorld(Vector warp){
 	sfh=(WorldFileHeader*)malloc(sizeof(WorldFileHeader));
 	//NSLog(@"saving level_seed: %d",ter.level_seed);
 	sfh->level_seed=ter.level_seed;
-    sfh->goldencubes=[World getWorld].hud.goldencubes;
+    sfh->goldencubes=[World getWorld].hud->goldencubes;
 	sfh->directory_offset=cur_dir_offset;
 	sfh->home=ter.home;
 	sfh->pos=[World getWorld].player->pos;
@@ -382,7 +382,7 @@ void FileManager::saveWorld(Vector warp){
         }
     }
     
-	[[World getWorld].menu.selected_world->display_name getCString:sfh->name
+	[[World getWorld].menu->selected_world->display_name getCString:sfh->name
 														 maxLength:49
 														  encoding:NSUTF8StringEncoding];
     if(imgHash==NULL)imgHash=@""; 
@@ -448,7 +448,7 @@ void FileManager::saveWorld(Vector warp){
 
   
 	//hashmap_iterate(ter.chunkMap, saveChunk, NULL);
-	this->saveCreatures();
+	saveCreatures();
     
     sfh->version=FILE_VERSION;
     file_version=FILE_VERSION;
@@ -461,11 +461,11 @@ void FileManager::saveWorld(Vector warp){
 		
 		
 		count=0;
-		this->fwriteDirectory();
+		fwriteDirectory();
 		NSLog(@"wrote %d colidx's",count);
 	}
 	cur_dir_offset=sfh->directory_offset;
-	this->readDirectory();
+	readDirectory();
 	free(sfh);
 	[saveFile closeFile];
    
@@ -1482,7 +1482,7 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
 		ter.level_seed=sfh->level_seed;
 		ter.tgen->LEVEL_SEED=ter.level_seed;
 		cur_dir_offset=sfh->directory_offset;
-       [World getWorld].hud.goldencubes= sfh->goldencubes;
+       [World getWorld].hud->goldencubes= sfh->goldencubes;
 		ter.home=sfh->home;
 		player->pos=sfh->pos;
 		player->yaw=sfh->yaw;
@@ -1557,7 +1557,7 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
 
     Input::getInput()->clearAll();
     [World getWorld].effects->clearAllEffects();
-    [[World getWorld].hud worldLoaded];
+    [World getWorld].hud->worldLoaded();
 	updateSkyColor1([World getWorld].player,TRUE);
     extern BOOL loaded_new_terrain;
     loaded_new_terrain=TRUE;

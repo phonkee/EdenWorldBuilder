@@ -148,8 +148,8 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
         if(name!=NULL)
 		[name release];
         name=NULL;
-		[World getWorld].menu.is_sharing=0;
-		[World getWorld].menu.sbar->clear();
+		[World getWorld].menu->is_sharing=0;
+		[World getWorld].menu->sbar->clear();
 		return;
 	}
 	[node->display_name release];
@@ -166,16 +166,16 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
     NSFileManager* fm=[NSFileManager defaultManager];
     NSLog(@"Sharing \"%@\"",node->display_name);
     if(![fm fileExistsAtPath:image_file_name]){
-        [World getWorld].menu.is_sharing=0;
-        [World getWorld].menu.sbar->setStatus(@"Error: No preview picture found",4);
+        [World getWorld].menu->is_sharing=0;
+        [World getWorld].menu->sbar->setStatus(@"Error: No preview picture found",4);
         return;
     }
     
-    [[World getWorld].menu.shareutil shareWorld:file_name];
+    [[World getWorld].menu->shareutil shareWorld:file_name];
     
     
-    [World getWorld].menu.is_sharing=2;
-    [[World getWorld].menu refreshfn];
+    [World getWorld].menu->is_sharing=2;
+    [World getWorld].menu->refreshfn();
 
 	
 				

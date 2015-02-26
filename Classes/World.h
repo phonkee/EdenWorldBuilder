@@ -22,8 +22,8 @@
 class FileManager;
 class Player;
 @class Terrain;
-@class Hud;
-@class Menu;
+class Hud;
+class Menu;
 #define GAME_MODE_MENU 0
 #define GAME_MODE_WAIT 2
 #define GAME_MODE_PLAY 1

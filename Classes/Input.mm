@@ -60,7 +60,7 @@ void Input::clearAll(){
 void Input::keyTyped(NSString* key){
 	char ch=[key characterAtIndex:0];
 	if(ch=='h'){
-		[World getWorld].hud.hideui=![World getWorld].hud.hideui;	
+		[World getWorld].hud->hideui=![World getWorld].hud->hideui;	
 	}
 	
 }

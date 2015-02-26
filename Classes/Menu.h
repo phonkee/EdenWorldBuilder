@@ -22,7 +22,9 @@
 
 
 
-@interface Menu : NSObject <UIAlertViewDelegate> {
+class Menu{
+    
+public:
 		CGRect rect_name;
 	
 	WorldNode* world_list;
@@ -61,21 +63,30 @@
 	BOOL share_mode;
 	BOOL showsettings;
 	BOOL showlistscreen;
+    BOOL loadShared(SharedListNode* sharedNode);
+    void update(float etime);
+    void loadWorlds();
+    void render();
+    void refreshfn();
+    void addWorld(WorldNode* node);
+    void removeWorld(WorldNode* node);
+    
+    void activate();
+    void deactivate();
+    
+    void a_genFlat(BOOL b);
+    void a_deleteCancel();
+    void a_deleteConfirm();
+    Menu();
+    
 	//CGRect rcam
-}
+};
+/*
 @property(nonatomic,assign) int loading, is_sharing;
 @property(nonatomic,assign) BOOL showsettings,showlistscreen;
 @property(nonatomic,readonly) statusbar* sbar;
 @property(nonatomic,readonly) WorldNode* selected_world;
 @property(nonatomic,readonly) SharedList* shared_list;
-@property(nonatomic,readonly) ShareUtil* shareutil;
--(BOOL)loadShared:(SharedListNode*)sharedNode;
--(void)update:(float)etime;
--(void)loadWorlds;
--(void)render;
--(void)refreshfn;
--(void)addWorld:(WorldNode*)node;
--(void)removeWorld:(WorldNode*)node;
--(void)activate;
--(void)deactivate;
-@end
+@property(nonatomic,readonly) ShareUtil* shareutil;*/
+
+

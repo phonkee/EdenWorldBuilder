@@ -12,7 +12,7 @@
 #import "TerrainGen2.h"
 #import <Foundation/Foundation.h>
 
-
+#import "Alert.h"
 
 extern float SCREEN_WIDTH; 
 extern float SCREEN_HEIGHT;
@@ -80,40 +80,21 @@ static int marginLeft=10;
 static int marginLeft2=10-6;
 //static int marginRight=60;
 Vector colorTable[256];
-@implementation Hud
-@synthesize mode,blocktype,leftymode,use_joystick,paintColor,liquidColor,block_paintcolor,heartbeat,goldencubes,build_size,fade_out;
-@synthesize m_jump,m_back,m_fwd,m_left,m_right,test_a,m_joy,fps,justLoaded,flash,flashcolor;
-@synthesize sb,hideui,take_screenshot,underLiquid,holding_creature,creature_color,inmenu,var1,var2,var3;
+//@implementation Hud
+//@synthesize mode,blocktype,leftymode,use_joystick,paintColor,liquidColor,block_paintcolor,heartbeat,goldencubes,build_size,fade_out;
+//@synthesize m_jump,m_back,m_fwd,m_left,m_right,test_a,m_joy,fps,justLoaded,flash,flashcolor;
+//@synthesize sb,hideui,take_screenshot,underLiquid,holding_creature,creature_color,inmenu,var1,var2,var3;
 
 
-- (void)setLeftymode:(int)m{
-	/*leftymode=m;
-     if(leftymode){		
-     rbuild.origin.x=SCREEN_WIDTH-(HUDR_X+rbuild.size.width);
-     rmine.origin.x=SCREEN_WIDTH-(HUDR_X+rmine.size.width);
-     rburn.origin.x=SCREEN_WIDTH-(HUDR_X+rburn.size.width);
-     rjumphit.origin.x=HUDR_X;
-     rjumprender.origin.x=SCREEN_WIDTH-(HUDR_X+rjumprender.size.width);
-     rback.origin.x=HUDR_X;
-     
-     }else{		
-     rbuild.origin.x=HUDR_X;
-     rmine.origin.x=HUDR_X;
-     rburn.origin.x=HUDR_X;
-     rjumphit.origin.x=SCREEN_WIDTH-(HUDR_X+rjumphit.size.width);
-     rjumprender.origin.x=HUDR_X;
-     rback.origin.x=SCREEN_WIDTH-(HUDR_X+rback.size.width);
-     
-     }*/
-	
-}
-static UIAlertView *alertWarpHome;
+
+
 static Vector test1;
 static Vector test2;
 static CGRect test1r;
 static CGRect test2r;
 extern BOOL IS_WIDESCREEN;
-+(void)genColorTable{
+
+void Hud::genColorTable(){
    
     int c;
     int r;
@@ -160,7 +141,7 @@ extern BOOL IS_WIDESCREEN;
     
     
 }
-- (id)init{
+Hud::Hud(){
     
     fps=60;
 	flash=-1;
@@ -170,10 +151,7 @@ extern BOOL IS_WIDESCREEN;
 	ttime=0;
     pressed=-1;
     justLoaded=1;
-    alertWarpHome= [[UIAlertView alloc] 
-                         initWithTitle:@"Home Menu"
-                         message:@"\n"                                                                              delegate:self
-                         cancelButtonTitle:@"Cancel"                                                                           otherButtonTitles:@"Set Current Location as Home", @"Warp home" , nil];
+    
 	rjumprender.origin.x=HUDR_X;
 	rjumprender.origin.y=0;
 	rjumprender.size.width=45;
@@ -196,7 +174,7 @@ extern BOOL IS_WIDESCREEN;
     underLiquid=FALSE;
 	rjumphit.size.width=SCREEN_WIDTH- rjumphit.origin.x;
 	rjumphit.size.height=45+rjumprender.origin.y;
-
+    fade_out=0;
 	test_a=0;
 	CGRect sbrect;
 	sbrect.origin.x=20;
@@ -204,7 +182,7 @@ extern BOOL IS_WIDESCREEN;
     
 	sbrect.origin.y=0;
 	sbrect.size.height=25;
-	m_joy=TRUE;
+	
     int roffy=3;
 	rbuild.origin.x=HUDR_X;
 	rbuild.origin.y=(3*SCREEN_HEIGHT/(HUDR_NUM))-(int)(HUD_BOX_SIZE)-roffy;
@@ -249,7 +227,8 @@ extern BOOL IS_WIDESCREEN;
 			r++;
 		}
 	}
-    [Hud genColorTable];
+    Hud::genColorTable();
+    
   
     c=r=0;
     colorTable[0].x=1.0f;
@@ -326,11 +305,10 @@ extern BOOL IS_WIDESCREEN;
     test1=MakeVector(randf(1),randf(1),randf(1));
     test2=colorTable[lookupColor(test1)];
     
-	return self;
+	
 }
-
-
--(void)worldLoaded{
+static float at1=0,at2=0,at3=0;
+void Hud::worldLoaded(){
     pressed=-1;
     inmenu=FALSE;
     at1=0;
@@ -352,10 +330,12 @@ extern int vertices_rendered;
 extern int max_vertices;
 extern float P_ZFAR;
 extern BOOL SUPPORTS_OGL2;
-static float at1=0,at2=0,at3=0;
+
 int flamecount=0;
+static int lmode=MODE_NONE;
 //static int warpCount=0;
-- (BOOL)update:(float)etime{
+
+BOOL Hud::update(float etime){
 	if(flash>0){
 		flash-=etime;
 	}
@@ -502,7 +482,7 @@ int flamecount=0;
         if(touches[i].inuse==usage_id2&&touches[i].down==M_RELEASE){
             BOOL handled;
             if(inmenu){
-                if([self handlePickMenu:touches[i].mx:touches[i].my]){
+                if(handlePickMenu(touches[i].mx,touches[i].my)){
                     
                     handled=TRUE;
                 }
@@ -683,7 +663,7 @@ int flamecount=0;
 			}
 
 			if(mode==MODE_PICK_BLOCK){
-				if([self handlePickBlock:touches[i].mx:touches[i].my]){
+				if(handlePickBlock(touches[i].mx,touches[i].my)){
                     inmenu=FALSE;
 					handled=TRUE;
                     //printg("handled\n");
@@ -691,7 +671,7 @@ int flamecount=0;
 			}
             if(mode==MODE_PICK_COLOR){
                 
-				if([self handlePickColor:touches[i].mx:touches[i].my]){
+				if(handlePickColor(touches[i].mx,touches[i].my)){
                     inmenu=FALSE;
 					handled=TRUE;
 				}				
@@ -709,7 +689,7 @@ int flamecount=0;
 	for(int i=0;i<MAX_TOUCHES;i++){
 		if(touches[i].inuse==usage_id&&touches[i].moved){
             if(mode==MODE_PICK_BLOCK){
-				if([self handlePickBlock:touches[i].mx:touches[i].my]){
+				if(handlePickBlock(touches[i].mx,touches[i].my)){
                     
                     
                         touches[i].inuse=usage_id;
@@ -718,7 +698,7 @@ int flamecount=0;
 					
 				}				
 			}else if(mode==MODE_PICK_COLOR){
-				if([self handlePickColor:touches[i].mx:touches[i].my]){
+				if(handlePickColor(touches[i].mx,touches[i].my)){
                     touches[i].inuse=usage_id;
                     touches[i].moved=FALSE;
 									}				
@@ -813,8 +793,7 @@ int flamecount=0;
 
 extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     
-    
-- (BOOL)handlePickColor:(int)x:(int)y{
+BOOL Hud::handlePickColor(int x,int y){
     BOOL handled=FALSE;
     
     
@@ -830,7 +809,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
      }
     return handled;
 }
-- (BOOL)handlePickMenu:(int)x:(int)y{
+BOOL Hud::handlePickMenu(int x,int y){
     BOOL handled=FALSE;
     if(inbox2(x,y,&rcam)||inbox2(x,y,&rtCam)){
         
@@ -854,7 +833,8 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
             [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
             
         }*/
-        [alertWarpHome show];
+        showAlertWarpHome();
+        
 		inmenu=false;
 		handled=TRUE;
 	}
@@ -889,7 +869,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     return handled;
 }
 
-- (BOOL)handlePickBlock:(int)x:(int)y{
+BOOL Hud::handlePickBlock(int x,int y){
 	BOOL handled=FALSE;
 	
 	for(int i=0;i<NUM_DISPLAY_BLOCKS;i++){
@@ -908,7 +888,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     
 }
 
--(void) renderColorPickScreen{
+void Hud::renderColorPickScreen(){
     glColor4f(1.0, 1.0, 1.0, at3);	
     [[[Resources getResources] getTex: ICO_COLOR_SELECT_BACKGROUND] drawInRect:rpaintframe];
    
@@ -974,8 +954,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
     glEnable(GL_BLEND);
     
 }
-
-- (void)renderBlockAndBorder:(CGRect) recto{
+void Hud::renderBlockAndBorder(CGRect recto){
     int type=blocktype;
     
     
@@ -1372,7 +1351,8 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 	
 }
 
-- (void)renderMenuScreen{	
+void Hud::renderMenuScreen(){
+    
 	//glDisable(GL_TEXTURE_2D);
 	//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
@@ -1412,7 +1392,7 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 }
 
 
-- (void)renderBlockScreen{	
+void Hud::renderBlockScreen(){
 	//glDisable(GL_TEXTURE_2D);
 	//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor4f(1.0, 1.0, 1.0, at2);	
@@ -1735,8 +1715,9 @@ extern const GLubyte blockColor[NUM_BLOCKS+1][3];
 	return;
 }
 //extern float P_ZFAR;
-static int lmode=MODE_NONE;
-- (void)render{	
+
+
+void Hud::render(){
 	//if(mode==MODE_MINE)return;
     Graphics::beginHud();
    
@@ -1837,10 +1818,10 @@ static int lmode=MODE_NONE;
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
 	if(mode==MODE_PICK_BLOCK){
 		//glColor4f(1.0, 0.0, 0.0, 1.0f);
-        [self renderBlockAndBorder:RectFromButton(rbuild)];
+        renderBlockAndBorder(RectFromButton(rbuild));
 	//[tbuild drawInRect2: rbuild];
     }else {
-        [self renderBlockAndBorder:RectFromButton(rbuild)];
+        renderBlockAndBorder(RectFromButton(rbuild));
         
     }
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
@@ -1903,7 +1884,7 @@ static int lmode=MODE_NONE;
     if(inmenu||at1>0){
         
       
-        [self renderMenuScreen];
+        renderMenuScreen();
     }
 	
 	if(use_joystick){
@@ -1920,10 +1901,10 @@ static int lmode=MODE_NONE;
     
 	sb->render();
 	if(mode==MODE_PICK_BLOCK||at2>0){
-		[self renderBlockScreen];
+		renderBlockScreen();
 	}
     if(mode==MODE_PICK_COLOR||at3>0){
-        [self renderColorPickScreen];
+       renderColorPickScreen();
     }
     if(underLiquid){
         //NSLog(@"%f",flash);
@@ -2003,43 +1984,30 @@ static int lmode=MODE_NONE;
     Graphics::endHud();
     
 }
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	//NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	if(alertView==alertWarpHome){
-        switch (buttonIndex) {
-            case 0:
-            {
-                //[sbar setStatus:@"" :2];
-                break;
-            }
-            case 1:
-            {
-                Vector thome;		
-                Vector pp=[World getWorld].player->pos;
-                thome.x=pp.x-.5f;
-                thome.z=pp.z-.5f;
-                thome.y=pp.y-1; 
-                [World getWorld].terrain.home=thome;
-                [World getWorld].fm->saveWorld();
-                //[[World getWorld].terrain updateAllImportantChunks];
-                //NSLog(@"saving..");
-                Input::getInput()->clearAll();
-               
-                [[World getWorld].terrain startDynamics];
-                sb->setStatus(@"World Saved",3);
-                break;
-            }
-            case 2:
-            {
-                delayedtimer=2;
-                delayedaction=6;
-                
-                
-                sb->setStatus(@"Saving and warping home.." ,999);
-            }
-            default:
-                break;
-        }
-    }
+
+void Hud::asetHome(){
+    
+    Vector thome;
+    Vector pp=[World getWorld].player->pos;
+    thome.x=pp.x-.5f;
+    thome.z=pp.z-.5f;
+    thome.y=pp.y-1;
+    [World getWorld].terrain.home=thome;
+    [World getWorld].fm->saveWorld();
+    //[[World getWorld].terrain updateAllImportantChunks];
+    //NSLog(@"saving..");
+    Input::getInput()->clearAll();
+    
+    [[World getWorld].terrain startDynamics];
+    sb->setStatus(@"World Saved",3);
+
 }
-@end
+void Hud::awarpHome(){
+    delayedtimer=2;
+    delayedaction=6;
+    
+    
+    sb->setStatus(@"Saving and warping home.." ,999);
+}
+
+//@end

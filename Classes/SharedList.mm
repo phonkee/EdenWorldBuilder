@@ -201,7 +201,7 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
 	if([search_string length]==0||nosearch){
 		return;
 	}
-    NSString* list=[[World getWorld].menu.shareutil searchSharedWorlds:search_string];
+    NSString* list=[[World getWorld].menu->shareutil searchSharedWorlds:search_string];
     
     if([list length]==0){
         sbar->setStatus(@"No Results Found. ",4);
@@ -427,7 +427,7 @@ static float cursor_blink=0;
 
         }else{
              finished_list_dl=FALSE;
-           [[World getWorld].menu.shareutil getSharedWorldList];
+           [[World getWorld].menu->shareutil getSharedWorldList];
             if(is_loading==2){
                 sbar->setStatus(@"Report sent, thank you" ,5);
                 is_loading=-1;
@@ -441,7 +441,7 @@ static float cursor_blink=0;
 	}
     if( finished_list_dl){
         finished_list_dl=FALSE;
-        NSString* list=[World getWorld].menu.shareutil.listresult;
+        NSString* list=[World getWorld].menu->shareutil.listresult;
         
         if([list length]==0){
             sbar->setStatus(@"Connection error getting world list. ",2);
@@ -480,11 +480,11 @@ static float cursor_blink=0;
         [self setSortStatus];
         
         previewScreenshot=NULL;
-        if(![[World getWorld].menu loadShared:&file_list[loading_world-1]]){
+        if(![World getWorld].menu->loadShared(&file_list[loading_world-1])){
             
             sbar->setStatus(@"Error: map not found",4);
         }else{
-            [World getWorld].menu.showlistscreen=FALSE;
+            [World getWorld].menu->showlistscreen=FALSE;
             [self clearWorldList];
             sbar->clear();
             num_files=0;
@@ -549,9 +549,9 @@ static float cursor_blink=0;
             
 			
             if(inbox2(touches[i].mx,touches[i].my,&rect_cancel)){					
-				[World getWorld].menu.showlistscreen=FALSE;
+				[World getWorld].menu->showlistscreen=FALSE;
                 [self searchAndHide:TRUE];
-                [[World getWorld].menu.shareutil canceldl];
+                [[World getWorld].menu->shareutil canceldl];
                 if(previewScreenshot!=NULL){
                     [previewScreenshot release];
                     previewScreenshot=NULL;
@@ -590,7 +590,7 @@ static float cursor_blink=0;
                             loading_world=j+1;
                             sbar->setStatus(@"Downloading preview..." ,9999);
                             finished_preview_dl=false;
-                            [[World getWorld].menu.shareutil loadSharedPreview:file_list[loading_world-1].file_name];
+                            [[World getWorld].menu->shareutil loadSharedPreview:file_list[loading_world-1].file_name];
                             
                             
                         }else{
@@ -610,7 +610,7 @@ static float cursor_blink=0;
                 }
                 if(inbox2(touches[i].mx,touches[i].my,&rload_go)){
                     finished_dl=false;
-                    [[World getWorld].menu.shareutil loadShared:file_list[loading_world-1].file_name];
+                    [[World getWorld].menu->shareutil loadShared:file_list[loading_world-1].file_name];
                     
                     
                     
@@ -668,7 +668,7 @@ int rwc_count=0;
                 }else{
                     
                     sbar->setStatus(@"Report sent, thank you" ,5);
-                    [[World getWorld].menu.shareutil reportWorld:file_list[loading_world-1].file_name];
+                    [[World getWorld].menu->shareutil reportWorld:file_list[loading_world-1].file_name];
                     reportedWorlds[rwc_count]=[file_list[loading_world-1].file_name copy];
                     rwc_count++;
                     

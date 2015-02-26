@@ -697,7 +697,7 @@ void Graphics::drawCube(float x,float y,float z,int type,int buildsize){
 	Resources* res=[Resources getResources];
 	BOOL coloring=FALSE;
     if(type==TYPE_GRASS||type==TYPE_GRASS2||type==TYPE_GRASS3||type==TYPE_TNT||type==TYPE_BRICK||type==TYPE_VINE||type==TYPE_FIREWORK){
-        if(![World getWorld].hud.block_paintcolor)
+        if(![World getWorld].hud->block_paintcolor)
         coloring=TRUE;
     }
     int btype=[[World getWorld].terrain getLand:x:z:y];
@@ -793,8 +793,8 @@ void Graphics::drawCube(float x,float y,float z,int type,int buildsize){
         //}else{
     glPushMatrix();
     if(!coloring){
-        if([World getWorld].hud.block_paintcolor&&([World getWorld].hud.mode==MODE_BUILD)){
-            Vector vclr=colorTable[[World getWorld].hud.block_paintcolor];
+        if([World getWorld].hud->block_paintcolor&&([World getWorld].hud->mode==MODE_BUILD)){
+            Vector vclr=colorTable[[World getWorld].hud->block_paintcolor];
             
             if(type==TYPE_CLOUD)
                 glColor4f(vclr.x, vclr.y, vclr.z, 1.0f/6);

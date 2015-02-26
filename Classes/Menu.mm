@@ -13,27 +13,20 @@
 #import "World.h"
 #import "zpipe.h"
 #import "FileArchive.h"
+#import "Alert.h"
 
-@implementation Menu
-@synthesize loading,showsettings,sbar,is_sharing,
-			showlistscreen,selected_world,shared_list,shareutil;
+
+//@synthesize loading,showsettings,sbar,is_sharing,
+//			showlistscreen,selected_world,shared_list,shareutil;
 extern float SCREEN_WIDTH; 
 extern float SCREEN_HEIGHT;
 extern float P_ASPECT_RATIO;
 #define AUTO_LOAD false
 
-UIAlertView *alertDeleteConfirm;
-UIAlertView *alertWorldType;
+
 static float fade_out=0;
--(id)init{
-    alertDeleteConfirm= [[UIAlertView alloc] 
-                                             initWithTitle:@"Confirm Delete"
-                                             message:@""                                                                              delegate:self
-                                             cancelButtonTitle:@"Cancel"                                                                           otherButtonTitles:@"Delete", nil, nil];
-    alertWorldType= [[UIAlertView alloc] 
-                         initWithTitle:@"Pick world type"
-                         message:@"\n"                                                                              delegate:self
-                         cancelButtonTitle:nil                                                                          otherButtonTitles:@"Flat", @"Normal", nil];
+Menu::Menu(){
+   
     fade_out=0;
     settings=new SettingsMenu();
     menu_back=new Menu_background();
@@ -66,7 +59,7 @@ static float fade_out=0;
 	
 	world_list=NULL;
 	selected_world=NULL;
-	[self loadWorlds];
+	this->loadWorlds();
 	
 	WorldNode* node=world_list;
 	while(node!=NULL){
@@ -224,9 +217,9 @@ static float fade_out=0;
      makeDesert();
      }*/
     
-	return self;
+	
 }
--(void)activate{
+void Menu::activate(){
     fade_out=0;
 	sbar->setStatus(@"Choose world to load" ,99999);
 	if(selected_world!=NULL)
@@ -234,14 +227,14 @@ static float fade_out=0;
 	[share_menu activate];
 	[shared_list activate];
 }
--(void)deactivate{
+void Menu::deactivate(){
     sbar->clear();
     fnbar->clear();
     [share_menu deactivate];
 	[shared_list deactivate];
 	
 }
--(void)loadWorlds{
+void Menu::loadWorlds(){
 	world_list=NULL;
 	selected_world=NULL;
 	NSError* err;
@@ -323,12 +316,12 @@ static float fade_out=0;
 		new_world->file_name=[NSString stringWithFormat:@"%@.eden",genhash()];
 		[new_world->file_name retain];
 		[new_world->display_name retain];
-		[self addWorld:new_world];	
+        addWorld(new_world);
 		if(selected_world)
 		fnbar->setStatus(selected_world->display_name ,9999);
 	}
 }
--(void)addWorld:(WorldNode*)node{
+void Menu::addWorld(WorldNode* node){
 	if(world_list_end==NULL){
 		world_list_end=node;
 		world_list=node;
@@ -339,7 +332,7 @@ static float fade_out=0;
 		world_list_end=node;			
 	}
 }
--(void)removeWorld:(WorldNode*)node{
+void Menu::removeWorld(WorldNode* node){
 	if(node==NULL)return;
 	if(node==selected_world){
 		if(node->prev)
@@ -366,7 +359,7 @@ static float fade_out=0;
 }
 static const int usage_id=7;
 #define SPACE 75
--(void)update:(float)etime{
+void Menu::update(float etime){
 	menu_back->update(etime);
 	if(is_sharing){
 		[share_menu update:etime];
@@ -491,8 +484,8 @@ static const int usage_id=7;
                                     [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
                                     
                                 }*/
-                                 [alertDeleteConfirm setMessage:[NSString stringWithFormat:@"Are you sure you want to delete \"%@\"?",selected_world->display_name] ];
-                                [alertDeleteConfirm show];
+                                showAlertDeleteConfirm([NSString stringWithFormat:@"Are you sure you want to delete \"%@\"?",selected_world->display_name]);
+                                 
                                 
 
                                 delete_mode=FALSE;
@@ -546,7 +539,7 @@ static const int usage_id=7;
 				new_world->file_name=[NSString stringWithFormat:@"%@.eden",genhash()];
 				[new_world->file_name retain];
 				[new_world->display_name retain];
-				[self addWorld:new_world];
+				addWorld(new_world);
 				selected_world=new_world;				
 				sbar->setStatus([NSString stringWithFormat:@"%@ created",new_world->display_name]
 							   ,2);
@@ -589,57 +582,8 @@ static const int usage_id=7;
 	}*/
 	
 }
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	//NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	if(alertView==alertDeleteConfirm){
-	switch (buttonIndex) {
-		case 0:
-		{
-			sbar->setStatus(@"" ,2);
-			break;
-		}
-		case 1:
-		{
-			NSString* wname=selected_world->file_name;
-            [self removeWorld:selected_world];
-            
-            if([World getWorld].fm->deleteWorld(wname))
-                sbar->setStatus(@"World deleted" ,2);
-            else{
-                NSLog(@"delete failed\n");
-                sbar->setStatus(@"World deleted"  ,2);
-            }
 
-			break;
-		}
-		
-		default:
-			break;
-	}
-    }else if(alertView==alertWorldType){
-        switch (buttonIndex) {
-                NSLog(@"button idx %d",(int)buttonIndex);
-            case 0:
-            {
-                [World getWorld].fm->genflat=TRUE;
-                break;
-            }
-            case 1:
-            {
-                 [World getWorld].fm->genflat=FALSE;
-                break;
-            }
-                
-            default:
-                break;
-        }
-      
-        loading++;
-        
-        
-    }
-}
--(BOOL)loadShared:(SharedListNode*)sharedNode{
+BOOL Menu::loadShared(SharedListNode* sharedNode){
     NSString* rfile_name=[NSString stringWithFormat:@"%@/%@",[World getWorld].fm->documents,sharedNode->file_name];
 
     const char* fname=[rfile_name cStringUsingEncoding:NSUTF8StringEncoding];
@@ -687,7 +631,7 @@ static const int usage_id=7;
 	new_world->file_name=sharedNode->file_name;
 	[new_world->file_name retain];
 	[new_world->display_name retain];
-	[self addWorld:new_world];		
+	addWorld(new_world);
 	selected_world=new_world;
     fnbar->setStatus(selected_world->display_name ,9999);
     
@@ -701,11 +645,11 @@ static const int usage_id=7;
 	return TRUE;	
 	
 }
--(void)refreshfn{
+void Menu::refreshfn(){
  fnbar->setStatus(selected_world->display_name ,9999);
 	
 }
--(void)render{
+void Menu::render(){
     Graphics::prepareMenu();
 	
     
@@ -870,7 +814,9 @@ static const int usage_id=7;
                         [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
                         
                     }*/
-                    [alertWorldType show];
+                    
+                    showAlertWorldType();
+                    
                     loading++;
                 }
 				
@@ -917,4 +863,24 @@ static const int usage_id=7;
     Graphics::endMenu();
     
 }
-@end
+
+void Menu::a_genFlat(BOOL b){
+    [World getWorld].fm->genflat=b;
+    loading++;
+}
+void Menu::a_deleteCancel(){
+    sbar->setStatus(@"" ,2);
+}
+void Menu::a_deleteConfirm(){
+     NSString* wname=selected_world->file_name;
+     removeWorld(selected_world);
+     
+     if([World getWorld].fm->deleteWorld(wname))
+     sbar->setStatus(@"World deleted" ,2);
+     else{
+     NSLog(@"delete failed\n");
+     sbar->setStatus(@"World deleted"  ,2);
+     }
+    
+}
+

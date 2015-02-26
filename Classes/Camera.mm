@@ -187,8 +187,8 @@ void Camera::render(){
 		float lx=px+cosYaw;
 		float ly=py+sinPitch;
 		float lz=pz+sinYaw;*/
-		float n=0.5f;
-		gluLookAt(px+n*cosYaw-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE, py+0.5f, pz+n*sinYaw-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE, px-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE, py, pz-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);
+		float n=4.0f;
+		gluLookAt(px+n*cosYaw-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE, py-6.0f, pz+n*sinYaw-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE, px-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE, py, pz-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);
 	}else{
        //gluLookAt(px, py, pz, look.x, look.y, look.z, 0, 1, 0);
         

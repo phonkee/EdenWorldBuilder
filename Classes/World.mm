@@ -13,7 +13,7 @@
 #import "Globals.h"
 #import "TerrainGen2.h"
 
-
+#import "Alert.h"
 
 static	World* singleton;
 @implementation World
@@ -160,7 +160,7 @@ void RLETEST(){
         double start=CFAbsoluteTimeGetCurrent();
         printg("Terrain gen started\n");
         fm=new FileManager();
-        [Hud genColorTable];
+        Hud::genColorTable();
         fm->loadGenFromDisk();
         tg2_init();
         
@@ -175,20 +175,23 @@ void RLETEST(){
        
         return self;
     }
+    
     tc_initGeometry();
     game_mode=GAME_MODE_MENU;
     
     bestGraphics=TRUE;
     Graphics::initGraphics();
     
+    alert_init();
+    
     terrain=[[Terrain alloc] init];	
     cam=new Camera();
     res=[Resources getResources];
     player=new Player(self);
-    hud=[[Hud alloc] init];
+    hud=new Hud();
     fm=new FileManager();
     effects=new SpecialEffects();
-    menu=[[Menu alloc] init];
+    menu=new Menu();
    
           
     [NSThread detachNewThreadSelector:@selector(loadWorldThread2:) toTarget:self withObject:self];
@@ -343,13 +346,13 @@ extern int chunk_load_count;
         doneLoading=1;
         [[Resources getResources] stopMenuTune];
         if(LOW_MEM_DEVICE){
-            [menu deactivate];
+            menu->deactivate();
             
             [[Resources getResources] unloadMenuTextures];
             [[World getWorld].terrain allocateMemory];
             [terrain loadTerrain:name:TRUE];
             doneLoading=2;
-            [World getWorld].hud.fade_out=1;
+            [World getWorld].hud->fade_out=1;
 
 
         }else{
@@ -364,12 +367,12 @@ extern int chunk_load_count;
         
         if(pct>100)pct=100;
         if(fm->convertingWorld){
-            menu.sbar->setStatus(@"Converting World...",100);
+            menu->sbar->setStatus(@"Converting World...",100);
         }else{
             //if(pct==100){
                // [menu.sbar setStatus:[NSString stringWithFormat:@"Reticulating Splines... "]:20];
            // }else{
-                menu.sbar->setStatus([NSString stringWithFormat:@"Loading World... %d%%",pct],20);
+                menu->sbar->setStatus([NSString stringWithFormat:@"Loading World... %d%%",pct],20);
            // }
         }
         
@@ -379,7 +382,7 @@ extern int chunk_load_count;
          //   printg("done loading !\n");
             
             if(!LOW_MEM_DEVICE){
-            [menu deactivate];
+            menu->deactivate();
         
             [[Resources getResources] unloadMenuTextures];
             }
@@ -393,8 +396,8 @@ extern int chunk_load_count;
             player->reset();
             game_mode=GAME_MODE_WAIT;
             target_game_mode=GAME_MODE_PLAY;
-            menu.loading=0;
-            menu.sbar->clear();
+            menu->loading=0;
+            menu->sbar->clear();
             
             
             
@@ -427,7 +430,7 @@ extern int chunk_load_count;
        
         SCALE_WIDTH=2;
         SCALE_HEIGHT=2;
-        [menu activate];
+        menu->activate();
         IS_IPAD=FALSE;
         IS_RETINA=FALSE;
         SCALE_WIDTH=1;
@@ -435,7 +438,7 @@ extern int chunk_load_count;
         
     }else{
        // printg("menu activated\n");
-        [menu activate];
+        menu->activate();
    	}
 
 	[[Resources getResources] playMenuTune];
@@ -456,12 +459,12 @@ extern int chunk_load_count;
     delete player;
     delete cam;
     [res release];
-	[hud release];
-	[menu release];
+    delete hud;
+    delete menu;
     delete fm;
     delete effects;
 	
-	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+	//[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 	[super dealloc];
 }
 - (BOOL)update: (float)etime{
@@ -477,7 +480,7 @@ extern int chunk_load_count;
     }
     realtime=etime;
    // NSLog(@"Hi");
-	if([World getWorld].menu.is_sharing!=1){
+	if([World getWorld].menu->is_sharing!=1){
 	/*if([UIDevice currentDevice].orientation==UIDeviceOrientationLandscapeRight){
 		//[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
         if(FLIPPED==FALSE)
@@ -499,14 +502,14 @@ extern int chunk_load_count;
 	
 	[[Resources getResources] update:etime];
 	if(game_mode==GAME_MODE_MENU){
-		[menu update:etime];
+		menu->update(etime);
 	}else if(game_mode==GAME_MODE_PLAY){
 		
 		if(etime>1.0f/20.0f)etime=1.0f/20.0f;
         cam->update(etime);
 		
 		[terrain update:etime];		
-		[hud update:etime];
+        hud->update(etime);
         if(game_mode==GAME_MODE_WAIT){
             return FALSE;
         }
@@ -563,7 +566,7 @@ extern int chunk_load_count;
     }
 	if(game_mode==GAME_MODE_MENU){
        // [[World getWorld] loadWorld:menu.selected_world->file_name];	
-		[menu render];
+		menu->render();
 	}else if(game_mode==GAME_MODE_PLAY){
         Graphics::prepareScene();
 		
@@ -591,7 +594,7 @@ extern int chunk_load_count;
         player->render();
 				
          glPopMatrix();
-		[hud render]; //render hud last
+		hud->render(); //render hud last
 		
 	}
 	

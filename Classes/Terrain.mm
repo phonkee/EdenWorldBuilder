@@ -336,7 +336,7 @@ void updateLightingBegin(){
     double start_time=-[start timeIntervalSinceNow];
 	if(loaded)[self unloadTerrain:FALSE];
    
-    [World getWorld].hud.goldencubes=10;
+    [World getWorld].hud->goldencubes=10;
 	counter=0;
 	//skycolor=MakeVector(-1,-1,-1);
     
@@ -377,7 +377,7 @@ void updateLightingBegin(){
     loaded_new_terrain=TRUE;
     
 	loaded=1;
-    [World getWorld].hud.justLoaded=1;
+    [World getWorld].hud->justLoaded=1;
     
 	//NSLog(@"dict entries: %d",hashmap_length(chunkMap));
 	//NSLog(@"%f",[NSThread threadPriority]);
@@ -972,10 +972,10 @@ int getRampType(int x,int z,int y, int t){
     
 }*/
 - (void)buildBlock:(int)x :(int)z :(int)y{
-    if([World getWorld].hud.blocktype==TYPE_GOLDEN_CUBE){
-        if([World getWorld].hud.goldencubes<=0)return;
-         printg("goldencubes %d paint color: %d\n",[World getWorld].hud.goldencubes, [World getWorld].hud.block_paintcolor);
-        [World getWorld].hud.goldencubes--;
+    if([World getWorld].hud->blocktype==TYPE_GOLDEN_CUBE){
+        if([World getWorld].hud->goldencubes<=0)return;
+         printg("goldencubes %d paint color: %d\n",[World getWorld].hud->goldencubes, [World getWorld].hud->block_paintcolor);
+        [World getWorld].hud->goldencubes--;
         [[Resources getResources] playSound:S_TREASURE_PLACE];
        
     }
@@ -984,7 +984,7 @@ int getRampType(int x,int z,int y, int t){
     if((blockinfo[cur]&IS_LIQUID&&getLevel(cur)<4)){
                liquids->removeSource(x,z,y,cur);
     }
-	int type=[World getWorld].hud.blocktype;
+	int type=[World getWorld].hud->blocktype;
     if(type==TYPE_WATER||type==TYPE_LAVA)
         liquids->addSource(x,z,y);
     
@@ -1006,7 +1006,7 @@ int getRampType(int x,int z,int y, int t){
         }else return;
         
         [self updateChunks:x :z :boty+1 :TYPE_DOOR_TOP];
-        [self setColor:x :z :boty+1 : [World getWorld].hud.block_paintcolor ];
+        [self setColor:x :z :boty+1 : [World getWorld].hud->block_paintcolor ];
         
         int yaw=[World getWorld].player->yaw;
         int r=0;
@@ -1023,7 +1023,7 @@ int getRampType(int x,int z,int y, int t){
         }
 
         [self updateChunks:x :z :boty :TYPE_DOOR1+r];
-        [self setColor:x :z :boty : [World getWorld].hud.block_paintcolor ];
+        [self setColor:x :z :boty : [World getWorld].hud->block_paintcolor ];
         
         return;
     }else if(type==TYPE_PORTAL_TOP){
@@ -1035,7 +1035,7 @@ int getRampType(int x,int z,int y, int t){
         }else return;
         
         [self updateChunks:x :z :boty+1 :TYPE_PORTAL_TOP];
-        [self setColor:x :z :boty+1 : [World getWorld].hud.block_paintcolor ];
+        [self setColor:x :z :boty+1 : [World getWorld].hud->block_paintcolor ];
         
         int yaw=[World getWorld].player->yaw;
         int r=0;
@@ -1052,28 +1052,28 @@ int getRampType(int x,int z,int y, int t){
         }
         
         [self updateChunks:x :z :boty :TYPE_PORTAL1+r];
-        [self setColor:x :z :boty : [World getWorld].hud.block_paintcolor ];
+        [self setColor:x :z :boty : [World getWorld].hud->block_paintcolor ];
         
         return; 
     }else if(type==TYPE_LIGHTBOX){
         void addlight(int xx,int zz,int yy,float brightness,Vector color);
        extern Vector colorTable[256];
-        addlight(x,z,y,1.0f,colorTable[[World getWorld].hud.block_paintcolor]);
+        addlight(x,z,y,1.0f,colorTable[[World getWorld].hud->block_paintcolor]);
         
         [self updateChunks:x :z :y :type];
         [self refreshChunksInRadius:x:z:y:LIGHT_RADIUS];
-        [self setColor:x :z :y : [World getWorld].hud.block_paintcolor ];
+        [self setColor:x :z :y : [World getWorld].hud->block_paintcolor ];
 
     }else{
         [self updateChunks:x :z :y :type];
-        [self setColor:x :z :y : [World getWorld].hud.block_paintcolor ];
+        [self setColor:x :z :y : [World getWorld].hud->block_paintcolor ];
     }
     
-    if([World getWorld].hud.blocktype==TYPE_GOLDEN_CUBE){
-        if([World getWorld].hud.goldencubes<=0){
-            [World getWorld].hud.goldencubes=0;
-            [World getWorld].hud.blocktype=TYPE_BRICK;
-            [World getWorld].hud.block_paintcolor=0;
+    if([World getWorld].hud->blocktype==TYPE_GOLDEN_CUBE){
+        if([World getWorld].hud->goldencubes<=0){
+            [World getWorld].hud->goldencubes=0;
+            [World getWorld].hud->blocktype=TYPE_BRICK;
+            [World getWorld].hud->block_paintcolor=0;
         }
     }
 }
@@ -1708,7 +1708,7 @@ extern float P_ZFAR;
 	if(player->pos.x/BLOCK_SIZE-radius<0||player->pos.x/BLOCK_SIZE+radius>T_SIZE||
 	   player->pos.z/BLOCK_SIZE-radius<0||player->pos.z/BLOCK_SIZE+radius>T_SIZE){
 		do_reload=1;
-		[World getWorld].hud.sb->setStatus(@"Loading ",999);
+		[World getWorld].hud->sb->setStatus(@"Loading ",999);
        
             
 		
@@ -1728,7 +1728,7 @@ float last_etime;
         
         if(pct>100)pct=100;
         
-            [World getWorld].hud.sb->setStatus([NSString stringWithFormat:@"Loading World  %d%%",pct],20);
+            [World getWorld].hud->sb->setStatus([NSString stringWithFormat:@"Loading World  %d%%",pct],20);
         
         
         return FALSE;
@@ -1822,7 +1822,7 @@ float last_etime;
                    }
     }
    if(do_reload==3){
-       [World getWorld].hud.sb->clear();
+       [World getWorld].hud->sb->clear();
         do_reload=0;
     }
 	else if(do_reload==2){
@@ -1940,7 +1940,7 @@ static int hit_load_counter=0;
         if(count>140) {
             hit_load_counter++;
             if(hit_load_counter==1){
-                [World getWorld].hud.sb->setStatus(@"Loading",999);
+                [World getWorld].hud->sb->setStatus(@"Loading",999);
                 if(count>300){
                     hit_load_counter++;
                 }
@@ -1948,7 +1948,7 @@ static int hit_load_counter=0;
             }
             if(hit_load_counter>=2){
                 hit_load_counter=0;
-                [World getWorld].hud.sb->clear();
+                [World getWorld].hud->sb->clear();
                 [World getWorld].fm->saveWorld();
                 
                 [World getWorld].fm->chunkOffsetX=m_chunkOffsetX;
@@ -2209,10 +2209,10 @@ void renderTree(TreeNode* node,int state){
             continue;
         }
         int istate=ViewTestAABB(chunk->rbounds,state);
-        if(node==&troot){
+       /* if(node==&troot){
             istate=VT_INSIDE;
         
-        }
+        }*/
         if(istate&VT_OUTSIDE) continue;
         chunk->in_view=TRUE;
         

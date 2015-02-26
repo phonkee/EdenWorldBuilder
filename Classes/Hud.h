@@ -29,7 +29,8 @@
 
 #define NUM_DISPLAY_BLOCKS 35
 #define NUM_COLORS (6*9)
-@interface Hud : NSObject <UIAlertViewDelegate> {
+class Hud {
+public:
 	int fps;
 	int fpsc;
 	int mode;
@@ -38,6 +39,7 @@
     BOOL underLiquid;
     BOOL inmenu;
     BOOL heartbeat;
+    BOOL m_jump;
     int justLoaded;
 	int blocktype;
     int block_paintcolor;
@@ -72,9 +74,39 @@
 	//Texture2D* colorIcons[NUM_COLORS];
 	float ttime;
 	int use_joystick;
-}
+    
+    Hud();
+    BOOL handlePickBlock(int x,int y);
+    BOOL handlePickColor(int x,int y);
+    BOOL handlePickMenu(int x,int y);
+    void worldLoaded();
+    BOOL update(float etime);
+    void render();
+    void asetHome();
+    void awarpHome();
+    
+    static void genColorTable();
+    
+private:
+    void renderColorPickScreen();
+    void renderBlockAndBorder(CGRect recto);
+    void renderMenuScreen();
+    void renderBlockScreen();
+};
 
-@property(nonatomic,readonly) int fps;
+
+/*
+ - (BOOL)handlePickBlock:(int)x:(int)y;
+ - (BOOL)handlePickColor:(int)x:(int)y;
+ - (BOOL)handlePickMenu:(int)x:(int)y;
+ - (void)worldLoaded;
+ - (BOOL)update:(float)etime;
+ - (void)render;
+ - (void)asetHome;
+ - (void)awarpHome;
+ +(void)genColorTable;
+ 
+ @property(nonatomic,readonly) int fps;
 @property(nonatomic,assign) BOOL m_jump,m_left,m_right,m_fwd,m_back,m_joy,underLiquid,heartbeat;
 @property(nonatomic,assign) int mode,build_size;
 @property(nonatomic,assign) int leftymode;
@@ -87,12 +119,6 @@
 @property(nonatomic,readonly) statusbar* sb;
 @property(nonatomic,assign) int use_joystick,justLoaded;
 @property(nonatomic,assign) BOOL take_screenshot,inmenu;
-@property(nonatomic,assign) int holding_creature,goldencubes;
-- (BOOL)handlePickBlock:(int)x:(int)y;
-- (BOOL)handlePickColor:(int)x:(int)y;
-- (BOOL)handlePickMenu:(int)x:(int)y;
-- (void)worldLoaded;
-- (BOOL)update:(float)etime;
-- (void)render;
-+(void)genColorTable;
-@end
+@property(nonatomic,assign) int holding_creature,goldencubes;*/
+
+

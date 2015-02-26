@@ -819,7 +819,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
                 point.x=rx;
 				point.y=ry;
 				point.z=rz;
-                if([World getWorld].hud.build_size==0&&!hitCustom){
+                if([World getWorld].hud->build_size==0&&!hitCustom){
                   //  mintersect.x=mintersect.x;
                   //   mintersect.z=mintersect.z;
                    //  mintersect.y=mintersect.y;
@@ -832,7 +832,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
                     
                     
                 }
-				if([World getWorld].hud.build_size==2){
+				if([World getWorld].hud->build_size==2){
                     float rfx=fpoint.x+fx[mini];
                     float rfy=fpoint.y+fy[mini];
                     float rfz=fpoint.z+fz[mini];
@@ -851,7 +851,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
 		}
 		
 	}
-	if([World getWorld].hud.holding_creature&&[World getWorld].hud.blocktype==TYPE_CLOUD&&mode==FC_PLACE){
+	if([World getWorld].hud->holding_creature&&[World getWorld].hud->blocktype==TYPE_CLOUD&&mode==FC_PLACE){
         point.x=wp1.x+dir.x*30/8.0f;
         point.y=wp1.y+dir.y*30/8.0f;
         point.z=wp1.z+dir.z*30/8.0f;

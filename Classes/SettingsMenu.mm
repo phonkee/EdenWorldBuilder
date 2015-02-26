@@ -140,7 +140,7 @@ void SettingsMenu::update(float etime){
 			
 			if(inbox2(touches[i].mx,touches[i].my,&rect_save)){	
                 this->save();
-				[World getWorld].menu.showsettings=FALSE;
+				[World getWorld].menu->showsettings=FALSE;
 			}
 			for(int j=0;j<NUM_PROP;j++){
 				
@@ -186,7 +186,7 @@ void SettingsMenu::load(){
    [World getWorld].player->autojump_option=properties[S_AUTOJUMP].value;
     [World getWorld].player->health_option=properties[S_HEALTH].value;
 	[World getWorld].player->invertcam=FALSE;
-	[World getWorld].hud.use_joystick=TRUE;
+	[World getWorld].hud->use_joystick=TRUE;
     [World getWorld].terrain.tgen->genCaves=FALSE;
     [World getWorld].bestGraphics=properties[S_AUTOJUMP].value;
     CREATURES_ON=properties[S_CREATURES].value;
