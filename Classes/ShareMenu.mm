@@ -233,11 +233,11 @@ static float cursor_blink=0;
 }
 -(void)render{
 	glColor4f(1.0f, 0.0f, 0.0f,1.0f);
-	[Resources::getResources()->getMenuTex(MENU_CANCEL) drawButton:rect_cancel];
+	[Resources::getResources->getMenuTex(MENU_CANCEL) drawButton:rect_cancel];
 	glColor4f(0.0f, 1.0f, 0.0f,1.0f);
-	[Resources::getResources()->getMenuTex(MENU_SEND) drawButton:rect_submit];
+	[Resources::getResources->getMenuTex(MENU_SEND) drawButton:rect_submit];
 	glColor4f(1.0f, 1.0f, 1.0f,1.0f);    
-	[Resources::getResources()->getMenuTex(MENU_TEXT_BOX) drawInRect:input_background];
+	[Resources::getResources->getMenuTex(MENU_TEXT_BOX) drawInRect:input_background];
     
 	
     

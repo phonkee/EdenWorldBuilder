@@ -12,23 +12,17 @@
 #import "CDAudioManager.h"
 #import "SimpleAudioEngine_objc.h"
 #import "World.h"
-static Resources* singleton=NULL;
+ 
 
 
-Resources* Resources::getResources(){
-    if(!singleton){
-        singleton=new Resources();
-        
-    }
-    return singleton;
-}
+
 
 
 
 
 
 #define NUM_SONGS 6
-
+Resources* Resources::getResources=NULL;
 static NSString* songFiles[NUM_SONGS]={
     @"Eden_1.mp3",
     @"Eden_2.mp3",

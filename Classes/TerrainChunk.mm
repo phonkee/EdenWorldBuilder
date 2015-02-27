@@ -527,7 +527,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
                         objects[objidx].pos.x=x+pbounds[0];
                         objects[objidx].pos.y=y-1+pbounds[1];
                         objects[objidx].pos.z=z+pbounds[2];
-                        [World getWorld].terrain.portals->addPortal(x+pbounds[0],y+pbounds[1],z+pbounds[2],objects[objidx].dir,  objects[objidx].color);
+                        [World getWorld].terrain->portals->addPortal(x+pbounds[0],y+pbounds[1],z+pbounds[2],objects[objidx].dir,  objects[objidx].color);
                         
                         objidx++;
                     }
@@ -682,10 +682,10 @@ int TerrainChunk::rebuild2(){   //here be dragons//
     
     float skylight=1.0f;
     float light[3]={1.0f,1.0f,1.0f};
-    if(!LOW_MEM_DEVICE&&v_equals([World getWorld].terrain.final_skycolor,colorTable[54]))
+    if(!LOW_MEM_DEVICE&&v_equals([World getWorld].terrain->final_skycolor,colorTable[54]))
         skylight=.35f;
     
-    Resources* res=Resources::getResources();
+    Resources* res=Resources::getResources;
 	for(int idx=0;idx<CHUNK_SIZE3;idx++){
         if(!face_visibility[idx])continue;
         
@@ -1670,11 +1670,11 @@ void TerrainChunk::setLand(int x,int z,int y,int type){
    
 	if(x<0||x>=CHUNK_SIZE||y<0||y>=CHUNK_SIZE||z<0||z>=CHUNK_SIZE){
 		//NSLog(@"setting out of bounds chunks");
-        [ter setLand:x+pbounds[0] :z+pbounds[2] :y+pbounds[1] :type :TRUE];
+        ter->setLand(x+pbounds[0] ,z+pbounds[2] ,y+pbounds[1] ,type ,TRUE);
 	}else{		
         
 		pblocks[x*CHUNK_SIZE*CHUNK_SIZE+z*CHUNK_SIZE+y]=type;
-		[ter setLand:x+pbounds[0] :z+pbounds[2] :y+pbounds[1] :type :FALSE];
+		ter->setLand(x+pbounds[0] ,z+pbounds[2] ,y+pbounds[1] ,type ,FALSE);
 	}
 
 	

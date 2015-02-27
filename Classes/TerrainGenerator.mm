@@ -92,7 +92,7 @@ void TerrainGenerator::generateEmptyColumn(int cx,int cz){
 		bounds[4]=(cy+1)*CHUNK_SIZE;
 		bounds[5]=(ocz+1)*CHUNK_SIZE;
         TerrainChunk* chunk;
-        TerrainChunk* old=ter.chunkTable[threeToOne(ocx,cy,ocz)];  //crash count: 1
+        TerrainChunk* old=ter->chunkTable[threeToOne(ocx,cy,ocz)];  //crash count: 1
         if(old){chunk=old;
             chunk->resetForReuse();
             chunk->setBounds(bounds);
@@ -133,7 +133,7 @@ void TerrainGenerator::generateEmptyColumn(int cx,int cz){
          }
          [ter readdChunk:chunk:ocx:cy:ocz];
          }else*/
-        [ter addChunk:column[cy]:ocx:cy:ocz:TRUE];
+        ter->addChunk(column[cy],ocx,cy,ocz,TRUE);
     }
 }
 void TerrainGenerator::generateColumn(int cx,int cz,BOOL bgthread){
@@ -152,7 +152,7 @@ void TerrainGenerator::generateColumn(int cx,int cz,BOOL bgthread){
 		bounds[4]=(cy+1)*CHUNK_SIZE;
 		bounds[5]=(ocz+1)*CHUNK_SIZE;
         TerrainChunk* chunk;
-        TerrainChunk* old=ter.chunkTable[threeToOne(ocx,cy,ocz)];  //crash count: 1
+        TerrainChunk* old=ter->chunkTable[threeToOne(ocx,cy,ocz)];  //crash count: 1
         if(old){chunk=old;
            chunk->resetForReuse();
             chunk->setBounds(bounds);
@@ -202,7 +202,7 @@ void TerrainGenerator::generateColumn(int cx,int cz,BOOL bgthread){
         for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
             
             
-            [ter addChunk:column[cy]:ocx:cy:ocz:TRUE];
+            ter->addChunk(column[cy],ocx,cy,ocz,TRUE);
         }
         return;
         
@@ -339,7 +339,7 @@ void TerrainGenerator::generateColumn(int cx,int cz,BOOL bgthread){
              }
              [ter readdChunk:chunk:ocx:cy:ocz];	 
              }else*/
-            [ter addChunk:column[cy]:ocx:cy:ocz:TRUE];		
+            ter->addChunk(column[cy],ocx,cy,ocz,TRUE);
         }
       //  }
         return;
@@ -521,7 +521,7 @@ void TerrainGenerator::generateColumn(int cx,int cz,BOOL bgthread){
     for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
         
         
-              [ter addChunk:column[cy]:ocx:cy:ocz:TRUE];		
+              ter->addChunk(column[cy],ocx,cy,ocz,TRUE);
     }
 
 	

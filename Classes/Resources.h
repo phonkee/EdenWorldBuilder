@@ -14,11 +14,12 @@
 #define MAX_SOURCES 10
 class Resources {
 public:
+    static Resources *getResources;
     
 	Texture2D* atlas;
     Texture2D* atlas2;
     Texture2D* csbkg;
-
+    
 	NSMutableArray* textures;
 	NSMutableArray* menutextures;
 	Sound* sound;
@@ -53,7 +54,7 @@ public:
     Texture2D* getPaintTex(int color);
     Texture2D* getPaintedTex(int type,int color);
     void voSound(int action,int type,Vector location);
-    static Resources* getResources();
+    //static Resources* getResources();
     
 private:
     void unloadGameTextures();

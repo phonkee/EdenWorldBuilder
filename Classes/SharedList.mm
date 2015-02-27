@@ -380,7 +380,7 @@ static const int usage_id=42;
 			}file_list[idx].blockrect.origin.y=SCREEN_HEIGHT-
 					((idx%page_size)*(file_list[idx].namerect.size.height+3)+116);
 			
-			file_list[idx].blocktex=Resources::getResources()->getMenuTex(MENU_BLOCK_UNSELECTED);
+			file_list[idx].blocktex=Resources::getResources->getMenuTex(MENU_BLOCK_UNSELECTED);
 			
 			idx++;
 		}
@@ -691,10 +691,10 @@ int rwc_count=0;
 	
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
 	
-	[Resources::getResources()->getMenuTex(MENU_SHARED_HEADER) drawText:rect_header];
+	[Resources::getResources->getMenuTex(MENU_SHARED_HEADER) drawText:rect_header];
 	
 	
-	[Resources::getResources()->getMenuTex(MENU_BACK) drawButton:rect_cancel];
+	[Resources::getResources->getMenuTex(MENU_BACK) drawButton:rect_cancel];
 	
 	
 	
@@ -704,9 +704,9 @@ int rwc_count=0;
 	}
     if(previewScreenshot==NULL){
         if(IS_IPAD)
-        [Resources::getResources()->getMenuTex(MENU_ARROW_UP) drawButton:rect_arrow_up];
+        [Resources::getResources->getMenuTex(MENU_ARROW_UP) drawButton:rect_arrow_up];
         else
-        [Resources::getResources()->getMenuTex(MENU_ARROW_UP) drawButton2:rect_arrow_up];
+        [Resources::getResources->getMenuTex(MENU_ARROW_UP) drawButton2:rect_arrow_up];
     }
 	glColor4f(1.0, 1.0, 1.0, 0.5f);	
 	if(page_size*cur_page+page_size<num_files){		
@@ -715,9 +715,9 @@ int rwc_count=0;
      if(previewScreenshot==NULL)
          {
              if(IS_IPAD)
-                 [Resources::getResources()->getMenuTex(MENU_ARROW_DOWN) drawButton:rect_arrow_down];
+                 [Resources::getResources->getMenuTex(MENU_ARROW_DOWN) drawButton:rect_arrow_down];
              else
-                 [Resources::getResources()->getMenuTex(MENU_ARROW_DOWN) drawButton2:rect_arrow_down];
+                 [Resources::getResources->getMenuTex(MENU_ARROW_DOWN) drawButton2:rect_arrow_down];
          }
 	
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
@@ -733,9 +733,9 @@ int rwc_count=0;
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	 if(previewScreenshot==NULL)
-	[Resources::getResources()->getMenuTex(MENU_ARROW_LEFT) drawInRect:sort_left];
+	[Resources::getResources->getMenuTex(MENU_ARROW_LEFT) drawInRect:sort_left];
      if(previewScreenshot==NULL)
-	[Resources::getResources()->getMenuTex(MENU_ARROW_RIGHT) drawInRect:sort_right];
+	[Resources::getResources->getMenuTex(MENU_ARROW_RIGHT) drawInRect:sort_right];
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // if(previewScreenshot==NULL)
@@ -816,10 +816,10 @@ int rwc_count=0;
               }
               glColor4f(1.0, 1.0, 1.0, alpha);		
               if(list_selection==i)
-                  [Resources::getResources()->getMenuTex(MENU_SHARED_BLOCK_SELECTED)
+                  [Resources::getResources->getMenuTex(MENU_SHARED_BLOCK_SELECTED)
                    drawButton:file_list[i].blockrect];
               else
-                  [Resources::getResources()->getMenuTex(MENU_SHARED_BLOCK_UNSELECTED)
+                  [Resources::getResources->getMenuTex(MENU_SHARED_BLOCK_UNSELECTED)
                    drawButton:file_list[i].blockrect];
               glColor4f(0.0, 0.0, 0.0, alpha);
               
@@ -871,22 +871,22 @@ int rwc_count=0;
     if(cur_sort==SORT_NAME){        
         
         glColor4f(1.0f, 1.0f, 1.0f,1.0f);        
-        [Resources::getResources()->getMenuTex(MENU_TEXT_BOX) drawInRect:input_background];
+        [Resources::getResources->getMenuTex(MENU_TEXT_BOX) drawInRect:input_background];
         glColor4f(0.0f, 0.0f, 0.0f,1.0f);        
         name_bar->renderPlain();
     }
     
     if(previewScreenshot!=NULL){
         CGRect border=CGRectMake(preview_box.origin.x-2,preview_box.origin.y-7,preview_box.size.width+8,preview_box.size.height+8);
-        [Resources::getResources()->getTex(ICO_COLOR_SELECT_BACKGROUND) drawInRect:border];
+        [Resources::getResources->getTex(ICO_COLOR_SELECT_BACKGROUND) drawInRect:border];
         [previewScreenshot drawInRect:preview_box];
         glColor4f(1.0, 0.0, 0.0, 1.0f);
-        [Resources::getResources()->getMenuTex(MENU_BACK_TEXT) drawButton:rload_cancel];
+        [Resources::getResources->getMenuTex(MENU_BACK_TEXT) drawButton:rload_cancel];
         glColor4f(0.0, 1.0, 0.0, 1.0f);
-        [Resources::getResources()->getMenuTex(MENU_LOAD_TEXT) drawButton:rload_go];
+        [Resources::getResources->getMenuTex(MENU_LOAD_TEXT) drawButton:rload_go];
         
         glColor4f(1.0,1.0,1.0,1.0);
-        [Resources::getResources()->getMenuTex(MENU_FLAG) drawButton:rect_flag];
+        [Resources::getResources->getMenuTex(MENU_FLAG) drawButton:rect_flag];
     }
     glColor4f(1.0, 1.0, 1.0, 1.0f);
     if(cur_sort==SORT_NAME&&previewScreenshot==NULL){

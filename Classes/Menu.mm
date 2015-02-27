@@ -67,7 +67,7 @@ Menu::Menu(){
 		node->rect.size.height=70;
 		node->rect.origin.x=(SCREEN_WIDTH/2);
 		node->rect.origin.y=130;
-		node->tex=Resources::getResources()->getMenuTex(MENU_BLOCK_UNSELECTED);
+		node->tex=Resources::getResources->getMenuTex(MENU_BLOCK_UNSELECTED);
 		node->anim=node->rect;
 		node=node->next;
 	}
@@ -392,7 +392,7 @@ void Menu::update(float etime){
 		node->rect.size.height=0;
 		//node->rect.origin.x=-1;
 		//node->rect.origin.y=-1;
-		node->tex=Resources::getResources()->getMenuTex(MENU_BLOCK_UNSELECTED);
+		node->tex=Resources::getResources->getMenuTex(MENU_BLOCK_UNSELECTED);
 		node=node->next;
 	}
 	activeRightArrow=FALSE;
@@ -402,7 +402,7 @@ void Menu::update(float etime){
 		selected_world->rect.size.height=85;
 		selected_world->rect.origin.x=(SCREEN_WIDTH/2-selected_world->rect.size.width/2);
 		selected_world->rect.origin.y=130;
-		selected_world->tex=Resources::getResources()->getMenuTex(MENU_BLOCK_SELECTED);
+		selected_world->tex=Resources::getResources->getMenuTex(MENU_BLOCK_SELECTED);
 		if(selected_world->prev!=NULL){
 			activeLeftArrow=TRUE;
 			selected_world->prev->rect.size.width=85;
@@ -685,9 +685,9 @@ void Menu::render(){
 	//[Graphics drawRect:20:20:SCREEN_WIDTH-20:SCREEN_HEIGHT-20];
 	
     if(IS_IPAD&&!IS_RETINA)
-        [Resources::getResources()->getMenuTex(MENU_LOGO) drawText:rect_name];
+        [Resources::getResources->getMenuTex(MENU_LOGO) drawText:rect_name];
     else
-	[Resources::getResources()->getMenuTex(MENU_LOGO) drawInRect2:rect_name];
+	[Resources::getResources->getMenuTex(MENU_LOGO) drawInRect2:rect_name];
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
 	WorldNode* node=world_list;
 	
@@ -730,36 +730,36 @@ void Menu::render(){
             if(node->anim.size.width<nn){
                
                 if(node==selected_world)
-                    [Resources::getResources()->getMenuTex(MENU_BLOCK_SELECTED) drawButton2:node->anim];
+                    [Resources::getResources->getMenuTex(MENU_BLOCK_SELECTED) drawButton2:node->anim];
                 else {
-                    [Resources::getResources()->getMenuTex(MENU_BLOCK_UNSELECTED) drawButton2:node->anim];
+                    [Resources::getResources->getMenuTex(MENU_BLOCK_UNSELECTED) drawButton2:node->anim];
                 }
                
                 
             }else{
 			if(node==selected_world)
-			[Resources::getResources()->getMenuTex(MENU_BLOCK_SELECTED) drawButton:node->anim];
+			[Resources::getResources->getMenuTex(MENU_BLOCK_SELECTED) drawButton:node->anim];
 			else {
-				[Resources::getResources()->getMenuTex(MENU_BLOCK_UNSELECTED) drawButton:node->anim];
+				[Resources::getResources->getMenuTex(MENU_BLOCK_UNSELECTED) drawButton:node->anim];
 			}
             }
 
 		}
 		node=node->next;
 	}
-	[Resources::getResources()->getMenuTex(MENU_OPTIONS) drawButton:rect_options];
-	[Resources::getResources()->getMenuTex(MENU_DELETE_WORLD) drawButton:rect_delete];
-	[Resources::getResources()->getMenuTex(MENU_CREATE_WORLD) drawButton:rect_create];
-	[Resources::getResources()->getMenuTex(MENU_SHARE_WORLD) drawButton:rect_share];
-	[Resources::getResources()->getMenuTex(MENU_LOAD_WORLD) drawButton:rect_loadshared];
+	[Resources::getResources->getMenuTex(MENU_OPTIONS) drawButton:rect_options];
+	[Resources::getResources->getMenuTex(MENU_DELETE_WORLD) drawButton:rect_delete];
+	[Resources::getResources->getMenuTex(MENU_CREATE_WORLD) drawButton:rect_create];
+	[Resources::getResources->getMenuTex(MENU_SHARE_WORLD) drawButton:rect_share];
+	[Resources::getResources->getMenuTex(MENU_LOAD_WORLD) drawButton:rect_loadshared];
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
 	if(!activeLeftArrow)
 		glColor4f(1.0, 1.0, 1.0, 0.3f);
-	[Resources::getResources()->getMenuTex(MENU_ARROW_LEFT) drawButton:left_arrow];
+	[Resources::getResources->getMenuTex(MENU_ARROW_LEFT) drawButton:left_arrow];
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
 	if(!activeRightArrow)
 		glColor4f(1.0, 1.0, 1.0, 0.3f);
-	[Resources::getResources()->getMenuTex(MENU_ARROW_RIGHT) drawButton:right_arrow];
+	[Resources::getResources->getMenuTex(MENU_ARROW_RIGHT) drawButton:right_arrow];
 	glDisable(GL_TEXTURE_2D);
 	if(delete_mode)
 		glColor4f(1.0, 0.0, 0.0, 1.0f);

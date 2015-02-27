@@ -403,7 +403,7 @@ void takeScreenshot(){
     CFRelease(provider);
     free(buffer2);
     Terrain* ter=[[World getWorld] terrain];
-	NSString* name=ter.world_name;
+	NSString* name=ter->world_name;
     NSString* file_name=[NSString stringWithFormat:@"%@/%@.png",[World getWorld].fm->documents,name];
     NSFileManager* fm=[NSFileManager defaultManager];
 	if([fm fileExistsAtPath:file_name])
@@ -649,7 +649,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
             
        // }
         hitCustom=FALSE;
-		int type=[[World getWorld].terrain getLand:tx :tz :ty];
+		int type=[World getWorld].terrain->getLand(tx ,tz ,ty);
      /*   BOOL build2solid=FALSE;
         int dx[]={0,0,0,0,1,1,1,1};
         int dy[]={0,0,1,1,0,0,1,1};

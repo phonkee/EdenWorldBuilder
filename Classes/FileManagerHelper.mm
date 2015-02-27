@@ -91,7 +91,7 @@ void fmh_readColumnFromDefault(int cx,int cz){
     
     
 	if(colIndex==NULL){
-        ter.tgen->generateEmptyColumn(cx,cz);
+        ter->tgen->generateEmptyColumn(cx,cz);
         return;
      /*   int fcx=cx;
         if(fcx<=4041||fcx>=4150||){
@@ -139,7 +139,7 @@ void fmh_readColumnFromDefault(int cx,int cz){
         
         TerrainChunk* chunk;
         //issue #3 continued
-        TerrainChunk* old=ter.chunkTable[threeToOne(cx,cy,cz)];
+        TerrainChunk* old=ter->chunkTable[threeToOne(cx,cy,cz)];
         if(old){chunk=old;
             chunk->setBounds(bounds);
             
@@ -245,7 +245,7 @@ void fmh_readColumnFromDefault(int cx,int cz){
         }
         
         
-        [ter addChunk:chunk:cx:cy:cz:TRUE];
+        ter->addChunk(chunk,cx,cy,cz,TRUE);
         
     }
 

@@ -93,7 +93,7 @@ BOOL Joystick::update(float etime){
 	return FALSE;
 }
 void Joystick::render(){
-    Resources* res=Resources::getResources();
+    Resources* res=Resources::getResources;
 	
 	Texture2D* gamepad=res->getTex(ICO_JOYSTICK_FRONT);
 	glColor4f(1.0, 1.0, 1.0, 0.35f);	

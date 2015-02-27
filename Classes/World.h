@@ -21,7 +21,7 @@
 #import "SpecialEffects.h"
 class FileManager;
 class Player;
-@class Terrain;
+class Terrain;
 class Hud;
 class Menu;
 #define GAME_MODE_MENU 0

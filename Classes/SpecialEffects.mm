@@ -76,7 +76,7 @@ void SpecialEffects::render(){
 	
 	glDepthMask(GL_FALSE);
 	glTexEnvi(GL_POINT_SPRITE_OES, GL_COORD_REPLACE_OES, GL_TRUE);
-	glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(ICO_SMOKE).name);
+	glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(ICO_SMOKE).name);
 	
 	
 	glPointParameterf(GL_POINT_SIZE_MIN, 0.1f);

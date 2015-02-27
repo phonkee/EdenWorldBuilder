@@ -354,19 +354,19 @@ void FileManager::writeGenToDisk(){
 void FileManager::saveWorld(Vector warp){
     //[TestFlight passCheckpoint:[NSString stringWithFormat:@"header_size:%d",(int)sizeof(WorldFileHeader)]];
     printf("sizeof(WFH)=%d",(int)sizeof(WorldFileHeader));
-	[[World getWorld].terrain endDynamics:TRUE];
+	[World getWorld].terrain->endDynamics(TRUE);
 	//[[World getWorld].terrain updateAllImportantChunks];
 	writeDirectory=FALSE;
 	Terrain* ter=[[World getWorld] terrain];
-	NSString* name=ter.world_name;
+	NSString* name=ter->world_name;
 	NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
 	
 	sfh=(WorldFileHeader*)malloc(sizeof(WorldFileHeader));
 	//NSLog(@"saving level_seed: %d",ter.level_seed);
-	sfh->level_seed=ter.level_seed;
+	sfh->level_seed=ter->level_seed;
     sfh->goldencubes=[World getWorld].hud->goldencubes;
 	sfh->directory_offset=cur_dir_offset;
-	sfh->home=ter.home;
+	sfh->home=ter->home;
 	sfh->pos=[World getWorld].player->pos;
 	//sfh->pos.x/=BLOCK_SIZE;
 	//sfh->pos.z/=BLOCK_SIZE;
@@ -432,7 +432,7 @@ void FileManager::saveWorld(Vector warp){
     for(int x=0;x<CHUNKS_PER_SIDE;x++){
         for(int z=0;z<CHUNKS_PER_SIDE;z++)
         {
-            TerrainChunk* chunk=ter.chunkTable[threeToOne(x,0,z)];
+            TerrainChunk* chunk=ter->chunkTable[threeToOne(x,0,z)];
             
             if(chunk->pbounds[1]==0){
                 this->saveColumn(chunk->pbounds[0]/CHUNK_SIZE
@@ -713,7 +713,7 @@ void FileManager::saveColumn(int cx,int cz){
     for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
 		TerrainChunk* chunk;
         //issue #3 continued
-        chunk=ter.chunkTable[threeToOne(cx, cy, cz)];
+        chunk=ter->chunkTable[threeToOne(cx, cy, cz)];
         if(chunk->modified){needsSave=TRUE; chunk->modified=FALSE;}
     }
     if(!needsSave)return;
@@ -751,7 +751,7 @@ void FileManager::saveColumn(int cx,int cz){
 	for(int cy=0;cy<CHUNKS_PER_COLUMN ;cy++){
 		TerrainChunk* chunk;
          //issue #3 continued
-        chunk=ter.chunkTable[threeToOne(cx, cy, cz)];
+        chunk=ter->chunkTable[threeToOne(cx, cy, cz)];
 		//hashmap_get(ter.chunkMap, threeToOne(cx-chunkOffsetX, cy, cz-chunkOffsetZ), (any_t)&chunk);
         //co(16316,16395),co(16316,16395)
 		if(chunk!=NULL){
@@ -805,12 +805,12 @@ void FileManager::readColumn(int cx,int cz,NSFileHandle* rcfile){
       //  int cz2=cz-chunkOffsetZ;
      //   if(rcfile==saveFile){
         //printg("loading column from gen %d,%d \n",cx,cz);
-     if(ter.tgen->LEVEL_SEED==DEFAULT_LEVEL_SEED){
+     if(ter->tgen->LEVEL_SEED==DEFAULT_LEVEL_SEED){
          fmh_readColumnFromDefault(cx,cz);
             
             return;
      }else{
-         ter.tgen->generateColumn(cx,cz,FALSE);
+         ter->tgen->generateColumn(cx,cz,FALSE);
       		return;
      }
 	}
@@ -886,7 +886,7 @@ void FileManager::readColumn(int cx,int cz,NSFileHandle* rcfile){
             
             TerrainChunk* chunk;
              //issue #3 continued
-            TerrainChunk* old=ter.chunkTable[threeToOne(cx,cy,cz)];
+            TerrainChunk* old=ter->chunkTable[threeToOne(cx,cy,cz)];
             if(old){chunk=old;
                 chunk->setBounds(bounds);
 
@@ -988,7 +988,7 @@ void FileManager::readColumn(int cx,int cz,NSFileHandle* rcfile){
                 }
                 
                   
-                [ter addChunk:chunk:cx:cy:cz:TRUE];	
+                ter->addChunk(chunk,cx,cy,cz,TRUE);
              
         }
         
@@ -1029,7 +1029,7 @@ void FileManager::setName(NSString* file_name,NSString* display_name){
 	
 }
 void FileManager::setImageHash(NSString* hash){
-    NSString* name=[World getWorld].terrain.world_name;
+    NSString* name=[World getWorld].terrain->world_name;
 	NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
     if(imgHash!=NULL){
         [imgHash release];
@@ -1288,7 +1288,7 @@ extern float P_ZFAR;
 void FileManager::loadWorld(NSString* name,BOOL fromArchive){
     
 	Terrain* ter=[[World getWorld] terrain];
-		[ter clearBlocks];
+		ter->clearBlocks();
 	Player* player=[[World getWorld] player];
     if(imgHash!=NULL){
         [imgHash release];
@@ -1330,21 +1330,21 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
         }
 
 		this->clearDirectory();
-        if(genflat)ter.tgen->LEVEL_SEED= 0;
+        if(genflat)ter->tgen->LEVEL_SEED= 0;
         else if(gen_default){
            
             
-            ter.tgen->LEVEL_SEED=DEFAULT_LEVEL_SEED;
+            ter->tgen->LEVEL_SEED=DEFAULT_LEVEL_SEED;
             
         }else{
-             ter.tgen->LEVEL_SEED=arc4random()%300000;
+             ter->tgen->LEVEL_SEED=arc4random()%300000;
             
             
         }
 		int centerChunk=4096;
         int r=T_SIZE/CHUNK_SIZE/2;
 
-		ter.level_seed=ter.tgen->LEVEL_SEED;
+		ter->level_seed=ter->tgen->LEVEL_SEED;
 		
         
         
@@ -1390,22 +1390,22 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
             for(int z=centerChunk-r;z<centerChunk+r;z++){
                 
                 readColumn(x,z,saveFile);
-                [World getWorld].terrain.counter++;
+                [World getWorld].terrain->counter++;
             }
         }
         
         
-		ter.home=temp;
+		ter->home=temp;
 		Vector temp2;		
-		temp2.x=BLOCK_SIZE*(ter.home.x+.5f);
-		temp2.y=BLOCK_SIZE*(ter.home.y+1);	
-		temp2.z=BLOCK_SIZE*(ter.home.z+.5f);
+		temp2.x=BLOCK_SIZE*(ter->home.x+.5f);
+		temp2.y=BLOCK_SIZE*(ter->home.y+1);
+		temp2.z=BLOCK_SIZE*(ter->home.z+.5f);
             player->pos=temp2;
         
-        if(ter.tgen->LEVEL_SEED==0){
-            temp2.x=BLOCK_SIZE*(ter.home.x+.5f);
+        if(ter->tgen->LEVEL_SEED==0){
+            temp2.x=BLOCK_SIZE*(ter->home.x+.5f);
             temp2.y=34;
-            temp2.z=BLOCK_SIZE*(ter.home.z+.5f);
+            temp2.z=BLOCK_SIZE*(ter->home.z+.5f);
             player->pos=temp2;
             for(int i=0;i<4;i++){
                 for(int j=0;j<4;j++){
@@ -1479,11 +1479,11 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
             imgHash=NULL;
         }
         imgHash=[[NSString alloc] initWithCString:sfh->hash encoding:NSUTF8StringEncoding];
-		ter.level_seed=sfh->level_seed;
-		ter.tgen->LEVEL_SEED=ter.level_seed;
+		ter->level_seed=sfh->level_seed;
+		ter->tgen->LEVEL_SEED=ter->level_seed;
 		cur_dir_offset=sfh->directory_offset;
        [World getWorld].hud->goldencubes= sfh->goldencubes;
-		ter.home=sfh->home;
+		ter->home=sfh->home;
 		player->pos=sfh->pos;
 		player->yaw=sfh->yaw;
          extern Vector colorTable[256];
@@ -1530,7 +1530,7 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
 			for(int z=chunkOffsetZ;z<chunkOffsetZ+2*r;z++){
 			//	NSLog(@"lch:%d",asdf++);
 				readColumn(x,z,saveFile);
-                [World getWorld].terrain.counter++;
+                [World getWorld].terrain->counter++;
 			}
 		}
         //if(CREATURES_ON)
@@ -1543,13 +1543,13 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
 		
 	}
     if(!SUPPORTS_OGL2){
-        if(ter.tgen->LEVEL_SEED== 0)
+        if(ter->tgen->LEVEL_SEED== 0)
             Graphics::setZFAR(55);
        
         else 
          Graphics::setZFAR(40);
     }else{
-        if(ter.tgen->LEVEL_SEED== 0)
+        if(ter->tgen->LEVEL_SEED== 0)
          Graphics::setZFAR(120);
         else 
         Graphics::setZFAR(120);

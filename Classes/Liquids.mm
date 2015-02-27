@@ -327,7 +327,7 @@ static BOOL updateNode2(PNode2* pnode){
         nbasetype=getBaseType(ntype);
         if(blockinfo[ntype]&IS_LIQUID&&nbasetype==type){
             if(i==4){
-                 [[World getWorld].terrain updateChunks:nx:nz:ny:TYPE_NONE];
+                 [World getWorld].terrain->updateChunks(nx,nz,ny,TYPE_NONE);
                 addPoint2(nx,nz,ny,nbasetype,getLevel(ntype));
             }else{
                 int nlevel=getLevel(ntype);
@@ -339,7 +339,7 @@ static BOOL updateNode2(PNode2* pnode){
                         bdelete=FALSE;
                     }
                     if(bdelete){
-                         [[World getWorld].terrain updateChunks:nx:nz:ny:TYPE_NONE];
+                         [World getWorld].terrain->updateChunks(nx,nz,ny,TYPE_NONE);
                         addPoint2(nx,nz,ny,nbasetype,nlevel);
                     }
                 }
@@ -363,7 +363,7 @@ static BOOL updateNode(PNode* pnode){
     // WetNode* node;
     type=getLandc(pnode->x,pnode->z,pnode->y);
     if(!(blockinfo[type]&IS_LIQUID))return TRUE;
-    int color=[[World getWorld].terrain getColor:pnode->x:pnode->z:pnode->y];
+    int color=[World getWorld].terrain->getColor(pnode->x,pnode->z,pnode->y);
     /*if(hashmap_get(wetmap, pidx, (any_t)&node)==MAP_MISSING){
      
      if(type==TYPE_WATER||type==TYPE_LAVA){
@@ -413,12 +413,12 @@ static BOOL updateNode(PNode* pnode){
         if(getBaseType(type)!=TYPE_LAVA||![World getWorld].player->test(nx,ny,nz,1)){
             
             if(blockinfo[type]&IS_WATER)
-                [[World getWorld].terrain updateChunks:nx:nz:ny:TYPE_WATER];
+                [World getWorld].terrain->updateChunks(nx,nz,ny,TYPE_WATER);
             else if(blockinfo[type]&IS_LAVA)
-                [[World getWorld].terrain updateChunks:nx:nz:ny:TYPE_LAVA];
+                [World getWorld].terrain->updateChunks(nx,nz,ny,TYPE_LAVA);
             
             
-            [[World getWorld].terrain setColor:nx:nz:ny:color];
+            [World getWorld].terrain->setColor(nx,nz,ny,color);
             
             addPoint(nx,nz,ny);
             return TRUE;
@@ -459,9 +459,9 @@ static BOOL updateNode(PNode* pnode){
          ntype=getLandc(nx, nz, ny);
          if(ntype==TYPE_NONE||(blockinfo[ntype]&IS_LIQUID&&getLevel(ntype)<level-1)){
              if(btype!=TYPE_LAVA||![World getWorld].player->test(nx,ny,nz,1)){
-             [[World getWorld].terrain updateChunks:nx:nz:ny:genLevel(btype,level-1)];
+             [World getWorld].terrain->updateChunks(nx,nz,ny,genLevel(btype,level-1));
              
-             [[World getWorld].terrain setColor:nx:nz:ny:color];
+             [World getWorld].terrain->setColor(nx,nz,ny,color);
              
              addPoint(nx,nz,ny);
              }
@@ -481,7 +481,7 @@ static int removeUnfed(any_t passedIn,any_t wnode){
     WetNode* node=(WetNode*)wnode;
     if(node->feeders==0){
         if(node->flowType==WT_NORMAL){
-            [[World getWorld].terrain updateChunks:node->x:node->z:node->y:TYPE_NONE];
+            [World getWorld].terrain->updateChunks(node->x,node->z,node->y,TYPE_NONE);
             
             return MAP_REMOVE;
         }

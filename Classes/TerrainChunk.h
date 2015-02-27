@@ -16,7 +16,7 @@
 #import "Util.h"
 #import "Globals.h"
 
-@class Terrain;
+class Terrain;
 typedef struct _static_object{
     Vector pos;
     int type;

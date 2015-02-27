@@ -153,6 +153,8 @@ void RLETEST(){
 
 - (World*)init{
    
+   res=new Resources();
+    Resources::getResources=res;
     singleton=self;
     
     if(JUST_TERRAIN_GEN){
@@ -180,13 +182,14 @@ void RLETEST(){
     game_mode=GAME_MODE_MENU;
     
     bestGraphics=TRUE;
+    terrain=new Terrain();
     Graphics::initGraphics();
     
     alert_init();
     
-    terrain=[[Terrain alloc] init];	
+    
     cam=new Camera();
-    res=Resources::getResources();
+    
     player=new Player(self);
     hud=new Hud();
     fm=new FileManager();
@@ -195,9 +198,9 @@ void RLETEST(){
    
           
     [NSThread detachNewThreadSelector:@selector(loadWorldThread2:) toTarget:self withObject:self];
-    [terrain startLoadingThread];
+    //[terrain startLoadingThread];
   //  FLIPPED=FALSE;
-    Resources::getResources()->playMenuTune();
+    Resources::getResources->playMenuTune();
    // [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
    // [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
@@ -224,7 +227,7 @@ void RLETEST(){
     while(true){
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
        // goto cleanup;
-        if(world.terrain.loaded){
+        if(world.terrain->loaded){
             int chunkOffsetX=player->pos.x/CHUNK_SIZE-T_RADIUS;
             int chunkOffsetZ=player->pos.z/CHUNK_SIZE-T_RADIUS;
             int r=T_RADIUS;
@@ -235,7 +238,7 @@ void RLETEST(){
                 for(int z=0;z<2*r;z++){
                     //	NSLog(@"lch:%d",asdf++);
                     TerrainChunk* chunk;
-                    chunk=world.terrain.chunkTable[threeToOne(x+chunkOffsetX,0,z+chunkOffsetZ)];
+                    chunk=world.terrain->chunkTable[threeToOne(x+chunkOffsetX,0,z+chunkOffsetZ)];
                    // hashmap_get(world.terrain.chunkMap, threeToOne(x+chunkOffsetX, 0, z+chunkOffsetZ), (any_t)&chunk);
                     if(chunk){
                        
@@ -266,7 +269,7 @@ void RLETEST(){
             }
             if(count==0) goto cleanup;
             // printg("chunks to load:%d\n",count);
-            NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm->documents,world.terrain.world_name];
+            NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm->documents,world.terrain->world_name];
             
            
             NSFileHandle* saveFile=[NSFileHandle fileHandleForReadingAtPath:file_name];
@@ -334,7 +337,7 @@ void RLETEST(){
     
  
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    [terrain loadTerrain:object:TRUE];
+    terrain->loadTerrain(object,TRUE);
     doneLoading=2;
     [pool release];
     
@@ -344,26 +347,26 @@ extern int chunk_load_count;
     if(doneLoading==0){
         
         doneLoading=1;
-        Resources::getResources()->stopMenuTune();
+        Resources::getResources->stopMenuTune();
         if(LOW_MEM_DEVICE){
             menu->deactivate();
             
-            Resources::getResources()->unloadMenuTextures();
-            [[World getWorld].terrain allocateMemory];
-            [terrain loadTerrain:name:TRUE];
+            Resources::getResources->unloadMenuTextures();
+            [World getWorld].terrain->allocateMemory();
+            terrain->loadTerrain(name,TRUE);
             doneLoading=2;
             [World getWorld].hud->fade_out=1;
 
 
         }else{
-            [[World getWorld].terrain allocateMemory];
+            [World getWorld].terrain->allocateMemory();
             [NSThread detachNewThreadSelector:@selector(loadWorldThread:) toTarget:self withObject:name];
         }
         
         
     }
     if(doneLoading>=1){
-        int pct=100.0f*(float)(terrain.counter)/324.0f;
+        int pct=100.0f*(float)(terrain->counter)/324.0f;
         
         if(pct>100)pct=100;
         if(fm->convertingWorld){
@@ -384,10 +387,10 @@ extern int chunk_load_count;
             if(!LOW_MEM_DEVICE){
             menu->deactivate();
         
-            Resources::getResources()->unloadMenuTextures();
+            Resources::getResources->unloadMenuTextures();
             }
             
-            Resources::getResources()->loadGameAssets();
+            Resources::getResources->loadGameAssets();
             
             // [terrain loadTerrain:name];
             doneLoading=0;
@@ -414,14 +417,14 @@ extern int chunk_load_count;
 - (void)exitToMenu{	
     exit_to_menu=FALSE;
    // printg("hihihi\n");
-	[terrain unloadTerrain:TRUE];
+	terrain->unloadTerrain(TRUE);
     if(CREATURES_ON){
         UnloadModels();
     }
    // printg("loading menu textures\n");
-    Resources::getResources()->unloadGameAssets();
-      [[World getWorld].terrain deallocateMemory];
-	Resources::getResources()->loadMenuTextures();
+    Resources::getResources->unloadGameAssets();
+      [World getWorld].terrain->deallocateMemory();
+	Resources::getResources->loadMenuTextures();
     if(SUPPORTS_RETINA&&!IS_RETINA){
       //  printg("menu activated2\n");
 
@@ -441,7 +444,7 @@ extern int chunk_load_count;
         menu->activate();
    	}
 
-	Resources::getResources()->playMenuTune();
+	Resources::getResources->playMenuTune();
 	target_game_mode=GAME_MODE_WAIT;
     game_mode=GAME_MODE_WAIT;
     
@@ -455,7 +458,7 @@ extern int chunk_load_count;
 	return singleton;
 }
 - (void)dealloc{
-	[terrain release];
+    delete terrain;
     delete player;
     delete cam;
     delete res;
@@ -500,7 +503,7 @@ extern int chunk_load_count;
 	}
     
 	
-	Resources::getResources()->update(etime);
+	Resources::getResources->update(etime);
 	if(game_mode==GAME_MODE_MENU){
 		menu->update(etime);
 	}else if(game_mode==GAME_MODE_PLAY){
@@ -508,7 +511,7 @@ extern int chunk_load_count;
 		if(etime>1.0f/20.0f)etime=1.0f/20.0f;
         cam->update(etime);
 		
-		[terrain update:etime];		
+		terrain->update(etime);
         hud->update(etime);
         if(game_mode==GAME_MODE_WAIT){
             return FALSE;
@@ -521,8 +524,8 @@ extern int chunk_load_count;
 		effects->update(etime);
         
         
-        [terrain prepareAndLoadGeometry];
-        [terrain updateAllImportantChunks];
+        terrain->prepareAndLoadGeometry();
+        terrain->updateAllImportantChunks();
        
 		
 	}
@@ -577,11 +580,11 @@ extern int chunk_load_count;
        // [Graphics setLighting];	
        // glShadeModel(GL_SMOOTH);
       //  glDisable(GL_TEXTURE_2D);
-		[terrain render];
+		terrain->render();
        // glEnable(GL_TEXTURE_2D);
         if(CREATURES_ON)
             RenderModels();
-        [terrain render2];
+        terrain->render2();
       //  glShadeModel(GL_FLAT);
        
        // glTranslatef([World getWorld].fm.chunkOffsetZ*CHUNK_SIZE,0,[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE);
@@ -590,7 +593,7 @@ extern int chunk_load_count;
         glPushMatrix();
         glTranslatef(-fm->chunkOffsetX*CHUNK_SIZE,0,-fm->chunkOffsetZ*CHUNK_SIZE);
 		effects->render();
-        [World getWorld].terrain.fireworks->render();
+        [World getWorld].terrain->fireworks->render();
         player->render();
 				
          glPopMatrix();
