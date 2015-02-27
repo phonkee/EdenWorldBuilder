@@ -250,7 +250,7 @@ void BlockBreak::render(){
     glLightfv(GL_LIGHT0, GL_AMBIENT,  lightAmbient.ptr());
     glLightfv(GL_LIGHT0, GL_DIFFUSE,  lightDiffuse.ptr());
     glEnable(GL_NORMALIZE);
-     glBindTexture(GL_TEXTURE_2D, [Resources getResources].atlas.name);
+     glBindTexture(GL_TEXTURE_2D, Resources::getResources()->atlas.name);
 	
      glEnableClientState(GL_NORMAL_ARRAY);
     //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -388,7 +388,7 @@ void BlockBreak::addBlockExplode(int x,int z,int y,int type, int color) {
             else if(bf==TEX_BRICK)
                 bf=TEX_BRICK_COLOR;
         }
-        tp=[[Resources getResources] getBlockTexShort:bf];
+        tp=Resources::getResources()->getBlockTexShort(bf);
         
         static int triTextureCustom[6]={0,0,
             0,1,
@@ -486,7 +486,7 @@ void BlockBreak::addFirework(float x,float z,float y,int color){
         CGPoint tp;
         
         
-        tp=[[Resources getResources] getBlockTexShort:bf];
+        tp=Resources::getResources()->getBlockTexShort(bf);
         
         static int triTextureCustom[6]={0,0,
             0,1,
@@ -627,7 +627,7 @@ void BlockBreak::addCreatureVanish2(float x,float z,float y,int color,int type){
             else if(bf==TEX_BRICK)
                 bf=TEX_BRICK_COLOR;
         }
-        tp=[[Resources getResources] getBlockTexShort:bf];
+        tp=Resources::getResources()->getBlockTexShort(bf);
         
         static int triTextureCustom[6]={0,0,
             0,1,
@@ -728,7 +728,7 @@ void BlockBreak::addBlockBreak(int x,int z,int y,int type,int color){
         else if(bf==TEX_BRICK)
             bf=TEX_BRICK_COLOR;
         }
-        tp=[[Resources getResources] getBlockTexShort:bf];
+        tp=Resources::getResources()->getBlockTexShort(bf);
        
         static int triTextureCustom[6]={0,0,
                                         0,1,

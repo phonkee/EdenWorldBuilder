@@ -93,9 +93,9 @@ BOOL Joystick::update(float etime){
 	return FALSE;
 }
 void Joystick::render(){
-	Resources* res=[Resources getResources];
+    Resources* res=Resources::getResources();
 	
-	Texture2D* gamepad=[res getTex:ICO_JOYSTICK_FRONT];
+	Texture2D* gamepad=res->getTex(ICO_JOYSTICK_FRONT);
 	glColor4f(1.0, 1.0, 1.0, 0.35f);	
 	//glDisable(GL_BLEND);
 	
@@ -103,7 +103,7 @@ void Joystick::render(){
 	
 	[gamepad drawInRect2:padbounds];
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
-	Texture2D* joystick=[res getTex:ICO_JOYSTICK_BACK];
+	Texture2D* joystick=res->getTex(ICO_JOYSTICK_BACK);
 	[joystick drawInRect2:joystick_pos];
 	//glEnable(GL_BLEND);
 

@@ -685,7 +685,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
     if(!LOW_MEM_DEVICE&&v_equals([World getWorld].terrain.final_skycolor,colorTable[54]))
         skylight=.35f;
     
-    Resources* res=[Resources getResources];
+    Resources* res=Resources::getResources();
 	for(int idx=0;idx<CHUNK_SIZE3;idx++){
         if(!face_visibility[idx])continue;
         
@@ -1301,7 +1301,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
                 
             }
                        CGPoint tp;
-            tp=[res getBlockTexShort:bf];
+            tp=res->getBlockTexShort(bf);
             
             
             

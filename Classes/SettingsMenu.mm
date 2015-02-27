@@ -55,23 +55,23 @@ SettingsMenu::SettingsMenu(){
 		
 		if(i==S_HEALTH){
 			properties[i].box.size.width=200;
-			properties[i].tex=[[Resources getResources] getMenuTex:MENU_HEALTH];
+			properties[i].tex=Resources::getResources()->getMenuTex(MENU_HEALTH);
 		}else if(i==S_PLAY_MUSIC){
 			properties[i].box.size.width=105;
-			properties[i].tex=[[Resources getResources] getMenuTex:MENU_MUSIC];			
+			properties[i].tex=Resources::getResources()->getMenuTex(MENU_MUSIC);
 		}
 		else if(i==S_PLAY_SOUND){
 		properties[i].box.size.width=200;
-		properties[i].tex=[[Resources getResources] getMenuTex:MENU_SOUND_EFFECTS];			
+		properties[i].tex=Resources::getResources()->getMenuTex(MENU_SOUND_EFFECTS);
 		}else if(i==S_AUTOJUMP){
 			properties[i].box.size.width=120;
 			
-			properties[i].tex=[[Resources getResources] getMenuTex:MENU_AUTOJUMP];
+			properties[i].tex=Resources::getResources()->getMenuTex(MENU_AUTOJUMP);
 			
 		}else if(i==S_AUTOJUMP){
             properties[i].box.size.width=120;
 			
-			properties[i].tex=[[Resources getResources] getMenuTex:MENU_CREATURES];	
+			properties[i].tex=Resources::getResources()->getMenuTex(MENU_CREATURES);
             
         }
 			
@@ -149,11 +149,11 @@ void SettingsMenu::update(float etime){
 					properties[j].value=!properties[j].value;		
 					if(j==S_PLAY_MUSIC){
                         if(properties[j].value){
-                        [Resources getResources].playmusic=TRUE;
-						[[Resources getResources] playMenuTune];
+                        Resources::getResources()->playmusic=TRUE;
+						Resources::getResources()->playMenuTune();
                         }else{
-                            [Resources getResources].playmusic=FALSE;
-                            [[Resources getResources] stopMenuTune];
+                           Resources::getResources()->playmusic=FALSE;
+                            Resources::getResources()->stopMenuTune();
 
                         }
 					}
@@ -180,8 +180,8 @@ void SettingsMenu::load(){
 	NSNumber* n=[prefs objectForKey:@"new_world_counter"];
 	if(n!=nil)
 	world_counter=[n intValue];
-	[Resources getResources].playmusic=properties[S_PLAY_MUSIC].value;
-	[Resources getResources].playsound=properties[S_PLAY_SOUND].value;
+	Resources::getResources()->playmusic=properties[S_PLAY_MUSIC].value;
+	Resources::getResources()->playsound=properties[S_PLAY_SOUND].value;
 	//[World getWorld].hud.leftymode=properties[S_LEFTY_MODE].value;
    [World getWorld].player->autojump_option=properties[S_AUTOJUMP].value;
     [World getWorld].player->health_option=properties[S_HEALTH].value;
@@ -219,23 +219,23 @@ NSString* SettingsMenu::getNewWorldName(){
 }
 void SettingsMenu::render(){
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
-	[[[Resources getResources] getMenuTex:MENU_OPTIONS_HEADER] drawText:rect_settings];	
+	[Resources::getResources()->getMenuTex(MENU_OPTIONS_HEADER) drawText:rect_settings];
 	
-	[[[Resources getResources] getMenuTex:MENU_SAVE] drawButton:rect_save];
+	[Resources::getResources()->getMenuTex(MENU_SAVE) drawButton:rect_save];
 	for(int i=0;i<NUM_PROP;i++){
 		glColor4f(0.97, 0.97, 0.97, 1.0f);
 		if(i==S_HEALTH){
-			[[[Resources getResources] getMenuTex:MENU_HEALTH] drawText:properties[i].box];
+			[Resources::getResources()->getMenuTex(MENU_HEALTH) drawText:properties[i].box];
 		}else if(i==S_PLAY_MUSIC){
-			[[[Resources getResources] getMenuTex:MENU_MUSIC] drawText:properties[i].box];
+			[Resources::getResources()->getMenuTex(MENU_MUSIC) drawText:properties[i].box];
 		}
 		else if(i==S_PLAY_SOUND){
-			[[[Resources getResources] getMenuTex:MENU_SOUND_EFFECTS] drawText:properties[i].box];			
+			[Resources::getResources()->getMenuTex(MENU_SOUND_EFFECTS) drawText:properties[i].box];
 		}else if(i==S_AUTOJUMP){
-			[[[Resources getResources] getMenuTex:MENU_AUTOJUMP] drawText:properties[i].box];
+			[Resources::getResources()->getMenuTex(MENU_AUTOJUMP) drawText:properties[i].box];
 			
 		}else if(i==S_CREATURES){
-            [[[Resources getResources] getMenuTex:MENU_CREATURES] drawText:properties[i].box];	
+            [Resources::getResources()->getMenuTex(MENU_CREATURES) drawText:properties[i].box];
         }
 	//	[properties[i].tex drawInRect:properties[i].box];
 		rect_off.origin.y=properties[i].box.origin.y;
@@ -245,20 +245,20 @@ void SettingsMenu::render(){
 //			glColor4f(0.0, 1.0, 0.0, 1.0f);	
 //		}
       //  if(i==S_GRAPHICS)
-       //     [[[Resources getResources] getMenuTex:MENU_BEST]  drawText:rect_on];
+       //     [Resources::getResources()->getMenuTex:MENU_BEST]  drawText:rect_on];
        // else
         if(properties[i].value)
-            [[[Resources getResources] getMenuTex:MENU_ON]  drawButton:rect_on[i]];
+            [Resources::getResources()->getMenuTex(MENU_ON)  drawButton:rect_on[i]];
         else
-            [[[Resources getResources] getMenuTex:MENU_OFF]  drawButton:rect_on[i]];
+            [Resources::getResources()->getMenuTex(MENU_OFF)  drawButton:rect_on[i]];
 		glColor4f(0.7, 0.7, 0.7, 1.0f);
 		if(!properties[i].value){
 			glColor4f(1.0, 0.0, 0.0, 1.0f);	
 		}
 	//	if(i==S_GRAPHICS)
-     //       [[[Resources getResources] getMenuTex:MENU_FAST]  drawText:rect_off];
+     //       [Resources::getResources()->getMenuTex:MENU_FAST]  drawText:rect_off];
      //   else
-	//	[[[Resources getResources] getMenuTex:MENU_OFF] drawText:rect_off];
+	//	[Resources::getResources()->getMenuTex:MENU_OFF] drawText:rect_off];
 	}
 
 	

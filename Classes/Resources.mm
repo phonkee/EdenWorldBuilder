@@ -12,19 +12,17 @@
 #import "CDAudioManager.h"
 #import "SimpleAudioEngine_objc.h"
 #import "World.h"
-static Resources* singleton;
-
-@implementation Resources
-@synthesize atlas,atlas2,playmusic,playsound;
+static Resources* singleton=NULL;
 
 
-+ (Resources*)getResources{
-	if(!singleton){
-		singleton=[[Resources alloc] init];
-		
-	}	
-	return singleton;	
+Resources* Resources::getResources(){
+    if(!singleton){
+        singleton=new Resources();
+        
+    }
+    return singleton;
 }
+
 
 
 
@@ -474,7 +472,7 @@ extern Vector colorTable[256];
  UIImage* storedPortalico;
  UIImage* storedPortalicoMask;
  */
--(Texture2D*)getPaintedTex:(int)type:(int)color{
+Texture2D* Resources::getPaintedTex(int type,int color){
    
     if(color==0||(type==TYPE_GOLDEN_CUBE&&color==20)){
         int tid;
@@ -487,7 +485,7 @@ extern Vector colorTable[256];
         }else if(type==TYPE_DOOR_TOP){
             tid=ICO_DOOR2;
         }
-        return [self getTex:tid];
+        return getTex(tid);
     }else if(build_cache!=NULL&&build_cache_color==color&&build_cache_type==type){
         return build_cache;
     }
@@ -527,8 +525,9 @@ extern Vector colorTable[256];
     printg("initing build texture ;o");
     return build_cache;
 }
-- (Texture2D*)getPaintTex:(int)color{
-    if(color==0)return [self getTex:ICO_PAINT];
+
+Texture2D* Resources::getPaintTex(int color){
+    if(color==0)return getTex(ICO_PAINT);
     if(paint_cache!=NULL&&color==paint_cache_color)return paint_cache;
     
     if(paint_cache!=NULL){
@@ -553,7 +552,7 @@ extern Vector colorTable[256];
     
     
 }
-- (int)getDoorTex:(int)color{
+int Resources::getDoorTex(int color){
     if(color==0)color=25;
     if(door_cache[color]!=NULL){
         
@@ -574,9 +573,9 @@ extern Vector colorTable[256];
         return door_cache[color].name;
     }
     
-    return [self getTex:ICO_DOOR].name;
+    return getTex(ICO_DOOR).name;
 }
-- (int)getSkin:(int)model_type:(int)color:(int)state{
+int Resources::getSkin(int model_type,int color,int state){
     for(int i=0;i<SKIN_CACHE_SIZE;i++){
         if(skin_cache[i].tex!=NULL&&skin_cache[i].model_type==model_type&&skin_cache[i].color==color&&skin_cache[i].state==state){
             return skin_cache[i].tex.name;
@@ -614,7 +613,7 @@ extern Vector colorTable[256];
     return skin_cache[cidx].tex.name;
 }
 
--(void)voSound:(int)action:(int)type:(Vector)location{
+void Resources::voSound(int action,int type,Vector location){
     if(!playsound)return;
    
     
@@ -634,19 +633,13 @@ extern Vector colorTable[256];
         
         [[SimpleAudioEngine sharedEngine] playEffect:voFiles[type][action][variation] loop:FALSE pitch:1.0f pan:0.0f gain:vol*1.4f];
     }
-    
-    
-    
-    
-   
-    
-    
+ 
     
 }
 
--(void)loadGameAssets{
+void Resources::loadGameAssets(){
     if(LOW_MEM_DEVICE){
-        [self loadGameTextures];
+        loadGameTextures();
     }
   
    /*for(int i=0;i<NUM_SOUNDS;i++){
@@ -665,9 +658,9 @@ extern Vector colorTable[256];
         }
     }*/
 }
--(void)unloadGameAssets{
+void Resources::unloadGameAssets(){
     if(LOW_MEM_DEVICE){
-    [self unloadGameTextures];
+        unloadGameTextures();
     }
    // [[World getWorld].terrain deallocateMemory];
     for(int i=0;i<NUM_SOUNDS;i++)
@@ -688,7 +681,7 @@ extern Vector colorTable[256];
 
 
 bool firstframe=FALSE;
-- (int)playSound:(int)soundid{
+int Resources::playSound(int soundid){
 	if(playsound&&!firstframe){
 		
 		if(soundid==S_LAND_SOFT||soundid==S_LAND_HARD||soundid==S_BOUNCE||soundid==S_LAVA_BURN){
@@ -715,21 +708,22 @@ bool firstframe=FALSE;
 	return 0;
 }
 extern int flamecount;
--(void)soundEvent:(int)actionid{
+void Resources::soundEvent(int actionid){
    /* if(actionid==AMBIENT_OPEN){
         actionid+=flamecount;
         if(actionid>=NUM_AMBIENT){actionid=AMBIENT_OPEN;
             flamecount=0;
         }
     }*/
-    [self soundEvent:actionid:[World getWorld].player->pos];
+    soundEvent(actionid,[World getWorld].player->pos);
 }
 static int target_ambient;
 static BOOL songisplaying=FALSE;
 static int current_ambient=TYPE_NONE;
 static float bkgvolume=2.0f;
 static float bkgtargetvolume=0;
--(void)soundEvent:(int)actionid:(Vector)location{
+
+void Resources::soundEvent(int actionid,Vector location){
     if(!playmusic||songisplaying||[World getWorld].game_mode!=GAME_MODE_PLAY)return;
     if(actionid>=-1&&actionid<NUM_AMBIENT){
         target_ambient=actionid;
@@ -773,7 +767,7 @@ static float burnin[NS_BURN]={};
 static int sidx=0;
 extern BOOL SUPPORTS_OGL2;
 
-- (id)init{
+Resources::Resources(){
    	landingEffectTimer=0;
 	textures=[[NSMutableArray alloc] init];
 	menutextures=[[NSMutableArray alloc] init];
@@ -803,11 +797,11 @@ extern BOOL SUPPORTS_OGL2;
            initWithImagePath:@"colorpick_background.png" sizeToFit:FALSE];
     [csbkg retain];
     if(!LOW_MEM_DEVICE){
-        [self loadGameTextures];
+        loadGameTextures();
     }
    
     
-	[self loadMenuTextures];			  
+	loadMenuTextures();
 	
 	atlas=[[Texture2D alloc]
 		   initWithImagePath:@"atlas.png" sizeToFit:TRUE pixelFormat:kTexture2DPixelFormat_RGB565 generateMips:TRUE];
@@ -823,9 +817,9 @@ extern BOOL SUPPORTS_OGL2;
 	
 	
 	
-	return self;
+	
 }
--(void)playMenuTune{
+void Resources::playMenuTune(){
 	if(playmusic){
 		[[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
 		[[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"Eden_title.mp3"
@@ -836,13 +830,13 @@ extern BOOL SUPPORTS_OGL2;
 	
 }
 
--(void)stopMenuTune{
+void Resources::stopMenuTune(){
      bkgtargetvolume=0.0f;
 	[[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
      current_ambient=target_ambient=AMBIENT_NONE;
 	
 }
-- (void)loadMenuTextures{
+void Resources::loadMenuTextures(){
 	Texture2D* temp=[[Texture2D alloc] 
 		  initWithImagePath:@"menu_autojump.png" sizeToFit:FALSE];
     
@@ -982,7 +976,8 @@ extern BOOL SUPPORTS_OGL2;
 	
 }
 static float cuetimer=0;
-- (void) unloadMenuTextures{
+
+void Resources::unloadMenuTextures(){
     cuetimer=0;
 	while([menutextures count]>0){
 		Texture2D* t=[menutextures lastObject];
@@ -992,7 +987,7 @@ static float cuetimer=0;
 	
 }
 
--(void) unloadGameTextures{
+void Resources::unloadGameTextures(){
     if(!LOW_MEM_DEVICE){
         return;
     }
@@ -1005,7 +1000,7 @@ static float cuetimer=0;
     }
 }
 
--(void) loadGameTextures{
+void Resources::loadGameTextures(){
     clearSkinCache();
    
     
@@ -1412,7 +1407,8 @@ static float cuetimer=0;
     temp=[[Texture2D alloc] initWithImagePath:@"Stumpy_DefaultMASK.png" sizeToFit:FALSE];
     [textures addObject:temp];
 }
-- (int)startedBurn:(float)length{
+
+int Resources::startedBurn(float length){
 	if(burnSoundTimer<length){
 		burnSoundTimer=length;
 	}
@@ -1422,7 +1418,7 @@ static float cuetimer=0;
 	return sidx;
 	
 }
-- (void)endBurnId:(int) idx{
+void Resources::endBurnId(int idx){
 	if(idx<0||idx>=NS_BURN)return;
 	burnin[idx]=-1;
 	float max=-1;
@@ -1433,14 +1429,14 @@ static float cuetimer=0;
 	burnSoundTimer=max;
 	
 	if(max<=0){
-		[self endBurn];
+		endBurn();
 	}
 	
 }
--(void)stopSound:(int)soundId{
+void Resources::stopSound(int soundId){
     [[SimpleAudioEngine sharedEngine] stopEffect:soundId];	
 }
-- (void)endBurn{
+void Resources::endBurn(){
 	[[SimpleAudioEngine sharedEngine] stopEffect:burn_id];	
 	playing=burnSoundTimer=0;
 }
@@ -1449,7 +1445,8 @@ static float cuetimer=0;
 #define TIME_BETWEEN_SONGS (60*5)
 static int lastsongplayed=-1;
 
-- (void)update:(float)etime{
+
+void Resources::update(float etime){
     if(playmusic){
         
            
@@ -1508,7 +1505,7 @@ static int lastsongplayed=-1;
 				if(playing<0)
 				{
 					
-					burn_id=[self playSound:S_FLAMELOOP];
+					burn_id=playSound(S_FLAMELOOP);
 					playing=10;
 				}
 			
@@ -1517,17 +1514,18 @@ static int lastsongplayed=-1;
 	
 }
 
-- (Texture2D*)getTex:(int)idx{
+Texture2D* Resources::getTex(int idx){
     if(idx==ICO_COLOR_SELECT_BACKGROUND){
         return csbkg;
     }
 	return [textures objectAtIndex:(0+idx)];
 }
-- (Texture2D*)getMenuTex:(int)idx{
+
+Texture2D* Resources::getMenuTex(int idx){
 	
 	return [menutextures objectAtIndex:(0+idx)];
 }
-- (CGPoint)getBlockTex:(int)type{
+CGPoint Resources::getBlockTex(int type){
 	if(type<0||type>31)type=0;
 	CGPoint p;	
 	
@@ -1538,7 +1536,8 @@ static int lastsongplayed=-1;
 	
 	return p;
 }
-- (CGPoint)getBlockTexShort:(int)type{
+
+CGPoint Resources::getBlockTexShort(int type){
 	if(type<0||type>31)type=0;
 	CGPoint p;	
 	
@@ -1549,7 +1548,7 @@ static int lastsongplayed=-1;
 	
 	return p;
 }
-- (void)dealloc{
+Resources::~Resources(){
 	while([textures count]>0){
 		Texture2D* t=[textures lastObject];
 		[t release];
@@ -1560,11 +1559,9 @@ static int lastsongplayed=-1;
 		[t release];
 		[menutextures removeLastObject];
 	}
-	[sound release];
-	[super dealloc];
+	//[sound release];
+	
 }
 
-
-@end
 
 

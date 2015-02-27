@@ -443,10 +443,10 @@ void PlaySound(int idx,int sound){
     if(guys[idx].alive&&guys[idx].insideView&&guys[idx].update){
         if((sound==VO_IDLE||sound==VO_STRETCHING)){
             if(guys[idx].model_type!=M_BATTY&&isFacingPlayer(idx))
-           [[Resources getResources] voSound:sound:guys[idx].model_type:MakeVector2(guys[idx].pos)]; 
+           Resources::getResources()->voSound(sound,guys[idx].model_type,MakeVector2(guys[idx].pos));
         }
         else
-           [[Resources getResources] voSound:sound:guys[idx].model_type:MakeVector2(guys[idx].pos)];
+           Resources::getResources()->voSound(sound,guys[idx].model_type,MakeVector2(guys[idx].pos));
     }
         
 }
@@ -944,7 +944,7 @@ void ExplodeModels(Vector p,int color){
         vel.y+=pos.y+6;
         vel.z+=pos.z;
         e->vel=vel;
-         [[Resources getResources] playSound:S_HIT];
+         Resources::getResources()->playSound(S_HIT);
             if([World getWorld].player->life>.5f)
                 [World getWorld].player->takeDamage(.38f);
             else
@@ -1001,7 +1001,7 @@ bool CheckCollision(Entity* e){
                 ep->takeDamage(.5f);
             
                 ep->flash=0.6f;
-                [[Resources getResources] playSound:S_HIT];
+                Resources::getResources()->playSound(S_HIT);
             
         }
        
@@ -1850,7 +1850,8 @@ void PlaceModel(int idx,Vector pos){
     guys[idx].targetangle=guys[idx].angle;
     guys[idx].color=[World getWorld].hud->creature_color;
     if(idx!=nguys)
-     [[Resources getResources] playSound:S_BUILD_GENERIC];  
+        Resources::getResources()->playSound(S_BUILD_GENERIC);
+    
     if(idx!=nguys){
     guys[idx].vel.y=3;
     [World getWorld].hud->blocktype=TYPE_CLOUD;
@@ -1913,7 +1914,7 @@ void BurnModel(int idx){
 }
 void killCreature(int idx){
     guys[idx].alive=FALSE;
-    [[Resources getResources] playSound:S_CREATURE_VANISH];
+    Resources::getResources()->playSound(S_CREATURE_VANISH);
     PVRTVec3 upos=unwrap(guys[idx].pos);
     [World getWorld].effects->addCreatureVanish(upos.x,upos.z,guys[idx].pos.y,guys[idx].color,guys[idx].model_type);
     
@@ -1972,7 +1973,7 @@ void PickupModel(int idx){
         inventory.pos=MakeVector(guys[idx].pos.x,guys[idx].pos.y,guys[idx].pos.z);
         inventory.color=guys[idx].color;
         inventory.type=guys[idx].model_type;
-          [[Resources getResources] playSound:S_CREATURE_PICKEDUP];     
+          Resources::getResources()->playSound(S_CREATURE_PICKEDUP);
     }
     else
         printg("bad creature idx for PickupModel\n");
@@ -2135,7 +2136,7 @@ void DrawShadows(){
     glEnable(GL_BLEND);
    glDepthMask(GL_FALSE);
     //glDisable(GL_DEPTH_TEST);
-    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:ICO_SHADOW].name);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(ICO_SHADOW).name);
     glColor4f(1,1,1,.4f);
     int shadows_drawn=0;
     for(int j=0;j<=max_render;j++){
@@ -2591,30 +2592,30 @@ void DrawModel(int mi)
 	int tex=-1;
     if(guys[mi].ragetimer<=0&&guys[mi].color!=0&&modelType!=M_CHARGER&&modelType!=M_STALKER){
         if(guys[mi].blinktimer>0){
-               tex=[[Resources getResources] getSkin:modelType:guys[mi].color:1];
+               tex=Resources::getResources()->getSkin(modelType,guys[mi].color,1);
             
             
         }else{
-             tex=[[Resources getResources] getSkin:modelType:guys[mi].color:0];
+             tex=Resources::getResources()->getSkin(modelType,guys[mi].color,0);
         }
     }else
     if(modelType==M_MOOF){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_MOOFRAGE].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_MOOFRAGE).name);
         else if(guys[mi].blinktimer>0){
             if(guys[mi].color==0)
-                tex=[[Resources getResources] getTex:SKIN_MOOFBLINK].name;
+                tex=Resources::getResources()->getTex(SKIN_MOOFBLINK).name;
             else{
-               tex=[[Resources getResources] getSkin:M_MOOF:guys[mi].color:1];
+               tex=Resources::getResources()->getSkin(M_MOOF,guys[mi].color,1);
                
                 
             }
                      
         }else{
             if(guys[mi].color==0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_MOOF].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_MOOF).name);
             else{
-                tex=[[Resources getResources] getSkin:M_MOOF:guys[mi].color:0];
+                tex=Resources::getResources()->getSkin(M_MOOF,guys[mi].color,0);
                
              
             }
@@ -2622,47 +2623,47 @@ void DrawModel(int mi)
         }
     }else if(modelType==M_BATTY){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_BATTYRAGE].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_BATTYRAGE).name);
         else if(guys[mi].blinktimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_BATTYBLINK].name);   
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_BATTYBLINK).name);
         else
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_BATTY].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_BATTY).name);
     }else if(modelType==M_GREEN){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_GREENRAGE].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_GREENRAGE).name);
         else if(guys[mi].blinktimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_GREENBLINK].name);   
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_GREENBLINK).name);
         else
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_GREEN].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_GREEN).name);
         
     }else if(modelType==M_NERGLE){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_NERGLERAGE].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_NERGLERAGE).name);
         else if(guys[mi].blinktimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_NERGLEBLINK].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_NERGLEBLINK).name);
         else
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_NERGLE].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_NERGLE).name);
     }else if(modelType==M_STUMPY){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_STUMPYRAGE].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_STUMPYRAGE).name);
         else if(guys[mi].blinktimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_STUMPYBLINK].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_STUMPYBLINK).name);
         else
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_STUMPY].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_STUMPY).name);
     }else if(modelType==M_CHARGER){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_CHARGERRAGE].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_CHARGERRAGE).name);
         else if(guys[mi].blinktimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_CHARGERBLINK].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_CHARGERBLINK).name);
         else
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_CHARGER].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_CHARGER).name);
     }else if(modelType==M_STALKER){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_STALKERRAGE].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_STALKERRAGE).name);
         else if(guys[mi].blinktimer>0)
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_STALKERBLINK].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_STALKERBLINK).name);
         else
-            glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:SKIN_STALKER].name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(SKIN_STALKER).name);
     }
     if(tex!=-1)
      glBindTexture(GL_TEXTURE_2D, tex);

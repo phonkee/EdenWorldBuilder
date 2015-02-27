@@ -177,32 +177,32 @@ void Player::processInput(float etime){
                 
                 if(type==TYPE_STONE||type==TYPE_DARK_STONE||type==TYPE_COBBLESTONE||type==TYPE_BRICK||type==TYPE_VINE){
                     
-                    [[Resources getResources] playSound:S_BUILD_STONE];
+                    Resources::getResources()->playSound(S_BUILD_STONE);
                 }else if(type==TYPE_LEAVES||type==TYPE_FLOWER){
-                    [[Resources getResources] playSound:S_BUILD_LEAVES];	 
+                    Resources::getResources()->playSound(S_BUILD_LEAVES);	 
                 }else if(type==TYPE_LIGHTBOX){
                     
-                    [[Resources getResources] playSound:S_BUILD_LIGHT];
+                    Resources::getResources()->playSound(S_BUILD_LIGHT);
                 }else if(type==TYPE_STEEL){
                     
-                    [[Resources getResources] playSound:S_BUILD_METAL];
+                    Resources::getResources()->playSound(S_BUILD_METAL);
                 }else if(blockinfo[type]&IS_LAVA){
-                    [[Resources getResources] playSound:S_BUILD_LAVA];	 
+                    Resources::getResources()->playSound(S_BUILD_LAVA);	 
                 }else if(blockinfo[type]&IS_WATER){							 
-                    [[Resources getResources] playSound:S_BUILD_WATER];	 
+                    Resources::getResources()->playSound(S_BUILD_WATER);	 
                 }else if(blockinfo[type]&IS_FLAMMABLE&&type!=TYPE_WEAVE&&type!=TYPE_WEAVE&&type!=TYPE_TNT&&type!=TYPE_FIREWORK){
-                    [[Resources getResources] playSound:S_BUILD_WOOD];	 
+                    Resources::getResources()->playSound(S_BUILD_WOOD);	 
                 }else if(type==TYPE_GLASS){
-                    [[Resources getResources] playSound:S_BUILD_GLASS];	
+                    Resources::getResources()->playSound(S_BUILD_GLASS);	
                 }else if(blockinfo[type]&IS_GRASS||type==TYPE_DIRT){
-                    [[Resources getResources] playSound:S_BUILD_DIRT];	
+                    Resources::getResources()->playSound(S_BUILD_DIRT);	
                 }
                     
                         else{
-                    [[Resources getResources] playSound:S_BUILD_GENERIC];
+                    Resources::getResources()->playSound(S_BUILD_GENERIC);
                 }
                 if([World getWorld].hud->build_size==0){
-                   // [[World getWorld].terrain buildCustom:buildpoint.x:buildpoint.z:buildpoint.y];
+                   // [[World getWorld].terrain buildCustom:buildpoint.x:buildpoint.z:buildpoint.y);
                 } else if([World getWorld].hud->build_size==2){
                     [[World getWorld].terrain buildBlock:buildpoint.x:buildpoint.z:buildpoint.y];
                     [[World getWorld].terrain buildBlock:buildpoint.x+1:buildpoint.z:buildpoint.y];
@@ -306,7 +306,7 @@ void Player::processInput(float etime){
 			if(mode==MODE_CAMERA){	
 				if(touches[i].placeBlock){
 					[World getWorld].hud->take_screenshot=TRUE;
-					//[[Resources getResources] playSound:SOUND_CAMERA];	
+					//Resources::getResources()->playSound(SOUND_CAMERA];	
 				}
 				continue;
 			}
@@ -340,7 +340,7 @@ void Player::processInput(float etime){
                         if(fwc_result!=-1){
                             PickupModel(fwc_result);
                             printg("building REALLY?: %d,%d,%d\n",point.x,point.y,point.z);
-                           // [[Resources getResources] playSound:S_];	
+                           // Resources::getResources()->playSound(S_];	
                             point.x=-1;
                             
                         }
@@ -354,13 +354,13 @@ void Player::processInput(float etime){
                         point.x=-1;
                     }
                     if(mode==MODE_PAINT&&fwc_result!=-1){
-                         [[Resources getResources] playSound:S_PAINT_BLOCK];	
+                         Resources::getResources()->playSound(S_PAINT_BLOCK);	
                         ColorModel(fwc_result,[World getWorld].hud->paintColor);
                         
                         point.x=-1;
                     }
                     if(mode==MODE_BURN&&fwc_result!=-1){
-                        [[Resources getResources] playSound:S_ATTEMPT_FIRE];
+                        Resources::getResources()->playSound(S_ATTEMPT_FIRE);
 						
                         BurnModel(fwc_result);
                         
@@ -371,7 +371,7 @@ void Player::processInput(float etime){
                         if(mode==MODE_PAINT){
                             
                             extern Vector colorTable[256];
-                            [[Resources getResources] playSound:S_PAINT_BLOCK];
+                            Resources::getResources()->playSound(S_PAINT_BLOCK);
                             
                             paintSky([World getWorld].hud->paintColor);
                                                         
@@ -418,27 +418,27 @@ void Player::processInput(float etime){
                                 int type=[World getWorld].hud->blocktype;
                                 if(type==TYPE_STONE||type==TYPE_DARK_STONE||type==TYPE_COBBLESTONE||type==TYPE_BRICK||type==TYPE_VINE){
                                     
-                                    [[Resources getResources] playSound:S_BUILD_STONE];
+                                    Resources::getResources()->playSound(S_BUILD_STONE);
                                 }else if(type==TYPE_LIGHTBOX){
                                     
-                                    [[Resources getResources] playSound:S_BUILD_LIGHT];
+                                    Resources::getResources()->playSound(S_BUILD_LIGHT);
                                 }else if(type==TYPE_STEEL){
                                     
-                                    [[Resources getResources] playSound:S_BUILD_METAL];
+                                    Resources::getResources()->playSound(S_BUILD_METAL);
                                 }else if(type==TYPE_LEAVES||type==TYPE_FLOWER){
-                                    [[Resources getResources] playSound:S_BUILD_LEAVES];	 
+                                    Resources::getResources()->playSound(S_BUILD_LEAVES);	 
                                 }else if(blockinfo[type]&IS_LAVA){							 
-                                    [[Resources getResources] playSound:S_BUILD_LAVA];	 
+                                    Resources::getResources()->playSound(S_BUILD_LAVA);	 
                                 }else if(blockinfo[type]&IS_WATER){							 
-                                    [[Resources getResources] playSound:S_BUILD_WATER];	 
+                                    Resources::getResources()->playSound(S_BUILD_WATER);	 
                                 }else if(blockinfo[type]&IS_FLAMMABLE&&type!=TYPE_WEAVE&&type!=TYPE_TNT&&type!=TYPE_FIREWORK){							 
-                                    [[Resources getResources] playSound:S_BUILD_WOOD];	 
+                                    Resources::getResources()->playSound(S_BUILD_WOOD);	 
                                 }else if(type==TYPE_GLASS){
-                                    [[Resources getResources] playSound:S_BUILD_GLASS];	
+                                    Resources::getResources()->playSound(S_BUILD_GLASS);	
                                 }else if(blockinfo[type]&IS_GRASS||type==TYPE_DIRT){
-                                    [[Resources getResources] playSound:S_BUILD_DIRT];	
+                                    Resources::getResources()->playSound(S_BUILD_DIRT);	
                                 }else{
-                                    [[Resources getResources] playSound:S_BUILD_GENERIC];	
+                                    Resources::getResources()->playSound(S_BUILD_GENERIC);	
                                     
                                 }
                               //  printg("building: %d,%d,%d\n",point.x,point.y,point.z);
@@ -480,14 +480,14 @@ void Player::processInput(float etime){
                             printg("burning custom??\n");
                         }else
                         printg("burning: %d,%d,%d\n",point.x,point.y,point.z);
-						[[Resources getResources] playSound:S_ATTEMPT_FIRE];
+						Resources::getResources()->playSound(S_ATTEMPT_FIRE);
                          
 						[[World getWorld].terrain burnBlock:point.x	:point.z :point.y :FALSE];
 						if(blockinfo[type]&IS_FLAMMABLE){
                             if(type==TYPE_FIREWORK){
-                                [[Resources getResources] playSound:S_FIREWORK_FUSE];
+                                Resources::getResources()->playSound(S_FIREWORK_FUSE);
                             }else
-							[[Resources getResources] playSound:S_FIRE_SUCCEED];
+							Resources::getResources()->playSound(S_FIRE_SUCCEED);
 						}else{
                             [World getWorld].effects->addSmoke(point.x,point.z,point.y);
                         }
@@ -498,23 +498,23 @@ void Player::processInput(float etime){
                                
                                (type>=TYPE_STONE_SIDE1&&type<=TYPE_STONE_SIDE4)){
 								
-								[[Resources getResources] playSound:S_BREAK_STONE];
+								Resources::getResources()->playSound(S_BREAK_STONE);
                             }else if(type==TYPE_STEEL){
-                                [[Resources getResources] playSound:S_METAL_DESTROY];
+                                Resources::getResources()->playSound(S_METAL_DESTROY);
                             }else if(type==TYPE_LEAVES||type==TYPE_FLOWER){
-								[[Resources getResources] playSound:S_BREAK_LEAVES];	 
+								Resources::getResources()->playSound(S_BREAK_LEAVES);	 
 							}else if(blockinfo[type]&IS_LAVA){							 
-								[[Resources getResources] playSound:S_BREAK_LAVA];	 
+								Resources::getResources()->playSound(S_BREAK_LAVA);	 
 							}else if(blockinfo[type]&IS_WATER){							 
-								[[Resources getResources] playSound:S_BREAK_WATER];	 
+								Resources::getResources()->playSound(S_BREAK_WATER);	 
 							}else if(blockinfo[type]&IS_FLAMMABLE){							 
-								[[Resources getResources] playSound:S_BREAK_WOOD];	 
+								Resources::getResources()->playSound(S_BREAK_WOOD);	 
 							}else if(type==TYPE_GLASS||type==TYPE_LIGHTBOX){
-                                [[Resources getResources] playSound:S_BREAK_GLASS];	
+                                Resources::getResources()->playSound(S_BREAK_GLASS);	
                             }else if(blockinfo[type]&IS_GRASS||type==TYPE_DIRT||type==TYPE_SAND){
-                                 [[Resources getResources] playSound:S_BREAK_DIRT];	
+                                 Resources::getResources()->playSound(S_BREAK_DIRT);	
                             }else 
-                                 [[Resources getResources] playSound:S_BREAK_GENERIC];	
+                                 Resources::getResources()->playSound(S_BREAK_GENERIC);	
 							//NSLog(@"point: %d %d %d %d",point.x,point.z,point.y,type);
                             if(hitCustom){
                                //[[World getWorld].terrain destroyCustom:point.x:point.z:point.y];
@@ -528,9 +528,9 @@ void Player::processInput(float etime){
 					}else if(mode==MODE_PAINT){
                        
                         if(type==TYPE_LIGHTBOX){
-                             [[Resources getResources] playSound:S_CHANGE_LIGHT];
+                             Resources::getResources()->playSound(S_CHANGE_LIGHT);
                         }else
-                        [[Resources getResources] playSound:S_PAINT_BLOCK];	
+                        Resources::getResources()->playSound(S_PAINT_BLOCK);	
                         
                         if(hitCustom){
                            // [[World getWorld].terrain paintCustom:point.x:point.z:point.y:[World getWorld].hud.paintColor];
@@ -718,11 +718,11 @@ void Player::takeDamage(float damage){
     }
     if(life<0){
         if(damage==.08f){
-            [[Resources getResources] playSound:S_DEATH_BY_LAVA];
+            Resources::getResources()->playSound(S_DEATH_BY_LAVA);
         }else if(damage==.2f){
-            [[Resources getResources] playSound:S_DEATH_BY_CREATURE];
+            Resources::getResources()->playSound(S_DEATH_BY_CREATURE);
         }else if(damage==.38f||damage==.05f){
-            [[Resources getResources] playSound:S_DEATH_BY_TNT];
+            Resources::getResources()->playSound(S_DEATH_BY_TNT);
         }
         dead=TRUE;
         [World getWorld].hud->fade_out=0;
@@ -972,15 +972,15 @@ BOOL Player::update(float etime){
                 if(ladderSound){
                     //NSLog(@"1");
                     if(ladderIsVine)
-                        [[Resources getResources] playSound:S_VINE];
+                        Resources::getResources()->playSound(S_VINE);
                     else
-                    [[Resources getResources] playSound:S_LADDER];
+                    Resources::getResources()->playSound(S_LADDER);
                 }else{
                    // NSLog(@"2");
                     if(ladderIsVine)
-                        [[Resources getResources] playSound:S_VINE];
+                        Resources::getResources()->playSound(S_VINE);
                     else
-                        [[Resources getResources] playSound:S_LADDER];
+                        Resources::getResources()->playSound(S_LADDER);
                 }
                 ladderSound=!ladderSound;
                     
@@ -1069,11 +1069,11 @@ BOOL Player::update(float etime){
 		
 	}
     if([World getWorld].hud->underLiquid){
-        [[Resources getResources] soundEvent:AMBIENT_UNDERWATER];
+        Resources::getResources()->soundEvent(AMBIENT_UNDERWATER);
     }else if(pos.y>T_HEIGHT-9){
         Vector v=pos;
         v.y=T_HEIGHT-1;
-        [[Resources getResources] soundEvent:AMBIENT_SKYHIGH:v];
+        Resources::getResources()->soundEvent(AMBIENT_SKYHIGH,v);
     }else{
         int x=pos.x;
         int z=pos.z;    
@@ -1091,9 +1091,9 @@ BOOL Player::update(float etime){
                             spos.y=y+h+.5f;
                             spos.z=zz+.5f;
                             if(blockinfo[type]&IS_WATER){
-                                 [[Resources getResources] soundEvent:AMBIENT_RIVER:spos];
+                                 Resources::getResources()->soundEvent(AMBIENT_RIVER,spos);
                             }else{
-                                [[Resources getResources] soundEvent:AMBIENT_LAVA:spos];
+                                Resources::getResources()->soundEvent(AMBIENT_LAVA,spos);
                             }
                             goto found;
                         }//else 
@@ -1105,7 +1105,7 @@ BOOL Player::update(float etime){
         if(pos.y<15){
             Vector v=pos;
             v.y=6;
-            [[Resources getResources] soundEvent:AMBIENT_CAVE:v];
+            Resources::getResources()->soundEvent(AMBIENT_CAVE,v);
         }else{
             int ppx=pos.x-4096*CHUNK_SIZE+GSIZE/2;
             int ppz=pos.z-4096*CHUNK_SIZE+GSIZE/2;
@@ -1128,27 +1128,27 @@ BOOL Player::update(float etime){
 #define AMBIENT_SNOWMOUNTAIN 16
             */
             if([World getWorld].terrain.tgen->LEVEL_SEED!=DEFAULT_LEVEL_SEED){
-                 [[Resources getResources] soundEvent:AMBIENT_OPEN:pos];
+                 Resources::getResources()->soundEvent(AMBIENT_OPEN,pos);
             }else
             if(ppx==0&&ppz==0){
-                [[Resources getResources] soundEvent:AMBIENT_SNOWMOUNTAIN:pos];
+                Resources::getResources()->soundEvent(AMBIENT_SNOWMOUNTAIN,pos);
             }else if(ppx==0&&ppz==1){
-                [[Resources getResources] soundEvent:AMBIENT_PYRAMID:pos];
+                Resources::getResources()->soundEvent(AMBIENT_PYRAMID,pos);
             }else if(ppx==0&&ppz==2){
-                [[Resources getResources] soundEvent:AMBIENT_OASIS:pos];
+                Resources::getResources()->soundEvent(AMBIENT_OASIS,pos);
             }else if((ppx==1||ppx==2)&&ppz==3){
-                [[Resources getResources] soundEvent:AMBIENT_BEACH:pos];
+                Resources::getResources()->soundEvent(AMBIENT_BEACH,pos);
             }else if(ppx==3&&ppz==3){
-                 [[Resources getResources] soundEvent:AMBIENT_LAVABADLANDS:pos];
+                 Resources::getResources()->soundEvent(AMBIENT_LAVABADLANDS,pos);
             }else if(ppx==3&&ppz==2){
-                [[Resources getResources] soundEvent:AMBIENT_MARSHBADLANDS:pos];
+                Resources::getResources()->soundEvent(AMBIENT_MARSHBADLANDS,pos);
             }else if(ppx==3&&ppz==1){
-                [[Resources getResources] soundEvent:AMBIENT_GRASSBADLANDS:pos];
+                Resources::getResources()->soundEvent(AMBIENT_GRASSBADLANDS,pos);
             }else if((ppx==3||ppx==2||ppx==1)&&ppz==0){
-                [[Resources getResources] soundEvent:AMBIENT_GRASSBADLANDS:pos];
+                Resources::getResources()->soundEvent(AMBIENT_GRASSBADLANDS,pos);
             }else
            // printg("region: %d,%d\n",ppx,ppz);
-         [[Resources getResources] soundEvent:AMBIENT_OPEN:pos];
+         Resources::getResources()->soundEvent(AMBIENT_OPEN,pos);
         }
     found:
         ;
@@ -1280,9 +1280,9 @@ BOOL Player::vertc(){
                         if(!lastInLiquid&&minTranDist.y>0&&vel.y<-5){
                             lastInLiquid=TRUE;
                             if(vel.y<-8)
-                            [[Resources getResources] playSound:S_SPLASH_BIG];
+                            Resources::getResources()->playSound(S_SPLASH_BIG);
                             else
-                            [[Resources getResources] playSound:S_SPLASH_SMALL];
+                            Resources::getResources()->playSound(S_SPLASH_SMALL);
                         }
                         inLiquid=TRUE;
                         int color=[ter getColor:x :z :y];
@@ -1299,7 +1299,7 @@ BOOL Player::vertc(){
                         
                         [World getWorld].hud->goldencubes++;
                         [World getWorld].hud->flash=.95f;
-                         [[Resources getResources] playSound:S_TREASURE_PICKUP];
+                         Resources::getResources()->playSound(S_TREASURE_PICKUP);
                         int coli=[[World getWorld].terrain getColor:x :z:y];
                         if(coli==0)
                             [World getWorld].hud->flashcolor=MakeVector(blockColor[TYPE_GOLDEN_CUBE][0]/255.0f,blockColor[TYPE_GOLDEN_CUBE][1]/255.0f,blockColor[TYPE_GOLDEN_CUBE][2]/255.0f);
@@ -1385,7 +1385,7 @@ BOOL Player::vertc(){
             takeDamage(.08f);
             n*=1.8;
             
-            [[Resources getResources] playSound:S_LAVA_BURN];	
+            Resources::getResources()->playSound(S_LAVA_BURN);
             NSLog(@"n:%f",n);
             if(minminTranDist.y>0){
                 if(n>-10&&n<0)n=-5;
@@ -1394,7 +1394,7 @@ BOOL Player::vertc(){
         }
         if(collided==TYPE_TRAMPOLINE){
             n*=2;
-              [[Resources getResources] playSound:S_BOUNCE];	
+              Resources::getResources()->playSound(S_BOUNCE);
             NSLog(@"n:%f vel.y:%f",n,vel.y);
 
             if(minminTranDist.y>0){
@@ -1457,10 +1457,10 @@ BOOL Player::vertc(){
                    (blockinfo[collided]&IS_RAMPORSIDE)) {
                     if((blockinfo[collided]&IS_HARD)){
                         if(!onIce)
-              [[Resources getResources] playSound:S_LAND_HARD];	
+              Resources::getResources()->playSound(S_LAND_HARD);
                     }else{
                         if(!onIce)
-                     [[Resources getResources] playSound:S_LAND_SOFT];
+                     Resources::getResources()->playSound(S_LAND_SOFT);
                     }
                 }
               jumping=FALSE;
@@ -1606,7 +1606,7 @@ BOOL Player::vertc(){
 			//NSLog(@"%f %f",bot,h);
 			if(pos.y-boxheight/2<=h&&((lpos.y-boxheight/2)>=h)||(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4)){
 				if(jumping){
-					[[Resources getResources] playSound:SOUND_LAND];			
+					Resources::getResources()->playSound(SOUND_LAND];			
 				}
 				jumping=FALSE;
                 //NSLog(@"vc(%d,%f)",i,vel.y);
@@ -1854,9 +1854,9 @@ void Player::move(float etime){
                collided==TYPE_COBBLESTONE||collided==TYPE_BRICK||collided==TYPE_LEAVES||
                collided==TYPE_TREE||collided==TYPE_TNT||collided==TYPE_FIREWORK||collided==TYPE_BEDROCK||(blockinfo[collided]&IS_RAMPORSIDE))    {
                 if((blockinfo[collided]&IS_HARD))
-                    [[Resources getResources] playSound:S_FOOTSTEPS_HARD];
+                    Resources::getResources()->playSound(S_FOOTSTEPS_HARD);
                 else
-                    [[Resources getResources] playSound:S_FOOTSTEPS_SOFT];
+                    Resources::getResources()->playSound(S_FOOTSTEPS_SOFT);
                 
             }
            
@@ -1897,7 +1897,7 @@ void Player::move(float etime){
         if(icesound!=0){
             iceTimer-=etime;
             if(iceTimer<0){
-                [[Resources getResources] stopSound:icesound];
+                Resources::getResources()->stopSound(icesound);
                 icesound=0;
                 
             }
@@ -1924,9 +1924,9 @@ void Player::move(float etime){
     }
     if(mag!=0&&onIce){
         if(!lastOnIce){
-           // [[Resources getResources] stopSound:icesound];
+           // Resources::getResources()->stopSound:icesound];
             if(icesound==0)
-            icesound=[[Resources getResources] playSound:S_ICE_LOOP];
+            icesound=Resources::getResources()->playSound(S_ICE_LOOP);
             iceTimer=.15f;
             lastOnIce=TRUE;
         }
@@ -1999,7 +1999,7 @@ void Player::move(float etime){
             pos.z=pos.z+dirv.z/5.3f;
             inPortal=TRUE;
             printg("entering portal (%d, %d, %d)  ", (int)pos.x,(int)(pos.y+boxbase/2),(int)pos.z);
-            [[Resources getResources] playSound:S_ENTER_PORTAL];
+            Resources::getResources()->playSound(S_ENTER_PORTAL);
             Vector2 ret=[World getWorld].terrain.portals->enterPortal(pos.x
                                              ,pos.y+boxbase/2
                                                                      ,pos.z,vel);
@@ -2057,7 +2057,7 @@ void Player::render(){
         Graphics::drawCube(bx,by,bz,TYPE_GRADIENT,1);
        
         glPopMatrix();
-	//[Graphics drawTexCube:bx:by:bz:boxbase:[[Resources getResources] getTex:0]];
+	//[Graphics drawTexCube:bx:by:bz:boxbase:Resources::getResources()->getTex:0]];
 
 	glEnable(GL_CULL_FACE);
 	}

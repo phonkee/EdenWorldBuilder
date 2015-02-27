@@ -87,7 +87,7 @@ void Firework::render(){
         
          
          if(fireworks[i].fuse<0){
-             [[Resources getResources] playSound:S_FIREWORK_EXPLODE];
+            Resources::getResources()->playSound(S_FIREWORK_EXPLODE);
              Vector skyc=[World getWorld].terrain.skycolor;
              skyc.x+=.3f;
              skyc.y+=.3f;

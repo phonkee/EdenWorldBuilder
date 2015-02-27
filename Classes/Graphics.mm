@@ -276,7 +276,7 @@ void Graphics::beginTerrain(){
    // glDisable(GL_CULL_FACE);
    // glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
-	glBindTexture(GL_TEXTURE_2D, [Resources getResources].atlas.name);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources()->atlas.name);
     //if(![World getWorld].hud.mode==MODE_CAMERA){
        // if(!SUPPORTS_OGL2){
     glEnable(GL_FOG);
@@ -595,15 +595,15 @@ extern const GLfloat cubeNormals[36*3];
 
 void Graphics::drawFirework(float x,float y,float z, int color, float scale, float rot){
    
-        glBindTexture(GL_TEXTURE_2D, [Resources getResources].atlas.name);
+        glBindTexture(GL_TEXTURE_2D, Resources::getResources()->atlas.name);
   
-	Resources* res=[Resources getResources];
+	Resources* res=Resources::getResources();
 	
     
 	for(int f=0;f<6;f++){	
         int bf=blockTypeFaces[TYPE_CLOUD][f];
           CGPoint tp;
-        tp=[res getBlockTex:bf];
+        tp=res->getBlockTex(bf);
         for(int v=0;v<6;v++){
 			int v_idx=f*6+v;
 			vertices[v_idx].texs[0]=cubeTexture[v_idx*2];
@@ -669,9 +669,9 @@ void Graphics::drawFirework(float x,float y,float z, int color, float scale, flo
 void Graphics::drawCube(float x,float y,float z,int type,int buildsize){
     // printg("drawCube: %f, %f, %f\n",x,y,z);
     if(!(blockinfo[type]&IS_ATLAS2))
-        glBindTexture(GL_TEXTURE_2D, [Resources getResources].atlas.name);
+        glBindTexture(GL_TEXTURE_2D, Resources::getResources()->atlas.name);
     else
-        glBindTexture(GL_TEXTURE_2D, [Resources getResources].atlas2.name);
+        glBindTexture(GL_TEXTURE_2D, Resources::getResources()->atlas2.name);
     
     if(type==TYPE_ICE_RAMP1||type==TYPE_STONE_RAMP1||type==TYPE_WOOD_RAMP1||type==TYPE_SHINGLE_RAMP1)
     {
@@ -694,7 +694,7 @@ void Graphics::drawCube(float x,float y,float z,int type,int buildsize){
 	1,1,	//5  J bottom
 	0, 0,	//2  K back
 	1, 0 	//1  L back*/
-	Resources* res=[Resources getResources];
+    Resources* res=Resources::getResources();
 	BOOL coloring=FALSE;
     if(type==TYPE_GRASS||type==TYPE_GRASS2||type==TYPE_GRASS3||type==TYPE_TNT||type==TYPE_BRICK||type==TYPE_VINE||type==TYPE_FIREWORK){
         if(![World getWorld].hud->block_paintcolor)
@@ -734,7 +734,7 @@ void Graphics::drawCube(float x,float y,float z,int type,int buildsize){
             
         }
         CGPoint tp;
-        tp=[res getBlockTex:bf];
+        tp=res->getBlockTex(bf);
 				for(int v=0;v<6;v++){
 			int v_idx=f*6+v;
 			vertices[v_idx].texs[0]=cubeTexture[v_idx*2];

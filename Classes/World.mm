@@ -186,7 +186,7 @@ void RLETEST(){
     
     terrain=[[Terrain alloc] init];	
     cam=new Camera();
-    res=[Resources getResources];
+    res=Resources::getResources();
     player=new Player(self);
     hud=new Hud();
     fm=new FileManager();
@@ -197,7 +197,7 @@ void RLETEST(){
     [NSThread detachNewThreadSelector:@selector(loadWorldThread2:) toTarget:self withObject:self];
     [terrain startLoadingThread];
   //  FLIPPED=FALSE;
-    [[Resources getResources] playMenuTune];
+    Resources::getResources()->playMenuTune();
    // [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
    // [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
@@ -344,11 +344,11 @@ extern int chunk_load_count;
     if(doneLoading==0){
         
         doneLoading=1;
-        [[Resources getResources] stopMenuTune];
+        Resources::getResources()->stopMenuTune();
         if(LOW_MEM_DEVICE){
             menu->deactivate();
             
-            [[Resources getResources] unloadMenuTextures];
+            Resources::getResources()->unloadMenuTextures();
             [[World getWorld].terrain allocateMemory];
             [terrain loadTerrain:name:TRUE];
             doneLoading=2;
@@ -384,10 +384,10 @@ extern int chunk_load_count;
             if(!LOW_MEM_DEVICE){
             menu->deactivate();
         
-            [[Resources getResources] unloadMenuTextures];
+            Resources::getResources()->unloadMenuTextures();
             }
             
-            [[Resources getResources] loadGameAssets];
+            Resources::getResources()->loadGameAssets();
             
             // [terrain loadTerrain:name];
             doneLoading=0;
@@ -419,9 +419,9 @@ extern int chunk_load_count;
         UnloadModels();
     }
    // printg("loading menu textures\n");
-    [[Resources getResources] unloadGameAssets];
+    Resources::getResources()->unloadGameAssets();
       [[World getWorld].terrain deallocateMemory];
-	[[Resources getResources] loadMenuTextures];
+	Resources::getResources()->loadMenuTextures();
     if(SUPPORTS_RETINA&&!IS_RETINA){
       //  printg("menu activated2\n");
 
@@ -441,7 +441,7 @@ extern int chunk_load_count;
         menu->activate();
    	}
 
-	[[Resources getResources] playMenuTune];
+	Resources::getResources()->playMenuTune();
 	target_game_mode=GAME_MODE_WAIT;
     game_mode=GAME_MODE_WAIT;
     
@@ -458,7 +458,7 @@ extern int chunk_load_count;
 	[terrain release];
     delete player;
     delete cam;
-    [res release];
+    delete res;
     delete hud;
     delete menu;
     delete fm;
@@ -500,7 +500,7 @@ extern int chunk_load_count;
 	}
     
 	
-	[[Resources getResources] update:etime];
+	Resources::getResources()->update(etime);
 	if(game_mode==GAME_MODE_MENU){
 		menu->update(etime);
 	}else if(game_mode==GAME_MODE_PLAY){

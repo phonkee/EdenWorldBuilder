@@ -877,7 +877,7 @@ bool isOnFire(int x ,int z, int y){
 		
         }else
 			node->life=6;
-		node->sid=[[Resources getResources] startedBurn:node->life];
+		node->sid=Resources::getResources()->startedBurn(node->life);
 		node->time=node->life;	
 		
 		node->pid=[World getWorld].effects->addFire(x ,z ,y ,0 ,node->life+.3);
@@ -976,7 +976,7 @@ int getRampType(int x,int z,int y, int t){
         if([World getWorld].hud->goldencubes<=0)return;
          printg("goldencubes %d paint color: %d\n",[World getWorld].hud->goldencubes, [World getWorld].hud->block_paintcolor);
         [World getWorld].hud->goldencubes--;
-        [[Resources getResources] playSound:S_TREASURE_PLACE];
+        Resources::getResources()->playSound(S_TREASURE_PLACE);
        
     }
     if(y<0||y>=T_HEIGHT)return;
@@ -1542,7 +1542,7 @@ int getColorc(int x,int z,int y){
 }
 - (void)shootFirework:(int)x :(int)z :(int)y{
     fireworks->addFirework(x,y,z,[self getColor:x:z:y]);
-    [[Resources getResources] playSound:S_FIREWORK_LIFTOFF];
+    Resources::getResources()->playSound(S_FIREWORK_LIFTOFF);
    // [[World getWorld].effects addCreatureVanish:x+.5f:z+.5f:y+5:[self getColor:x:z:y]:TYPE_TNT];
     
     [self destroyBlock:x :z :y];
@@ -1553,9 +1553,9 @@ int getColorc(int x,int z,int y){
     
     int color=[self getColor:x:z:y];
     //if(color!=0)
-    //    [[Resources getResources] playSound:S_GOOP_EXPLODE];
+    //    Resources::getResources()->playSound:S_GOOP_EXPLODE];
     //else
-        [[Resources getResources] playSound:S_EXPLODE];
+        Resources::getResources()->playSound(S_EXPLODE);
     
     Vector v=MakeVector(x+.5f,y+.5f,z+.5f);
     ExplodeModels(v,color);
@@ -1611,9 +1611,9 @@ int getColorc(int x,int z,int y){
 	
     int color=[self getColor:x:z:y];
     if(color!=0)
-         [[Resources getResources] playSound:S_GOOP_EXPLODE];
+         Resources::getResources()->playSound(S_GOOP_EXPLODE);
     else
-        [[Resources getResources] playSound:S_EXPLODE];
+        Resources::getResources()->playSound(S_EXPLODE);
     
     Vector v=MakeVector(x+.5f,y+.5f,z+.5f);
     ExplodeModels(v,color);
@@ -1781,7 +1781,7 @@ float last_etime;
                 [self blocktntexplode:node->x :node->z :node->y :node->type];
             }
 			nburn--;
-			[[Resources getResources] endBurnId:node->sid];
+			Resources::getResources()->endBurnId(node->sid);
 			[World getWorld].effects->removeFire(node->pid);
 			if(tz!=TYPE_NONE)
 			[self updateChunks:node->x :node->z :node->y :TYPE_NONE];
@@ -1865,7 +1865,7 @@ float last_etime;
 		
 	}
     [World getWorld].effects->clearAllEffects();
-	[[Resources getResources] endBurn];
+	Resources::getResources()->endBurn();
 	
 }
 -(void)startDynamics{/*
@@ -2485,9 +2485,9 @@ int lolc=0;
         
         if(prev_ani!=door->ani){
             if(door->ani<0){
-                [[Resources getResources] playSound:S_DOOR_OPEN];
+                Resources::getResources()->playSound(S_DOOR_OPEN);
             }else if(door->ani > 0){
-              //   [[Resources getResources] playSound:S_DOOR_CLOSED];
+              //   Resources::getResources()->playSound:S_DOOR_CLOSED];
             }
         }
         float rot=door->rot;
@@ -2608,7 +2608,7 @@ int lolc=0;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
 
-    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getDoorTex:clr]);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getDoorTex(clr));
     glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
     glNormalPointer( GL_FLOAT, sizeof(vertexObject), objVertices[0].normal);
 	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
@@ -2710,7 +2710,7 @@ int lolc=0;
     glLightfv(GL_LIGHT1,GL_SPECULAR,coloursp);
                     
    // glDisable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:ICO_SPHEREMAP].name);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(ICO_SPHEREMAP).name);
     glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
     glNormalPointer( GL_FLOAT, sizeof(vertexObject), objVertices[0].normal);
 	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
@@ -2824,7 +2824,7 @@ int lolc=0;
     
   
     
-    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:ICO_PORTAL].name);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(ICO_PORTAL).name);
     glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
    
 	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
@@ -2867,7 +2867,7 @@ int lolc=0;
         
         glColor4f(1.0, 1.0, 1.0, 1.0);
         
-        [[[Resources getResources] getTex:ICO_SKY_BOX] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
+        [Resources::getResources()->getTex(ICO_SKY_BOX) drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
         if(  blending_alpha>0&&
            (blending||
             !v_equals([World getWorld].terrain.final_skycolor,skycolor)  )
@@ -2886,7 +2886,7 @@ int lolc=0;
             
             glColor4f(v.x, v.y, v.z, blending_alpha);
             
-            [[[Resources getResources] getTex:ICO_SKY_BOX_BW] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000004];
+            [Resources::getResources()->getTex(ICO_SKY_BOX_BW) drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000004];
             
             
             glDisable(GL_BLEND);
@@ -2912,7 +2912,7 @@ int lolc=0;
         if(blending){
             glColor4f(1.0, 1.0, 1.0, 1.0);
             
-            [[[Resources getResources] getTex:ICO_SKY_BOX] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
+            [Resources::getResources()->getTex(ICO_SKY_BOX) drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
             glEnable(GL_BLEND);
             Vector v=skycolor;
             glColor4f(v.x, v.y, v.z, blending_alpha);
@@ -2920,14 +2920,14 @@ int lolc=0;
             if(blending_alpha>1.0f){
                 blending=FALSE;
             }
-            [[[Resources getResources] getTex:ICO_SKY_BOX_BW] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000004];
+            [Resources::getResources()->getTex(ICO_SKY_BOX_BW) drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000004];
             glColor4f(1.0, 1.0, 1.0, 1.0);
             glDisable(GL_BLEND);
         }else{
         Vector v=skycolor;
         glColor4f(v.x, v.y, v.z, 1.0);
         
-        [[[Resources getResources] getTex:ICO_SKY_BOX_BW] drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
+        [Resources::getResources()->getTex(ICO_SKY_BOX_BW) drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
         glColor4f(1.0, 1.0, 1.0, 1.0);
         }
     }
@@ -3034,7 +3034,7 @@ int lolc=0;
         
         
         if(vert!=0){
-        glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:ICO_SWIRL].name);
+        glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(ICO_SWIRL).name);
         glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
         
         glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
@@ -3111,7 +3111,7 @@ int getFlowerIndex(int color){
     glEnable(GL_BLEND);
     glPushMatrix();
     
-    glBindTexture(GL_TEXTURE_2D, [Resources getResources].atlas2.name);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources()->atlas2.name);
     glMatrixMode(GL_TEXTURE);
     
     frame=(frame+1)%128;
@@ -3250,7 +3250,7 @@ int getFlowerIndex(int color){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
     
-    glBindTexture(GL_TEXTURE_2D, [[Resources getResources] getTex:ICO_FLOWER].name);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources()->getTex(ICO_FLOWER).name);
     glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
     
 	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);

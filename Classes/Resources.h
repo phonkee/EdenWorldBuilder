@@ -12,7 +12,9 @@
 #import "Sound.h"
 #import "Vector.h"
 #define MAX_SOURCES 10
-@interface Resources : NSObject {
+class Resources {
+public:
+    
 	Texture2D* atlas;
     Texture2D* atlas2;
     Texture2D* csbkg;
@@ -25,38 +27,41 @@
 	int burn_id;
 	float landingEffectTimer;
 	
-}
-@property(nonatomic, readonly) Texture2D* atlas,*atlas2;
-@property(nonatomic, assign) int playmusic,playsound;
-- (CGPoint)getBlockTex:(int)type;
-- (Texture2D*)getTex:(int)idx;
-- (Texture2D*)getMenuTex:(int)idx;
-- (int)getSkin:(int)model_type:(int)color:(int)state;
-- (int)playSound:(int)soundid;
-- (int)startedBurn:(float)length;
-- (void)endBurnId:(int) idx;
--(void)stopSound:(int)soundId;
-- (void)endBurn;
-- (CGPoint)getBlockTexShort:(int)type;
-- (void)loadMenuTextures;
-- (void) unloadMenuTextures;
--(void)loadGameAssets;
--(void)unloadGameAssets;
+    Resources();
+    ~Resources();
+    CGPoint getBlockTex(int type);
+    Texture2D* getTex(int idx);
+    //Texture2D* getPaintedTex(int color);
+    Texture2D* getMenuTex(int idx);
+    int getSkin(int model_type,int color,int state);
+    int playSound(int soundid);
+    int startedBurn(float length);
+    void endBurnId(int idx);
+    void stopSound(int soundId);
+    void endBurn();
+    CGPoint getBlockTexShort(int type);
+    void loadMenuTextures();
+    void unloadMenuTextures();
+    void loadGameAssets();
+    void unloadGameAssets();
+    void update(float etime);
+    void playMenuTune();
+    void stopMenuTune();
+    void soundEvent(int actionid);
+    void soundEvent(int actionid,Vector location);
+    int getDoorTex(int color);
+    Texture2D* getPaintTex(int color);
+    Texture2D* getPaintedTex(int type,int color);
+    void voSound(int action,int type,Vector location);
+    static Resources* getResources();
+    
+private:
+    void unloadGameTextures();
+    void loadGameTextures();
+};
+//@property(nonatomic, readonly) Texture2D* atlas,*atlas2;
+//@property(nonatomic, assign) int playmusic,playsound;
 
-- (void)update:(float)etime;
-- (void)playMenuTune;
-- (void)stopMenuTune;
--(void)soundEvent:(int)actionid;
--(void)soundEvent:(int)actionid:(Vector)location;
-- (int)getDoorTex:(int)color;
-- (Texture2D*)getPaintTex:(int)color;
--(Texture2D*)getPaintedTex:(int)type:(int)color;
-
--(void)voSound:(int)action:(int)type:(Vector)location;
-
-+ (Resources*)getResources;
-
-@end
 
 #define NUM_AMBIENT 17
 #define AMBIENT_NONE -1
