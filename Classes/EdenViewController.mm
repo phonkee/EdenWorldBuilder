@@ -52,7 +52,7 @@
     printg("mem total: %llu\n",memtotal);
     
     
-	world=[[World alloc] init];
+    world=new World();
     
     animating = FALSE;
     displayLinkSupported = FALSE;
@@ -75,7 +75,7 @@
 
 - (void)dealloc
 {   
-    [world dealloc];
+    delete world;
     // Tear down context.
     if ([EAGLContext currentContext] == context)
         [EAGLContext setCurrentContext:nil];
@@ -196,10 +196,10 @@
 	last=now;	
     [(EAGLView *)self.view setFramebuffer];
 	 NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    if([world update:etime]){
+    if(world->update(etime)){
         retinaSwap=TRUE;
     }
-	[world render];
+	world->render();
 	[pool release];
     
     

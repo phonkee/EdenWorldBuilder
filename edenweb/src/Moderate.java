@@ -230,7 +230,7 @@ public class Moderate extends HttpServlet
               	outp.write("<br><b> "+List2.mapTitles.get(map)  +"</b>   reports:<b> "+reportCard.get(map)+"</b><br>");
               	outp.write("<a href='http://app.edengame.net/moderate.php?action=3&map="+map+"&uuid="+uuid+"'>Remove and Ban</a>");
             	outp.write(" ... <a href='http://app.edengame.net/moderate.php?action=4&map="+map+"&uuid="+uuid+"'>Remove and Temp Ban</a>");
-            	
+            	outp.write(" ... <a href='http://app.edengame.net/moderate.php?action=2&map="+map+"'>Remove</a>");
               	outp.write(" ... <a href='http://app.edengame.net/moderate.php?action=0&map="+map+"' ... >Ignore</a>");
               	outp.write(" ... <a href='http://app.edengame.net/moderate.php?action=1&map="+map+"'>Approve and recent</a><br><br>");
               	//outp.write("<a href=");

@@ -250,7 +250,7 @@ void BlockBreak::render(){
     glLightfv(GL_LIGHT0, GL_AMBIENT,  lightAmbient.ptr());
     glLightfv(GL_LIGHT0, GL_DIFFUSE,  lightDiffuse.ptr());
     glEnable(GL_NORMALIZE);
-     glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas.name);
+     glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas->name);
 	
      glEnableClientState(GL_NORMAL_ARRAY);
     //glEnableClientState(GL_TEXTURE_COORD_ARRAY);

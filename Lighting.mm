@@ -94,7 +94,7 @@ void calculateLighting(){
                                 
                                 if(getLandc(x,z,y)==TYPE_LIGHTBOX){
                                     addlight(x,z,y,1.0f,colorTable[getColorc(x,z,y)]);
-                                    [World getWorld].terrain->refreshChunksInRadius(x,z,y,LIGHT_RADIUS);
+                                    World::getWorld->terrain->refreshChunksInRadius(x,z,y,LIGHT_RADIUS);
                                 }
                                 
                                 

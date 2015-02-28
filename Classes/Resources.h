@@ -11,6 +11,7 @@
 #import <UIKit/UIKit.h>
 #import "Sound.h"
 #import "Vector.h"
+#include <vector>
 #define MAX_SOURCES 10
 class Resources {
 public:
@@ -20,8 +21,8 @@ public:
     Texture2D* atlas2;
     Texture2D* csbkg;
     
-	NSMutableArray* textures;
-	NSMutableArray* menutextures;
+    std::vector<Texture2D*> textures;
+	std::vector<Texture2D*> menutextures;
 	Sound* sound;
 	float burnSoundTimer,playing;
 	int playmusic,playsound;

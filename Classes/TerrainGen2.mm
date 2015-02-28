@@ -858,9 +858,9 @@ void makeMars(int x1,int z1,int x2,int z2){
 
   //  makeVolcano((x1+x2)/2,(z1+z2)/2,1,30);
  
-    [World getWorld].terrain->final_skycolor=  colorTable[10];
+    World::getWorld->terrain->final_skycolor=  colorTable[10];
    
-   // printg("sky %f,%f,%f\n",  [World getWorld].terrain.final_skycolor.x,  [World getWorld].terrain.final_skycolor.y,  [World getWorld].terrain.final_skycolor.z);
+   // printg("sky %f,%f,%f\n",  World::getWorld->terrain.final_skycolor.x,  World::getWorld->terrain.final_skycolor.y,  World::getWorld->terrain.final_skycolor.z);
 	
 }
 int clampy(int h){
@@ -877,7 +877,7 @@ void makeMix(){
     
     float var=3;  //how much variance in heightmap?
     //TG_SEED=0;
-	[World getWorld].terrain->final_skycolor=colorTable[6];
+	World::getWorld->terrain->final_skycolor=colorTable[6];
 	
 	int offsety=T_HEIGHT/2-10;
    
@@ -1142,7 +1142,7 @@ void makeMix(){
 void makeBeach(){
     float var=3;  //how much variance in heightmap?
     
-    [World getWorld].terrain->final_skycolor=colorTable[17];
+    World::getWorld->terrain->final_skycolor=colorTable[17];
     //TG_SEED=0;
 	
 	int sealevel=19;
@@ -1265,7 +1265,7 @@ void makeBeach(){
             }
         }
     }
-    [World getWorld].terrain->final_skycolor=colorTable[9];
+    World::getWorld->terrain->final_skycolor=colorTable[9];
 }
 
 void makeClassicGen(){
@@ -1480,7 +1480,7 @@ void placeTree(int x,int z,int y){
 void makeDesert(){
     float var=3;  //how much variance in heightmap?
     
-    [World getWorld].terrain->final_skycolor=colorTable[17];
+    World::getWorld->terrain->final_skycolor=colorTable[17];
     //TG_SEED=0;
 	
 	
@@ -1666,14 +1666,14 @@ void makeDesert(){
         
     }
     */
-    [World getWorld].terrain->final_skycolor=colorTable[9];
+    World::getWorld->terrain->final_skycolor=colorTable[9];
 }
 
 
 void makePonies(){
     float var=3;  //how much variance in heightmap?
     
-     [World getWorld].terrain->final_skycolor=colorTable[17];
+     World::getWorld->terrain->final_skycolor=colorTable[17];
     //TG_SEED=0;
 	
 	
@@ -1745,7 +1745,7 @@ void makePonies(){
    
     
     makeCave(0,3*GSIZE/4,2,GSIZE/4,GSIZE,T_HEIGHT/2-15,1);
-        [World getWorld].terrain->final_skycolor=colorTable[17];
+        World::getWorld->terrain->final_skycolor=colorTable[17];
     
     for(int x=0;x<GSIZE/4;x++){
 		for(int z=3*GSIZE/4;z<GSIZE;z++){
@@ -1979,7 +1979,7 @@ void floodFill(int x,int z,int y){
 void makeGreenHills(int height){
     float var=3;  //how much variance in heightmap?
     //TG_SEED=0;
-	[World getWorld].terrain->final_skycolor=colorTable[15];
+	World::getWorld->terrain->final_skycolor=colorTable[15];
 	
 	int offsety=height;;
     for(int x=0;x<GSIZE;x++){ //Heightmap
@@ -2137,7 +2137,7 @@ void makeGreenHills(int height){
 void makeRiverTrees(int sx,int sz,int ex,int ez,int SEED){
     float var=3;  //how much variance in heightmap?
     //TG_SEED=0;
-	[World getWorld].terrain->final_skycolor=colorTable[9];
+	World::getWorld->terrain->final_skycolor=colorTable[9];
 	
 	const int offsety=T_HEIGHT/2-10;
     for(int x=sx;x<ex;x++){
@@ -2349,7 +2349,7 @@ void makeTransition(int sx,int sz,int ex,int ez){
 void makeMountains(int sx,int sz,int ex,int ez,int SEED){
     float var=3;  //how much variance in heightmap?
     //TG_SEED=0;
-	[World getWorld].terrain->final_skycolor=colorTable[6];
+	World::getWorld->terrain->final_skycolor=colorTable[6];
 	
     
     
@@ -2517,7 +2517,7 @@ void makeMountains(int sx,int sz,int ex,int ez,int SEED){
  */
 int g_terrain_type=7;
 void clear(){
-    [World getWorld].terrain->final_skycolor=colorTable[9];
+    World::getWorld->terrain->final_skycolor=colorTable[9];
     
     memset(elevation,0,sizeof(block8)*(GSIZE*GSIZE));
     if(NOBLOCKGEN)return;
@@ -2775,7 +2775,7 @@ void updateSkyColor2(Player* player,BOOL force,float etime){
    
     if(!loaded_new_terrain)return;
      loaded_new_terrain=FALSE;
-    //if([World getWorld].terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
+    //if(World::getWorld->terrain.tgen.LEVEL_SEED==DEFAULT_LEVEL_SEED){
        
         int ppx=player->pos.x-4096*CHUNK_SIZE+GSIZE/2;
         int ppz=player->pos.z-4096*CHUNK_SIZE+GSIZE/2;
@@ -2795,17 +2795,17 @@ void updateSkyColor2(Player* player,BOOL force,float etime){
                 //timeSinceLastChange=0;
                 int rct=regionSkyColors[(int)(ppz+64)%4][(int)(ppx+64)%4];
                 if(!LOW_MEM_DEVICE)
-                if((v_equals([World getWorld].terrain->final_skycolor,colorTable[54])&&rct!=54)||
-                   (!v_equals([World getWorld].terrain->final_skycolor,colorTable[54])&&rct==54)){
+                if((v_equals(World::getWorld->terrain->final_skycolor,colorTable[54])&&rct!=54)||
+                   (!v_equals(World::getWorld->terrain->final_skycolor,colorTable[54])&&rct==54)){
                     extern BOOL* chunksToUpdate;
                     extern BOOL* columnsToUpdate;
                     
                     memset(chunksToUpdate,TRUE,sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
                     memset(columnsToUpdate,TRUE,sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE);
                 }
-                [World getWorld].terrain->final_skycolor=colorTable[rct];
+                World::getWorld->terrain->final_skycolor=colorTable[rct];
                 if(force){
-                    [World getWorld].terrain->skycolor=MakeVector([World getWorld].terrain->final_skycolor.x,[World getWorld].terrain->final_skycolor.y,[World getWorld].terrain->final_skycolor.z+.03f);
+                    World::getWorld->terrain->skycolor=MakeVector(World::getWorld->terrain->final_skycolor.x,World::getWorld->terrain->final_skycolor.y,World::getWorld->terrain->final_skycolor.z+.03f);
                     
                 }
                 
@@ -2823,21 +2823,21 @@ void updateSkyColor2(Player* player,BOOL force,float etime){
     
 }
 void paintSky(int color){
-    if( v_equals([World getWorld].terrain->final_skycolor,colorTable[color]))return;
+    if( v_equals(World::getWorld->terrain->final_skycolor,colorTable[color]))return;
    // timeSinceLastChange=0;
     if(!LOW_MEM_DEVICE)
-    if((v_equals([World getWorld].terrain->final_skycolor,colorTable[54])&&color!=54)||
-        (!v_equals([World getWorld].terrain->final_skycolor,colorTable[54])&&color==54)){
+    if((v_equals(World::getWorld->terrain->final_skycolor,colorTable[54])&&color!=54)||
+        (!v_equals(World::getWorld->terrain->final_skycolor,colorTable[54])&&color==54)){
         extern BOOL* chunksToUpdate;
         extern BOOL* columnsToUpdate;
         
         memset(chunksToUpdate,TRUE,sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN);
         memset(columnsToUpdate,TRUE,sizeof(BOOL)*CHUNKS_PER_SIDE*CHUNKS_PER_SIDE);
     }
-    [World getWorld].terrain->final_skycolor=colorTable[color];
+    World::getWorld->terrain->final_skycolor=colorTable[color];
     
-    int ppx=[World getWorld].player->pos.x-4096*CHUNK_SIZE+GSIZE/2;
-    int ppz=[World getWorld].player->pos.z-4096*CHUNK_SIZE+GSIZE/2;
+    int ppx=World::getWorld->player->pos.x-4096*CHUNK_SIZE+GSIZE/2;
+    int ppz=World::getWorld->player->pos.z-4096*CHUNK_SIZE+GSIZE/2;
     ppx=ppx/(GSIZE/4);
     ppz=ppz/(GSIZE/4);
     if(ppx>4)ppx=4;

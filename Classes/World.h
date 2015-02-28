@@ -28,7 +28,8 @@ class Menu;
 #define GAME_MODE_WAIT 2
 #define GAME_MODE_PLAY 1
 #define JUST_TERRAIN_GEN 0
-@interface World : NSObject {
+class World{
+public:
 	Terrain* terrain;
 	Camera* cam;
 	Resources* res;
@@ -44,30 +45,15 @@ class Menu;
     float realtime;
     BOOL bestGraphics;
     BOOL sanityCheck;
-   
-   
     
-}
-- (World*)init;
-+ (World*)getWorld;
-- (BOOL)update: (float)etime;
-- (void)loadWorld:(NSString*)name;
-- (void)render;
-- (void)exitToMenu;
-- (void)loadWorldThread:(id)object;
-//- (void)reloadWorld:(NSString*)name :(int)callback;
+    World();
+    ~World();
+    static World* getWorld;
+    BOOL update(float etime);
+    void loadWorld(NSString* name);
+    void render();
+    void exitToMenu();
+    
+    
+};
 
-@property (nonatomic, assign) float realtime;
-@property (nonatomic, assign) BOOL bestGraphics;
-@property (nonatomic, readonly) Terrain* terrain;
-@property (nonatomic, readonly) Camera* cam;
-@property (nonatomic, readonly) Player* player;
-@property (nonatomic, readonly) Hud* hud;
-@property (nonatomic, readonly) FileManager* fm;
-@property (nonatomic, readonly) SpecialEffects* effects;
-@property (nonatomic, readonly) Menu* menu;
-@property (nonatomic, readonly) int game_mode;
-@property (nonatomic, readonly) BOOL FLIPPED;
-@property (nonatomic, readonly) NSLock* sf_lock,*rebuild_lock;
-
-@end

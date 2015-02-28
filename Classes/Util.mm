@@ -346,7 +346,7 @@ void takeScreenshot(){
 	// gl renders "upside down" so swap top to bottom into new array.
 	// there's gotta be a better way, but this works.
     GLubyte *buffer2 = (GLubyte *) malloc(myDataLength);
-	//BOOL flip=[World getWorld].FLIPPED;
+	//BOOL flip=World::getWorld->FLIPPED;
 	for(int y = 0; y < height; y++)
 	{
 		for(int x = 0; x < width; x++)
@@ -402,9 +402,9 @@ void takeScreenshot(){
     CGImageRelease(imageRef);
     CFRelease(provider);
     free(buffer2);
-    Terrain* ter=[[World getWorld] terrain];
+    Terrain* ter=World::getWorld->terrain;
 	NSString* name=ter->world_name;
-    NSString* file_name=[NSString stringWithFormat:@"%@/%@.png",[World getWorld].fm->documents,name];
+    NSString* file_name=[NSString stringWithFormat:@"%@/%@.png",World::getWorld->fm->documents,name];
     NSFileManager* fm=[NSFileManager defaultManager];
 	if([fm fileExistsAtPath:file_name])
         if(![fm removeItemAtPath:file_name error:NULL])
@@ -415,7 +415,7 @@ void takeScreenshot(){
     FileMD5HashCreateWithPath((CFStringRef)file_name, 
                               FileHashDefaultChunkSizeForReadingData);
   
-    [World getWorld].fm->setImageHash((NSString *)md5hash);
+    World::getWorld->fm->setImageHash((NSString *)md5hash);
     //CFRelease(md5hash);
 
 }
@@ -576,7 +576,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
 	
 	glLoadIdentity();
 	//glRotatef(270,0,0,1);
-	[World getWorld].cam->render2();
+	World::getWorld->cam->render2();
 	
 	glGetFloatv( GL_MODELVIEW_MATRIX, modelviewf );
 	glGetFloatv( GL_PROJECTION_MATRIX, projectionf );
@@ -630,7 +630,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
 		int tx=(int)(fpoint.x);
 		int ty=(int)(fpoint.y);
 		int tz=(int)(fpoint.z);
-    //    if([World getWorld].hud.build_size==2){
+    //    if(World::getWorld->hud.build_size==2){
      //       tx=roundf(fpoint.x);
       //      ty=roundf(fpoint.y);
        //     tz=roundf(fpoint.z);
@@ -649,7 +649,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
             
        // }
         hitCustom=FALSE;
-		int type=[World getWorld].terrain->getLand(tx ,tz ,ty);
+		int type=World::getWorld->terrain->getLand(tx ,tz ,ty);
      /*   BOOL build2solid=FALSE;
         int dx[]={0,0,0,0,1,1,1,1};
         int dy[]={0,0,1,1,0,0,1,1};
@@ -663,7 +663,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
                                    fpoint.y,fpoint.y+.001);
             if(FALSE){/*type==TYPE_CUSTOM){
                 
-                if(([World getWorld].hud.build_size==0&&mode==FC_PLACE)||mode==FC_DESTROY){
+                if((World::getWorld->hud.build_size==0&&mode==FC_PLACE)||mode==FC_DESTROY){
                    
                     pbox2=makeBox(tx,tx+1,tz+1,tz,ty,ty+1);
                
@@ -757,7 +757,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
                 Vector mintersect;
 				Vector norm;
 				float D;
-               /* if([World getWorld].hud.build_size==2){
+               /* if(World::getWorld->hud.build_size==2){
                     tx=roundf(fpoint.x);
                     ty=roundf(fpoint.y);
                     tz=roundf(fpoint.z);
@@ -772,7 +772,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
 					norm.y=fy[i];
 					norm.z=fz[i];
 					if(i%2==0){
-                        //if([World getWorld].hud.build_size==2)
+                        //if(World::getWorld->hud.build_size==2)
                        //  D=-norm.x*(tx-1)-norm.y*(ty-1)-norm.z*(tz-1);   
                        //     else
 						D=-norm.x*tx-norm.y*ty-norm.z*tz;
@@ -819,7 +819,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
                 point.x=rx;
 				point.y=ry;
 				point.z=rz;
-                if([World getWorld].hud->build_size==0&&!hitCustom){
+                if(World::getWorld->hud->build_size==0&&!hitCustom){
                   //  mintersect.x=mintersect.x;
                   //   mintersect.z=mintersect.z;
                    //  mintersect.y=mintersect.y;
@@ -832,7 +832,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
                     
                     
                 }
-				if([World getWorld].hud->build_size==2){
+				if(World::getWorld->hud->build_size==2){
                     float rfx=fpoint.x+fx[mini];
                     float rfy=fpoint.y+fy[mini];
                     float rfz=fpoint.z+fz[mini];
@@ -851,7 +851,7 @@ Point3D findWorldCoords(int mx,int my,int mode){
 		}
 		
 	}
-	if([World getWorld].hud->holding_creature&&[World getWorld].hud->blocktype==TYPE_CLOUD&&mode==FC_PLACE){
+	if(World::getWorld->hud->holding_creature&&World::getWorld->hud->blocktype==TYPE_CLOUD&&mode==FC_PLACE){
         point.x=wp1.x+dir.x*30/8.0f;
         point.y=wp1.y+dir.y*30/8.0f;
         point.z=wp1.z+dir.z*30/8.0f;

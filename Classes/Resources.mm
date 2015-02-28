@@ -423,13 +423,15 @@ int build_cache_type;
 
 void clearSkinCache(){
     if(paint_cache){
-        [paint_cache release];
+        delete paint_cache;
+        
         
     }
     paint_cache=NULL;
     paint_cache_color=0;
     if(build_cache){
-        [build_cache release];
+        delete build_cache;
+        
         
        
     }
@@ -439,7 +441,7 @@ void clearSkinCache(){
     for(int i=0;i<100;i++){
         if(i<100){
             if(door_cache[i]){
-                [door_cache[i] release];
+                delete door_cache[i];
                 
                 
                 
@@ -449,7 +451,7 @@ void clearSkinCache(){
     }
     for(int i=0;i<SKIN_CACHE_SIZE;i++){
         if(skin_cache[i].tex){
-            [skin_cache[i].tex release];
+            delete skin_cache[i].tex;
             
         }
         skin_cache[i].tex=NULL;
@@ -484,7 +486,7 @@ Texture2D* Resources::getPaintedTex(int type,int color){
         return build_cache;
     }
     if(build_cache!=NULL){
-        [build_cache release];
+        delete build_cache;
         build_cache=NULL;
     }
     build_cache_color=color;
@@ -512,8 +514,7 @@ Texture2D* Resources::getPaintedTex(int type,int color){
     int rgba= ((int)(255*clr.z)<<24) | ((int)(255*clr.y)<<16) | ((int)(255*clr.x) <<8)  | 0xFF;
     UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData(img2,img,rgba)];
     //UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData2(img,rgba,1)];
-    build_cache =
-    [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
+    build_cache = new Texture2D([uiImage2 CGImage],[uiImage2 imageOrientation],FALSE,kTexture2DPixelFormat_Automatic,FALSE);
     
     //[uiImage2 release];
     printg("initing build texture ;o");
@@ -526,7 +527,7 @@ Texture2D* Resources::getPaintTex(int color){
     
     if(paint_cache!=NULL){
         
-        [paint_cache release];
+        delete paint_cache;
         paint_cache=NULL;
     }
     
@@ -538,7 +539,7 @@ Texture2D* Resources::getPaintTex(int color){
         UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData(img2,img,rgba)];
         //UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData2(img,rgba,1)];
         paint_cache =
-        [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
+        new Texture2D([uiImage2 CGImage],[uiImage2 imageOrientation],FALSE,kTexture2DPixelFormat_Automatic,FALSE);
      //[uiImage2 release];
     printg("initing paint texture ;o");
         return paint_cache;
@@ -550,7 +551,7 @@ int Resources::getDoorTex(int color){
     if(color==0)color=25;
     if(door_cache[color]!=NULL){
         
-        return door_cache[color].name;
+        return door_cache[color]->name;
     }
     else{
        
@@ -561,18 +562,18 @@ int Resources::getDoorTex(int color){
         UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData(img2,img,rgba)];
         //UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData2(img,rgba,1)];
         door_cache[color] =
-        [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
+       new Texture2D([uiImage2 CGImage],[uiImage2 imageOrientation],FALSE,kTexture2DPixelFormat_Automatic,FALSE);
        //  [uiImage2 release];
         printg("initing texture ;o");
-        return door_cache[color].name;
+        return door_cache[color]->name;
     }
     
-    return getTex(ICO_DOOR).name;
+    return getTex(ICO_DOOR)->name;
 }
 int Resources::getSkin(int model_type,int color,int state){
     for(int i=0;i<SKIN_CACHE_SIZE;i++){
         if(skin_cache[i].tex!=NULL&&skin_cache[i].model_type==model_type&&skin_cache[i].color==color&&skin_cache[i].state==state){
-            return skin_cache[i].tex.name;
+            return skin_cache[i].tex->name;
         }
     }
     
@@ -585,7 +586,11 @@ int Resources::getSkin(int model_type,int color,int state){
     }
     if(cidx==-1){
         cidx=randi(SKIN_CACHE_SIZE);
-        if(skin_cache[cidx].tex)[skin_cache[cidx].tex release];
+        if(skin_cache[cidx].tex){
+            delete skin_cache[cidx].tex;
+            
+        }
+        skin_cache[cidx].tex=NULL;
     }
     
     
@@ -597,14 +602,14 @@ int Resources::getSkin(int model_type,int color,int state){
     int rgba= ((int)(255*clr.z)<<24) | ((int)(255*clr.y)<<16) | ((int)(255*clr.x) <<8)  | 0xFF;
     UIImage* uiImage2=[UIImage imageWithCGImage:ManipulateImagePixelData(img2,img,rgba)];
     skin_cache[cidx].tex =
-    [[Texture2D alloc] initWithCGImage:[uiImage2 CGImage] orientation:[uiImage2 imageOrientation] sizeToFit:FALSE pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
+    new Texture2D([uiImage2 CGImage],[uiImage2 imageOrientation],FALSE,kTexture2DPixelFormat_Automatic,FALSE);
     // [uiImage2 release];
     skin_cache[cidx].model_type=model_type;
     skin_cache[cidx].color=color;
     skin_cache[cidx].state=state;
     
     printg("storing skin in cache idx: %d\n",cidx);
-    return skin_cache[cidx].tex.name;
+    return skin_cache[cidx].tex->name;
 }
 
 void Resources::voSound(int action,int type,Vector location){
@@ -612,7 +617,7 @@ void Resources::voSound(int action,int type,Vector location){
    
     
     
-    float distance=v_length2(v_sub(location,[World getWorld].player->pos));
+    float distance=v_length2(v_sub(location,World::getWorld->player->pos));
     float distance_fade=12.0f;
     if(distance<distance_fade*distance_fade){
        // distance=sqrtf(distance);
@@ -656,7 +661,7 @@ void Resources::unloadGameAssets(){
     if(LOW_MEM_DEVICE){
         unloadGameTextures();
     }
-   // [[World getWorld].terrain deallocateMemory];
+   // [World::getWorld->terrain deallocateMemory];
     for(int i=0;i<NUM_SOUNDS;i++)
          for(int j=0;j<sfxNumVariations[i];j++)
         [[SimpleAudioEngine sharedEngine] unloadEffect:soundFiles[i][j]];
@@ -709,7 +714,7 @@ void Resources::soundEvent(int actionid){
             flamecount=0;
         }
     }*/
-    soundEvent(actionid,[World getWorld].player->pos);
+    soundEvent(actionid,World::getWorld->player->pos);
 }
 static int target_ambient;
 static BOOL songisplaying=FALSE;
@@ -718,7 +723,7 @@ static float bkgvolume=2.0f;
 static float bkgtargetvolume=0;
 
 void Resources::soundEvent(int actionid,Vector location){
-    if(!playmusic||songisplaying||[World getWorld].game_mode!=GAME_MODE_PLAY)return;
+    if(!playmusic||songisplaying||World::getWorld->game_mode!=GAME_MODE_PLAY)return;
     if(actionid>=-1&&actionid<NUM_AMBIENT){
         target_ambient=actionid;
     }
@@ -726,7 +731,7 @@ void Resources::soundEvent(int actionid,Vector location){
         bkgtargetvolume=0.0f;
     }
     if(target_ambient!=current_ambient&&(bkgvolume==0||target_ambient==AMBIENT_UNDERWATER)){
-        float distance=sqrtf(v_length2(v_sub(location,[World getWorld].player->pos)));
+        float distance=sqrtf(v_length2(v_sub(location,World::getWorld->player->pos)));
         float distance_fade=12.0f;
         
         if(distance>distance_fade)distance=distance_fade;
@@ -740,7 +745,7 @@ void Resources::soundEvent(int actionid,Vector location){
     [[SimpleAudioEngine sharedEngine] playBackgroundMusic:ambientFiles[target_ambient]
                                                      loop:-1];
     }else if(target_ambient==current_ambient){
-        float distance=sqrtf(v_length2(v_sub(location,[World getWorld].player->pos)));
+        float distance=sqrtf(v_length2(v_sub(location,World::getWorld->player->pos)));
         float distance_fade=12.0f;
          if(distance>distance_fade)distance=distance_fade;
         bkgtargetvolume=2.0f*(distance_fade-distance)/distance_fade;
@@ -763,8 +768,10 @@ extern BOOL SUPPORTS_OGL2;
 
 Resources::Resources(){
    	landingEffectTimer=0;
-	textures=[[NSMutableArray alloc] init];
-	menutextures=[[NSMutableArray alloc] init];
+	//textures=[[NSMutableArray alloc] init];
+	//menutextures=[[NSMutableArray alloc] init];
+    textures.clear();
+    menutextures.clear();
 	
 	if(!SUPPORTS_OGL2||LOW_MEM_DEVICE){
         for(int i=0;i<NUM_CREATURES;i++){
@@ -787,9 +794,8 @@ Resources::Resources(){
     build_cache_color=0;
     build_cache_type=0;
     
-    csbkg=[[Texture2D alloc]
-           initWithImagePath:@"colorpick_background.png" sizeToFit:FALSE];
-    [csbkg retain];
+    csbkg=new Texture2D(@"colorpick_background.png" ,FALSE);
+    
     if(!LOW_MEM_DEVICE){
         loadGameTextures();
     }
@@ -797,10 +803,8 @@ Resources::Resources(){
     
 	loadMenuTextures();
 	
-	atlas=[[Texture2D alloc]
-		   initWithImagePath:@"atlas.png" sizeToFit:TRUE pixelFormat:kTexture2DPixelFormat_RGB565 generateMips:TRUE];
-    atlas2=[[Texture2D alloc]
-		   initWithImagePath:@"atlas2.png" sizeToFit:TRUE pixelFormat:kTexture2DPixelFormat_RGBA8888 generateMips:TRUE];
+	atlas=new Texture2D(@"atlas.png" ,TRUE ,kTexture2DPixelFormat_RGB565 ,TRUE);
+    atlas2=new Texture2D(@"atlas2.png",TRUE,kTexture2DPixelFormat_RGBA8888,TRUE);
 	//[textures addObject:atlas];
     
 	
@@ -831,152 +835,150 @@ void Resources::stopMenuTune(){
 	
 }
 void Resources::loadMenuTextures(){
-	Texture2D* temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_autojump.png" sizeToFit:FALSE];
+	Texture2D* temp=
+		  new Texture2D(@"menu_autojump.png" , FALSE);
     
-  
-	[menutextures addObject:temp];
-   	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"eden_menu_header.png" sizeToFit:FALSE];
+    menutextures.push_back(temp);
+	
+   	temp=
+		  new Texture2D(@"eden_menu_header.png" , FALSE);
    
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"arrow_left.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"arrow_right.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"create_world.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"delete_world.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"share_world.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"ground.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"world_selected.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"world_unselected.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"load_world.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"options.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"arrow_left.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"arrow_right.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"create_world.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"delete_world.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"share_world.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"ground.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"world_selected.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"world_unselected.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"load_world.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"options.png" , FALSE);
+	menutextures.push_back(temp);
 	
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"arrow_up.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];	
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"arrow_down.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"back.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];	
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_shared_worlds.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];	
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"cloud_SM.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];	
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_cancel.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc]
-		  initWithImagePath:@"menu_health.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_music.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_off.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_on.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_options.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_save.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_send.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_sound_effects.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_text_box.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
+	temp=
+		  new Texture2D(@"arrow_up.png" , FALSE);
+	menutextures.push_back(temp);	
+	temp=
+		  new Texture2D(@"arrow_down.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"back.png" , FALSE);
+	menutextures.push_back(temp);	
+	temp=
+		  new Texture2D(@"menu_shared_worlds.png" , FALSE);
+	menutextures.push_back(temp);	
+	temp=
+		  new Texture2D(@"cloud_SM.png" , FALSE);
+	menutextures.push_back(temp);	
+	temp=
+		  new Texture2D(@"menu_cancel.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"menu_health.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"menu_music.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"menu_off.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"menu_on.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"menu_options.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"menu_save.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"menu_send.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"menu_sound_effects.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"menu_text_box.png" , FALSE);
+	menutextures.push_back(temp);
 	
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"sky.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"pinwheel.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"mountains.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-    temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_text_load.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-    temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_text_back.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-    temp=[[Texture2D alloc] 
-		  initWithImagePath:@"cloud_MD.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-    temp=[[Texture2D alloc] 
-		  initWithImagePath:@"cloud_LG.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
+	temp=
+		  new Texture2D(@"sky.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"pinwheel.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"mountains.png" , FALSE);
+	menutextures.push_back(temp);
+    temp=
+		  new Texture2D(@"menu_text_load.png" , FALSE);
+	menutextures.push_back(temp);
+    temp=
+		  new Texture2D(@"menu_text_back.png" , FALSE);
+	menutextures.push_back(temp);
+    temp=
+		  new Texture2D(@"cloud_MD.png" , FALSE);
+	menutextures.push_back(temp);
+    temp=
+		  new Texture2D(@"cloud_LG.png" , FALSE);
+	menutextures.push_back(temp);
     
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"shared_world_selected.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"shared_world_unselected.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
+	temp=
+		  new Texture2D(@"shared_world_selected.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"shared_world_unselected.png" , FALSE);
+	menutextures.push_back(temp);
     
-    temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_fast.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_best.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
-	temp=[[Texture2D alloc] 
-		  initWithImagePath:@"menu_creatures.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
+    temp=
+		  new Texture2D(@"menu_fast.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"menu_best.png" , FALSE);
+	menutextures.push_back(temp);
+	temp=
+		  new Texture2D(@"menu_creatures.png" , FALSE);
+	menutextures.push_back(temp);
 	
-    temp=[[Texture2D alloc]
-		  initWithImagePath:@"treelayerleft.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
+    temp=new Texture2D(@"treelayerleft.png" , FALSE);
+	menutextures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-		  initWithImagePath:@"treelayerright.png" sizeToFit:FALSE];
-	[menutextures addObject:temp];
+    temp=new Texture2D(@"treelayerright.png" , FALSE);
+	menutextures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"report_flag.png" sizeToFit:FALSE];
-    [menutextures addObject:temp];
+    temp= new Texture2D(@"report_flag.png" , FALSE);
+    menutextures.push_back(temp);
 	
 }
 static float cuetimer=0;
 
 void Resources::unloadMenuTextures(){
     cuetimer=0;
-	while([menutextures count]>0){
-		Texture2D* t=[menutextures lastObject];
-		[t release];
-		[menutextures removeLastObject];
+   
+	while(menutextures.size()>0){
+        Texture2D* t=menutextures.back();
+        delete t;
+        menutextures.pop_back();
 	}
 	
 }
@@ -985,12 +987,12 @@ void Resources::unloadGameTextures(){
     if(!LOW_MEM_DEVICE){
         return;
     }
-    while([textures count]>0){
-        Texture2D* t=[textures lastObject];
+    while(textures.size()>0){
+        Texture2D* t=textures.back();
         if(t!=csbkg){
-        [t release];
+            delete t;
         }
-        [textures removeLastObject];
+        textures.pop_back();
     }
 }
 
@@ -1000,122 +1002,122 @@ void Resources::loadGameTextures(){
     
     Texture2D* temp;
   
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"moof_icon.png" sizeToFit:FALSE];
+    temp=
+          new Texture2D(@"moof_icon.png",FALSE);
     
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"build.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"destroy.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"build.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"destroy.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"burn.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"burn.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"save.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"save.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"cancel.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"cancel.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"home.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"home.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"jump.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"smoke_tex.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"analog_top.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"analog_bottom.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"camera.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"jump.png",FALSE);
+    textures.push_back(temp);
     
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"block_border.png" sizeToFit:FALSE];
-    [textures addObject:temp];
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"block_background.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"smoke_tex.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"analog_top.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"analog_bottom.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"camera.png",FALSE);
+    textures.push_back(temp);
+    
+    
+    temp=
+          new Texture2D(@"block_border.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"block_background.png",FALSE);
+    textures.push_back(temp);
     
     temp=csbkg;
-    [textures addObject:temp];
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"palette.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"palette.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"block_border_pressed.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"block_border_pressed.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"color_border_pressed.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"color_border_pressed.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"color_border.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"sky_box.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"color_border.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"sky_box.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"triangle_border_pressed.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"triangle_border.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"triangle_border_pressed.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"triangle_border.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"build2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"build3.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"build2.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"build3.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"destroy_active.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"destroy_active.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"paint_active.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"paint_active.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"build2_active.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"build3_active.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"build2_active.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"build3_active.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"burn_active.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"burn_active.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"jump_depressed.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"jump_depressed.png",FALSE);
+    textures.push_back(temp);
     
     
     extern int storedSkinCounter;
@@ -1123,283 +1125,283 @@ void Resources::loadGameTextures(){
     realStoredSkinCounter=0;
     storedSkinCounter=0;
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Moof_Default.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"Moof_Default.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Moof_Rage.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Moof_Blink.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"Moof_Rage.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Moof_Blink.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Batty_Default.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Batty_Rage.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Batty_Blink.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Green_Default.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Green_Rage.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Green_Blink.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"Batty_Default.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Batty_Rage.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Batty_Blink.png",FALSE);
+    textures.push_back(temp);
     
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Nergle_Default.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Nergle_Rage.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Nergle_Blink.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"Green_Default.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Green_Rage.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Green_Blink.png",FALSE);
+    textures.push_back(temp);
     
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Stumpy_Default.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Stumpy_Rage.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Stumpy_Blink.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"Nergle_Default.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Nergle_Rage.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Nergle_Blink.png",FALSE);
+    textures.push_back(temp);
     
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"shadow.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"menu_icon.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"door.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"sky_box_bw.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"golden_cube.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"golden_cube_bw.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"door_mask.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"flower_tex.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"portal.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"sphere_map.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"build2_top.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"buildplus.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"uisave.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"uihome.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"uiphoto.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"uiexit.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"portal_twirl.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"build3_top.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"blocktoggle1.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"blocktoggle2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"Stumpy_Default.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Stumpy_Rage.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Stumpy_Blink.png",FALSE);
+    textures.push_back(temp);
     
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"flower_icon.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"shadow.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"block_border2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"menu_icon.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"door.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"block_border_pressed2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"sky_box_bw.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"triangle_border2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"golden_cube.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"triangle_border_pressed2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"golden_cube_bw.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"build_under2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"door_mask.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"build_over2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"flower_tex.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"build2_active2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"portal.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"build2_under2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"sphere_map.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"build3_top2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"build2_top.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"build3_active2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"buildplus.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"digits.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"uisave.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"goldcube_icon.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"uihome.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"portal_icon2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"uiphoto.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"door_icon2.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"uiexit.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Charger_Default.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Charger_Rage.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Charger_Blink.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"portal_twirl.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Stalker_Default.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Stalker_Default.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Stalker_Blink.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Moof_DefaultMASK.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"build3_top.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"blocktoggle1.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"blocktoggle2.png",FALSE);
+    textures.push_back(temp);
+    
+    
+    temp=
+          new Texture2D(@"flower_icon.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"block_border2.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"block_border_pressed2.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"triangle_border2.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"triangle_border_pressed2.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"build_under2.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"build_over2.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"build2_active2.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"build2_under2.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"build3_top2.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"build3_active2.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"digits.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"goldcube_icon.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"portal_icon2.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"door_icon2.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"Charger_Default.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Charger_Rage.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Charger_Blink.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+          new Texture2D(@"Stalker_Default.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Stalker_Default.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Stalker_Blink.png",FALSE);
+    textures.push_back(temp);
+    temp=
+          new Texture2D(@"Moof_DefaultMASK.png",FALSE);
+    textures.push_back(temp);
     if(LOW_MEM_DEVICE){
-    temp=[[Texture2D alloc]
-          initWithImagePath:@"Flame_256.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=
+          new Texture2D(@"Flame_256.png",FALSE);
+    textures.push_back(temp);
         
     }else{
-        temp=[[Texture2D alloc]
-              initWithImagePath:@"Flame_512.png" sizeToFit:FALSE];
-        [textures addObject:temp];
+        temp=
+              new Texture2D(@"Flame_512.png",FALSE);
+        textures.push_back(temp);
         
     }
     
-    temp=[[Texture2D alloc] initWithImagePath:@"text_numbers.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=new Texture2D(@"text_numbers.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc] initWithImagePath:@"paint_mask.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=new Texture2D(@"paint_mask.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc] initWithImagePath:@"goldcube_icon_mask.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"flower_icon_mask.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"door_icon2_mask.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"portal_icon2_mask.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=new Texture2D(@"goldcube_icon_mask.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"flower_icon_mask.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"door_icon2_mask.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"portal_icon2_mask.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc] initWithImagePath:@"goldcube_icon_active.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"flower_icon_active.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"door_icon2_active.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"portal_icon2_active.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=new Texture2D(@"goldcube_icon_active.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"flower_icon_active.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"door_icon2_active.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"portal_icon2_active.png",FALSE);
+    textures.push_back(temp);
     //////////MASKS
     extern int storedMaskCounter;
     storedMaskCounter=0;
     
-    temp=[[Texture2D alloc] initWithImagePath:@"Moof_BlinkMASK.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"Moof_DefaultMASK.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"Batty_BlinkMASK.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"Batty_DefaultMASK.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"Green_BlinkMASK.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"Green_DefaultMASK.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=new Texture2D(@"Moof_BlinkMASK.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"Moof_DefaultMASK.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"Batty_BlinkMASK.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"Batty_DefaultMASK.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"Green_BlinkMASK.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"Green_DefaultMASK.png",FALSE);
+    textures.push_back(temp);
     
-    temp=[[Texture2D alloc] initWithImagePath:@"Nergle_BlinkMASK.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"Nergle_DefaultMASK.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"Stumpy_BlinkMASK.png" sizeToFit:FALSE];
-    [textures addObject:temp];
-    temp=[[Texture2D alloc] initWithImagePath:@"Stumpy_DefaultMASK.png" sizeToFit:FALSE];
-    [textures addObject:temp];
+    temp=new Texture2D(@"Nergle_BlinkMASK.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"Nergle_DefaultMASK.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"Stumpy_BlinkMASK.png",FALSE);
+    textures.push_back(temp);
+    temp=new Texture2D(@"Stumpy_DefaultMASK.png",FALSE);
+    textures.push_back(temp);
 }
 
 int Resources::startedBurn(float length){
@@ -1510,14 +1512,14 @@ void Resources::update(float etime){
 
 Texture2D* Resources::getTex(int idx){
     if(idx==ICO_COLOR_SELECT_BACKGROUND){
-        return csbkg;
+       return csbkg;
     }
-	return [textures objectAtIndex:(0+idx)];
+	return textures[idx];
 }
 
 Texture2D* Resources::getMenuTex(int idx){
 	
-	return [menutextures objectAtIndex:(0+idx)];
+	return menutextures[idx];
 }
 CGPoint Resources::getBlockTex(int type){
 	if(type<0||type>31)type=0;
@@ -1543,16 +1545,18 @@ CGPoint Resources::getBlockTexShort(int type){
 	return p;
 }
 Resources::~Resources(){
-	while([textures count]>0){
-		Texture2D* t=[textures lastObject];
-		[t release];
-		[textures removeLastObject];
-	}
-	while([menutextures count]>0){
-		Texture2D* t=[menutextures lastObject];
-		[t release];
-		[menutextures removeLastObject];
-	}
+    while(menutextures.size()>0){
+        Texture2D* t=menutextures.back();
+        delete t;
+        menutextures.pop_back();
+    }
+    while(textures.size()>0){
+        Texture2D* t=textures.back();
+        delete t;
+        textures.pop_back();
+    }
+
+	
 	//[sound release];
 	
 }

@@ -20,7 +20,7 @@ public:
     static void setZFAR(float zfar);
     static void setCameraFog(float zfar);
     static void initGraphics();
-    static void drawText(NSString* text,float x,float y);
+    //static void drawText(NSString* text,float x,float y);
     static void drawRect(float x1,float y1,float x2,float y2);
     static void drawRectOutline(CGRect rect);
     static void prepareScene();

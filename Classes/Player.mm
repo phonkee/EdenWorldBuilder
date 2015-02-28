@@ -88,7 +88,7 @@ BOOL Player::test(int tx,int ty,int tz,float r){
 	float right=pos.x+boxbase/2;
 	float front=pos.z-boxbase/2;
 	float back=pos.z+boxbase/2;
-    int type=[World getWorld].hud->blocktype;
+    int type=World::getWorld->hud->blocktype;
     testbox=makeBox(left,right,back,front,bot,top);
     //printf("npoints player box:%d\n",testbox.n_points);
     Polyhedra pbox2;
@@ -154,26 +154,26 @@ extern bool hitCustom;
 
 void Player::processInput(float etime){
 	Input* input=Input::getInput();
-	int mode=[World getWorld].hud->mode;
+	int mode=World::getWorld->hud->mode;
 	itouch* touches=input->getTouches();
 	
 	if(jumpandbuild){
         if(vel.y>0&&jumping&&!onground){
             Point3D testpoint=buildpoint;
-            if([World getWorld].hud->build_size==0){
+            if(World::getWorld->hud->build_size==0){
                 testpoint.x/=2;
                 testpoint.y/=2;
                 testpoint.z/=2;
             }
             BOOL collidesWithPlayer=FALSE;
-            if([World getWorld].hud->build_size==2)
+            if(World::getWorld->hud->build_size==2)
                 collidesWithPlayer=this->test(testpoint.x,testpoint.y,testpoint.z,2);
             else
                 collidesWithPlayer=this->test(testpoint.x,testpoint.y,testpoint.z,1);
             
             if(!collidesWithPlayer){
                 
-                int type=[World getWorld].hud->blocktype;
+                int type=World::getWorld->hud->blocktype;
                 
                 if(type==TYPE_STONE||type==TYPE_DARK_STONE||type==TYPE_COBBLESTONE||type==TYPE_BRICK||type==TYPE_VINE){
                     
@@ -201,19 +201,19 @@ void Player::processInput(float etime){
                         else{
                     Resources::getResources->playSound(S_BUILD_GENERIC);
                 }
-                if([World getWorld].hud->build_size==0){
-                   // [[World getWorld].terrain buildCustom:buildpoint.x:buildpoint.z:buildpoint.y);
-                } else if([World getWorld].hud->build_size==2){
-                   /* [World getWorld].terrain->buildBlock:buildpoint.x:buildpoint.z:buildpoint.y];
-                    [[World getWorld].terrain buildBlock:buildpoint.x+1:buildpoint.z:buildpoint.y];
-                    [[World getWorld].terrain buildBlock:buildpoint.x:buildpoint.z+1:buildpoint.y];
-                    [[World getWorld].terrain buildBlock:buildpoint.x:buildpoint.z:buildpoint.y+1];
-                    [[World getWorld].terrain buildBlock:buildpoint.x+1:buildpoint.z+1:buildpoint.y];
-                    [[World getWorld].terrain buildBlock:buildpoint.x:buildpoint.z+1:buildpoint.y+1];
-                    [[World getWorld].terrain buildBlock:buildpoint.x+1:buildpoint.z:buildpoint.y+1];
-                    [[World getWorld].terrain buildBlock:buildpoint.x+1:buildpoint.z+1:buildpoint.y+1];    */
+                if(World::getWorld->hud->build_size==0){
+                   // [World::getWorld->terrain buildCustom:buildpoint.x:buildpoint.z:buildpoint.y);
+                } else if(World::getWorld->hud->build_size==2){
+                   /* World::getWorld->terrain->buildBlock:buildpoint.x:buildpoint.z:buildpoint.y];
+                    [World::getWorld->terrain buildBlock:buildpoint.x+1:buildpoint.z:buildpoint.y];
+                    [World::getWorld->terrain buildBlock:buildpoint.x:buildpoint.z+1:buildpoint.y];
+                    [World::getWorld->terrain buildBlock:buildpoint.x:buildpoint.z:buildpoint.y+1];
+                    [World::getWorld->terrain buildBlock:buildpoint.x+1:buildpoint.z+1:buildpoint.y];
+                    [World::getWorld->terrain buildBlock:buildpoint.x:buildpoint.z+1:buildpoint.y+1];
+                    [World::getWorld->terrain buildBlock:buildpoint.x+1:buildpoint.z:buildpoint.y+1];
+                    [World::getWorld->terrain buildBlock:buildpoint.x+1:buildpoint.z+1:buildpoint.y+1];    */
                 }else{
-                    [World getWorld].terrain->buildBlock(buildpoint.x,buildpoint.z,buildpoint.y);
+                    World::getWorld->terrain->buildBlock(buildpoint.x,buildpoint.z,buildpoint.y);
                 }
                 jumpandbuild=FALSE;
             }
@@ -228,7 +228,7 @@ void Player::processInput(float etime){
         
      //   static int c=0;
       /*  for(int i=0;i<200;i++){
-            [[World getWorld].terrain buildBlock:c%T_SIZE:(c/T_SIZE)%T_SIZE:T_HEIGHT/2+(c/(T_SIZE*T_SIZE))%T_HEIGHT];
+            [World::getWorld->terrain buildBlock:c%T_SIZE:(c/T_SIZE)%T_SIZE:T_HEIGHT/2+(c/(T_SIZE*T_SIZE))%T_HEIGHT];
             c++;
         }*/
      //   printg("c:%d\n",c);
@@ -245,17 +245,17 @@ void Player::processInput(float etime){
                 Point3D point=findWorldCoords(touches[i].my,touches[i].mx,FC_PLACE);
                 if(point.x==-1)continue;
                 
-                int type=[World getWorld].terrain->getLand(point.x,point.z,point.y);
-                if([World getWorld].hud->build_size==0){
-                    type=[World getWorld].terrain->getLand(point.x/2,point.z/2,point.y/2);
+                int type=World::getWorld->terrain->getLand(point.x,point.z,point.y);
+                if(World::getWorld->hud->build_size==0){
+                    type=World::getWorld->terrain->getLand(point.x/2,point.z/2,point.y/2);
                 
                 }
                 
                 if(type==TYPE_NONE||(blockinfo[type]&IS_LIQUID&&getLevel(type)<4)){
                     touches[i].preview=point;
-                    touches[i].previewtype=[World getWorld].hud->blocktype;
+                    touches[i].previewtype=World::getWorld->hud->blocktype;
                     touches[i].etime=0;
-                    touches[i].build_size=[World getWorld].hud->build_size;
+                    touches[i].build_size=World::getWorld->hud->build_size;
                     
                     
                 }
@@ -272,7 +272,7 @@ void Player::processInput(float etime){
 
                     
                 }else{*/
-                    if([World getWorld].terrain->getLand(point.x,point.z,point.y)==TYPE_NONE)continue;
+                    if(World::getWorld->terrain->getLand(point.x,point.z,point.y)==TYPE_NONE)continue;
                     
                     touches[i].preview=point;
                     touches[i].previewtype=TYPE_CLOUD;
@@ -305,7 +305,7 @@ void Player::processInput(float etime){
 			touches[i].inuse=0;
 			if(mode==MODE_CAMERA){	
 				if(touches[i].placeBlock){
-					[World getWorld].hud->take_screenshot=TRUE;
+					World::getWorld->hud->take_screenshot=TRUE;
 					//Resources::getResources->playSound(SOUND_CAMERA];	
 				}
 				continue;
@@ -318,14 +318,14 @@ void Player::processInput(float etime){
 						point=findWorldCoords(touches[i].my,touches[i].mx,FC_PLACE);
                         
                         
-                        if([World getWorld].hud->holding_creature&&[World getWorld].hud->blocktype==TYPE_CLOUD){
+                        if(World::getWorld->hud->holding_creature&&World::getWorld->hud->blocktype==TYPE_CLOUD){
                            
                             Vector v;
                             if(point.x!=-1){
                             v.x=point.x;
                             v.y=point.y;
                             v.z=point.z;
-                                if([World getWorld].hud->build_size==0){
+                                if(World::getWorld->hud->build_size==0){
                                     v.x/=2;
                                     v.y/=2;
                                     v.z/=2;
@@ -334,7 +334,7 @@ void Player::processInput(float etime){
                             }else{
                                 
                             }
-                            PlaceModel([World getWorld].hud->holding_creature-1,v);
+                            PlaceModel(World::getWorld->hud->holding_creature-1,v);
                             point.x=-1;
                         }else
                         if(fwc_result!=-1){
@@ -355,7 +355,7 @@ void Player::processInput(float etime){
                     }
                     if(mode==MODE_PAINT&&fwc_result!=-1){
                          Resources::getResources->playSound(S_PAINT_BLOCK);	
-                        ColorModel(fwc_result,[World getWorld].hud->paintColor);
+                        ColorModel(fwc_result,World::getWorld->hud->paintColor);
                         
                         point.x=-1;
                     }
@@ -373,9 +373,9 @@ void Player::processInput(float etime){
                             extern Vector colorTable[256];
                             Resources::getResources->playSound(S_PAINT_BLOCK);
                             
-                            paintSky([World getWorld].hud->paintColor);
+                            paintSky(World::getWorld->hud->paintColor);
                                                         
-                            printg("painting sky %f,%f,%f\n",  [World getWorld].terrain.skycolor.x,  [World getWorld].terrain.skycolor.y,  [World getWorld].terrain.skycolor.z);
+                           // printg("painting sky %f,%f,%f\n",  World::getWorld->terrain.skycolor.x,  World::getWorld->terrain.skycolor.y,  World::getWorld->terrain.skycolor.z);
                             
 
                         }
@@ -385,10 +385,10 @@ void Player::processInput(float etime){
 					int type;
                     if(point.x==-1)continue;
                     if(mode==MODE_BUILD){
-                    if([World getWorld].hud->build_size==0)
-                        type=[World getWorld].terrain->getLand(point.x/2,point.z/2,point.y/2);
+                    if(World::getWorld->hud->build_size==0)
+                        type=World::getWorld->terrain->getLand(point.x/2,point.z/2,point.y/2);
                     else
-                        type=[World getWorld].terrain->getLand(point.x,point.z,point.y);
+                        type=World::getWorld->terrain->getLand(point.x,point.z,point.y);
                     }else{
                         if(hitCustom){
                            // type=getCustomc(point.x,point.z,point.y);
@@ -403,19 +403,19 @@ void Player::processInput(float etime){
                      //   printg("building: %d,%d,%d type:%d\n",point.x,point.y,point.z,type);
 						if(type==TYPE_NONE||(blockinfo[type]&IS_LIQUID&&getLevel(type)<4)){
                             Point3D testpoint=point;
-                            if([World getWorld].hud->build_size==0){
+                            if(World::getWorld->hud->build_size==0){
                                 testpoint.x/=2;
                                 testpoint.y/=2;
                                 testpoint.z/=2;
                             }
                             BOOL collidesWithPlayer=FALSE;
-                            if([World getWorld].hud->build_size==2)
+                            if(World::getWorld->hud->build_size==2)
                             collidesWithPlayer=test(testpoint.x,testpoint.y,testpoint.z,2);
                             else
                              collidesWithPlayer=test(testpoint.x,testpoint.y,testpoint.z,1);
                                 
 							if(!collidesWithPlayer){
-                                int type=[World getWorld].hud->blocktype;
+                                int type=World::getWorld->hud->blocktype;
                                 if(type==TYPE_STONE||type==TYPE_DARK_STONE||type==TYPE_COBBLESTONE||type==TYPE_BRICK||type==TYPE_VINE){
                                     
                                     Resources::getResources->playSound(S_BUILD_STONE);
@@ -442,31 +442,31 @@ void Player::processInput(float etime){
                                     
                                 }
                               //  printg("building: %d,%d,%d\n",point.x,point.y,point.z);
-                                if([World getWorld].hud->build_size==1){
-								[World getWorld].terrain->buildBlock(point.x,point.z,point.y);
-                                }else if([World getWorld].hud->build_size==2){
-                                    /*[[World getWorld].terrain buildBlock:point.x:point.z:point.y];
-                                    [[World getWorld].terrain buildBlock:point.x+1:point.z:point.y];
-                                    [[World getWorld].terrain buildBlock:point.x:point.z+1:point.y];
-                                    [[World getWorld].terrain buildBlock:point.x:point.z:point.y+1];
-                                    [[World getWorld].terrain buildBlock:point.x+1:point.z+1:point.y];
-                                    [[World getWorld].terrain buildBlock:point.x:point.z+1:point.y+1];
-                                    [[World getWorld].terrain buildBlock:point.x+1:point.z:point.y+1];
-                                    [[World getWorld].terrain buildBlock:point.x+1:point.z+1:point.y+1];*/
+                                if(World::getWorld->hud->build_size==1){
+								World::getWorld->terrain->buildBlock(point.x,point.z,point.y);
+                                }else if(World::getWorld->hud->build_size==2){
+                                    /*[World::getWorld->terrain buildBlock:point.x:point.z:point.y];
+                                    [World::getWorld->terrain buildBlock:point.x+1:point.z:point.y];
+                                    [World::getWorld->terrain buildBlock:point.x:point.z+1:point.y];
+                                    [World::getWorld->terrain buildBlock:point.x:point.z:point.y+1];
+                                    [World::getWorld->terrain buildBlock:point.x+1:point.z+1:point.y];
+                                    [World::getWorld->terrain buildBlock:point.x:point.z+1:point.y+1];
+                                    [World::getWorld->terrain buildBlock:point.x+1:point.z:point.y+1];
+                                    [World::getWorld->terrain buildBlock:point.x+1:point.z+1:point.y+1];*/
                                  
                                     
-                                }else if([World getWorld].hud->build_size==0){
+                                }else if(World::getWorld->hud->build_size==0){
                                    
-                                //    [[World getWorld].terrain buildCustom:point.x:point.z:point.y];
+                                //    [World::getWorld->terrain buildCustom:point.x:point.z:point.y];
                                    
                                 }
 							}else{
                                 
-                                if(pitch<-50&&onground&&!jumping&&![World getWorld].hud->m_jump
+                                if(pitch<-50&&onground&&!jumping&&!World::getWorld->hud->m_jump
                                    &&getLandc2(testpoint.x,testpoint.z,testpoint.y+2)<=0
                                    ){
-                                    [World getWorld].hud->m_jump=TRUE;
-                                    if([World getWorld].hud->build_size==2)
+                                    World::getWorld->hud->m_jump=TRUE;
+                                    if(World::getWorld->hud->build_size==2)
                                     doublejump=TRUE;
                                     jumpandbuild=TRUE;
                                     buildpoint=point;
@@ -482,14 +482,14 @@ void Player::processInput(float etime){
                         printg("burning: %d,%d,%d\n",point.x,point.y,point.z);
 						Resources::getResources->playSound(S_ATTEMPT_FIRE);
                          
-						[World getWorld].terrain->burnBlock(point.x,point.z,point.y,FALSE);
+						World::getWorld->terrain->burnBlock(point.x,point.z,point.y,FALSE);
 						if(blockinfo[type]&IS_FLAMMABLE){
                             if(type==TYPE_FIREWORK){
                                 Resources::getResources->playSound(S_FIREWORK_FUSE);
                             }else
 							Resources::getResources->playSound(S_FIRE_SUCCEED);
 						}else{
-                            [World getWorld].effects->addSmoke(point.x,point.z,point.y);
+                            World::getWorld->effects->addSmoke(point.x,point.z,point.y);
                         }
 					}else if(mode==MODE_MINE){
                        
@@ -517,11 +517,11 @@ void Player::processInput(float etime){
                                  Resources::getResources->playSound(S_BREAK_GENERIC);	
 							//NSLog(@"point: %d %d %d %d",point.x,point.z,point.y,type);
                             if(hitCustom){
-                               //[[World getWorld].terrain destroyCustom:point.x:point.z:point.y];
+                               //[World::getWorld->terrain destroyCustom:point.x:point.z:point.y];
                             }else
                             {
                                 printg("removing block: %d %d %d %d  yaw:%d\n",point.x,point.z,point.y,type,(int)yaw);
-                                [World getWorld].terrain->destroyBlock(point.x,point.z,point.y);
+                                World::getWorld->terrain->destroyBlock(point.x,point.z,point.y);
                             }
 							
 						}
@@ -533,10 +533,10 @@ void Player::processInput(float etime){
                         Resources::getResources->playSound(S_PAINT_BLOCK);	
                         
                         if(hitCustom){
-                           // [[World getWorld].terrain paintCustom:point.x:point.z:point.y:[World getWorld].hud.paintColor];
+                           // [World::getWorld->terrain paintCustom:point.x:point.z:point.y:World::getWorld->hud.paintColor];
                         }else
                         {
-                            [World getWorld].terrain->paintBlock(point.x,point.z,point.y,[World getWorld].hud->paintColor);
+                            World::getWorld->terrain->paintBlock(point.x,point.z,point.y,World::getWorld->hud->paintColor);
                         }
                         
                        
@@ -589,15 +589,15 @@ void Player::processInput(float etime){
 			}else{
                 if(mode==MODE_BUILD){
                     Point3D point=findWorldCoords(touches[i].my,touches[i].mx,FC_PLACE);
-                    int type=[World getWorld].terrain->getLand(point.x,point.z,point.y);
-                    if([World getWorld].hud->build_size==0){
-                        type=[World getWorld].terrain->getLand(point.x/2,point.z/2,point.y/2);
+                    int type=World::getWorld->terrain->getLand(point.x,point.z,point.y);
+                    if(World::getWorld->hud->build_size==0){
+                        type=World::getWorld->terrain->getLand(point.x/2,point.z/2,point.y/2);
                         
                     }
                     if((type==TYPE_NONE||(blockinfo[type]&IS_LIQUID&&getLevel(type)<4))&&mode==MODE_BUILD){
                         touches[i].preview=point;
-                        touches[i].previewtype=[World getWorld].hud->blocktype;
-                        touches[i].build_size=[World getWorld].hud->build_size;
+                        touches[i].previewtype=World::getWorld->hud->blocktype;
+                        touches[i].build_size=World::getWorld->hud->build_size;
                         //touches[i].etime=0;
                         
                     }
@@ -606,7 +606,7 @@ void Player::processInput(float etime){
                         Point3D point=findWorldCoords(touches[i].my,touches[i].mx,FC_DESTROY);
                         if(point.x==-1)continue;
                         if(!hitCustom){
-                        if([World getWorld].terrain->getLand(point.x,point.z,point.y)==TYPE_NONE)continue;
+                        if(World::getWorld->terrain->getLand(point.x,point.z,point.y)==TYPE_NONE)continue;
                         touches[i].preview=point;
                         touches[i].previewtype=TYPE_CLOUD;
                         touches[i].etime=0;
@@ -628,10 +628,10 @@ void Player::processInput(float etime){
             /*if(mode==MODE_PAINT){
                 Point3D point=findWorldCoords(touches[i].my,touches[i].mx,FC_DESTROY);
                 if(point.x==-1)continue;
-                if([[World getWorld].terrain getLand:point.x:point.z:point.y]==TYPE_NONE)continue;
+                if([World::getWorld->terrain getLand:point.x:point.z:point.y]==TYPE_NONE)continue;
                 
                 if(speed==0&&hspeed==0)
-                [[World getWorld].terrain paintBlock:point.x:point.z:point.y];
+                [World::getWorld->terrain paintBlock:point.x:point.z:point.y];
             }*/
 		}		
 	}		
@@ -725,7 +725,7 @@ void Player::takeDamage(float damage){
             Resources::getResources->playSound(S_DEATH_BY_TNT);
         }
         dead=TRUE;
-        [World getWorld].hud->fade_out=0;
+        World::getWorld->hud->fade_out=0;
         printg("dead\n");
     }
     
@@ -800,7 +800,7 @@ BOOL Player::update(float etime){
         
         
     }
-	Hud* hud=[World getWorld].hud;
+	Hud* hud=World::getWorld->hud;
 
 	speed=hspeed=vspeed=0;	
 	
@@ -851,16 +851,16 @@ BOOL Player::update(float etime){
    // if(mcc%5==0)
    //   printf("onground:%d  climbing:%d  inLiquid:%d  onramp:%d  onIce:%d\n",onground,climbing,inLiquid,onramp,onIce);
     
-	/*if([World getWorld].hud.mode==MODE_BURN){
+	/*if(World::getWorld->hud.mode==MODE_BURN){
 	speed=MOVE_SPEED*10;
 	vel.y=0;
-	[[World getWorld].terrain buildBlock:arc4random()%T_SIZE:arc4random()%T_SIZE:arc4random()%T_HEIGHT];
-	[[World getWorld].terrain destroyBlock:arc4random()%T_SIZE:arc4random()%T_SIZE:arc4random()%T_HEIGHT];
-	[[World getWorld].terrain burnBlock:arc4random()%T_SIZE:arc4random()%T_SIZE:arc4random()%T_HEIGHT];
+	[World::getWorld->terrain buildBlock:arc4random()%T_SIZE:arc4random()%T_SIZE:arc4random()%T_HEIGHT];
+	[World::getWorld->terrain destroyBlock:arc4random()%T_SIZE:arc4random()%T_SIZE:arc4random()%T_HEIGHT];
+	[World::getWorld->terrain burnBlock:arc4random()%T_SIZE:arc4random()%T_SIZE:arc4random()%T_HEIGHT];
 	}*/
 	/*if(once<=0){
 	for(int i=0;i<10000;i++){
-		[[World getWorld].terrain buildBlock:arc4random()%T_SIZE:arc4random()%T_SIZE:arc4random()%T_HEIGHT];
+		[World::getWorld->terrain buildBlock:arc4random()%T_SIZE:arc4random()%T_SIZE:arc4random()%T_HEIGHT];
 		
 	}
 		once++;
@@ -885,7 +885,7 @@ BOOL Player::update(float etime){
         int z=pos.z+sinYaw*1.25f;
         int y=pos.y-boxheight/2+.01;
         int type=getLandc2(x,z,y);
-        if(autojump_option&&onground&&!jumping&&![World getWorld].hud->m_jump&&type!=TYPE_NONE&&type!=TYPE_LADDER&&type!=TYPE_FLOWER&&type!=TYPE_VINE&&type!=TYPE_LAVA&&type!=TYPE_GOLDEN_CUBE&&type>0&&!(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_SIDE4)&&!(blockinfo[type]&IS_WATER)&&getLandc2(x,z,y+1)<=0){
+        if(autojump_option&&onground&&!jumping&&!World::getWorld->hud->m_jump&&type!=TYPE_NONE&&type!=TYPE_LADDER&&type!=TYPE_FLOWER&&type!=TYPE_VINE&&type!=TYPE_LAVA&&type!=TYPE_GOLDEN_CUBE&&type>0&&!(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_SIDE4)&&!(blockinfo[type]&IS_WATER)&&getLandc2(x,z,y+1)<=0){
             
             if(getLandc2(x,z,y+2)<=0&&getLandc2(pos.x,pos.z,pos.y+2)<=0&&speed>18){
                hud->m_jump=TRUE;
@@ -1026,7 +1026,7 @@ BOOL Player::update(float etime){
 	lpos.z=pos.z;
     this->move(etime);
 	
-    if([World getWorld].terrain->tgen->LEVEL_SEED==DEFAULT_LEVEL_SEED){
+    if(World::getWorld->terrain->tgen->LEVEL_SEED==DEFAULT_LEVEL_SEED){
         if(pos.x<4096*CHUNK_SIZE-GSIZE/2){
            pos.x=4096*CHUNK_SIZE-GSIZE/2;
         }else if(pos.x>=4096*CHUNK_SIZE+GSIZE/2){
@@ -1042,7 +1042,7 @@ BOOL Player::update(float etime){
     updateSkyColor2(this,FALSE,etime);
 	//NSLog(@"%f %f %f",pos.x,pos.y,pos.z);
 	
-	Camera* cam=world.cam;
+	Camera* cam=world->cam;
 	cam->px=pos.x;
 	cam->py=pos.y+3*boxheight/10;
 	cam->pz=pos.z;
@@ -1068,7 +1068,7 @@ BOOL Player::update(float etime){
 		}
 		
 	}
-    if([World getWorld].hud->underLiquid){
+    if(World::getWorld->hud->underLiquid){
         Resources::getResources->soundEvent(AMBIENT_UNDERWATER);
     }else if(pos.y>T_HEIGHT-9){
         Vector v=pos;
@@ -1097,7 +1097,7 @@ BOOL Player::update(float etime){
                             }
                             goto found;
                         }//else 
-                        // [World getWorld].terrain setColor:x,z,y+h)
+                        // World::getWorld->terrain setColor:x,z,y+h)
                     }
                 }
             }
@@ -1127,7 +1127,7 @@ BOOL Player::update(float etime){
 #define AMBIENT_LAVABADLANDS 15
 #define AMBIENT_SNOWMOUNTAIN 16
             */
-            if([World getWorld].terrain->tgen->LEVEL_SEED!=DEFAULT_LEVEL_SEED){
+            if(World::getWorld->terrain->tgen->LEVEL_SEED!=DEFAULT_LEVEL_SEED){
                  Resources::getResources->soundEvent(AMBIENT_OPEN,pos);
             }else
             if(ppx==0&&ppz==0){
@@ -1174,7 +1174,7 @@ float poffsetz=0;
 BOOL Player::vertc(){
     nest_count++;
     if(nest_count>10){/*printg("hit nest limit");*/ nest_count--; return false;}
-	Terrain* ter=world.terrain;
+	Terrain* ter=world->terrain;
     float bot=pos.y-boxheight/2;
     float top=pos.y+boxheight/2;
 	float left=pos.x-boxbase/2;
@@ -1239,7 +1239,7 @@ BOOL Player::vertc(){
                 int cz=z/CHUNK_SIZE;
                 
                 TerrainChunk* chunk;
-                hashmap_get([World getWorld].terrain.chunkMap, threeToOne(cx,cy,cz),(any_t)&chunk);
+                hashmap_get(World::getWorld->terrain.chunkMap, threeToOne(cx,cy,cz),(any_t)&chunk);
                 if(!chunk){
                     continue;                    
                 }
@@ -1293,19 +1293,19 @@ BOOL Player::vertc(){
                             clr.y=(float)blockColor[TYPE_WATER][1]/255;
                             clr.z=(float)blockColor[TYPE_WATER][2]/255;
                         }
-                        [World getWorld].hud->liquidColor=clr;
+                        World::getWorld->hud->liquidColor=clr;
                         continue;
                     }else if(type==TYPE_GOLDEN_CUBE){
                         
-                        [World getWorld].hud->goldencubes++;
-                        [World getWorld].hud->flash=.95f;
+                        World::getWorld->hud->goldencubes++;
+                        World::getWorld->hud->flash=.95f;
                          Resources::getResources->playSound(S_TREASURE_PICKUP);
-                        int coli=[World getWorld].terrain->getColor(x ,z,y);
+                        int coli=World::getWorld->terrain->getColor(x ,z,y);
                         if(coli==0)
-                            [World getWorld].hud->flashcolor=MakeVector(blockColor[TYPE_GOLDEN_CUBE][0]/255.0f,blockColor[TYPE_GOLDEN_CUBE][1]/255.0f,blockColor[TYPE_GOLDEN_CUBE][2]/255.0f);
+                            World::getWorld->hud->flashcolor=MakeVector(blockColor[TYPE_GOLDEN_CUBE][0]/255.0f,blockColor[TYPE_GOLDEN_CUBE][1]/255.0f,blockColor[TYPE_GOLDEN_CUBE][2]/255.0f);
                             else
-                        [World getWorld].hud->flashcolor=colorTable[coli];
-                        [World getWorld].terrain->updateChunks(x,z,y,TYPE_NONE);
+                        World::getWorld->hud->flashcolor=colorTable[coli];
+                        World::getWorld->terrain->updateChunks(x,z,y,TYPE_NONE);
                     }else if(type==TYPE_FLOWER){
                         continue;
                     }else if(blockinfo[type]&IS_DOOR){
@@ -1774,7 +1774,7 @@ void Player::horizc(){/*
 BOOL Player::checkCollision(){
     int bx=(int)roundf(pos.x/BLOCK_SIZE-.5f);
 	int bz=(int)roundf(pos.z/BLOCK_SIZE-.5f);
-	Terrain* ter=world.terrain;
+	Terrain* ter=world->terrain;
 
 	float bot=pos.y-boxheight/2;
 	int bh=(int)floorf(bot/BLOCK_SIZE);
@@ -1818,7 +1818,7 @@ void Player::move(float etime){
     lastOnIce=onIce;
 	inLiquid=FALSE;
     onIce=FALSE;
-    [World getWorld].hud->underLiquid=FALSE;
+    World::getWorld->hud->underLiquid=FALSE;
     
     Vector lvel=vel;
     vel.x+=accel.x*etime;
@@ -1886,8 +1886,8 @@ void Player::move(float etime){
     nest_count=0;
     onground=FALSE;
     onramp=FALSE;
-    poffsetx=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
-    poffsetz=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
+    poffsetx=World::getWorld->fm->chunkOffsetX*CHUNK_SIZE;
+    poffsetz=World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE;
     vertc();
     
     if(inLiquid)onIce=FALSE;
@@ -1964,11 +1964,11 @@ void Player::move(float etime){
     if(last){
         jumping=FALSE;
     }
-    int type=[World getWorld].terrain->getLand(pos.x
+    int type=World::getWorld->terrain->getLand(pos.x
                                               ,pos.z
                                               ,pos.y+boxbase/2);
     if(blockinfo[type]&IS_WATER){
-        [World getWorld].hud->underLiquid=TRUE;
+        World::getWorld->hud->underLiquid=TRUE;
     }
     
     
@@ -1989,7 +1989,7 @@ void Player::move(float etime){
     //  NormalizeVector(&blah);
     
     
-    type=[World getWorld].terrain->getLand(pos.x +dirv.x/5.3f
+    type=World::getWorld->terrain->getLand(pos.x +dirv.x/5.3f
                                               ,pos.z +dirv.z/5.3f
                                               ,pos.y+boxbase/2);
     if(type==TYPE_PORTAL_TOP){
@@ -2000,19 +2000,19 @@ void Player::move(float etime){
             inPortal=TRUE;
             printg("entering portal (%d, %d, %d)  ", (int)pos.x,(int)(pos.y+boxbase/2),(int)pos.z);
             Resources::getResources->playSound(S_ENTER_PORTAL);
-            Vector2 ret=[World getWorld].terrain->portals->enterPortal(pos.x
+            Vector2 ret=World::getWorld->terrain->portals->enterPortal(pos.x
                                              ,pos.y+boxbase/2
                                                                      ,pos.z,vel);
             
-            [World getWorld].hud->flash=1;
-            int color=[World getWorld].terrain->getColor(pos.x
+            World::getWorld->hud->flash=1;
+            int color=World::getWorld->terrain->getColor(pos.x
                                              ,pos.z
                                              ,pos.y+boxbase/2);
             
             if(color==0){
-                [World getWorld].hud->flashcolor=MakeVector(1.0,1.0,1.0);
+                World::getWorld->hud->flashcolor=MakeVector(1.0,1.0,1.0);
             }else
-            [World getWorld].hud->flashcolor=colorTable[color];
+            World::getWorld->hud->flashcolor=colorTable[color];
             
             pos.x=ret.x;
             pos.y=ret.y;
@@ -2020,8 +2020,8 @@ void Player::move(float etime){
             vel.x=ret.x2;
             vel.y=ret.y2;
             vel.z=ret.z2;
-            [World getWorld].terrain->destroyBlock(pos.x,pos.z,pos.y);
-            [World getWorld].terrain->destroyBlock(pos.x,pos.z,pos.y-1);
+            World::getWorld->terrain->destroyBlock(pos.x,pos.z,pos.y);
+            World::getWorld->terrain->destroyBlock(pos.x,pos.z,pos.y-1);
             printg("exiting at:(%d, %d, %d) \n",(int)pos.x,(int)(pos.y+boxbase/2),(int)pos.z);
             
         }
@@ -2072,7 +2072,7 @@ void Player::render(){
 		   touches[i].placeBlock&&
 		   touches[i].previewtype!=TYPE_NONE&&touches[i].etime>0){
             drewPreview=TRUE;
-            if([World getWorld].hud->holding_creature&&touches[i].previewtype==TYPE_CLOUD&&[World getWorld].hud->mode==MODE_BUILD){
+            if(World::getWorld->hud->holding_creature&&touches[i].previewtype==TYPE_CLOUD&&World::getWorld->hud->mode==MODE_BUILD){
                 PlaceModel(-1,fpoint);
             }else{
                 Graphics::drawCube(touches[i].preview.x*BLOCK_SIZE

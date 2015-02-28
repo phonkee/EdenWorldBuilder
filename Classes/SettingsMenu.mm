@@ -140,7 +140,7 @@ void SettingsMenu::update(float etime){
 			
 			if(inbox2(touches[i].mx,touches[i].my,&rect_save)){	
                 this->save();
-				[World getWorld].menu->showsettings=FALSE;
+				World::getWorld->menu->showsettings=FALSE;
 			}
 			for(int j=0;j<NUM_PROP;j++){
 				
@@ -182,22 +182,22 @@ void SettingsMenu::load(){
 	world_counter=[n intValue];
 	Resources::getResources->playmusic=properties[S_PLAY_MUSIC].value;
 	Resources::getResources->playsound=properties[S_PLAY_SOUND].value;
-	//[World getWorld].hud.leftymode=properties[S_LEFTY_MODE].value;
-   [World getWorld].player->autojump_option=properties[S_AUTOJUMP].value;
-    [World getWorld].player->health_option=properties[S_HEALTH].value;
-	[World getWorld].player->invertcam=FALSE;
-	[World getWorld].hud->use_joystick=TRUE;
-    [World getWorld].terrain->tgen->genCaves=FALSE;
-    [World getWorld].bestGraphics=properties[S_AUTOJUMP].value;
+	//World::getWorld->hud.leftymode=properties[S_LEFTY_MODE].value;
+   World::getWorld->player->autojump_option=properties[S_AUTOJUMP].value;
+    World::getWorld->player->health_option=properties[S_HEALTH].value;
+	World::getWorld->player->invertcam=FALSE;
+	World::getWorld->hud->use_joystick=TRUE;
+    World::getWorld->terrain->tgen->genCaves=FALSE;
+    World::getWorld->bestGraphics=properties[S_AUTOJUMP].value;
     CREATURES_ON=properties[S_CREATURES].value;
     
-    [World getWorld].bestGraphics=TRUE;
+    World::getWorld->bestGraphics=TRUE;
     if(LOW_MEM_DEVICE||LOW_GRAPHICS){
-        [World getWorld].bestGraphics=FALSE;
+        World::getWorld->bestGraphics=FALSE;
     }
     extern BOOL IS_WIDESCREEN;
     if(IS_WIDESCREEN){
-        [World getWorld].bestGraphics=TRUE;
+        World::getWorld->bestGraphics=TRUE;
     }
 }
 void SettingsMenu::save(){
@@ -219,23 +219,23 @@ NSString* SettingsMenu::getNewWorldName(){
 }
 void SettingsMenu::render(){
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
-	[Resources::getResources->getMenuTex(MENU_OPTIONS_HEADER) drawText:rect_settings];
+	Resources::getResources->getMenuTex(MENU_OPTIONS_HEADER)->drawText(rect_settings);
 	
-	[Resources::getResources->getMenuTex(MENU_SAVE) drawButton:rect_save];
+	Resources::getResources->getMenuTex(MENU_SAVE)->drawButton(rect_save);
 	for(int i=0;i<NUM_PROP;i++){
 		glColor4f(0.97, 0.97, 0.97, 1.0f);
 		if(i==S_HEALTH){
-			[Resources::getResources->getMenuTex(MENU_HEALTH) drawText:properties[i].box];
+			Resources::getResources->getMenuTex(MENU_HEALTH)->drawText(properties[i].box);
 		}else if(i==S_PLAY_MUSIC){
-			[Resources::getResources->getMenuTex(MENU_MUSIC) drawText:properties[i].box];
+			Resources::getResources->getMenuTex(MENU_MUSIC)->drawText(properties[i].box);
 		}
 		else if(i==S_PLAY_SOUND){
-			[Resources::getResources->getMenuTex(MENU_SOUND_EFFECTS) drawText:properties[i].box];
+			Resources::getResources->getMenuTex(MENU_SOUND_EFFECTS)->drawText(properties[i].box);
 		}else if(i==S_AUTOJUMP){
-			[Resources::getResources->getMenuTex(MENU_AUTOJUMP) drawText:properties[i].box];
+			Resources::getResources->getMenuTex(MENU_AUTOJUMP)->drawText(properties[i].box);
 			
 		}else if(i==S_CREATURES){
-            [Resources::getResources->getMenuTex(MENU_CREATURES) drawText:properties[i].box];
+            Resources::getResources->getMenuTex(MENU_CREATURES)->drawText(properties[i].box);
         }
 	//	[properties[i].tex drawInRect:properties[i].box];
 		rect_off.origin.y=properties[i].box.origin.y;
@@ -245,20 +245,20 @@ void SettingsMenu::render(){
 //			glColor4f(0.0, 1.0, 0.0, 1.0f);	
 //		}
       //  if(i==S_GRAPHICS)
-       //     [Resources::getResources->getMenuTex:MENU_BEST]  drawText:rect_on];
+       //     Resources::getResources->getMenuTex:MENU_BEST] ->drawText(rect_on];
        // else
         if(properties[i].value)
-            [Resources::getResources->getMenuTex(MENU_ON)  drawButton:rect_on[i]];
+            Resources::getResources->getMenuTex(MENU_ON)->drawButton(rect_on[i]);
         else
-            [Resources::getResources->getMenuTex(MENU_OFF)  drawButton:rect_on[i]];
+            Resources::getResources->getMenuTex(MENU_OFF)->drawButton(rect_on[i]);
 		glColor4f(0.7, 0.7, 0.7, 1.0f);
 		if(!properties[i].value){
 			glColor4f(1.0, 0.0, 0.0, 1.0f);	
 		}
 	//	if(i==S_GRAPHICS)
-     //       [Resources::getResources->getMenuTex:MENU_FAST]  drawText:rect_off];
+     //       Resources::getResources->getMenuTex:MENU_FAST] ->drawText(rect_off];
      //   else
-	//	[Resources::getResources->getMenuTex:MENU_OFF] drawText:rect_off];
+	//	Resources::getResources->getMenuTex:MENU_OFF]->drawText(rect_off];
 	}
 
 	

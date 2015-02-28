@@ -91,6 +91,7 @@ public class List2 extends HttpServlet
         }
     }
 	public void parseLine(String line){
+	
 		
 		try{
 			long newtime=System.currentTimeMillis();
@@ -245,6 +246,16 @@ public class List2 extends HttpServlet
 				if(i<5||i%100000==0)System.out.println("parsed "+i+ " maps");
 			}		
 			sc.close();
+			sc=new Scanner(new File(path+"file_list_archive.txt"));
+			
+			while(sc.hasNextLine()){
+				String line=sc.nextLine();
+				if(i>7000000)
+				parseLine(line);	
+				i++;
+				if(i<5||i%100000==0)System.out.println("parsed "+i+ " maps");
+			}		
+			sc.close();
 			
 			
 			///source maps from safe list instead of real list
@@ -269,6 +280,7 @@ public class List2 extends HttpServlet
 	
     protected void doGet( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException
     {
+    	
     	activereq.getAndIncrement();
     	try{
         PrintWriter outp = resp.getWriter();

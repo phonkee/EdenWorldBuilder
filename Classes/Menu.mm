@@ -132,6 +132,8 @@ Menu::Menu(){
 	shareutil=[[ShareUtil alloc] init];
 	showsettings=FALSE;
 	is_sharing=FALSE;
+    showlistscreen=FALSE;
+    loading=FALSE;
 	loading_world_list=0;
 	
 	shared_list=[[SharedList alloc] init];
@@ -240,7 +242,7 @@ void Menu::loadWorlds(){
 	NSError* err;
 	NSArray* dirContents = [[NSFileManager defaultManager] 
 							
-							contentsOfDirectoryAtPath:[World getWorld].fm->documents error:&err];
+							contentsOfDirectoryAtPath:World::getWorld->fm->documents error:&err];
     
     
     //readIndex();
@@ -260,7 +262,7 @@ void Menu::loadWorlds(){
     if(reloadDir){
         dirContents=[[NSFileManager defaultManager]
          
-         contentsOfDirectoryAtPath:[World getWorld].fm->documents error:&err];
+         contentsOfDirectoryAtPath:World::getWorld->fm->documents error:&err];
         dirc=(int)[dirContents count];
     }
     
@@ -278,7 +280,7 @@ void Menu::loadWorlds(){
         if(![wut isEqualToString:@"EDEN"])
             continue;
         
-		NSString* real_name=[World getWorld].fm->getName(file_name);
+		NSString* real_name=World::getWorld->fm->getName(file_name);
         if(real_name==NULL){
             real_name=@"Unknown World";
         }
@@ -477,7 +479,7 @@ void Menu::update(float etime){
 					if(node==selected_world){					
 						if(delete_mode){	
 							if(selected_world){
-                               /* if(![World getWorld].FLIPPED){
+                               /* if(!World::getWorld->FLIPPED){
                                     [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
                                 }
                                 else{
@@ -496,7 +498,7 @@ void Menu::update(float etime){
 							share_mode=FALSE;
 							
 							
-							if([World getWorld].fm->worldExists(node->file_name,TRUE)){
+							if(World::getWorld->fm->worldExists(node->file_name,TRUE)){
 								sbar->setStatus(@"Sharing world..." ,2);
 								is_sharing=TRUE;
 								[share_menu beginShare:node];
@@ -584,15 +586,15 @@ void Menu::update(float etime){
 }
 
 BOOL Menu::loadShared(SharedListNode* sharedNode){
-    NSString* rfile_name=[NSString stringWithFormat:@"%@/%@",[World getWorld].fm->documents,sharedNode->file_name];
+    NSString* rfile_name=[NSString stringWithFormat:@"%@/%@",World::getWorld->fm->documents,sharedNode->file_name];
 
     const char* fname=[rfile_name cStringUsingEncoding:NSUTF8StringEncoding];
-  //  NSString* new_name=[NSString stringWithFormat:@"%@/%@.archive",[World getWorld].fm.documents,sharedNode->file_name];
+  //  NSString* new_name=[NSString stringWithFormat:@"%@/%@.archive",World::getWorld->fm.documents,sharedNode->file_name];
    // const char* cnewname=[new_name cStringUsingEncoding:NSUTF8StringEncoding];
     
     
   //  rename(fname,cnewname);
-    NSString* temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm->documents];
+    NSString* temp_name=[NSString stringWithFormat:@"%@/temp",World::getWorld->fm->documents];
     const char* tname=[temp_name cStringUsingEncoding:NSUTF8StringEncoding];
     
     
@@ -685,9 +687,9 @@ void Menu::render(){
 	//[Graphics drawRect:20:20:SCREEN_WIDTH-20:SCREEN_HEIGHT-20];
 	
     if(IS_IPAD&&!IS_RETINA)
-        [Resources::getResources->getMenuTex(MENU_LOGO) drawText:rect_name];
+        Resources::getResources->getMenuTex(MENU_LOGO)->drawText(rect_name);
     else
-	[Resources::getResources->getMenuTex(MENU_LOGO) drawInRect2:rect_name];
+	Resources::getResources->getMenuTex(MENU_LOGO)->drawInRect2(rect_name);
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
 	WorldNode* node=world_list;
 	
@@ -730,36 +732,36 @@ void Menu::render(){
             if(node->anim.size.width<nn){
                
                 if(node==selected_world)
-                    [Resources::getResources->getMenuTex(MENU_BLOCK_SELECTED) drawButton2:node->anim];
+                    Resources::getResources->getMenuTex(MENU_BLOCK_SELECTED)->drawButton2(node->anim);
                 else {
-                    [Resources::getResources->getMenuTex(MENU_BLOCK_UNSELECTED) drawButton2:node->anim];
+                    Resources::getResources->getMenuTex(MENU_BLOCK_UNSELECTED)->drawButton2(node->anim);
                 }
                
                 
             }else{
 			if(node==selected_world)
-			[Resources::getResources->getMenuTex(MENU_BLOCK_SELECTED) drawButton:node->anim];
+			Resources::getResources->getMenuTex(MENU_BLOCK_SELECTED)->drawButton(node->anim);
 			else {
-				[Resources::getResources->getMenuTex(MENU_BLOCK_UNSELECTED) drawButton:node->anim];
+				Resources::getResources->getMenuTex(MENU_BLOCK_UNSELECTED)->drawButton(node->anim);
 			}
             }
 
 		}
 		node=node->next;
 	}
-	[Resources::getResources->getMenuTex(MENU_OPTIONS) drawButton:rect_options];
-	[Resources::getResources->getMenuTex(MENU_DELETE_WORLD) drawButton:rect_delete];
-	[Resources::getResources->getMenuTex(MENU_CREATE_WORLD) drawButton:rect_create];
-	[Resources::getResources->getMenuTex(MENU_SHARE_WORLD) drawButton:rect_share];
-	[Resources::getResources->getMenuTex(MENU_LOAD_WORLD) drawButton:rect_loadshared];
+	Resources::getResources->getMenuTex(MENU_OPTIONS)->drawButton(rect_options);
+	Resources::getResources->getMenuTex(MENU_DELETE_WORLD)->drawButton(rect_delete);
+	Resources::getResources->getMenuTex(MENU_CREATE_WORLD)->drawButton(rect_create);
+	Resources::getResources->getMenuTex(MENU_SHARE_WORLD)->drawButton(rect_share);
+	Resources::getResources->getMenuTex(MENU_LOAD_WORLD)->drawButton(rect_loadshared);
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
 	if(!activeLeftArrow)
 		glColor4f(1.0, 1.0, 1.0, 0.3f);
-	[Resources::getResources->getMenuTex(MENU_ARROW_LEFT) drawButton:left_arrow];
+	Resources::getResources->getMenuTex(MENU_ARROW_LEFT)->drawButton(left_arrow);
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
 	if(!activeRightArrow)
 		glColor4f(1.0, 1.0, 1.0, 0.3f);
-	[Resources::getResources->getMenuTex(MENU_ARROW_RIGHT) drawButton:right_arrow];
+	Resources::getResources->getMenuTex(MENU_ARROW_RIGHT)->drawButton(right_arrow);
 	glDisable(GL_TEXTURE_2D);
 	if(delete_mode)
 		glColor4f(1.0, 0.0, 0.0, 1.0f);
@@ -782,7 +784,7 @@ void Menu::render(){
 			if(selected_world!=NULL){
 				
 				//NSString* wname=selected_world->file_name;
-                if([World getWorld].fm->worldExists(selected_world->file_name,TRUE)){
+                if(World::getWorld->fm->worldExists(selected_world->file_name,TRUE)){
 				//[[World getWorld] loadWorld:wname];
                     loading=4;
                 }
@@ -807,7 +809,7 @@ void Menu::render(){
                    
                     //loading=4;
                     /*new world prompt
-                    if(![World getWorld].FLIPPED){
+                    if(!World::getWorld->FLIPPED){
                         [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
                     }
                     else{
@@ -827,12 +829,12 @@ void Menu::render(){
                 if(fade_out>=1.0f){
                     NSString* wname=selected_world->file_name;
            
-                    [[World getWorld] loadWorld:wname];
+                    World::getWorld->loadWorld(wname);
                 }
             }else{
                 NSString* wname=selected_world->file_name;
                 
-                [[World getWorld] loadWorld:wname];
+                World::getWorld->loadWorld(wname);
             }
 
             
@@ -865,7 +867,7 @@ void Menu::render(){
 }
 
 void Menu::a_genFlat(BOOL b){
-    [World getWorld].fm->genflat=b;
+    World::getWorld->fm->genflat=b;
     loading++;
 }
 void Menu::a_deleteCancel(){
@@ -875,7 +877,7 @@ void Menu::a_deleteConfirm(){
      NSString* wname=selected_world->file_name;
      removeWorld(selected_world);
      
-     if([World getWorld].fm->deleteWorld(wname))
+     if(World::getWorld->fm->deleteWorld(wname))
      sbar->setStatus(@"World deleted" ,2);
      else{
      NSLog(@"delete failed\n");

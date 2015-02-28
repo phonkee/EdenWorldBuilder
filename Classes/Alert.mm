@@ -34,13 +34,13 @@ UIAlertView *alertWorldType;
             case 1:
             {
                 
-                [World getWorld].hud->asetHome();
+                World::getWorld->hud->asetHome();
                                break;
             }
             case 2:
             {
                 
-               [World getWorld].hud->awarpHome();
+               World::getWorld->hud->awarpHome();
                 break;
             }
             default:
@@ -50,14 +50,14 @@ UIAlertView *alertWorldType;
         switch (buttonIndex) {
             case 0:
             {
-                [World getWorld].menu->a_deleteCancel();
+                World::getWorld->menu->a_deleteCancel();
               //  
                 break;
             }
             case 1:
             {
                 
-                [World getWorld].menu->a_deleteConfirm();
+                World::getWorld->menu->a_deleteConfirm();
                
                 break;
             }
@@ -70,14 +70,14 @@ UIAlertView *alertWorldType;
                 NSLog(@"button idx %d",(int)buttonIndex);
             case 0:
             {
-                [World getWorld].menu->a_genFlat(TRUE);
-               // [World getWorld].fm->genflat=TRUE;
+                World::getWorld->menu->a_genFlat(TRUE);
+               // World::getWorld->fm->genflat=TRUE;
                 break;
             }
             case 1:
             {
-                 [World getWorld].menu->a_genFlat(FALSE);
-              //  [World getWorld].fm->genflat=FALSE;
+                 World::getWorld->menu->a_genFlat(FALSE);
+              //  World::getWorld->fm->genflat=FALSE;
                 break;
             }
                 

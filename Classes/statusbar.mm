@@ -40,23 +40,23 @@ void statusbar::setStatus(NSString* status,float time,UITextAlignment align){
                      
     }
     
-    this->clear();
+    clear();
     if(CHECK_GL_ERROR()){}
 	message=status;
     [message retain];
     if(IS_IPAD){
-		text=[[Texture2D alloc] initWithString:status 
-									dimensions:CGSizeMake(pos.size.width*SCALE_WIDTH,
-														  pos.size.height*SCALE_HEIGHT) 
-									 alignment:align
-										  font:[UIFont systemFontOfSize:font_size*2]];
+		text=new Texture2D(status,
+									CGSizeMake(pos.size.width*SCALE_WIDTH,
+														  pos.size.height*SCALE_HEIGHT) ,
+									align,
+										 [UIFont systemFontOfSize:font_size*2]);
 	}
 	else{
-	text=[[Texture2D alloc] initWithString:status 
-								dimensions:CGSizeMake(pos.size.width,
-													  pos.size.height) 
-								 alignment:align
-									  font:[UIFont systemFontOfSize:font_size]];
+	text=new Texture2D(status,
+								CGSizeMake(pos.size.width,
+													  pos.size.height) ,
+								 align,
+									  [UIFont systemFontOfSize:font_size]);
 	}
 	textlife=time;
    
@@ -64,7 +64,8 @@ void statusbar::setStatus(NSString* status,float time,UITextAlignment align){
 }
 void statusbar::clear(){
 	if(text!=NULL){
-		[text release];
+        delete text;
+		
 		text=NULL;
         
 	}	
@@ -80,6 +81,7 @@ void statusbar::update(float etime){
    // printg("message update set:%s time:%f\n",[message cString],textlife);
 }
 void statusbar::render(){
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	if(text!=NULL&&textlife>0){
 		glColor4f(0.0, 0.0, 0.0, 1.0);
         
@@ -90,7 +92,7 @@ void statusbar::render(){
             p.y+=pos.size.height;
         }else
         p.y+=pos.size.height/2;
-		[text drawAtPoint:p];
+		text->drawAtPoint(p);
         if(IS_IPAD){
             p.x-=1;
             p.y+=1;
@@ -98,7 +100,7 @@ void statusbar::render(){
 		p.x-=1;
 		p.y+=1;
 		glColor4f(1.0, 1.0, 1.0, 1.0);
-		[text drawAtPoint:p];
+		text->drawAtPoint(p);
         //printg("text: %s\n",[message cString]);
 	}
    // printg("text null or textlif<=0\n");
@@ -118,7 +120,7 @@ void statusbar::renderPlain(){
 		p.x-=1;
 		p.y+=1;
 		
-		[text drawAtPoint:p];
+		text->drawAtPoint(p);
        
 	}
     }

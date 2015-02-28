@@ -1,64 +1,3 @@
- /*
-
-===== IMPORTANT =====
-
-This is sample code demonstrating API, technology or techniques in development.
-Although this sample code has been reviewed for technical accuracy, it is not
-final. Apple is supplying this information to help you plan for the adoption of
-the technologies and programming interfaces described herein. This information
-is subject to change, and software implemented based on this sample code should
-be tested with final operating system software and final documentation. Newer
-versions of this sample code may be provided with future seeds of the API or
-technology. For information about updates to this and other developer
-documentation, view the New & Updated sidebars in subsequent documentation
-seeds.
-
-=====================
-
-File: Texture2D.m
-Abstract: Convenience class that allows to create OpenGL 2D textures from images, text or raw data.
-
-Version: 1.3
-
-Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple Inc.
-("Apple") in consideration of your agreement to the following terms, and your
-use, installation, modification or redistribution of this Apple software
-constitutes acceptance of these terms.  If you do not agree with these terms,
-please do not use, install, modify or redistribute this Apple software.
-
-In consideration of your agreement to abide by the following terms, and subject
-to these terms, Apple grants you a personal, non-exclusive license, under
-Apple's copyrights in this original Apple software (the "Apple Software"), to
-use, reproduce, modify and redistribute the Apple Software, with or without
-modifications, in source and/or binary forms; provided that if you redistribute
-the Apple Software in its entirety and without modifications, you must retain
-this notice and the following text and disclaimers in all such redistributions
-of the Apple Software.
-Neither the name, trademarks, service marks or logos of Apple Inc. may be used
-to endorse or promote products derived from the Apple Software without specific
-prior written permission from Apple.  Except as expressly stated in this notice,
-no other rights or licenses, express or implied, are granted by Apple herein,
-including but not limited to any patent rights that may be infringed by your
-derivative works or by other works in which the Apple Software may be
-incorporated.
-
-The Apple Software is provided by Apple on an "AS IS" basis.  APPLE MAKES NO
-WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION THE IMPLIED
-WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS USE AND OPERATION ALONE OR IN
-COMBINATION WITH YOUR PRODUCTS.
-
-IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
-GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION, MODIFICATION AND/OR
-DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED AND WHETHER UNDER THEORY OF
-CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE, EVEN IF
-APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-Copyright (C) 2008 Apple Inc. All Rights Reserved.
-
-*/
 
 #import <OpenGLES/ES1/glext.h>
 #import "Glu.h"
@@ -74,23 +13,27 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 //CLASS IMPLEMENTATIONS:
 
-@implementation Texture2D
 
-@synthesize contentSize=_size, pixelFormat=_format, pixelsWide=_width, pixelsHigh=_height, name=_name, maxS=_maxS, maxT=_maxT;
 
-- (id) initWithData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width 
-		 pixelsHigh:(NSUInteger)height contentSize:(CGSize)size{
-	return [self initWithData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:size generateMips:FALSE];
+//@synthesize contentSize=_size, pixelFormat=_format, pixelsWide=_width, pixelsHigh=_height, name=name, maxS=_maxS, maxT=_maxT;
+
+Texture2D::Texture2D(const void* data, Texture2DPixelFormat pixelFormat, int width,int height,CGSize size){
+    initData(data,pixelFormat,width,height,size,FALSE);
+    
 }
-- (id) initWithData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width 
-		 pixelsHigh:(NSUInteger)height contentSize:(CGSize)size generateMips:(BOOL)genMips
-{
+Texture2D::Texture2D(const void* data, Texture2DPixelFormat pixelFormat, int width,int height,CGSize size,BOOL genMips){
+    initData(data,pixelFormat,width,height,size,genMips);
+}
+
+
+void Texture2D::initData(const void* data, Texture2DPixelFormat pixelFormat, int width,int height,CGSize size,BOOL genMips){
+
 	GLint					saveName;
 	
-	if((self = [super init])) {
-		glGenTextures(1, &_name);
+	if(TRUE) {
+		glGenTextures(1, &name);
 		glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveName);
-		glBindTexture(GL_TEXTURE_2D, _name);
+		glBindTexture(GL_TEXTURE_2D, name);
 		if(genMips){
 			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
 			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
@@ -171,8 +114,9 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		glBindTexture(GL_TEXTURE_2D, saveName);
 		
 		if(!CHECK_GL_ERROR()) {			
-			[self release];
-			return nil;
+			
+            printf("err initing texture");
+			return;
 		}
 		
 		_size = size;
@@ -183,41 +127,27 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		_maxT = size.height / (float)height;
 	}
 	
-	return self;
-}
 
-- (void) dealloc
+}
+Texture2D::~Texture2D()
 {
 	
-	if(_name){
+	if(name){
 		
-	glDeleteTextures(1, &_name);
+	glDeleteTextures(1, &name);
 	}
-	[super dealloc];
+	
 }
 
-- (NSString*) description
-{
-	return [NSString stringWithFormat:@"<%@ = %@ | Name = %i | Dimensions = %ix%i | Coordinates = (%.2f, %.2f)>", [self class], self, _name, (int)_width, (int)_height,(double) _maxS, (double)_maxT];
+NSString* Texture2D::description(){
+
+	return [NSString stringWithFormat:@"< Texture2D| Name = %i | Dimensions = %ix%i | Coordinates = (%.2f, %.2f)>",  name, (int)_width, (int)_height,(double) _maxS, (double)_maxT];
 }
 
-@end
 
-@implementation Texture2D (Image)
 
-- (id) initWithImagePath:(NSString*)path
-{
-	return [self initWithImagePath:path sizeToFit:NO generateMips:FALSE];
-}
-- (id) initWithImagePath:(NSString*)path sizeToFit:(BOOL)sizeToFit  generateMips:(BOOL)genMips;
-{
-	return [self initWithImagePath:path sizeToFit:sizeToFit pixelFormat:kTexture2DPixelFormat_Automatic generateMips:genMips];
 
-}
-- (id) initWithImagePath:(NSString*)path sizeToFit:(BOOL)sizeToFit
-{
-	return [self initWithImagePath:path sizeToFit:sizeToFit pixelFormat:kTexture2DPixelFormat_Automatic generateMips:FALSE];
-}
+
 CGContextRef CreateARGBBitmapContext (CGImageRef inImage)
 {
     CGContextRef    context = NULL;
@@ -655,7 +585,24 @@ int realStoredSkinCounter=0;
  temp=[[Texture2D alloc] initWithImagePath:@"Stumpy_DefaultMASK.png" sizeToFit:FALSE];
  [textures addObject:temp];
  */
-- (id) initWithImagePath:(NSString*)path sizeToFit:(BOOL)sizeToFit pixelFormat:(Texture2DPixelFormat)pixelFormat generateMips:(BOOL)genMips
+
+Texture2D::Texture2D(NSString* path)
+{
+    initFromPath(path,NO,kTexture2DPixelFormat_Automatic,FALSE);
+}
+Texture2D::Texture2D(NSString* path, BOOL sizeToFit,BOOL genMips){
+    
+    initFromPath(path,sizeToFit,kTexture2DPixelFormat_Automatic,genMips);
+}
+Texture2D::Texture2D(NSString* path, BOOL sizeToFit)
+{
+    initFromPath(path,sizeToFit,kTexture2DPixelFormat_Automatic,FALSE);
+}
+Texture2D::Texture2D(NSString* path, BOOL sizeToFit, Texture2DPixelFormat pixelFormat, BOOL genMips){
+    initFromPath(path,sizeToFit,pixelFormat,genMips);
+}
+
+void Texture2D::initFromPath(NSString* path, BOOL sizeToFit, Texture2DPixelFormat pixelFormat, BOOL genMips)
 {
 	UIImage*				uiImage;
     BOOL isMask=FALSE;
@@ -746,7 +693,7 @@ int realStoredSkinCounter=0;
     
 	uiImage = [[UIImage alloc] initWithContentsOfFile:path];
    
-        self = [self initWithCGImage:[uiImage CGImage] orientation:[uiImage imageOrientation] sizeToFit:sizeToFit pixelFormat:pixelFormat generateMips:(BOOL)genMips];
+     initFromImage([uiImage CGImage],[uiImage imageOrientation],sizeToFit,pixelFormat,genMips);
     
     
 	
@@ -801,16 +748,18 @@ int realStoredSkinCounter=0;
     }else
 	[uiImage release];
 	
-	if(self == nil)
-	REPORT_ERROR(@"Failed loading image at path \"%@\" %@", path,path);
+	//if(self == nil)
+	//REPORT_ERROR(@"Failed loading image at path \"%@\" %@", path,path);
     //else
    // REPORT_ERROR(@"loaded image at path \"%@\" %@", path,opath);
 	
-	return self;
-}
 	
-- (id) initWithCGImage:(CGImageRef)image orientation:(UIImageOrientation)orientation sizeToFit:(BOOL)sizeToFit pixelFormat:(Texture2DPixelFormat)pixelFormat generateMips:(BOOL)genMips
-{
+}
+Texture2D::Texture2D(CGImageRef image,UIImageOrientation orientation, BOOL sizeToFit,Texture2DPixelFormat pixelFormat, BOOL genMips){
+    initFromImage(image,orientation,sizeToFit,pixelFormat,genMips);
+}
+void Texture2D::initFromImage(CGImageRef image,UIImageOrientation orientation, BOOL sizeToFit,Texture2DPixelFormat pixelFormat, BOOL genMips){
+
 	NSUInteger				width,
 							height,
 							i;
@@ -828,8 +777,7 @@ int realStoredSkinCounter=0;
 	CGSize					imageSize;
 	
 	if(image == NULL) {
-		[self release];
-		return nil;
+        return;
 	}
 	
 	if(pixelFormat == kTexture2DPixelFormat_Automatic) {
@@ -1003,8 +951,8 @@ int realStoredSkinCounter=0;
 	if(context == NULL) {
 		REPORT_ERROR(@"Failed creating CGBitmapContext", NULL);
 		free(data);
-		[self release];
-		return nil;
+		
+		return;
 	}
 	
 	if(sizeToFit)
@@ -1087,26 +1035,28 @@ int realStoredSkinCounter=0;
 #endif
 	}
    // printg("%d,",pixelFormat);
-	self = [self initWithData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:imageSize generateMips:genMips];
+	initData(data,pixelFormat,(int)width,(int)height,imageSize,genMips);
 	
 	CGContextRelease(context);
 	free(data);
 	
-	return self;
+
 }
 
-@end
 
-@implementation Texture2D (Text)
-
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size
+/*Texture2D::Texture2D(NSString* string, CGSize dimensions, UITextAlignment alignment, NSString* name, CGFloat size)
 {
-	return [self initWithString:string dimensions:dimensions alignment:alignment font:[UIFont fontWithName:name size:size]];
+    initFromString(string,dimensions,alignment,name,size);
+}*/
+Texture2D::Texture2D(NSString* string, CGSize dimensions, UITextAlignment alignment, UIFont* font)
+{
+    initFromString(string,dimensions,alignment,font);
 }
 
-- (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment font:(UIFont*)font
+void Texture2D::initFromString(NSString* string, CGSize dimensions, UITextAlignment alignment, UIFont* font)
 {
-	NSUInteger				width,
+    
+	int				width,
 							height,
 							i;
 	CGContextRef			context;
@@ -1115,8 +1065,8 @@ int realStoredSkinCounter=0;
 	
 	if(font == nil) {
 		REPORT_ERROR(@"Invalid font", NULL);
-		[self release];
-		return nil;
+		
+		return;
 	}
 	
 	width = dimensions.width;
@@ -1126,6 +1076,7 @@ int realStoredSkinCounter=0;
 		i *= 2;
 		width = i;
 	}
+    if(width>1024)width=1024;
 	height = dimensions.height;
 	if((height != 1) && (height & (height - 1))) {
 		i = 1;
@@ -1133,7 +1084,7 @@ int realStoredSkinCounter=0;
 		i *= 2;
 		height = i;
 	}
-	
+   // printf("created (%d,%d)",width,height);
 	/*colorSpace = CGColorSpaceCreateDeviceGray();
 	data = calloc(height, width);
 	context = CGBitmapContextCreate(data, width, height, 8, width, colorSpace, kCGImageAlphaNone);
@@ -1141,8 +1092,7 @@ int realStoredSkinCounter=0;
 	if(context == NULL) {
 		REPORT_ERROR(@"Failed creating CGBitmapContext", NULL);
 		free(data);
-		[self release];
-		return nil;
+		
 	}
 	
 	CGContextSetGrayFillColor(context, 1.0, 1.0);
@@ -1152,14 +1102,14 @@ int realStoredSkinCounter=0;
 		[string drawInRect:CGRectMake(0, 0, dimensions.width, dimensions.height) withFont:font lineBreakMode:UILineBreakModeWordWrap alignment:alignment];
 	UIGraphicsPopContext();
 	
-	self = [self initWithData:data pixelFormat:kTexture2DPixelFormat_L8 pixelsWide:width pixelsHigh:height contentSize:dimensions];
+	initData(data,kTexture2DPixelFormat_L8,(int)width,(int)height ,dimensions,FALSE);
 	
 	CGContextRelease(context);
-	free(data);
+	free(data);*/
 	
-	return self;*/
 	
-	 colorSpace = CGColorSpaceCreateDeviceRGB();
+	
+	colorSpace = CGColorSpaceCreateDeviceRGB();
 	 data = calloc(1, width * height * 4);
 	 context = CGBitmapContextCreate(data, width, height, 8, width * 4, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
 	 CGColorSpaceRelease(colorSpace);
@@ -1172,21 +1122,20 @@ int realStoredSkinCounter=0;
 	 [string drawInRect:CGRectMake(0, 0, dimensions.width, dimensions.height) withFont:font lineBreakMode:UILineBreakModeWordWrap alignment:alignment];
 	 UIGraphicsPopContext();
 	 
-	self = [self initWithData:data pixelFormat:kTexture2DPixelFormat_RGBA8888 pixelsWide:width pixelsHigh:height contentSize:dimensions generateMips:FALSE];
+    initData(data,kTexture2DPixelFormat_RGBA8888,width,height,dimensions,FALSE);
 	 
 	 CGContextRelease(context);
 	 free(data);
 	 
-	 return self;
 	 
 }
 
-+ (void) drawTexture:(Texture2D*)texture atPoint:(CGPoint)point depth:(CGFloat)depth
-{
-	GLfloat				maxS = texture.maxS,
-    maxT = texture.maxT,
-    pixelsWide = texture.pixelsWide,
-    pixelsHigh = texture.pixelsHigh;						
+void Texture2D::drawTexture(Texture2D* texture, CGPoint point, CGFloat depth){
+
+	GLfloat				maxS = texture->_maxS,
+    maxT = texture->_maxT,
+    pixelsWide = texture->_width,
+    pixelsHigh = texture->_height;
 	GLfloat				coordinates[] = {
         0,				maxT,
         maxS,			maxT,
@@ -1202,17 +1151,14 @@ int realStoredSkinCounter=0;
         width / 2 + point.x,		height / 2 + point.y,		depth
     };
 	
-	glBindTexture(GL_TEXTURE_2D, texture.name);
+	glBindTexture(GL_TEXTURE_2D, texture->name);
     glVertexPointer(3, GL_FLOAT, 0, vertices);
     glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
-@end
 
-@implementation Texture2D (Drawing)
+void Texture2D::preload(){
 
-- (void) preload
-{
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
@@ -1220,20 +1166,18 @@ int realStoredSkinCounter=0;
 	glPushMatrix();
 	glLoadIdentity();
 	
-	[self drawInRect:CGRectMake(-2, -2, 0.1, 0.1)];
+    drawInRect(CGRectMake(-2, -2, 0.1, 0.1));
 	
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 }
+void Texture2D::drawAtPoint(CGPoint point){
 
-- (void) drawAtPoint:(CGPoint)point
-{
-	[self drawAtPoint:point depth:0.0 :FALSE];
+	drawAtPoint(point ,0.0 ,FALSE);
 }
 
-- (void) drawAtPoint:(CGPoint)point depth:(CGFloat)depth :(BOOL)center
-{
+void Texture2D::drawAtPoint(CGPoint point, CGFloat depth, BOOL center){
 	GLfloat				coordinates[] = {
 							0,				_maxT,
 							_maxS,			_maxT,
@@ -1255,7 +1199,7 @@ int realStoredSkinCounter=0;
 		width + point.x,height / 2 + point.y,		depth
 	};
 	
-	glBindTexture(GL_TEXTURE_2D, _name);
+	glBindTexture(GL_TEXTURE_2D, name);
 	if(center)
 		glVertexPointer(3, GL_FLOAT, 0, cvertices);
 	else
@@ -1264,11 +1208,10 @@ int realStoredSkinCounter=0;
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
-- (void) drawInRect:(CGRect)rect
-{
-	[self drawInRect:rect depth:0.0];
+void Texture2D::drawInRect(CGRect rect){
+	drawInRect(rect,0.0);
 }
-- (void) drawTextHalfsies:(CGRect)rect{
+void Texture2D::drawTextHalfsies(CGRect rect){
     CGFloat depth=0.0;
 	GLfloat				coordinates[] = {
         0,				_maxT,
@@ -1297,7 +1240,7 @@ int realStoredSkinCounter=0;
         rect.origin.x + width,		rect.origin.y + height,		depth
     };
 	
-	glBindTexture(GL_TEXTURE_2D, _name);
+	glBindTexture(GL_TEXTURE_2D, name);
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -1305,7 +1248,7 @@ int realStoredSkinCounter=0;
     
     
 }
-- (void) drawTextNoScale:(CGRect)rect{
+void Texture2D::drawTextNoScale(CGRect rect){
     CGFloat depth=0.0;
 	GLfloat				coordinates[] = {
         0,				_maxT,
@@ -1326,22 +1269,23 @@ int realStoredSkinCounter=0;
         rect.origin.x + width,		rect.origin.y + height,		depth
     };
 	
-	glBindTexture(GL_TEXTURE_2D, _name);
+	glBindTexture(GL_TEXTURE_2D, name);
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
     
 }
-- (void) drawButton2:(Button)button{
+void Texture2D::drawButton2(Button button){
+    
      if(button.pressed){
-         [self drawButton:button];
+         drawButton(button);
      }else{
          CGRect rect=CGRectMake(button.origin.x,button.origin.y,button.size.width,button.size.height);
-         [self drawInRect:rect];
+         drawInRect(rect);
      }
 }
-- (void) drawButton:(Button)button{
+void Texture2D::drawButton(Button button){
     if(button.pressed){
         button.size.width=roundf((GLfloat)_width * _maxS)/2.0f;
         button.size.height=roundf((GLfloat)_height * _maxT)/2.0f;
@@ -1374,17 +1318,17 @@ int realStoredSkinCounter=0;
             rect.origin.x + width,		rect.origin.y + height,		depth
         };
         
-        glBindTexture(GL_TEXTURE_2D, _name);
+        glBindTexture(GL_TEXTURE_2D, name);
         glVertexPointer(3, GL_FLOAT, 0, vertices);
         glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         
     }else{
-    CGRect rect=CGRectMake(button.origin.x,button.origin.y,button.size.width,button.size.height);
-    [self drawText:rect];
+        CGRect rect=CGRectMake(button.origin.x,button.origin.y,button.size.width,button.size.height);
+        drawText(rect);
     }
 }
-- (void) drawNumbers:(CGRect)rect:(int)num{
+void Texture2D::drawNumbers(CGRect rect,int num){
     if(num<0||num>10){
         printg("num out of bounds/n");
         num=0;
@@ -1422,15 +1366,14 @@ int realStoredSkinCounter=0;
         rect.origin.x + width,		rect.origin.y + height,		depth
     };
 	
-	glBindTexture(GL_TEXTURE_2D, _name);
+	glBindTexture(GL_TEXTURE_2D, name);
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
     
 }
-
-- (void) drawTextM:(CGRect)rect{
+void Texture2D::drawTextM(CGRect rect){
     CGFloat depth=0.0;
 	
     GLfloat				width = 480,
@@ -1455,7 +1398,7 @@ int realStoredSkinCounter=0;
         0,				0,
         _maxS,			0
     };
-	glBindTexture(GL_TEXTURE_2D, _name);
+	glBindTexture(GL_TEXTURE_2D, name);
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -1463,7 +1406,7 @@ int realStoredSkinCounter=0;
     
 }
 
-- (void) drawText:(CGRect)rect{
+void Texture2D::drawText(CGRect rect){
     CGFloat depth=0.0;
 	GLfloat				coordinates[] = {
         0,				_maxT,
@@ -1490,14 +1433,14 @@ int realStoredSkinCounter=0;
         rect.origin.x + width,		rect.origin.y + height,		depth
     };
 	
-	glBindTexture(GL_TEXTURE_2D, _name);
+	glBindTexture(GL_TEXTURE_2D, name);
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
     
 }
-- (void) drawInRect2:(CGRect)rect{
+void Texture2D::drawInRect2(CGRect rect){
 	CGFloat depth=0.0;
 	GLfloat				coordinates[] = {
         0,				_maxT,
@@ -1518,15 +1461,16 @@ int realStoredSkinCounter=0;
         rect.origin.x + rect.size.width,		rect.origin.y + rect.size.height,		depth
     };
 	
-	glBindTexture(GL_TEXTURE_2D, _name);
+	glBindTexture(GL_TEXTURE_2D, name);
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
--(void) drawSky:(CGRect)rect depth:(CGFloat)depth
-{
+
+void Texture2D::drawSky(CGRect rect, CGFloat depth){
+
     
-    float pitch=[World getWorld].cam->pitch;
+    float pitch=World::getWorld->cam->pitch;
     float sinPitch=sin(D2R(pitch));
     float sty=0;
     float ety=1.0f;
@@ -1560,15 +1504,14 @@ int realStoredSkinCounter=0;
         rect.origin.x + rect.size.width,		rect.origin.y + rect.size.height,		depth
     };
 	
-	glBindTexture(GL_TEXTURE_2D, _name);
+	glBindTexture(GL_TEXTURE_2D, name);
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     //glDrawArrays(GL_LINE_LOOP, 0, 4);
 }
 
-- (void) drawInRect:(CGRect)rect depth:(CGFloat)depth
-{
+void Texture2D::drawInRect(CGRect rect, CGFloat depth){
 	GLfloat				coordinates[] = {
 							0,				_maxT,
 							_maxS,			_maxT,
@@ -1588,11 +1531,10 @@ int realStoredSkinCounter=0;
 							rect.origin.x + rect.size.width,		rect.origin.y + rect.size.height,		depth
 						};
 	
-	glBindTexture(GL_TEXTURE_2D, _name);
+	glBindTexture(GL_TEXTURE_2D, name);
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     //glDrawArrays(GL_LINE_LOOP, 0, 4);
 }
 
-@end

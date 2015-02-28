@@ -44,7 +44,7 @@ void Firework::removeFirework(int i){
 void Firework::update(float etime) {
     for(int i=0;i<n_firework;i++){
         fireworks[i].pos=v_add(fireworks[i].pos,v_mult(fireworks[i].vel,etime));
-        if([World getWorld].terrain->getLand(roundf(fireworks[i].pos.x),
+        if(World::getWorld->terrain->getLand(roundf(fireworks[i].pos.x),
                                             roundf(fireworks[i].pos.z),
                                             roundf(fireworks[i].pos.y))>0){
             fireworks[i].fuse=-1;
@@ -88,16 +88,16 @@ void Firework::render(){
          
          if(fireworks[i].fuse<0){
             Resources::getResources->playSound(S_FIREWORK_EXPLODE);
-             Vector skyc=[World getWorld].terrain->skycolor;
+             Vector skyc=World::getWorld->terrain->skycolor;
              skyc.x+=.3f;
              skyc.y+=.3f;
              skyc.z+=.3f;
              if(skyc.x>1)skyc.x=1;
              if(skyc.y>1)skyc.y=1;
              if(skyc.z>1)skyc.z=1;
-             [World getWorld].terrain->skycolor=skyc;
-             [World getWorld].effects->addCreatureVanish(fireworks[i].pos.x,fireworks[i].pos.z,fireworks[i].pos.y,fireworks[i].color,TYPE_FIREWORK);
-             [World getWorld].effects->addFirework(fireworks[i].pos.x,fireworks[i].pos.z,fireworks[i].pos.y,fireworks[i].color);
+             World::getWorld->terrain->skycolor=skyc;
+             World::getWorld->effects->addCreatureVanish(fireworks[i].pos.x,fireworks[i].pos.z,fireworks[i].pos.y,fireworks[i].color,TYPE_FIREWORK);
+             World::getWorld->effects->addFirework(fireworks[i].pos.x,fireworks[i].pos.z,fireworks[i].pos.y,fireworks[i].color);
              this->removeFirework(i);
              i--;
              

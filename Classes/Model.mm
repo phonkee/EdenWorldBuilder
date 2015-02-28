@@ -348,13 +348,13 @@ void setViewNow(){
     
 }
 PVRTVec3 unwrap(PVRTVec3 upos){
-    PVRTVec3 player_pos=MakePVR([World getWorld].player->pos);
+    PVRTVec3 player_pos=MakePVR(World::getWorld->player->pos);
     player_pos.x=wrapx(player_pos.x);
     player_pos.z=wrapz(player_pos.z);
     
     float tempy=upos.y;
     upos=upos-player_pos;
-    upos=upos+MakePVR([World getWorld].player->pos);
+    upos=upos+MakePVR(World::getWorld->player->pos);
     upos.y=tempy;
     return upos;
 }
@@ -364,9 +364,9 @@ void CalcEnvMap(vertexObject* vert){
     // pV, pN and pTC point to the XYZ, Normal and Texture Coordinate attributes of a single vertex.
     
      // Calculate the vector from Object Space Eye to the Vertex
-        PVRTVec3 _refFrameEye([World getWorld].player->pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE,
-                              [World getWorld].player->pos.y+3*1.85f/10,
-                              [World getWorld].player->pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE);
+        PVRTVec3 _refFrameEye(World::getWorld->player->pos.x-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE,
+                              World::getWorld->player->pos.y+3*1.85f/10,
+                              World::getWorld->player->pos.z-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE);
     PVRTVec3 pV(vert->position[0]/4.0f,vert->position[1]/4.0f,vert->position[2]/4.0f);
     
         PVRTVec3 viewVec = _refFrameEye - pV;
@@ -414,7 +414,7 @@ void SortModels(){
 }
 bool isFacingPlayer(int idx){
     int a=R2D(guys[idx].angle);
-    int b=[World getWorld].player->yaw;
+    int b=World::getWorld->player->yaw;
     
     a=(a+360+90+180)%360;
     b=(b+360)%360;
@@ -553,8 +553,8 @@ void addMoreCreaturesIfNeeded(){
             if(guys[i].touched==TRUE){
                 nTouched++;
                 
-                float adjx=guys[i].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
-                float adjz=guys[i].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
+                float adjx=guys[i].pos.x-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE;
+                float adjz=guys[i].pos.z-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE;
                 if(adjx>0&&adjx<T_SIZE&&adjz>0&&adjz<T_SIZE ){
                     
                     
@@ -586,7 +586,7 @@ void addMoreCreaturesIfNeeded(){
         int ly=-1;
         //guys[gc].pos=PVRTVec3(arc4random()%25+90,arc4random()%5+32,T_HEIGHT);
         for(int i=0;i<20;i++){
-        guys[gc].pos=PVRTVec3(arc4random()%T_SIZE+[World getWorld].fm->chunkOffsetX*CHUNK_SIZE,T_HEIGHT-15,arc4random()%T_SIZE+[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE);
+        guys[gc].pos=PVRTVec3(arc4random()%T_SIZE+World::getWorld->fm->chunkOffsetX*CHUNK_SIZE,T_HEIGHT-15,arc4random()%T_SIZE+World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE);
             for(int y=T_HEIGHT-1;y>0;y--){
                 int t=getLandc(guys[gc].pos.x,guys[gc].pos.z,y);
                 if(t>0){
@@ -645,7 +645,7 @@ void addMoreCreaturesIfNeeded(){
         
       
         
-        if([World getWorld].terrain->tgen->LEVEL_SEED==DEFAULT_LEVEL_SEED){
+        if(World::getWorld->terrain->tgen->LEVEL_SEED==DEFAULT_LEVEL_SEED){
             
             int ppx=guys[gc].pos.x-4096*CHUNK_SIZE+GSIZE/2;
             int ppz=guys[gc].pos.z-4096*CHUNK_SIZE+GSIZE/2;
@@ -685,7 +685,7 @@ void addMoreCreaturesIfNeeded(){
             
            /* if(lrx!=ppx||lrz!=ppz){
                 if(lrx==-1||regionSkyColors[ppz][ppx]!=regionSkyColors[lrz][lrx]){
-                    [World getWorld].terrain.final_skycolor=colorTable[regionSkyColors[(int)(ppz+64)%4][(int)(ppx+64)%4]];
+                    World::getWorld->terrain.final_skycolor=colorTable[regionSkyColors[(int)(ppz+64)%4][(int)(ppx+64)%4]];
                 }
                 lrx=ppx;
                 lrz=ppz;
@@ -743,8 +743,8 @@ void LoadModels2(){
                 guys[gc].touched=FALSE;
             guys[gc].life=START_LIFE;
             
-            float adjx=creatureData[i].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
-            float adjz=creatureData[i].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
+            float adjx=creatureData[i].pos.x-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE;
+            float adjz=creatureData[i].pos.z-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE;
             if(adjx>0&&adjx<T_SIZE&&adjz>0&&adjz<T_SIZE ){
                 
                
@@ -768,7 +768,7 @@ void LoadModels2(){
         
     }
     printg("LoadModels2  totalactive:%d   gc: %d \n",totalactive,gc);
-   // Vector player_pos=[World getWorld].player.pos;
+   // Vector player_pos=World::getWorld->player.pos;
     for(int i=gc;i<nguys;i++){
         guys[i].update=FALSE;
     }
@@ -796,7 +796,7 @@ void LoadModels2(){
         ResetModel(gc);
         guys[gc].targetangle=randf(3.14f*2);
         //guys[gc].pos=PVRTVec3(arc4random()%25+90,arc4random()%5+32,T_HEIGHT);
-        guys[gc].pos=PVRTVec3(arc4random()%T_SIZE+[World getWorld].fm.chunkOffsetX*CHUNK_SIZE,T_HEIGHT-15,arc4random()%T_SIZE+[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE);
+        guys[gc].pos=PVRTVec3(arc4random()%T_SIZE+World::getWorld->fm.chunkOffsetX*CHUNK_SIZE,T_HEIGHT-15,arc4random()%T_SIZE+World::getWorld->fm.chunkOffsetZ*CHUNK_SIZE);
        
         int breakout=30;
         while(!SimpleCollision(&guys[gc])&&guys[gc].pos.y>=0&&breakout>0){
@@ -917,8 +917,8 @@ void ExplodeModels(Vector p,int color){
         }
         
     }
-    Player* e=[World getWorld].player;
-    PVRTVec3 player_pos=MakePVR([World getWorld].player->pos);
+    Player* e=World::getWorld->player;
+    PVRTVec3 player_pos=MakePVR(World::getWorld->player->pos);
    // player_pos.x=wrapx(player_pos.x);
    // player_pos.z=wrapz(player_pos.z);
     PVRTVec3 pos=PVRTVec3(p);
@@ -929,8 +929,8 @@ void ExplodeModels(Vector p,int color){
     extern Vector colorTable[256];
     if(pos.lenSqr()<EXPLOSION_RADIUS*EXPLOSION_RADIUS){
         if(color!=0){
-            [World getWorld].hud->flash=.9f;
-             [World getWorld].hud->flashcolor=colorTable[color];
+            World::getWorld->hud->flash=.9f;
+             World::getWorld->hud->flashcolor=colorTable[color];
             
         }else{
             
@@ -945,10 +945,10 @@ void ExplodeModels(Vector p,int color){
         vel.z+=pos.z;
         e->vel=vel;
          Resources::getResources->playSound(S_HIT);
-            if([World getWorld].player->life>.5f)
-                [World getWorld].player->takeDamage(.38f);
+            if(World::getWorld->player->life>.5f)
+                World::getWorld->player->takeDamage(.38f);
             else
-                [World getWorld].player->takeDamage(.05f);
+                World::getWorld->player->takeDamage(.05f);
        
         }
     }
@@ -978,8 +978,8 @@ bool CheckCollision(Entity* e){
             
             e->ragetimer=0;
         
-            Player* ep=[World getWorld].player;
-            PVRTVec3 player_pos=MakePVR([World getWorld].player->pos);
+            Player* ep=World::getWorld->player;
+            PVRTVec3 player_pos=MakePVR(World::getWorld->player->pos);
             player_pos.x=wrapx(player_pos.x);
             player_pos.z=wrapz(player_pos.z);
             PVRTVec3 pos=PVRTVec3(e->pos);
@@ -1059,9 +1059,9 @@ bool CheckCollision(Entity* e){
                        //paint trails
                         /*
                         for(int yy=0;yy<T_HEIGHT;yy++){
-                            if(getLandc(x,z,yy)==TYPE_GRASS&&[[World getWorld].terrain getColor:x:z:yy]!=e->idx){
+                            if(getLandc(x,z,yy)==TYPE_GRASS&&[World::getWorld->terrain getColor:x:z:yy]!=e->idx){
                                 //    printg("setting color: %d,%d,%d local:(%d,%d)\n",ggx,ggz,y,x,z);
-                                [[World getWorld].terrain paintBlock:x:z:yy:e->idx];
+                                [World::getWorld->terrain paintBlock:x:z:yy:e->idx];
                             }
                             
                         }*/
@@ -1281,8 +1281,8 @@ void Move(Entity* e,float etime){
     e->inLiquid=FALSE;
     float mag=0;
     mag=e->vel.length();
-    poffsetx=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
-    poffsetz=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
+    poffsetx=World::getWorld->fm->chunkOffsetX*CHUNK_SIZE;
+    poffsetz=World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE;
     CheckCollision(e);  
     
     
@@ -1337,7 +1337,7 @@ void Move(Entity* e,float etime){
         e->runaway=0;
         e->life=START_LIFE;
           PlaySound(e->idx,VO_RELIEVED);
-        [World getWorld].effects->removeFire(e->fireidx);
+        World::getWorld->effects->removeFire(e->fireidx);
     }
     
     
@@ -1349,7 +1349,7 @@ void Move(Entity* e,float etime){
         sigh.x=upos.x;
         sigh.y=upos.y+centers[e->model_type].y;
         sigh.z=upos.z;
-        [World getWorld].effects->updateFire(e->fireidx,sigh);
+        World::getWorld->effects->updateFire(e->fireidx,sigh);
     }
     
     
@@ -1379,8 +1379,8 @@ void UpdateModels(float etime){
     for(int i=0;i<nguys;i++){     
         if(!guys[i].alive||!guys[i].update)continue;
         
-        float adjx=guys[i].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
-        float adjz=guys[i].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
+        float adjx=guys[i].pos.x-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE;
+        float adjz=guys[i].pos.z-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE;
         
         
         if(adjx>0&&adjx<T_SIZE&&adjz>0&&adjz<T_SIZE ){
@@ -1479,7 +1479,7 @@ void UpdateModels(float etime){
         if(guys[i].onground&&(guys[i].justhit||guys[i].runaway>0||guys[i].ragetimer>0)&&guys[i].state!=DEFAULT_WALK){
             endCycle=TRUE;
         }
-        PVRTVec3 player_pos=MakePVR([World getWorld].player->pos);
+        PVRTVec3 player_pos=MakePVR(World::getWorld->player->pos);
         player_pos.x=wrapx(player_pos.x);
         player_pos.z=wrapz(player_pos.z);
         if((guys[i].onground||guys[i].inLiquid)&&endCycle&&!guys[i].onIce){
@@ -1846,16 +1846,16 @@ void PlaceModel(int idx,Vector pos){
     guys[idx].pos.x=wrapx(fpoint.x);
     guys[idx].pos.y=fpoint.y;//+centers[guys[idx].model_type].y;
     guys[idx].pos.z=wrapz(fpoint.z);
-    guys[idx].angle=D2R([World getWorld].player->yaw+90);
+    guys[idx].angle=D2R(World::getWorld->player->yaw+90);
     guys[idx].targetangle=guys[idx].angle;
-    guys[idx].color=[World getWorld].hud->creature_color;
+    guys[idx].color=World::getWorld->hud->creature_color;
     if(idx!=nguys)
         Resources::getResources->playSound(S_BUILD_GENERIC);
     
     if(idx!=nguys){
     guys[idx].vel.y=3;
-    [World getWorld].hud->blocktype=TYPE_CLOUD;
-    [World getWorld].hud->holding_creature=FALSE;
+    World::getWorld->hud->blocktype=TYPE_CLOUD;
+    World::getWorld->hud->holding_creature=FALSE;
        
     }else{
         guys[idx].vel.y=0;
@@ -1872,7 +1872,7 @@ void BurnModel(int idx){
     Entity* e=&guys[idx];
     if(e->onfire)return;
     PVRTVec3 upos=unwrap(e->pos);
-    e->fireidx=[World getWorld].effects->addFire(upos.x ,e->pos.z ,upos.y+centers[e->model_type].y ,1 ,e->life*2);
+    e->fireidx=World::getWorld->effects->addFire(upos.x ,e->pos.z ,upos.y+centers[e->model_type].y ,1 ,e->life*2);
     e->onfire=TRUE;
     e->runaway= e->life*2;
     if(e->model_type==M_CHARGER||e->model_type==M_STALKER){
@@ -1902,7 +1902,7 @@ void BurnModel(int idx){
                        // printg("Found water\n");
                         return;
                     }//else 
-                       // [World getWorld].terrain setColor:x,z,y+h)
+                       // World::getWorld->terrain setColor:x,z,y+h)
                 }
             }
         }
@@ -1916,7 +1916,7 @@ void killCreature(int idx){
     guys[idx].alive=FALSE;
     Resources::getResources->playSound(S_CREATURE_VANISH);
     PVRTVec3 upos=unwrap(guys[idx].pos);
-    [World getWorld].effects->addCreatureVanish(upos.x,upos.z,guys[idx].pos.y,guys[idx].color,guys[idx].model_type);
+    World::getWorld->effects->addCreatureVanish(upos.x,upos.z,guys[idx].pos.y,guys[idx].color,guys[idx].model_type);
     
     
 }
@@ -1939,7 +1939,7 @@ void HitModel(int idx,Vector hitpoint){
             killCreature(idx);
             
             //printg("adding particle fx for creature: (%f,%f,%f)\n",guys[idx].pos.x,guys[idx].pos.y,guys[idx].pos.z);
-            //[[World getWorld].effects addCreatureVanish:guys[idx].pos.x:guys[idx].pos.z:guys[idx].pos.y:guys[idx].color:guys[idx].model_type];
+            //[World::getWorld->effects addCreatureVanish:guys[idx].pos.x:guys[idx].pos.z:guys[idx].pos.y:guys[idx].color:guys[idx].model_type];
         }else
             PlaySound(idx,VO_HIT);
         float hit_force=6;
@@ -1967,9 +1967,9 @@ void ColorModel(int idx,int color){
 void PickupModel(int idx){
     if(idx>=0&&idx<nguys){
         guys[idx].alive=FALSE;
-        [World getWorld].hud->blocktype=TYPE_CLOUD;
-        [World getWorld].hud->creature_color=guys[idx].color;
-        [World getWorld].hud->holding_creature=idx+1;
+        World::getWorld->hud->blocktype=TYPE_CLOUD;
+        World::getWorld->hud->creature_color=guys[idx].color;
+        World::getWorld->hud->holding_creature=idx+1;
         inventory.pos=MakeVector(guys[idx].pos.x,guys[idx].pos.y,guys[idx].pos.z);
         inventory.color=guys[idx].color;
         inventory.type=guys[idx].model_type;
@@ -2136,7 +2136,7 @@ void DrawShadows(){
     glEnable(GL_BLEND);
    glDepthMask(GL_FALSE);
     //glDisable(GL_DEPTH_TEST);
-    glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(ICO_SHADOW).name);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(ICO_SHADOW)->name);
     glColor4f(1,1,1,.4f);
     int shadows_drawn=0;
     for(int j=0;j<=max_render;j++){
@@ -2157,8 +2157,8 @@ void DrawShadows(){
        	}
         Vector vpos=MakeVector(guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
         //if(guys[i].model_type==M_GREEN)vpos.x-=.5f;
-        float x=ABS(vpos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE);
-        float z=ABS(vpos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE);
+        float x=ABS(vpos.x-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE);
+        float z=ABS(vpos.z-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE);
         float y=(int)(min[guys[i].model_type].y*scale+vpos.y+.01)+.01f;
          Vector point;
         point.x=x;
@@ -2236,7 +2236,7 @@ int compare_creatures (const void *a, const void *b)
     int first=*((int*)(a));
     int second=*((int*)(b));
     
-    Vector player_pos=[World getWorld].player->pos;
+    Vector player_pos=World::getWorld->player->pos;
  
     
     Vector cam=player_pos;
@@ -2266,7 +2266,7 @@ int compare_creatures2 (const void *a, const void *b)
     int first=((Entity*)(a))->idx;
     int second=((Entity*)(b))->idx;
     
-    Vector player_pos=[World getWorld].player->pos;
+    Vector player_pos=World::getWorld->player->pos;
     player_pos.x=wrapx(player_pos.x);
     player_pos.z=wrapz(player_pos.z);
     Vector cam=player_pos;
@@ -2324,7 +2324,7 @@ bool RenderModels()
     PVRTVec4 lightPosition = PVRTVec4(0.0f,0.0f, 0.0f, 1.0f);
     PVRTVec4 lightAmbient  = PVRTVec4(0.3f, 0.3f, 0.3f, 1.0f);
     PVRTVec4 lightDiffuse  = PVRTVec4(0.7f, 0.7f, 0.7f, 1.0f);
-    if(!LOW_MEM_DEVICE&&v_equals([World getWorld].terrain->final_skycolor,colorTable[54])){
+    if(!LOW_MEM_DEVICE&&v_equals(World::getWorld->terrain->final_skycolor,colorTable[54])){
        lightAmbient  = PVRTVec4(0.2f, 0.2f, 0.2f, 1.0f);
        lightDiffuse  = PVRTVec4(0.35f, 0.35f, 0.35f, 1.0f);
     }
@@ -2407,8 +2407,8 @@ bool RenderModels()
           
         int i=renderlistc[j];
         
-        guys[i].pos.x-=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
-        guys[i].pos.z-=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
+        guys[i].pos.x-=World::getWorld->fm->chunkOffsetX*CHUNK_SIZE;
+        guys[i].pos.z-=World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE;
         
      //   printg("rendering model: (%f,%f,%f)\n",guys[i].pos.x,guys[i].pos.y,guys[i].pos.z);
         if(guys[i].color==0||guys[i].ragetimer>0){
@@ -2453,8 +2453,8 @@ bool RenderModels()
             glColor4f(1,1,1,1);
         }
         
-        guys[i].pos.x+=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
-        guys[i].pos.z+=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
+        guys[i].pos.x+=World::getWorld->fm->chunkOffsetX*CHUNK_SIZE;
+        guys[i].pos.z+=World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE;
     
     }
     
@@ -2463,11 +2463,11 @@ bool RenderModels()
         glEnable(GL_BLEND);
         //if(guys[nguys].color==0)
             glColor4f(1.0f,1.0f,1.0f,.5f);
-        guys[nguys].pos.z-=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
-        guys[nguys].pos.x-=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
+        guys[nguys].pos.z-=World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE;
+        guys[nguys].pos.x-=World::getWorld->fm->chunkOffsetX*CHUNK_SIZE;
         DrawModel(nguys);
-       guys[nguys].pos.z+=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
-        guys[nguys].pos.x+=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
+       guys[nguys].pos.z+=World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE;
+        guys[nguys].pos.x+=World::getWorld->fm->chunkOffsetX*CHUNK_SIZE;
         glDisable(GL_BLEND);
     }
 	glDisableClientState(GL_NORMAL_ARRAY);
@@ -2497,8 +2497,8 @@ bool RenderModels()
       
         
         
-        guys[i].pos.x-=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
-        guys[i].pos.z-=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
+        guys[i].pos.x-=World::getWorld->fm->chunkOffsetX*CHUNK_SIZE;
+        guys[i].pos.z-=World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE;
       //  Vector vpos=MakeVector(guys[i].pos.x*1/scale,guys[i].pos.y*1/scale,guys[i].pos.z*1/scale);
         
        // DrawBox(v_add(min[guys[i].model_type],vpos),v_add(max[guys[i].model_type],vpos));
@@ -2534,8 +2534,8 @@ bool RenderModels()
         
       
         
-        guys[i].pos.x+=[World getWorld].fm->chunkOffsetX*CHUNK_SIZE;
-        guys[i].pos.z+=[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE;
+        guys[i].pos.x+=World::getWorld->fm->chunkOffsetX*CHUNK_SIZE;
+        guys[i].pos.z+=World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE;
         //DrawBox(&guys[i].box);
         
     }
@@ -2601,10 +2601,10 @@ void DrawModel(int mi)
     }else
     if(modelType==M_MOOF){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_MOOFRAGE).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_MOOFRAGE)->name);
         else if(guys[mi].blinktimer>0){
             if(guys[mi].color==0)
-                tex=Resources::getResources->getTex(SKIN_MOOFBLINK).name;
+                tex=Resources::getResources->getTex(SKIN_MOOFBLINK)->name;
             else{
                tex=Resources::getResources->getSkin(M_MOOF,guys[mi].color,1);
                
@@ -2613,7 +2613,7 @@ void DrawModel(int mi)
                      
         }else{
             if(guys[mi].color==0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_MOOF).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_MOOF)->name);
             else{
                 tex=Resources::getResources->getSkin(M_MOOF,guys[mi].color,0);
                
@@ -2623,47 +2623,47 @@ void DrawModel(int mi)
         }
     }else if(modelType==M_BATTY){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_BATTYRAGE).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_BATTYRAGE)->name);
         else if(guys[mi].blinktimer>0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_BATTYBLINK).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_BATTYBLINK)->name);
         else
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_BATTY).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_BATTY)->name);
     }else if(modelType==M_GREEN){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_GREENRAGE).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_GREENRAGE)->name);
         else if(guys[mi].blinktimer>0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_GREENBLINK).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_GREENBLINK)->name);
         else
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_GREEN).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_GREEN)->name);
         
     }else if(modelType==M_NERGLE){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_NERGLERAGE).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_NERGLERAGE)->name);
         else if(guys[mi].blinktimer>0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_NERGLEBLINK).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_NERGLEBLINK)->name);
         else
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_NERGLE).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_NERGLE)->name);
     }else if(modelType==M_STUMPY){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_STUMPYRAGE).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_STUMPYRAGE)->name);
         else if(guys[mi].blinktimer>0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_STUMPYBLINK).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_STUMPYBLINK)->name);
         else
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_STUMPY).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_STUMPY)->name);
     }else if(modelType==M_CHARGER){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_CHARGERRAGE).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_CHARGERRAGE)->name);
         else if(guys[mi].blinktimer>0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_CHARGERBLINK).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_CHARGERBLINK)->name);
         else
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_CHARGER).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_CHARGER)->name);
     }else if(modelType==M_STALKER){
         if(guys[mi].ragetimer>0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_STALKERRAGE).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_STALKERRAGE)->name);
         else if(guys[mi].blinktimer>0)
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_STALKERBLINK).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_STALKERBLINK)->name);
         else
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_STALKER).name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SKIN_STALKER)->name);
     }
     if(tex!=-1)
      glBindTexture(GL_TEXTURE_2D, tex);

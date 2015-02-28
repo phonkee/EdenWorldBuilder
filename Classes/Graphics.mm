@@ -12,7 +12,7 @@
 #import "VectorUtil.h"
 
 #define M_SQRT3 1.732050808
-static UIFont* thefont=NULL;//move this to resources sometime
+//static UIFont* thefont=NULL;//move this to resources sometime
 
 #define CUBE_VERTICES 36
 extern float SCREEN_WIDTH; 
@@ -194,7 +194,7 @@ void Graphics::initGraphics()
     
     float clr2[4]={v.x-.03f, v.y-.03f, v.z-.03f, 1.0f};
     extern Vector colorTable[256];
-    if(v_equals([World getWorld].terrain->final_skycolor,colorTable[14]))
+    if(v_equals(World::getWorld->terrain->final_skycolor,colorTable[14]))
         v=MakeVector(0.5,0.72,0.9);
         glFogfv(GL_FOG_COLOR,clr2);
         
@@ -240,7 +240,7 @@ void Graphics::prepareMenu(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);  	
 	glMatrixMode(GL_PROJECTION);							
 	glLoadIdentity();	
-	/*if([World getWorld].FLIPPED)
+	/*if(World::getWorld->FLIPPED)
 	glRotatef(90,0,0,1);
 	else
 	glRotatef(270,0,0,1);*/
@@ -276,8 +276,8 @@ void Graphics::beginTerrain(){
    // glDisable(GL_CULL_FACE);
    // glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
-    glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas.name);
-    //if(![World getWorld].hud.mode==MODE_CAMERA){
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas->name);
+    //if(!World::getWorld->hud.mode==MODE_CAMERA){
        // if(!SUPPORTS_OGL2){
     glEnable(GL_FOG);
     //if(changedFog){
@@ -332,7 +332,7 @@ void Graphics::beginHud(){
     glMatrixMode(GL_PROJECTION);			
 	glPushMatrix();							
 	glLoadIdentity();	
-	/*if([World getWorld].FLIPPED)
+	/*if(World::getWorld->FLIPPED)
 		glRotatef(90,0,0,1);
 	else
 		glRotatef(270,0,0,1);
@@ -372,7 +372,7 @@ void Graphics::prepareScene(){
 	gluPerspective(P_FOVY,P_ASPECT_RATIO,P_ZNEAR,P_ZFAR-25);
 	glMatrixMode(GL_MODELVIEW);		
 	glLoadIdentity();
-/*	if([World getWorld].FLIPPED)
+/*	if(World::getWorld->FLIPPED)
 		glRotatef(90,0,0,1);
 	else
 		glRotatef(270,0,0,1);	*/
@@ -394,7 +394,7 @@ void Graphics::setLighting(){
 }
 
 
-void Graphics::drawText(NSString* text,float x,float y){
+/*void Graphics::drawText(NSString* text,float x,float y){
 	
 	
 		
@@ -404,17 +404,14 @@ void Graphics::drawText(NSString* text,float x,float y){
 	}
 	
 
-	Texture2D *textTex = [[Texture2D alloc] initWithString:text
-                                                dimensions:CGSizeMake(200, 15.0)
-                                                 alignment:UITextAlignmentCenter
-                                                      font:thefont ];
+    Texture2D *textTex = new Texture2D(text,CGSizeMake(200,15.0),UITextAlignmentCenter,thefont);
 	///NSLog(@"%@",textTex);
-	[textTex drawAtPoint:CGPointMake(x, y) depth:0 :FALSE];
+	textTex->drawAtPoint(CGPointMake(x, y),0 ,FALSE);
 	
-	[textTex release];
+    delete textTex;
 	
 	
-}
+}*/
 void Graphics::setPerspective(){
 	glLoadIdentity();
 	//GLAPI void GLAPIENTRY gluPerspective (GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar);
@@ -452,7 +449,7 @@ void Graphics::drawRectOutline(CGRect rect){
 void Graphics::drawTexCubep(float x,float y,float z,float len,Texture2D* tex){
 
 	
-	glBindTexture(GL_TEXTURE_2D, tex.name);
+	glBindTexture(GL_TEXTURE_2D, tex->name);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glVertexPointer(3, GL_FLOAT, sizeof(vertexStruct), (void*)offsetof(vertexStruct,position));
 	//glNormalPointer( GL_FLOAT, sizeof(vertexStruct),  (void*)offsetof(vertexStruct,norms));
@@ -478,7 +475,7 @@ void Graphics::drawTexCubep(float x,float y,float z,float len,Texture2D* tex){
 void Graphics::drawTexCube(float x,float y,float z,float len,Texture2D* tex){
     
 	
-	glBindTexture(GL_TEXTURE_2D, tex.name);
+	glBindTexture(GL_TEXTURE_2D, tex->name);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glVertexPointer(3, GL_FLOAT, sizeof(vertexStruct), (void*)offsetof(vertexStruct,position));
 	//glNormalPointer( GL_FLOAT, sizeof(vertexStruct),  (void*)offsetof(vertexStruct,norms));
@@ -595,7 +592,7 @@ extern const GLfloat cubeNormals[36*3];
 
 void Graphics::drawFirework(float x,float y,float z, int color, float scale, float rot){
    
-        glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas.name);
+        glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas->name);
   
 	Resources* res=Resources::getResources;
 	
@@ -669,9 +666,9 @@ void Graphics::drawFirework(float x,float y,float z, int color, float scale, flo
 void Graphics::drawCube(float x,float y,float z,int type,int buildsize){
     // printg("drawCube: %f, %f, %f\n",x,y,z);
     if(!(blockinfo[type]&IS_ATLAS2))
-        glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas.name);
+        glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas->name);
     else
-        glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas2.name);
+        glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas2->name);
     
     if(type==TYPE_ICE_RAMP1||type==TYPE_STONE_RAMP1||type==TYPE_WOOD_RAMP1||type==TYPE_SHINGLE_RAMP1)
     {
@@ -697,10 +694,10 @@ void Graphics::drawCube(float x,float y,float z,int type,int buildsize){
     Resources* res=Resources::getResources;
 	BOOL coloring=FALSE;
     if(type==TYPE_GRASS||type==TYPE_GRASS2||type==TYPE_GRASS3||type==TYPE_TNT||type==TYPE_BRICK||type==TYPE_VINE||type==TYPE_FIREWORK){
-        if(![World getWorld].hud->block_paintcolor)
+        if(!World::getWorld->hud->block_paintcolor)
         coloring=TRUE;
     }
-    int btype=[World getWorld].terrain->getLand(x,z,y);
+    int btype=World::getWorld->terrain->getLand(x,z,y);
   //  if(buildsize==0)btype=getCustomc(x,z,y);
     if(btype!=TYPE_NONE){
        
@@ -710,7 +707,7 @@ void Graphics::drawCube(float x,float y,float z,int type,int buildsize){
         btype=type;
         
     }
-   // int cc=[World getWorld].hud.paintColor;
+   // int cc=World::getWorld->hud.paintColor;
   //  Vector clr=colorTable[cc];
     Vector center=MakeVector(0,0,0);
     int count=0;
@@ -793,8 +790,8 @@ void Graphics::drawCube(float x,float y,float z,int type,int buildsize){
         //}else{
     glPushMatrix();
     if(!coloring){
-        if([World getWorld].hud->block_paintcolor&&([World getWorld].hud->mode==MODE_BUILD)){
-            Vector vclr=colorTable[[World getWorld].hud->block_paintcolor];
+        if(World::getWorld->hud->block_paintcolor&&(World::getWorld->hud->mode==MODE_BUILD)){
+            Vector vclr=colorTable[World::getWorld->hud->block_paintcolor];
             
             if(type==TYPE_CLOUD)
                 glColor4f(vclr.x, vclr.y, vclr.z, 1.0f/6);

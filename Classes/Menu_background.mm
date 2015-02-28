@@ -127,7 +127,7 @@ void Menu_background::render(){
 	MENU_CLOUD_SM=31,
 	MENU_CLOUD_MD=32,
 	MENU_CLOUD_LG=33,*/
-	[Resources::getResources->getMenuTex(MENU_SKY) drawInRect:bkg];
+	Resources::getResources->getMenuTex(MENU_SKY)->drawInRect(bkg);
 	glPushMatrix();
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE);
     if(!IS_IPAD)
@@ -142,7 +142,7 @@ void Menu_background::render(){
 	bkg.origin.x-=SCREEN_WIDTH/2;
 	bkg.origin.y-=SCREEN_HEIGHT/2;
     glColor4f(1.0,1.0,1.0,1.0f);
-	[Resources::getResources->getMenuTex(MENU_PINWHEEL) drawInRect:bkg];
+	Resources::getResources->getMenuTex(MENU_PINWHEEL)->drawInRect(bkg);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glPopMatrix();
 	glColor4f(1.0,1.0,1.0,1.0);
@@ -176,15 +176,15 @@ void Menu_background::render(){
     mountain.size.height=456;
     mountain.size.width=835;
     
-    [Resources::getResources->getMenuTex(MENU_TREESLEFT) drawTextNoScale:mountain];
+    Resources::getResources->getMenuTex(MENU_TREESLEFT)->drawTextNoScale(mountain);
     mountain.origin.x+=835;
-    [Resources::getResources->getMenuTex(MENU_TREESRIGHT) drawTextNoScale:mountain];
+    Resources::getResources->getMenuTex(MENU_TREESRIGHT)->drawTextNoScale(mountain);
     mountain.origin.x-=835;
     
     mountain.origin.x-=835*2;
-    [Resources::getResources->getMenuTex(MENU_TREESLEFT) drawTextNoScale:mountain];
+   Resources::getResources->getMenuTex(MENU_TREESLEFT)->drawTextNoScale(mountain);
     mountain.origin.x+=835;
-    [Resources::getResources->getMenuTex(MENU_TREESRIGHT) drawTextNoScale:mountain];
+  Resources::getResources->getMenuTex(MENU_TREESRIGHT)->drawTextNoScale(mountain);
     mountain.origin.x-=835;
     
     mountain.origin.x+=835*2;
@@ -195,12 +195,12 @@ void Menu_background::render(){
 	ground.origin.y=0;
 	ground.size.height=25;
 	ground.size.width=481;
-	[Resources::getResources->getMenuTex(MENU_GROUND) drawTextM:ground];
+	Resources::getResources->getMenuTex(MENU_GROUND)->drawTextM(ground);
 	ground.origin.x-=480;
-	[Resources::getResources->getMenuTex(MENU_GROUND) drawTextM:ground];
+	Resources::getResources->getMenuTex(MENU_GROUND)->drawTextM(ground);
     if(IS_WIDESCREEN){
         ground.origin.x+=480*2;
-        [Resources::getResources->getMenuTex(MENU_GROUND) drawTextM:ground];
+        Resources::getResources->getMenuTex(MENU_GROUND)->drawTextM(ground);
          ground.origin.x-=480*2;
 
     }

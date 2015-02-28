@@ -35,7 +35,7 @@ static const int usage_id=999;
 
 BOOL Joystick::update(float etime){
 	Input* input=Input::getInput();
-	//Hud* hud=[World getWorld].hud;
+	//Hud* hud=World::getWorld->hud;
     itouch* touches=input->getTouches();
 	BOOL handled=FALSE;	
 	for(int i=0;i<MAX_TOUCHES;i++){
@@ -67,7 +67,7 @@ BOOL Joystick::update(float etime){
                 if(mag>1.3f)mag=1.3f;
 				//pos.x*=mag;
 				//pos.y*=mag;
-				[World getWorld].player->setSpeed(pos,mag);
+				World::getWorld->player->setSpeed(pos,mag);
                // printg("magnitude:%f\n",mag);
 				handled=TRUE;	
 				touches[i].inuse=usage_id;	
@@ -80,7 +80,7 @@ BOOL Joystick::update(float etime){
 			joystick_pos.origin.y=default_pos.origin.y;
 			pos.x=0;
 			pos.y=0;
-			[World getWorld].player->setSpeed(pos,0);
+			World::getWorld->player->setSpeed(pos,0);
 		}
 		
 		if(touches[i].inuse==usage_id&&touches[i].down==M_RELEASE){			
@@ -88,7 +88,7 @@ BOOL Joystick::update(float etime){
 		}	
 		
 	}
-	//[[World getWorld].player setSpeed:MakeVector(0,1,0),40];
+	//[World::getWorld->player setSpeed:MakeVector(0,1,0),40];
 
 	return FALSE;
 }
@@ -101,10 +101,10 @@ void Joystick::render(){
 	
 	//glBlendFunc (GL_SRC_ALPHA, GL_ONE);
 	
-	[gamepad drawInRect2:padbounds];
+	gamepad->drawInRect2(padbounds);
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
 	Texture2D* joystick=res->getTex(ICO_JOYSTICK_BACK);
-	[joystick drawInRect2:joystick_pos];
+	joystick->drawInRect2(joystick_pos);
 	//glEnable(GL_BLEND);
 
 	

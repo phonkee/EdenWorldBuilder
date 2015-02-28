@@ -339,15 +339,15 @@ BOOL Hud::update(float etime){
 	if(flash>0){
 		flash-=etime;
 	}
-    if([World getWorld].player->flash>0){
-       // [World getWorld].player.flash-=etime;
+    if(World::getWorld->player->flash>0){
+       // World::getWorld->player.flash-=etime;
     }
-	if([World getWorld].player->dead){
+	if(World::getWorld->player->dead){
         if(fade_out<1){
             fade_out+=etime/4;
         }else if(fade_out>=1){
             printg("warping home\n");
-            [World getWorld].terrain->warpToHome();
+            World::getWorld->terrain->warpToHome();
             printg("finished warping\n");
         }
     }else{
@@ -357,7 +357,7 @@ BOOL Hud::update(float etime){
             if(fade_out<0)fade_out=0;
         }
     }
-	ttime+=[World getWorld].realtime;
+	ttime+=World::getWorld->realtime;
 	fpsc++;
     if(justLoaded){
         ttime=0;
@@ -406,11 +406,11 @@ BOOL Hud::update(float etime){
 	if(ttime>=1.0f){
         heartbeat=TRUE;
 		fps=fpsc;
-       // float fpsf=1/[World getWorld].realtime;
+       // float fpsf=1/World::getWorld->realtime;
         test1=MakeVector(randf(1),randf(1),randf(1));
         test2=colorTable[lookupColor(test1)];
        //  [sb setStatus:[NSString stringWithFormat:@"FPS: %d chunks:%d vertices:%d",fpsc,var1,var2] :2];
-       //[sb setStatus:[NSString stringWithFormat:@"FPS: %d player:(%.1f,%.1f)",fpsc,[World getWorld].player.pos.x,[World getWorld].player.pos.z] :2];
+       //[sb setStatus:[NSString stringWithFormat:@"FPS: %d player:(%.1f,%.1f)",fpsc,World::getWorld->player.pos.x,World::getWorld->player.pos.z] :2];
 		//printg("Fps:%d   vertices:%d   max_vertices:%d chunks:%d.\n",fpsc,vertices_rendered,max_vertices,chunks_rendered);
        // float pz=P_ZFAR;
         if(!SUPPORTS_OGL2){
@@ -451,13 +451,13 @@ BOOL Hud::update(float etime){
 
         
 		if(delayedaction==6){
-			[World getWorld].terrain->warpToHome();
+			World::getWorld->terrain->warpToHome();
 			sb->clear();
 		}else if(delayedaction==5){
             mode=MODE_NONE;
            // printg("trying to exit\n!!!");
-			[World getWorld].fm->saveWorld();
-			[[World getWorld] exitToMenu];
+			World::getWorld->fm->saveWorld();
+            World::getWorld->exitToMenu();
             
 			
 			sb->clear();
@@ -523,7 +523,7 @@ BOOL Hud::update(float etime){
                     ppx+=dwarpx[warpCount];
                     ppz+=dwarpz[warpCount];
                     
-                    [[World getWorld].terrain warpToPoint:ppx:ppz:ppy];
+                    [World::getWorld->terrain warpToPoint:ppx:ppz:ppy];
                     printg("warping to: %d,%d,%d\n",ppx,ppz,ppy);
                     warpCount++;
                     if(warpCount==7){
@@ -826,7 +826,7 @@ BOOL Hud::handlePickMenu(int x,int y){
 	}
 	if(inbox2(x,y,&rhome)||inbox2(x,y,&rtHome)){	
         rhome.pressed=rtHome.pressed=FALSE;
-    /*    if(![World getWorld].FLIPPED){
+    /*    if(!World::getWorld->FLIPPED){
             [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
         }
         else{
@@ -840,12 +840,12 @@ BOOL Hud::handlePickMenu(int x,int y){
 	}
 	if(inbox2(x,y,&rsave)||inbox2(x,y,&rtSave)){	
         rsave.pressed=rtSave.pressed=FALSE;
-		[World getWorld].fm->saveWorld();
-        //[[World getWorld].terrain updateAllImportantChunks];
+		World::getWorld->fm->saveWorld();
+        //[World::getWorld->terrain updateAllImportantChunks];
       //  NSLog(@"saving..");
         Input::getInput()->clearAll();
         
-        [World getWorld].terrain->startDynamics();
+        World::getWorld->terrain->startDynamics();
 		sb->setStatus(@"World Saved" ,3);
         
         
@@ -890,16 +890,16 @@ BOOL Hud::handlePickBlock(int x,int y){
 
 void Hud::renderColorPickScreen(){
     glColor4f(1.0, 1.0, 1.0, at3);	
-    [Resources::getResources->getTex( ICO_COLOR_SELECT_BACKGROUND) drawInRect:rpaintframe];
+    Resources::getResources->getTex( ICO_COLOR_SELECT_BACKGROUND)->drawInRect(rpaintframe);
    
     for(int i=0;i<NUM_COLORS;i++){
         if(pressed==i)
-           [Resources::getResources->getTex(ICO_COLOR_BLOCK_BORDER_PRESSED) drawInRect2:colorBounds[i]];
+           Resources::getResources->getTex(ICO_COLOR_BLOCK_BORDER_PRESSED)->drawInRect2(colorBounds[i]);
             else
-		[Resources::getResources->getTex(ICO_COLOR_BLOCK_BORDER) drawInRect2:colorBounds[i]];
+		Resources::getResources->getTex(ICO_COLOR_BLOCK_BORDER)->drawInRect2(colorBounds[i]);
 	}
    // 
-	glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas.name);
+	glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas->name);
 	for(int i=0;i<NUM_COLORS;i++){
 		
 		CGRect rect=colorBounds[i];
@@ -992,8 +992,8 @@ void Hud::renderBlockAndBorder(CGRect recto){
             CGRect offrect=recto;
             offrect.origin.x-=offsetx;
             offrect.origin.y-=offsety;
-            [Resources::getResources->getTex(tid) drawTextHalfsies:offrect];
-            [Resources::getResources->getPaintedTex(type,block_paintcolor) drawTextHalfsies:recto];
+            Resources::getResources->getTex(tid)->drawTextHalfsies(offrect);
+            Resources::getResources->getPaintedTex(type,block_paintcolor)->drawTextHalfsies(recto);
           
         }else{
             
@@ -1008,11 +1008,11 @@ void Hud::renderBlockAndBorder(CGRect recto){
                 tid=ICO_DOOR2;
             }
 
-            [Resources::getResources->getPaintedTex(type,block_paintcolor) drawTextHalfsies:recto];
+            Resources::getResources->getPaintedTex(type,block_paintcolor)->drawTextHalfsies(recto);
             
             
         }
-        [Resources::getResources->getTex(ICO_BUILD_PLUS) drawTextHalfsies:recto];
+        Resources::getResources->getTex(ICO_BUILD_PLUS)->drawTextHalfsies(recto);
         if(type==TYPE_GOLDEN_CUBE){
            // printg("wtf\n");
             CGRect num_rect=recto;
@@ -1025,10 +1025,10 @@ void Hud::renderBlockAndBorder(CGRect recto){
             num_rect.origin.y-=2;
             if(goldencubes==0){
                 glColor4f(1.0f,1.0f,1.0f,.3f);
-                [Resources::getResources->getTex(TEXT_NUMBERS) drawNumbers:num_rect:goldencubes];
+                Resources::getResources->getTex(TEXT_NUMBERS)->drawNumbers(num_rect,goldencubes);
                 glColor4f(1.0f,1.0f,1.0f,1.0f);
             }else{
-                [Resources::getResources->getTex(TEXT_NUMBERS) drawNumbers:num_rect:goldencubes];
+                Resources::getResources->getTex(TEXT_NUMBERS)->drawNumbers(num_rect,goldencubes);
                 
             }
         }
@@ -1048,24 +1048,24 @@ void Hud::renderBlockAndBorder(CGRect recto){
             
         }
        // CGRect rdigits=CGRectMake(50,50,50,50);
-       //  [Resources::getResources->getTex:ICO_DIGITS] drawText:rdigits];
+       //  Resources::getResources->getTex:ICO_DIGITS]->drawText(rdigits);
         if(mode==MODE_BUILD||mode==MODE_PICK_BLOCK){
             
             recto.origin.x-=offsetx;
            recto.origin.y-=offsety;
             if(build_size!=0)
-                [Resources::getResources->getTex(ICO_BUILD3_ACTIVE) drawTextHalfsies:recto];
+                Resources::getResources->getTex(ICO_BUILD3_ACTIVE)->drawTextHalfsies(recto);
             else {
-                [Resources::getResources->getTex(ICO_BUILD3_ACTIVE2) drawTextHalfsies:recto];
+                Resources::getResources->getTex(ICO_BUILD3_ACTIVE2)->drawTextHalfsies(recto);
             }
             
             recto.origin.x+=offsetx;
             recto.origin.y+=offsety;
         }else{
             if(build_size==0)
-                [Resources::getResources->getTex(ICO_BUILD2_UNDER2) drawTextHalfsies:recto];
+                Resources::getResources->getTex(ICO_BUILD2_UNDER2)->drawTextHalfsies(recto);
             else {
-                [Resources::getResources->getTex(ICO_BUILD3) drawTextHalfsies:recto];
+                Resources::getResources->getTex(ICO_BUILD3)->drawTextHalfsies(recto);
             }
             
         }
@@ -1088,20 +1088,20 @@ void Hud::renderBlockAndBorder(CGRect recto){
             
             recto.origin.x-=offsetx;
             recto.origin.y-=offsety;
-           // [Resources::getResources->getTex:ICO_BUILD2_ACTIVE] drawTextHalfsies:recto];
+           // Resources::getResources->getTex:ICO_BUILD2_ACTIVE]->drawTextHalfsies(recto);
             if(build_size==0){
-            [Resources::getResources->getTex(ICO_BUILD2_ACTIVE2) drawTextHalfsies:recto];
+            Resources::getResources->getTex(ICO_BUILD2_ACTIVE2)->drawTextHalfsies(recto);
             }else{
-                [Resources::getResources->getTex(ICO_BUILD2_ACTIVE) drawTextHalfsies:recto];
+                Resources::getResources->getTex(ICO_BUILD2_ACTIVE)->drawTextHalfsies(recto);
             }
             
             recto.origin.x+=offsetx;
             recto.origin.y+=offsety;
         }else{
             if(build_size==0)
-            [Resources::getResources->getTex(ICO_BUILD_UNDER2) drawTextHalfsies:recto];
+            Resources::getResources->getTex(ICO_BUILD_UNDER2)->drawTextHalfsies(recto);
             else {
-                [Resources::getResources->getTex(ICO_BUILD2) drawTextHalfsies:recto];
+                Resources::getResources->getTex(ICO_BUILD2)->drawTextHalfsies(recto);
             }
         }
     }
@@ -1109,9 +1109,9 @@ void Hud::renderBlockAndBorder(CGRect recto){
 	
     
     if(blockinfo[type]&IS_ATLAS2){
-        glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas2.name);
+        glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas2->name);
     }else{
-        glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas.name);
+        glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas->name);
     }
     CGPoint tp;
     if(type==TYPE_TNT||type==TYPE_FIREWORK||type==TYPE_LADDER||type==TYPE_BLOCK_TNT){
@@ -1305,8 +1305,8 @@ void Hud::renderBlockAndBorder(CGRect recto){
         glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        [Resources::getResources->getTex(ICO_MOOF) drawTextNoScale:
-         CGRectMake(rect.origin.x+off+bb-offx, rect.origin.y+off-bb-offy,32, 32)];       
+        Resources::getResources->getTex(ICO_MOOF)->drawTextNoScale(
+         CGRectMake(rect.origin.x+off+bb-offx, rect.origin.y+off-bb-offy,32, 32));
     }else
     if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
        // glVertexPointer(3, GL_FLOAT, 0, vertices2);
@@ -1330,18 +1330,18 @@ void Hud::renderBlockAndBorder(CGRect recto){
     if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
              
         if(build_size!=0)
-        [Resources::getResources->getTex(ICO_BUILD3_TOP) drawTextHalfsies:recto];
+        Resources::getResources->getTex(ICO_BUILD3_TOP)->drawTextHalfsies(recto);
         else
-         [Resources::getResources->getTex(ICO_BUILD3_TOP2) drawTextHalfsies:recto];
-        [Resources::getResources->getTex(ICO_BUILD_PLUS) drawTextHalfsies:recto];
+         Resources::getResources->getTex(ICO_BUILD3_TOP2)->drawTextHalfsies(recto);
+        Resources::getResources->getTex(ICO_BUILD_PLUS)->drawTextHalfsies(recto);
     }else{
         if(build_size!=0)
-        [Resources::getResources->getTex(ICO_BUILD2_TOP) drawTextHalfsies:recto];
+        Resources::getResources->getTex(ICO_BUILD2_TOP)->drawTextHalfsies(recto);
         else {
-             [Resources::getResources->getTex(ICO_BUILD_OVER2) drawTextHalfsies:recto];
+             Resources::getResources->getTex(ICO_BUILD_OVER2)->drawTextHalfsies(recto);
         }
         
-         [Resources::getResources->getTex(ICO_BUILD_PLUS) drawTextHalfsies:recto];
+         Resources::getResources->getTex(ICO_BUILD_PLUS)->drawTextHalfsies(recto);
     }
     //vertices[v_idx].texs[0]=cubeTexture[st]*size;		
     
@@ -1364,7 +1364,7 @@ void Hud::renderMenuScreen(){
     if(rhome.pressed||rtHome.pressed)rhome.pressed=rtHome.pressed=TRUE;
     
     //if(!IS_WIDESCREEN)
-	[Resources::getResources->getTex(ICO_COLOR_SELECT_BACKGROUND) drawInRect:rmenuframe];
+	Resources::getResources->getTex(ICO_COLOR_SELECT_BACKGROUND)->drawInRect(rmenuframe);
 	//
 	
 		Resources* res=Resources::getResources;
@@ -1376,16 +1376,16 @@ void Hud::renderMenuScreen(){
     
     
 
-		[tsave drawButton: rsave];		
+		tsave->drawButton(rsave);
   
    // printg("rtExit.x:%f  rtCam.x:%f\n",rtExit.origin.x, rtCam.origin.x);
-    [res->getTex(ICOT_SAVE) drawButton:rtSave];
-    [res->getTex(ICOT_HOME) drawButton:rtHome];
-    [res->getTex(ICOT_PHOTO) drawButton:rtCam];
-    [res->getTex(ICOT_EXIT) drawButton:rtExit];
-	[thome drawButton: rhome];		
-	[texit drawButton: rexit];	
-	[tcam drawButton: rcam];
+    res->getTex(ICOT_SAVE)->drawButton(rtSave);
+    res->getTex(ICOT_HOME)->drawButton(rtHome);
+    res->getTex(ICOT_PHOTO)->drawButton(rtCam);
+    res->getTex(ICOT_EXIT)->drawButton(rtExit);
+	thome->drawButton( rhome);
+	texit->drawButton( rexit);
+	tcam->drawButton( rcam);
 	
 	
 	return;
@@ -1403,7 +1403,7 @@ void Hud::renderBlockScreen(){
 	rblocksframe.size.width=402;
 	rblocksframe.size.height=282;
     
-	[Resources::getResources->getTex(ICO_COLOR_SELECT_BACKGROUND) drawInRect:rblocksframe];
+	Resources::getResources->getTex(ICO_COLOR_SELECT_BACKGROUND)->drawInRect(rblocksframe);
 	//
 	
 	glColor4f(1.0, 1.0, 1.0, at2);	
@@ -1422,17 +1422,17 @@ void Hud::renderBlockScreen(){
         if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
             if(pressed==i){
                  if(build_size==0){
-                      [Resources::getResources->getTex(ICO_TRIANGLE_BORDER_PRESSED2) drawText:blockBounds[i]];
+                      Resources::getResources->getTex(ICO_TRIANGLE_BORDER_PRESSED2)->drawText(blockBounds[i]);
                  }else{
-                      [Resources::getResources->getTex(ICO_TRIANGLE_BORDER_PRESSED) drawText:blockBounds[i]];
+                      Resources::getResources->getTex(ICO_TRIANGLE_BORDER_PRESSED)->drawText(blockBounds[i]);
                  }
             }
                
             else{
                 if(build_size==0){
-                    [Resources::getResources->getTex(ICO_TRIANGLE_BORDER2) drawText:blockBounds[i]];
+                    Resources::getResources->getTex(ICO_TRIANGLE_BORDER2)->drawText(blockBounds[i]);
                 } else {
-                     [Resources::getResources->getTex(ICO_TRIANGLE_BORDER) drawText:blockBounds[i]];
+                     Resources::getResources->getTex(ICO_TRIANGLE_BORDER)->drawText(blockBounds[i]);
                 }
             }
                
@@ -1459,10 +1459,10 @@ void Hud::renderBlockScreen(){
             }
             if(tid==ICO_GOLDCUBE&&goldencubes==0){
                 glColor4f(1.0f,1.0f,1.0f,.3f);
-                [Resources::getResources->getTex(tid)  drawButton:b];
+                Resources::getResources->getTex(tid)->drawButton(b);
                 glColor4f(1.0f,1.0f,1.0f,1.0f);
             }else{
-                [Resources::getResources->getTex(tid) drawButton:b];
+                Resources::getResources->getTex(tid)->drawButton(b);
             }
         }else if(type==TYPE_CUSTOM){
            
@@ -1479,23 +1479,23 @@ void Hud::renderBlockScreen(){
             
              /*
             if(build_size==0)
-                [Resources::getResources->getTex:ICO_SIZETOGGLE2] drawButton:b];
+                Resources::getResources->getTex:ICO_SIZETOGGLE2] drawButton:b);
             else
-                [Resources::getResources->getTex:ICO_SIZETOGGLE1] drawButton:b];
+                Resources::getResources->getTex:ICO_SIZETOGGLE1] drawButton:b);
             */
         }else{
             if(pressed==i)
                 if(build_size==0){
                     
-                    [Resources::getResources->getTex(ICO_BLOCK_BORDER_PRESSED2) drawText:blockBounds[i]];
+                    Resources::getResources->getTex(ICO_BLOCK_BORDER_PRESSED2)->drawText(blockBounds[i]);
                 }else{
-                [Resources::getResources->getTex(ICO_BLOCK_BORDER_PRESSED) drawInRect2:blockBounds[i]];
+                Resources::getResources->getTex(ICO_BLOCK_BORDER_PRESSED)->drawInRect2(blockBounds[i]);
                 }
             else{
                 if(build_size==0){
-                    [Resources::getResources->getTex(ICO_BLOCK_BORDER2) drawText:blockBounds[i]];
+                    Resources::getResources->getTex(ICO_BLOCK_BORDER2)->drawText(blockBounds[i]);
                 }else{
-                    [Resources::getResources->getTex(ICO_BLOCK_BORDER) drawText:blockBounds[i]];
+                    Resources::getResources->getTex(ICO_BLOCK_BORDER)->drawText(blockBounds[i]);
                 }
             }
         }
@@ -1514,15 +1514,15 @@ void Hud::renderBlockScreen(){
 		
 	}
 	//glDisable(GL_BLEND);
-    glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas.name);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas->name);
 	for(int i=0;i<NUM_DISPLAY_BLOCKS;i++){
 		int type=hudBlocks[i];
         if(type==TYPE_FLOWER||type==TYPE_GOLDEN_CUBE||type==TYPE_DOOR_TOP||type==TYPE_PORTAL_TOP||type==TYPE_CUSTOM)continue;
             
         if(blockinfo[type]&IS_ATLAS2){
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas2.name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas2->name);
         }else{
-            glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas.name);
+            glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas->name);
         }
 		CGRect rect=blockBounds[i];
 		CGPoint tp;
@@ -1632,8 +1632,8 @@ void Hud::renderBlockScreen(){
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
             glColor4f(1.0f, 1.0f, 1.0f, at2);
             
-            [Resources::getResources->getTex(ICO_MOOF) drawTextNoScale:
-            CGRectMake(rect.origin.x+off+bb, rect.origin.y+off-bb,32, 32)];       
+            Resources::getResources->getTex(ICO_MOOF)->drawTextNoScale(
+            CGRectMake(rect.origin.x+off+bb, rect.origin.y+off-bb,32, 32));
         }else
         if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
 		glVertexPointer(3, GL_FLOAT, 0, vertices2);
@@ -1662,10 +1662,10 @@ void Hud::renderBlockScreen(){
         num_rect.origin.y-=2;
         if(goldencubes==0){
             glColor4f(1.0f,1.0f,1.0f,.3f);
-        [Resources::getResources->getTex(TEXT_NUMBERS) drawNumbers:num_rect:goldencubes];
+        Resources::getResources->getTex(TEXT_NUMBERS)->drawNumbers(num_rect,goldencubes);
             glColor4f(1.0f,1.0f,1.0f,1.0f);
         }else{
-            [Resources::getResources->getTex(TEXT_NUMBERS) drawNumbers:num_rect:goldencubes];
+            Resources::getResources->getTex(TEXT_NUMBERS)->drawNumbers(num_rect,goldencubes);
             
         }
     }
@@ -1682,14 +1682,14 @@ void Hud::renderBlockScreen(){
         }
         if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
             if(pressed==i)
-                [Resources::getResources->getTex:ICO_TRIANGLE_BORDER_PRESSED] drawInRect2:blockBounds[i]];
+                Resources::getResources->getTex:ICO_TRIANGLE_BORDER_PRESSED] drawInRect2:blockBounds[i]];
             else
-                [Resources::getResources->getTex:ICO_TRIANGLE_BORDER] drawInRect2:blockBounds[i]];
+                Resources::getResources->getTex:ICO_TRIANGLE_BORDER] drawInRect2:blockBounds[i]];
         }else{
             if(pressed==i)
-                [Resources::getResources->getTex:ICO_BLOCK_BORDER_PRESSED] drawInRect2:blockBounds[i]];
+                Resources::getResources->getTex:ICO_BLOCK_BORDER_PRESSED] drawInRect2:blockBounds[i]];
             else
-                [Resources::getResources->getTex:ICO_BLOCK_BORDER] drawText:blockBounds[i]];
+                Resources::getResources->getTex:ICO_BLOCK_BORDER]->drawText(blockBounds[i]];
         }
                 if(build_size==0){blockBounds[i].size.width+=10;
             blockBounds[i].size.height+=10;
@@ -1701,7 +1701,7 @@ void Hud::renderBlockScreen(){
     }*/
 
 	/*
-     Resources* res=[Resources getResources];
+     Resources* res=Resources getResources];
      Texture2D* tsave=[res getTex:ICO_SAVE];	
      Texture2D* thome=[res getTex:ICO_HOME];	
      Texture2D* texit=[res getTex:ICO_EXIT];	
@@ -1729,7 +1729,7 @@ void Hud::render(){
                 Graphics::setZFAR(40);
                 
               
-                if([World getWorld].terrain->tgen->LEVEL_SEED== 0){
+                if(World::getWorld->terrain->tgen->LEVEL_SEED== 0){
                      Graphics::setZFAR(55);
                     
                 }
@@ -1752,7 +1752,7 @@ void Hud::render(){
             Graphics::setZFAR(40);
             
             
-            if([World getWorld].terrain->tgen->LEVEL_SEED== 0){
+            if(World::getWorld->terrain->tgen->LEVEL_SEED== 0){
                 Graphics::setZFAR(55);
                 
             }
@@ -1776,7 +1776,7 @@ void Hud::render(){
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//NSString* sfps=[NSString stringWithFormat:@"FPS:%3d",(int)fps];
 	
-	//[Graphics drawText:sfps:10:10];
+	//[Graphics->drawText(sfps:10:10];
     
 	
 	
@@ -1846,41 +1846,41 @@ void Hud::render(){
         glowbox=rmine;
         glowbox.origin.x-=offsetx;
         glowbox.origin.y-=offsety;
-        [res->getTex(ICO_MINE_ACTIVE) drawButton:glowbox];
+        res->getTex(ICO_MINE_ACTIVE)->drawButton(glowbox);
     }else
-	[tmine drawButton: rmine];
+	tmine->drawButton( rmine);
 	
     
 	if(mode==MODE_BURN){
         glowbox=rburn;
         glowbox.origin.x-=offsetx;
         glowbox.origin.y-=offsety;
-        [res->getTex(ICO_BURN_ACTIVE) drawButton:glowbox];
+        res->getTex(ICO_BURN_ACTIVE)->drawButton(glowbox);
     }else
-	[tburn drawButton: rburn];
+	tburn->drawButton(rburn);
     
     
 	if(mode==MODE_PAINT||mode==MODE_PICK_COLOR){
         glowbox=rpaint;
         glowbox.origin.x-=offsetx;
         glowbox.origin.y-=offsety;
-        [res->getTex(ICO_PAINT_ACTIVE) drawButton:glowbox];
-        [tpaint drawButton: rpaint];
+        res->getTex(ICO_PAINT_ACTIVE)->drawButton(glowbox);
+        tpaint->drawButton( rpaint);
     }else
-   	[tpaint drawButton: rpaint];  
+   	tpaint->drawButton( rpaint);
     
 	
 	if(m_jump){
         rjumprender.pressed=TRUE;
-        [res->getTex(ICO_JUMP_ACTIVE) drawButton:rjumprender];
+        res->getTex(ICO_JUMP_ACTIVE)->drawButton(rjumprender);
 	}else{
         rjumprender.pressed=FALSE;
-        [tjump drawButton:rjumprender];
+        tjump->drawButton(rjumprender);
     }
 	
 	
 	
-	[res->getTex(ICO_OPEN_MENU) drawButton:rmenu];
+	res->getTex(ICO_OPEN_MENU)->drawButton(rmenu);
     if(inmenu||at1>0){
         
       
@@ -1893,7 +1893,7 @@ void Hud::render(){
 	}
 	else{
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE);
-		//[gamepad render];
+		//[gamepad render);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 	
@@ -1925,7 +1925,7 @@ void Hud::render(){
 		glEnable(GL_TEXTURE_2D);
 
     }
-	if(flash>0||[World getWorld].player->flash>0){
+	if(flash>0||World::getWorld->player->flash>0){
 		//NSLog(@"%f",flash);
 		glDisable(GL_TEXTURE_2D);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1934,7 +1934,7 @@ void Hud::render(){
             
 		glColor4f(flashcolor.x, flashcolor.y, flashcolor.z, flash);
         }else
-         glColor4f(1.0, 0.0, 0.0, [World getWorld].player->flash);
+         glColor4f(1.0, 0.0, 0.0, World::getWorld->player->flash);
         
         if(IS_IPAD){
             if(IS_RETINA){
@@ -1971,10 +1971,10 @@ void Hud::render(){
   /*  glDisable(GL_TEXTURE_2D);
     glColor4f(test2.x,test2.y,test2.z,1.0f);
     
-    [Graphics drawRect:test2r.origin.x:test2r.origin.y:test2r.size.width:test2r.size.height];
+    [Graphics drawRect:test2r.origin.x:test2r.origin.y:test2r.size.width:test2r.size.height);
     glColor4f(test1.x,test1.y,test1.z,1.0f);
    
-     [Graphics drawRect:test1r.origin.x:test1r.origin.y:test1r.size.width:test1r.size.height];
+     [Graphics drawRect:test1r.origin.x:test1r.origin.y:test1r.size.width:test1r.size.height);
    */
 
     glColor4f(1.0f,1.0f,1.0f,1.0f);
@@ -1988,17 +1988,17 @@ void Hud::render(){
 void Hud::asetHome(){
     
     Vector thome;
-    Vector pp=[World getWorld].player->pos;
+    Vector pp=World::getWorld->player->pos;
     thome.x=pp.x-.5f;
     thome.z=pp.z-.5f;
     thome.y=pp.y-1;
-    [World getWorld].terrain->home=thome;
-    [World getWorld].fm->saveWorld();
-    //[[World getWorld].terrain updateAllImportantChunks];
+    World::getWorld->terrain->home=thome;
+    World::getWorld->fm->saveWorld();
+    //[World::getWorld->terrain updateAllImportantChunks);
     //NSLog(@"saving..");
     Input::getInput()->clearAll();
     
-    [World getWorld].terrain->startDynamics();
+    World::getWorld->terrain->startDynamics();
     sb->setStatus(@"World Saved",3);
 
 }

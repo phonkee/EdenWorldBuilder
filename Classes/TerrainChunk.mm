@@ -527,7 +527,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
                         objects[objidx].pos.x=x+pbounds[0];
                         objects[objidx].pos.y=y-1+pbounds[1];
                         objects[objidx].pos.z=z+pbounds[2];
-                        [World getWorld].terrain->portals->addPortal(x+pbounds[0],y+pbounds[1],z+pbounds[2],objects[objidx].dir,  objects[objidx].color);
+                        World::getWorld->terrain->portals->addPortal(x+pbounds[0],y+pbounds[1],z+pbounds[2],objects[objidx].dir,  objects[objidx].color);
                         
                         objidx++;
                     }
@@ -682,7 +682,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
     
     float skylight=1.0f;
     float light[3]={1.0f,1.0f,1.0f};
-    if(!LOW_MEM_DEVICE&&v_equals([World getWorld].terrain->final_skycolor,colorTable[54]))
+    if(!LOW_MEM_DEVICE&&v_equals(World::getWorld->terrain->final_skycolor,colorTable[54]))
         skylight=.35f;
     
     Resources* res=Resources::getResources;
@@ -1822,10 +1822,10 @@ int TerrainChunk::render(){
     }*/
    
 	glPushMatrix();
-  //  if([World getWorld].hud.heartbeat)
-   // printg("rtbounds %f  proposedoffset %d\n",rbounds[0],[World getWorld].fm.chunkOffsetX*CHUNK_SIZE);
+  //  if(World::getWorld->hud.heartbeat)
+   // printg("rtbounds %f  proposedoffset %d\n",rbounds[0],World::getWorld->fm.chunkOffsetX*CHUNK_SIZE);
     //glTranslatef((rtbounds[0])*4, rtbounds[1]*4, (rtbounds[2])*4);
-	glTranslatef((pbounds[0]-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)*4, pbounds[1]*4, (pbounds[2]-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)*4);
+	glTranslatef((pbounds[0]-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE)*4, pbounds[1]*4, (pbounds[2]-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE)*4);
     
     
 	/*offsets[0]=BLOCK_SIZE*x+rbounds[0];
@@ -1841,7 +1841,7 @@ int TerrainChunk::render(){
 	
     //glDrawArrays(GL_TRIANGLES, 0, n_vertices);
 
-    Camera* cam=[World getWorld].cam;
+    Camera* cam=World::getWorld->cam;
    	/*0,0,1, //front face
 	
 		
@@ -1934,7 +1934,7 @@ int TerrainChunk::render(){
     //glDrawArrays(GL_TRIANGLES, 0, n_vertices);	
     glPopMatrix();
     
-   //glTranslatef(-(rtbounds[0]-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE)*4, -rtbounds[1]*4, -(rtbounds[2]-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE)*4);
+   //glTranslatef(-(rtbounds[0]-World::getWorld->fm.chunkOffsetX*CHUNK_SIZE)*4, -rtbounds[1]*4, -(rtbounds[2]-World::getWorld->fm.chunkOffsetZ*CHUNK_SIZE)*4);
 	return rtvis_vertices;
 
 	
@@ -1944,7 +1944,7 @@ int TerrainChunk::render(){
 void TerrainChunk::render2(){
    
     glPushMatrix();
-	glTranslatef((pbounds[0]-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)*4, pbounds[1]*4, (pbounds[2]-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)*4);
+	glTranslatef((pbounds[0]-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE)*4, pbounds[1]*4, (pbounds[2]-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE)*4);
 	/*offsets[0]=BLOCK_SIZE*x+rbounds[0];
      offsets[1]=BLOCK_SIZE*y+rbounds[1];
      offsets[2]=BLOCK_SIZE*z+rbounds[2];*/
@@ -1956,7 +1956,7 @@ void TerrainChunk::render2(){
 	glTexCoordPointer(2, GL_SHORT,  sizeof(vertexStructSmall),  (void*)offsetof(vertexStructSmall,texs));
 	glColorPointer(	4, GL_UNSIGNED_BYTE, sizeof(vertexStructSmall), (void*)offsetof(vertexStructSmall,colors));
 	
-     Camera* cam=[World getWorld].cam;
+     Camera* cam=World::getWorld->cam;
 	
     if(cam->py>=pbounds[1]&&rtnum_vertices2[5]!=0)
         glDrawArrays(GL_TRIANGLES, rtface_idx2[5], rtnum_vertices2[5]);

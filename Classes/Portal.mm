@@ -99,7 +99,7 @@ Vector2 Portal::enterPortal(int x,int y,int z,Vector vel){
                     
 
                     yawanimation=0;
-                    [World getWorld].player->yaw=yaw[(dir+3)%4];
+                    World::getWorld->player->yaw=yaw[(dir+3)%4];
                     
                     break;
                 }

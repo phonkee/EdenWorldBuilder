@@ -72,14 +72,14 @@ extern EAGLView* G_EAGL_VIEW;
 }
 -(void)beginShare:(WorldNode*)world{
 	node=world;
-	/*if(![World getWorld].FLIPPED){
+	/*if(!World::getWorld->FLIPPED){
 		[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
 	}
 	else{
 		[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
 		
 	}*/
-	//starto=[World getWorld].FLIPPED;
+	//starto=World::getWorld->FLIPPED;
 	[world_name_field becomeFirstResponder];
 	name=[NSMutableString stringWithString:world->display_name];
 	[name retain];
@@ -148,8 +148,8 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
         if(name!=NULL)
 		[name release];
         name=NULL;
-		[World getWorld].menu->is_sharing=0;
-		[World getWorld].menu->sbar->clear();
+		World::getWorld->menu->is_sharing=0;
+		World::getWorld->menu->sbar->clear();
 		return;
 	}
 	[node->display_name release];
@@ -158,24 +158,24 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
 	[node->display_name retain];
 	[name release];
     name=NULL;
-    [World getWorld].fm->setName(node->file_name,node->display_name);
+    World::getWorld->fm->setName(node->file_name,node->display_name);
     NSString* file_name=[NSString stringWithFormat:@"%@/%@",
-                         [World getWorld].fm->documents,node->file_name];
+                         World::getWorld->fm->documents,node->file_name];
     NSString* image_file_name=[NSString stringWithFormat:@"%@/%@.png",
-                               [World getWorld].fm->documents,node->file_name];
+                               World::getWorld->fm->documents,node->file_name];
     NSFileManager* fm=[NSFileManager defaultManager];
     NSLog(@"Sharing \"%@\"",node->display_name);
     if(![fm fileExistsAtPath:image_file_name]){
-        [World getWorld].menu->is_sharing=0;
-        [World getWorld].menu->sbar->setStatus(@"Error: No preview picture found",4);
+        World::getWorld->menu->is_sharing=0;
+        World::getWorld->menu->sbar->setStatus(@"Error: No preview picture found",4);
         return;
     }
     
-    [[World getWorld].menu->shareutil shareWorld:file_name];
+    [World::getWorld->menu->shareutil shareWorld:file_name];
     
     
-    [World getWorld].menu->is_sharing=2;
-    [World getWorld].menu->refreshfn();
+    World::getWorld->menu->is_sharing=2;
+    World::getWorld->menu->refreshfn();
 
 	
 				
@@ -195,15 +195,15 @@ static float cursor_blink=0;
     
 	name_bar->update(etime);
 	label_bar->update(etime);
-	/*if(starto!=[World getWorld].FLIPPED)
+	/*if(starto!=World::getWorld->FLIPPED)
 	{
-		if(![World getWorld].FLIPPED){
+		if(!World::getWorld->FLIPPED){
 			[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
 		}
 		else{
 			[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
 		}		
-		starto=[World getWorld].FLIPPED;
+		starto=World::getWorld->FLIPPED;
 		[world_name_field resignFirstResponder];
 		[world_name_field becomeFirstResponder];
 	}*/
@@ -233,11 +233,11 @@ static float cursor_blink=0;
 }
 -(void)render{
 	glColor4f(1.0f, 0.0f, 0.0f,1.0f);
-	[Resources::getResources->getMenuTex(MENU_CANCEL) drawButton:rect_cancel];
+	Resources::getResources->getMenuTex(MENU_CANCEL)->drawButton(rect_cancel);
 	glColor4f(0.0f, 1.0f, 0.0f,1.0f);
-	[Resources::getResources->getMenuTex(MENU_SEND) drawButton:rect_submit];
+	Resources::getResources->getMenuTex(MENU_SEND)->drawButton(rect_submit);
 	glColor4f(1.0f, 1.0f, 1.0f,1.0f);    
-	[Resources::getResources->getMenuTex(MENU_TEXT_BOX) drawInRect:input_background];
+	Resources::getResources->getMenuTex(MENU_TEXT_BOX)->drawInRect(input_background);
     
 	
     

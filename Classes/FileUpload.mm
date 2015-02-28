@@ -96,7 +96,7 @@ progressSelector: (SEL)aProgressSelector
 {
     
     const char* fname=[filePath cStringUsingEncoding:NSUTF8StringEncoding];
-    NSString* temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm->documents];
+    NSString* temp_name=[NSString stringWithFormat:@"%@/temp",World::getWorld->fm->documents];
     const char* tname=[temp_name cStringUsingEncoding:NSUTF8StringEncoding];
     
     FILE* fsource = fopen(fname, "rb");
@@ -132,7 +132,7 @@ progressSelector: (SEL)aProgressSelector
         [self uploadSucceeded:NO];
         return;
     }
-    // NSString* img_temp_name=[NSString stringWithFormat:@"%@/temp",[World getWorld].fm.documents];
+    // NSString* img_temp_name=[NSString stringWithFormat:@"%@/temp",World::getWorld->fm.documents];
     NSData* imgData = [NSData dataWithContentsOfFile:imgPath];
     if (!imgData || [imgData length] == 0) {
         [self uploadSucceeded:NO];

@@ -102,7 +102,7 @@ void Camera::render2(){
      
      // Reset and transform the matrix.
      glLoadIdentity();
-     if([World getWorld].FLIPPED)
+     if(World::getWorld->FLIPPED)
      glRotatef(90,0,0,1);
      else
      glRotatef(270,0,0,1);	
@@ -131,7 +131,7 @@ void Camera::render2(){
 	}else{
          gluLookAt(px, py, pz, alook.x, alook.y, alook.z, 0, 1, 0);	
         
-		//gluLookAt(px-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE, py, pz-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE, look.x-[World getWorld].fm.chunkOffsetX*CHUNK_SIZE, look.y, look.z-[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);	
+		//gluLookAt(px-World::getWorld->fm.chunkOffsetX*CHUNK_SIZE, py, pz-World::getWorld->fm.chunkOffsetZ*CHUNK_SIZE, look.x-World::getWorld->fm.chunkOffsetX*CHUNK_SIZE, look.y, look.z-World::getWorld->fm.chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);	
 	}
 
 
@@ -188,11 +188,11 @@ void Camera::render(){
 		float ly=py+sinPitch;
 		float lz=pz+sinYaw;*/
 		float n=4.0f;
-		gluLookAt(px+n*cosYaw-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE, py-6.0f, pz+n*sinYaw-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE, px-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE, py, pz-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);
+		gluLookAt(px+n*cosYaw-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE, py-6.0f, pz+n*sinYaw-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE, px-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE, py, pz-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);
 	}else{
        //gluLookAt(px, py, pz, look.x, look.y, look.z, 0, 1, 0);
         
-		gluLookAt(px-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE, py, pz-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE, look.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE, look.y, look.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);
+		gluLookAt(px-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE, py, pz-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE, look.x-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE, look.y, look.z-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE, 0, 1, 0);
 	}
 		
 }

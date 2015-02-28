@@ -341,7 +341,7 @@ void Terrain::loadTerrain(NSString* name,BOOL fromArchive){
     double start_time=-[start timeIntervalSinceNow];
 	if(loaded)unloadTerrain(FALSE);
    
-    [World getWorld].hud->goldencubes=10;
+    World::getWorld->hud->goldencubes=10;
 	counter=0;
 	//skycolor=MakeVector(-1,-1,-1);
     
@@ -358,7 +358,7 @@ void Terrain::loadTerrain(NSString* name,BOOL fromArchive){
     
 	world_name=name;
 	[world_name retain];
-	[World getWorld].fm->loadWorld(name,fromArchive);
+	World::getWorld->fm->loadWorld(name,fromArchive);
     
    /* for(int x=0;x<T_SIZE;x++){
         for(int z=0;z<T_SIZE;z++){
@@ -382,7 +382,7 @@ void Terrain::loadTerrain(NSString* name,BOOL fromArchive){
     loaded_new_terrain=TRUE;
     
 	loaded=1;
-    [World getWorld].hud->justLoaded=1;
+    World::getWorld->hud->justLoaded=1;
     
 	//NSLog(@"dict entries: %d",hashmap_length(chunkMap));
 	//NSLog(@"%f",[NSThread threadPriority]);
@@ -399,28 +399,28 @@ void Terrain::warpToPoint(float x,float z,float y){
 	pp.x=(x+.5f);
 	pp.z=(z+.5f);
 	pp.y=(y+1);
-	//[World getWorld].player.pos=pp;
-    [World getWorld].fm->saveWorld(pp);
+	//World::getWorld->player.pos=pp;
+    World::getWorld->fm->saveWorld(pp);
 	unloadTerrain(FALSE);
     
 	loadTerrain(world_name,FALSE);
-    //[[World getWorld].player reset];
+    //[World::getWorld->player reset];
     
-    [World getWorld].player->groundPlayer();
+    World::getWorld->player->groundPlayer();
 }
 void Terrain::warpToHome(){
 	Vector pp;
 	pp.x=(home.x+.5f);
 	pp.z=(home.z+.5f);
 	pp.y=(home.y+1);
-	//[World getWorld].player.pos=pp;
-	[World getWorld].fm->saveWorld(pp);
+	//World::getWorld->player.pos=pp;
+	World::getWorld->fm->saveWorld(pp);
 	unloadTerrain(FALSE);
     
 	loadTerrain(world_name,FALSE);
-    //[[World getWorld].player reset];
+    //[World::getWorld->player reset];
 
-    [World getWorld].player->groundPlayer();
+    World::getWorld->player->groundPlayer();
 }
 void Terrain::addToUpdateList(int cx,int cy,int cz){
      //issue #1 continued
@@ -734,7 +734,7 @@ BOOL Terrain::setColor(int x,int z,int y, color8 color){
     
 }
 /*- (void)destroyCustom:(int)x :(int)z :(int)y{
-    [[World getWorld].effects addBlockBreak:x/2.0f :z/2.0f :y/2.0f :getCustomc(x ,z ,y) :0];
+    [World::getWorld->effects addBlockBreak:x/2.0f :z/2.0f :y/2.0f :getCustomc(x ,z ,y) :0];
 	updateCustom: x: z: y: TYPE_NONE :0];
     
 
@@ -752,7 +752,7 @@ void Terrain::destroyBlock(int x,int z,int y){
     if((cur==TYPE_TNT||cur==TYPE_FIREWORK||cur==TYPE_BLOCK_TNT)||isOnFire(x,z,y)){
         paint=getColor(x,z,y);//save color so it can be used when explosion is triggered
     }
-    [World getWorld].effects->addBlockBreak(x ,z ,y ,getLand(x ,z ,y),getColor(x,z,y));
+    World::getWorld->effects->addBlockBreak(x ,z ,y ,getLand(x ,z ,y),getColor(x,z,y));
     if(cur==TYPE_LIGHTBOX){
        void addlight(int xx,int zz,int yy,float brightness,Vector color);
         
@@ -816,7 +816,7 @@ void Terrain::explodeBlock(int x,int z,int y){
         
         
     }
-    //[[World getWorld].effects addBlockBreak:x :z :y :getLand:x :z :y]:getColor:x:z:y]];
+    //[World::getWorld->effects addBlockBreak:x :z :y :getLand:x :z :y]:getColor:x:z:y]];
     updateChunks(x,z,y,TYPE_NONE);
     setColor(x,z,y,paint);
    //adds color attribute back in after updatechunks clears it
@@ -846,7 +846,7 @@ void Terrain::explodeBlock(int x,int z,int y){
             
         }
     }
-	[World getWorld].effects->addBlockExplode(x ,z ,y ,getLand(x,z,y) ,getColor(x,z,y));
+	World::getWorld->effects->addBlockExplode(x ,z ,y ,getLand(x,z,y) ,getColor(x,z,y));
     
     //updateChunks:x :z :y :TYPE_BRICK];
 	//updateChunks:x :z :y :TYPE_NONE];
@@ -893,7 +893,7 @@ void Terrain::burnBlock(int x,int z,int y,BOOL causedByExplosion){
 		node->sid=Resources::getResources->startedBurn(node->life);
 		node->time=node->life;	
 		
-		node->pid=[World getWorld].effects->addFire(x ,z ,y ,0 ,node->life+.3);
+		node->pid=World::getWorld->effects->addFire(x ,z ,y ,0 ,node->life+.3);
 		node->next=NULL;
         updateChunks(x,z,y,type);
 		
@@ -957,7 +957,7 @@ int getRampType(int x,int z,int y, int t){
             return type;
         }
     }
-    int yaw=[World getWorld].player->yaw;
+    int yaw=World::getWorld->player->yaw;
     int r=0;
     yaw+=360;
     yaw%=360;
@@ -975,9 +975,9 @@ int getRampType(int x,int z,int y, int t){
     return type;
 }
 /*- (void)buildCustom:(int)x :(int)z :(int)y{
-    int build=[World getWorld].hud.blocktype;
+    int build=World::getWorld->hud.blocktype;
    // int type=getLandc(x,z,y);
-    updateCustom:x :z :y :build :[World getWorld].hud.block_paintcolor];
+    updateCustom:x :z :y :build :World::getWorld->hud.block_paintcolor];
     
     
 }
@@ -987,10 +987,10 @@ int getRampType(int x,int z,int y, int t){
 }*/
 
 void Terrain::buildBlock(int x,int z,int y){
-    if([World getWorld].hud->blocktype==TYPE_GOLDEN_CUBE){
-        if([World getWorld].hud->goldencubes<=0)return;
-         printg("goldencubes %d paint color: %d\n",[World getWorld].hud->goldencubes, [World getWorld].hud->block_paintcolor);
-        [World getWorld].hud->goldencubes--;
+    if(World::getWorld->hud->blocktype==TYPE_GOLDEN_CUBE){
+        if(World::getWorld->hud->goldencubes<=0)return;
+         printg("goldencubes %d paint color: %d\n",World::getWorld->hud->goldencubes, World::getWorld->hud->block_paintcolor);
+        World::getWorld->hud->goldencubes--;
         Resources::getResources->playSound(S_TREASURE_PLACE);
        
     }
@@ -999,7 +999,7 @@ void Terrain::buildBlock(int x,int z,int y){
     if((blockinfo[cur]&IS_LIQUID&&getLevel(cur)<4)){
                liquids->removeSource(x,z,y,cur);
     }
-	int type=[World getWorld].hud->blocktype;
+	int type=World::getWorld->hud->blocktype;
     if(type==TYPE_WATER||type==TYPE_LAVA)
         liquids->addSource(x,z,y);
     
@@ -1022,9 +1022,9 @@ void Terrain::buildBlock(int x,int z,int y){
         
         updateChunks(x,z,boty+1,TYPE_DOOR_TOP);
         
-        setColor(x ,z ,boty+1 , [World getWorld].hud->block_paintcolor );
+        setColor(x ,z ,boty+1 , World::getWorld->hud->block_paintcolor );
         
-        int yaw=[World getWorld].player->yaw;
+        int yaw=World::getWorld->player->yaw;
         int r=0;
         yaw+=360;
         yaw%=360;
@@ -1038,7 +1038,7 @@ void Terrain::buildBlock(int x,int z,int y){
             r=3;
         }
         updateChunks(x,z,boty,TYPE_DOOR1+r);
-        setColor(x,z,boty,[World getWorld].hud->block_paintcolor);
+        setColor(x,z,boty,World::getWorld->hud->block_paintcolor);
        
         
         return;
@@ -1051,9 +1051,9 @@ void Terrain::buildBlock(int x,int z,int y){
         }else return;
         
         updateChunks(x ,z ,boty+1 ,TYPE_PORTAL_TOP);
-        setColor(x ,z ,boty+1, [World getWorld].hud->block_paintcolor );
+        setColor(x ,z ,boty+1, World::getWorld->hud->block_paintcolor );
         
-        int yaw=[World getWorld].player->yaw;
+        int yaw=World::getWorld->player->yaw;
         int r=0;
         yaw+=360;
         yaw%=360;
@@ -1068,28 +1068,28 @@ void Terrain::buildBlock(int x,int z,int y){
         }
         
         updateChunks(x ,z ,boty ,TYPE_PORTAL1+r);
-        setColor(x ,z ,boty , [World getWorld].hud->block_paintcolor );
+        setColor(x ,z ,boty , World::getWorld->hud->block_paintcolor );
         
         return; 
     }else if(type==TYPE_LIGHTBOX){
         void addlight(int xx,int zz,int yy,float brightness,Vector color);
        extern Vector colorTable[256];
-        addlight(x,z,y,1.0f,colorTable[[World getWorld].hud->block_paintcolor]);
+        addlight(x,z,y,1.0f,colorTable[World::getWorld->hud->block_paintcolor]);
         
         updateChunks(x ,z ,y ,type);
         refreshChunksInRadius(x,z,y,LIGHT_RADIUS);
-        setColor(x ,z ,y ,[World getWorld].hud->block_paintcolor );
+        setColor(x ,z ,y ,World::getWorld->hud->block_paintcolor );
 
     }else{
         updateChunks(x ,z ,y ,type);
-         setColor(x ,z ,y ,[World getWorld].hud->block_paintcolor );
+         setColor(x ,z ,y ,World::getWorld->hud->block_paintcolor );
     }
     
-    if([World getWorld].hud->blocktype==TYPE_GOLDEN_CUBE){
-        if([World getWorld].hud->goldencubes<=0){
-            [World getWorld].hud->goldencubes=0;
-            [World getWorld].hud->blocktype=TYPE_BRICK;
-            [World getWorld].hud->block_paintcolor=0;
+    if(World::getWorld->hud->blocktype==TYPE_GOLDEN_CUBE){
+        if(World::getWorld->hud->goldencubes<=0){
+            World::getWorld->hud->goldencubes=0;
+            World::getWorld->hud->blocktype=TYPE_BRICK;
+            World::getWorld->hud->block_paintcolor=0;
         }
     }
 }
@@ -1563,10 +1563,10 @@ int Terrain::getColor(int x,int z,int y){
 void Terrain::shootFirework(int x,int z,int y){
     fireworks->addFirework(x,y,z,getColor(x,z,y));
     Resources::getResources->playSound(S_FIREWORK_LIFTOFF);
-   // [[World getWorld].effects addCreatureVanish:x+.5f:z+.5f:y+5:getColor:x:z:y]:TYPE_TNT];
+   // [World::getWorld->effects addCreatureVanish:x+.5f:z+.5f:y+5:getColor:x:z:y]:TYPE_TNT];
     
     destroyBlock(x ,z,y);
-    printg("shooting firework, color:%d\n",getColor:x:z:y]);
+    //printg("shooting firework, color:%d\n",getColor:x:z:y]);
 }
 
 void Terrain::blocktntexplode(int x,int z,int y,int type){
@@ -1580,7 +1580,7 @@ void Terrain::blocktntexplode(int x,int z,int y,int type){
     
     Vector v=MakeVector(x+.5f,y+.5f,z+.5f);
     ExplodeModels(v,color);
-    [World getWorld].effects->addCreatureVanish(x+.5f,z+.5f,y+.5f,color,TYPE_TNT);
+    World::getWorld->effects->addCreatureVanish(x+.5f,z+.5f,y+.5f,color,TYPE_TNT);
     
     BOOL painting=false;
     //BOOL building =true;
@@ -1600,7 +1600,7 @@ void Terrain::blocktntexplode(int x,int z,int y,int type){
                 
                     int type=getLandc(j, k, y-yy);
                     if(type==0){
-                        if(![World getWorld].player->test(j ,y-yy ,k,1)){
+                        if(!World::getWorld->player->test(j ,y-yy ,k,1)){
                             updateChunks(j,k ,y-yy ,TYPE_BRICK);
                              paintBlock(j ,k ,y-yy,color);
                         }
@@ -1611,7 +1611,7 @@ void Terrain::blocktntexplode(int x,int z,int y,int type){
                     type=getLandc(j, k, y+yy);
                     
                     if(type==0){
-                        if(![World getWorld].player->test(j ,y+yy,k,1)){
+                        if(!World::getWorld->player->test(j ,y+yy,k,1)){
                             updateChunks(j ,k ,y+yy ,TYPE_BRICK);
                             paintBlock(j ,k ,y+yy,color);
                         }
@@ -1638,7 +1638,7 @@ void Terrain::explode(int x,int z,int y){
     
     Vector v=MakeVector(x+.5f,y+.5f,z+.5f);
     ExplodeModels(v,color);
-    [World getWorld].effects->addCreatureVanish(x+.5f,z+.5f,y+.5f,color,TYPE_TNT);
+    World::getWorld->effects->addCreatureVanish(x+.5f,z+.5f,y+.5f,color,TYPE_TNT);
     
     BOOL painting=false;
    // BOOL building =false;
@@ -1700,7 +1700,7 @@ void Terrain::explode(int x,int z,int y){
 	}	
 }
 /*-(void)addColumnsIfNeeded{
-	Vector ppos=[World getWorld].player.pos;
+	Vector ppos=World::getWorld->player.pos;
 	ppos.x/=BLOCK_SIZE;
 	ppos.z/=BLOCK_SIZE;
 	ppos.x+=CHUNK_SIZE/2;
@@ -1725,11 +1725,11 @@ extern float P_ZFAR;
 void Terrain::reloadIfNeeded(){
     return;  //disabled?
 	float radius=T_SIZE/8;//(P_ZFAR/2)/BLOCK_SIZE;
-	Player* player=[World getWorld].player;
+	Player* player=World::getWorld->player;
 	if(player->pos.x/BLOCK_SIZE-radius<0||player->pos.x/BLOCK_SIZE+radius>T_SIZE||
 	   player->pos.z/BLOCK_SIZE-radius<0||player->pos.z/BLOCK_SIZE+radius>T_SIZE){
 		do_reload=1;
-		[World getWorld].hud->sb->setStatus(@"Loading ",999);
+		World::getWorld->hud->sb->setStatus(@"Loading ",999);
        
             
 		
@@ -1751,7 +1751,7 @@ BOOL Terrain::update(float etime){
         
         if(pct>100)pct=100;
         
-            [World getWorld].hud->sb->setStatus([NSString stringWithFormat:@"Loading World  %d%%",pct],20);
+            World::getWorld->hud->sb->setStatus([NSString stringWithFormat:@"Loading World  %d%%",pct],20);
         
         
         return FALSE;
@@ -1805,7 +1805,7 @@ BOOL Terrain::update(float etime){
             }
 			nburn--;
 			Resources::getResources->endBurnId(node->sid);
-			[World getWorld].effects->removeFire(node->pid);
+			World::getWorld->effects->removeFire(node->pid);
 			if(tz!=TYPE_NONE)
 			updateChunks(node->x ,node->z ,node->y ,TYPE_NONE);
 			free(node);			
@@ -1845,12 +1845,12 @@ BOOL Terrain::update(float etime){
                    }
     }
    if(do_reload==3){
-       [World getWorld].hud->sb->clear();
+       World::getWorld->hud->sb->clear();
         do_reload=0;
     }
 	else if(do_reload==2){
         do_reload=0;
-		[World getWorld].fm->saveWorld();
+		World::getWorld->fm->saveWorld();
 		unloadTerrain(FALSE);
 		//oldChunkMap=chunkMap;	
 		//chunkMapc=chunkMap=hashmap_new();
@@ -1886,7 +1886,7 @@ void Terrain::endDynamics(BOOL endLiquids){
 		burnList=node;
 		
 	}
-    [World getWorld].effects->clearAllEffects();
+    World::getWorld->effects->clearAllEffects();
 	Resources::getResources->endBurn();
 	
 }
@@ -1909,8 +1909,8 @@ static int hit_load_counter=0;
 
 void Terrain::prepareAndLoadGeometry(){
     time1=time2=-[start timeIntervalSinceNow];
-    World* world=[World getWorld];
-    Player* player=world.player;
+    World* world=World::getWorld;
+    Player* player=world->player;
     
     
     
@@ -1963,7 +1963,7 @@ void Terrain::prepareAndLoadGeometry(){
         if(count>140) {
             hit_load_counter++;
             if(hit_load_counter==1){
-                [World getWorld].hud->sb->setStatus(@"Loading",999);
+                World::getWorld->hud->sb->setStatus(@"Loading",999);
                 if(count>300){
                     hit_load_counter++;
                 }
@@ -1971,15 +1971,15 @@ void Terrain::prepareAndLoadGeometry(){
             }
             if(hit_load_counter>=2){
                 hit_load_counter=0;
-                [World getWorld].hud->sb->clear();
-                [World getWorld].fm->saveWorld();
+                World::getWorld->hud->sb->clear();
+                World::getWorld->fm->saveWorld();
                 
-                [World getWorld].fm->chunkOffsetX=m_chunkOffsetX;
-                [World getWorld].fm->chunkOffsetZ=m_chunkOffsetZ;
+                World::getWorld->fm->chunkOffsetX=m_chunkOffsetX;
+                World::getWorld->fm->chunkOffsetZ=m_chunkOffsetZ;
                 
                 
               //  printf("chunks to load:%d\n",count);
-                NSString* file_name=[NSString stringWithFormat:@"%@/%@",world.fm->documents,world_name];
+                NSString* file_name=[NSString stringWithFormat:@"%@/%@",world->fm->documents,world_name];
                 
                 //[sf_lock lock];
                 NSFileHandle* saveFile=[NSFileHandle fileHandleForReadingAtPath:file_name];
@@ -1988,7 +1988,7 @@ void Terrain::prepareAndLoadGeometry(){
                     for(int z=0;z<2*r;z++){
                         if(!isloaded[x][z]){
                             //removeLights
-                            world.fm->readColumn( x+m_chunkOffsetX,z+m_chunkOffsetZ,saveFile);
+                            world->fm->readColumn( x+m_chunkOffsetX,z+m_chunkOffsetZ,saveFile);
                             //addlights
                         }
                     }
@@ -2258,7 +2258,7 @@ int compare_rebuild_order (const void *a, const void *b)
 {
     TerrainChunk* first=*((TerrainChunk**)(a));
     TerrainChunk* second=*((TerrainChunk**)(b));
-    Vector cam=[World getWorld].player->pos;
+    Vector cam=World::getWorld->player->pos;
     Vector center=MakeVector((first->pbounds[3]+first->pbounds[0])/2.0f,
                              (first->pbounds[4]+first->pbounds[1])/2.0f,
                              (first->pbounds[5]+first->pbounds[2])/2.0f);
@@ -2293,7 +2293,7 @@ int compare_front2back (const void *a, const void *b)
 {
     TerrainChunk* first=*((TerrainChunk**)(a));
     TerrainChunk* second=*((TerrainChunk**)(b));
-    Vector cam=[World getWorld].player->pos;
+    Vector cam=World::getWorld->player->pos;
     Vector center=MakeVector((first->pbounds[3]+first->pbounds[0])/2.0f,
                              (first->pbounds[4]+first->pbounds[1])/2.0f,
                              (first->pbounds[5]+first->pbounds[2])/2.0f);
@@ -2320,7 +2320,7 @@ int compare_back2front (const void *a, const void *b)
 {
     TerrainChunk* first=*((TerrainChunk**)(a));
     TerrainChunk* second=*((TerrainChunk**)(b));
-    Vector cam=[World getWorld].player->pos;
+    Vector cam=World::getWorld->player->pos;
     Vector center=MakeVector((first->pbounds[3]+first->pbounds[0])/2.0f,
                              (first->pbounds[4]+first->pbounds[1])/2.0f,
                              (first->pbounds[5]+first->pbounds[2])/2.0f);
@@ -2347,7 +2347,7 @@ int compare_objects_back2front (const void *a, const void *b)
 {
     StaticObject first=*((StaticObject*)(a));
     StaticObject second=*((StaticObject*)(b));
-    Vector cam=[World getWorld].player->pos;
+    Vector cam=World::getWorld->player->pos;
     Vector center=first.pos;
     
     float dist=(cam.x-center.x)*(cam.x-center.x)+
@@ -2391,8 +2391,8 @@ void Terrain::render(){
    // glPushMatrix();
     glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	//float pushx=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE*BLOCK_SIZE;
-	//float pushz=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE*BLOCK_SIZE;
+	//float pushx=World::getWorld->fm.chunkOffsetX*CHUNK_SIZE*BLOCK_SIZE;
+	//float pushz=World::getWorld->fm.chunkOffsetZ*CHUNK_SIZE*BLOCK_SIZE;
 	//glTranslatef(-pushx, 0, -pushz);
    // printg("-------------start renderTree------------\n");
 	renderTree(&troot,0);
@@ -2404,8 +2404,8 @@ void Terrain::render(){
     for(int i=0;i<chunks_rendered;i++){
       
         vertices_rendered+=renderList[i]->render();
-        /*if(vertices_rendered>=max_vertices&&[World getWorld].hud.fps<40){
-            if([World getWorld].hud.mode!=MODE_CAMERA){
+        /*if(vertices_rendered>=max_vertices&&World::getWorld->hud.fps<40){
+            if(World::getWorld->hud.mode!=MODE_CAMERA){
             [Graphics setZFAR:P_ZFAR-.5f];
             chunks_rendered-=(chunks_rendered-i+1);
             break;
@@ -2484,7 +2484,7 @@ void Terrain::render(){
     
    
         setViewNow();
-    Vector ppos=[World getWorld].player->pos;
+    Vector ppos=World::getWorld->player->pos;
     for(int clr=0;clr<60;clr++){
         vert=0;
         object=0;
@@ -2574,14 +2574,14 @@ void Terrain::render(){
             if(vc.z>4)vc.z=4;
             /*if(vc.x>4)vc.x=4;
              if(vc.z>4)vc.z=4;*/
-            objVertices[vert].position[0]=4*(door->pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+vc.x;
+            objVertices[vert].position[0]=4*(door->pos.x-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE)+vc.x;
             objVertices[vert].position[1]=4*door->pos.y+vc.y;
-            objVertices[vert].position[2]=4*(door->pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+vc.z;
+            objVertices[vert].position[2]=4*(door->pos.z-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE)+vc.z;
             if(k==0){
                 /* printg("door objVertices[%d]= (%d,%d,%d) suggested offsets(%d,%d),\n",j,door->pos[0]
                  ,door->pos[1]
                  ,door->pos[2],
-                 -[World getWorld].fm.chunkOffsetX,-[World getWorld].fm.chunkOffsetZ);*/
+                 -World::getWorld->fm.chunkOffsetX,-World::getWorld->fm.chunkOffsetZ);*/
                 
             }
             Vector vn=MakeVector(cubeNormals[k*3],cubeNormals[k*3+1],cubeNormals[k*3+2]);
@@ -2690,9 +2690,9 @@ void Terrain::render(){
                             objVertices[vert].normal[2]=vn.z;
                             
                             
-                            objVertices[vert].position[0]=4*(renderList[i]->rtobjects[j].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+1+2.3*vc.x;
+                            objVertices[vert].position[0]=4*(renderList[i]->rtobjects[j].pos.x-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE)+1+2.3*vc.x;
                             objVertices[vert].position[1]=4*renderList[i]->rtobjects[j].pos.y+1+2.3*vc.y;
-                            objVertices[vert].position[2]=4*(renderList[i]->rtobjects[j].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+1+2.3*vc.z;
+                            objVertices[vert].position[2]=4*(renderList[i]->rtobjects[j].pos.z-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE)+1+2.3*vc.z;
                             
                             CalcEnvMap(&objVertices[vert]);
                             
@@ -2734,7 +2734,7 @@ void Terrain::render(){
     glLightfv(GL_LIGHT1,GL_SPECULAR,coloursp);
                     
    // glDisable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(ICO_SPHEREMAP).name);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(ICO_SPHEREMAP)->name);
     glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
     glNormalPointer( GL_FLOAT, sizeof(vertexObject), objVertices[0].normal);
 	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
@@ -2807,9 +2807,9 @@ void Terrain::render(){
                 //if(vc.x>4)vc.x=4;
                 //if(vc.z>4)vc.z=4;
                // vc=rotateVertice(MakeVector(0,rot,0),vc);
-                objVertices[vert].position[0]=4*(renderList[i]->rtobjects[j].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+vc.x;
+                objVertices[vert].position[0]=4*(renderList[i]->rtobjects[j].pos.x-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE)+vc.x;
                 objVertices[vert].position[1]=4*renderList[i]->rtobjects[j].pos.y+vc.y;
-                objVertices[vert].position[2]=4*(renderList[i]->rtobjects[j].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+vc.z;
+                objVertices[vert].position[2]=4*(renderList[i]->rtobjects[j].pos.z-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE)+vc.z;
                 
                
                 if(k>=12){
@@ -2848,7 +2848,7 @@ void Terrain::render(){
     
   
     
-    glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(ICO_PORTAL).name);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(ICO_PORTAL)->name);
     glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
    
 	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
@@ -2867,7 +2867,7 @@ void Terrain::render(){
     glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
-/*	if([World getWorld].FLIPPED)
+/*	if(World::getWorld->FLIPPED)
 		glRotatef(90,0,0,1);
 	else
 		glRotatef(270,0,0,1);*/
@@ -2891,7 +2891,7 @@ void Terrain::render(){
         
         glColor4f(1.0, 1.0, 1.0, 1.0);
         
-        [Resources::getResources->getTex(ICO_SKY_BOX) drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
+        Resources::getResources->getTex(ICO_SKY_BOX)->drawSky(CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) ,-P_ZFAR/1.000001);
         if(  blending_alpha>0&&
            (blending||
             !v_equals(final_skycolor,skycolor)  )
@@ -2902,7 +2902,7 @@ void Terrain::render(){
             }
             glEnable(GL_BLEND);
             Vector v=skycolor;
-          //  Vector v2=[World getWorld].terrain.final_skycolor;
+          //  Vector v2=World::getWorld->terrain.final_skycolor;
             
            
             
@@ -2910,7 +2910,7 @@ void Terrain::render(){
             
             glColor4f(v.x, v.y, v.z, blending_alpha);
             
-            [Resources::getResources->getTex(ICO_SKY_BOX_BW) drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000004];
+            Resources::getResources->getTex(ICO_SKY_BOX_BW)->drawSky(CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) ,-P_ZFAR/1.000004);
             
             
             glDisable(GL_BLEND);
@@ -2936,7 +2936,7 @@ void Terrain::render(){
         if(blending){
             glColor4f(1.0, 1.0, 1.0, 1.0);
             
-            [Resources::getResources->getTex(ICO_SKY_BOX) drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
+            Resources::getResources->getTex(ICO_SKY_BOX)->drawSky(CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT),-P_ZFAR/1.000001);
             glEnable(GL_BLEND);
             Vector v=skycolor;
             glColor4f(v.x, v.y, v.z, blending_alpha);
@@ -2944,14 +2944,14 @@ void Terrain::render(){
             if(blending_alpha>1.0f){
                 blending=FALSE;
             }
-            [Resources::getResources->getTex(ICO_SKY_BOX_BW) drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000004];
+            Resources::getResources->getTex(ICO_SKY_BOX_BW)->drawSky(CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT),-P_ZFAR/1.000004);
             glColor4f(1.0, 1.0, 1.0, 1.0);
             glDisable(GL_BLEND);
         }else{
         Vector v=skycolor;
         glColor4f(v.x, v.y, v.z, 1.0);
         
-        [Resources::getResources->getTex(ICO_SKY_BOX_BW) drawSky:CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT) depth:-P_ZFAR/1.000001];
+        Resources::getResources->getTex(ICO_SKY_BOX_BW)->drawSky(CGRectMake(0,0, SCREEN_WIDTH,SCREEN_HEIGHT),-P_ZFAR/1.000001);
         glColor4f(1.0, 1.0, 1.0, 1.0);
         }
     }
@@ -3026,9 +3026,9 @@ void Terrain::render(){
                 vc.z+=offsets.z;
                 
                 
-                objVertices[vert].position[0]=4*(portal->pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+vc.x;
+                objVertices[vert].position[0]=4*(portal->pos.x-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE)+vc.x;
                 objVertices[vert].position[1]=4*portal->pos.y+vc.y;
-                objVertices[vert].position[2]=4*(portal->pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+vc.z;
+                objVertices[vert].position[2]=4*(portal->pos.z-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE)+vc.z;
                 
                 
                 vc=MakeVector((cubeTextureCustom[k*2+0]*(.723-.276f)+.276f)-.5f,(cubeTextureCustom[k*2+1]*(.947-.053f)+.053f)-.5f,0);
@@ -3058,7 +3058,7 @@ void Terrain::render(){
         
         
         if(vert!=0){
-        glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(ICO_SWIRL).name);
+        glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(ICO_SWIRL)->name);
         glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
         
         glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
@@ -3077,8 +3077,8 @@ void Terrain::render(){
       
         glDisable(GL_BLEND);
     // glEnable(GL_TEXTURE_2D);
-    /*if([World getWorld].hud.fps<55){
-        if([World getWorld].hud.mode!=MODE_CAMERA){
+    /*if(World::getWorld->hud.fps<55){
+        if(World::getWorld->hud.mode!=MODE_CAMERA){
             [Graphics setZFAR:P_ZFAR-.4f];
             
             
@@ -3135,7 +3135,7 @@ void Terrain::render2(){
     glEnable(GL_BLEND);
     glPushMatrix();
     
-    glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas2.name);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas2->name);
     glMatrixMode(GL_TEXTURE);
     
     frame=(frame+1)%128;
@@ -3143,8 +3143,8 @@ void Terrain::render2(){
     glTranslatef(0,(int)(frame/16),0);
     glMatrixMode(GL_MODELVIEW);
     
-	//float pushx=[World getWorld].fm.chunkOffsetX*CHUNK_SIZE*BLOCK_SIZE;
-	//float pushz=[World getWorld].fm.chunkOffsetZ*CHUNK_SIZE*BLOCK_SIZE;
+	//float pushx=World::getWorld->fm.chunkOffsetX*CHUNK_SIZE*BLOCK_SIZE;
+	//float pushz=World::getWorld->fm.chunkOffsetZ*CHUNK_SIZE*BLOCK_SIZE;
 	//glTranslatef(-pushx, 0, -pushz);
     secondPass=TRUE;
 	renderTree(&troot,0);
@@ -3196,8 +3196,8 @@ void Terrain::render2(){
             Vector vc=MakeVector((cubeVertices[k*3]-.5f)*.5f,cubeVertices[k*3+1],cubeVertices[k*3+2]);
             Vector dir;
             dir.y=0;
-            dir.x=flowerList[i].pos.x+.5f-[World getWorld].player->pos.x;
-            dir.z=flowerList[i].pos.z+.5f-[World getWorld].player->pos.z;
+            dir.x=flowerList[i].pos.x+.5f-World::getWorld->player->pos.x;
+            dir.z=flowerList[i].pos.z+.5f-World::getWorld->player->pos.z;
             
             float targetangle=(atan2(dir.z,dir.x)-atan2(0,1))-M_PI_2;
             
@@ -3215,9 +3215,9 @@ void Terrain::render2(){
              objVertices[vert].normal[1]=vn.y;
              objVertices[vert].normal[2]=vn.z;*/
             
-            objVertices[vert].position[0]=4*(flowerList[i].pos.x-[World getWorld].fm->chunkOffsetX*CHUNK_SIZE)+4*vc.x;
+            objVertices[vert].position[0]=4*(flowerList[i].pos.x-World::getWorld->fm->chunkOffsetX*CHUNK_SIZE)+4*vc.x;
             objVertices[vert].position[1]=4*flowerList[i].pos.y+4*vc.y;
-            objVertices[vert].position[2]=4*(flowerList[i].pos.z-[World getWorld].fm->chunkOffsetZ*CHUNK_SIZE)+4*vc.z;
+            objVertices[vert].position[2]=4*(flowerList[i].pos.z-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE)+4*vc.z;
             
             
             int sidx=getFlowerIndex(flowerList[i].color);
@@ -3274,7 +3274,7 @@ void Terrain::render2(){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
     
-    glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(ICO_FLOWER).name);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(ICO_FLOWER)->name);
     glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
     
 	glTexCoordPointer(2, GL_FLOAT,  sizeof(vertexObject),  objVertices[0].texs);
@@ -3310,7 +3310,7 @@ Terrain::~Terrain(){
 
 
 /*- (BOOL)isVisible:(int)x:(int)z:(int)y{
- Camera* cam=[World getWorld].cam;
+ Camera* cam=World::getWorld->cam;
  Vector cpos,bpos;
  Vector a;
  //cdir.x=cam.look.x-cam.px;

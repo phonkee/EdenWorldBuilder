@@ -14,7 +14,7 @@
 #import "Camera.h"
 #import "Input.h"
 #import "OpenGL_Internal.h"
-@class World;
+class World;
 
 class Player {
 public:

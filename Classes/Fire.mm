@@ -370,7 +370,7 @@ void Fire::renderFireSprites(){
     poof=1.1;
     float epoof=1.0f;
     vert=0;
-    Vector  camp=[World getWorld].player->pos;
+    Vector  camp=World::getWorld->player->pos;
     
     for(int i=0;i<list_size;i++){
         firenode* node=&list[i];
@@ -430,7 +430,7 @@ void Fire::renderFireSprites(){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
     glEnableClientState(GL_COLOR_ARRAY);
-       glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SPRITE_FLAME).name);
+       glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SPRITE_FLAME)->name);
     glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
     glColorPointer(4,GL_UNSIGNED_BYTE,sizeof(vertexObject),objVertices[0].colors);
 
@@ -537,7 +537,7 @@ void Fire::renderFireSprites(){
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
    
-    glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SPRITE_FLAME).name);
+    glBindTexture(GL_TEXTURE_2D, Resources::getResources->getTex(SPRITE_FLAME)->name);
     glVertexPointer(3, GL_FLOAT, sizeof(vertexObject), objVertices[0].position);
     
     glColorPointer(4,GL_UNSIGNED_BYTE,sizeof(vertexObject),objVertices[0].colors);

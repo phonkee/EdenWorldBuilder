@@ -201,7 +201,7 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
 	if([search_string length]==0||nosearch){
 		return;
 	}
-    NSString* list=[[World getWorld].menu->shareutil searchSharedWorlds:search_string];
+    NSString* list=[World::getWorld->menu->shareutil searchSharedWorlds:search_string];
     
     if([list length]==0){
         sbar->setStatus(@"No Results Found. ",4);
@@ -239,8 +239,8 @@ static const int usage_id=42;
     for(int i=0;i<num_files;i++){
 		[file_list[i].name release];
         [file_list[i].file_name release];
-        if(file_list[i].nametex)[file_list[i].nametex release];
-        if(file_list[i].datetex)[file_list[i].datetex release];
+        if(file_list[i].nametex) delete file_list[i].nametex;
+        if(file_list[i].datetex) delete file_list[i].datetex;
         file_list[i].nametex=file_list[i].datetex=NULL;
 		
 	}
@@ -394,14 +394,14 @@ static float cursor_blink=0;
 -(void)activateKB{
     [self clearWorldList];
     sbar->setStatus(@"" ,9999);
-   /* if(![World getWorld].FLIPPED){
+   /* if(!World::getWorld->FLIPPED){
         [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
     }
     else{
         [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
         
     }*/
-    //  starto=[World getWorld].FLIPPED;
+    //  starto=World::getWorld->FLIPPED;
     [search_field becomeFirstResponder];
     
     
@@ -414,7 +414,7 @@ static float cursor_blink=0;
             [self searchAndHide:TRUE];
         }
         if(previewScreenshot!=NULL){
-            [previewScreenshot release];
+            delete previewScreenshot;
             previewScreenshot=NULL;
         }
         if(is_loading!=2)
@@ -427,7 +427,7 @@ static float cursor_blink=0;
 
         }else{
              finished_list_dl=FALSE;
-           [[World getWorld].menu->shareutil getSharedWorldList];
+           [World::getWorld->menu->shareutil getSharedWorldList];
             if(is_loading==2){
                 sbar->setStatus(@"Report sent, thank you" ,5);
                 is_loading=-1;
@@ -441,7 +441,7 @@ static float cursor_blink=0;
 	}
     if( finished_list_dl){
         finished_list_dl=FALSE;
-        NSString* list=[World getWorld].menu->shareutil.listresult;
+        NSString* list=World::getWorld->menu->shareutil.listresult;
         
         if([list length]==0){
             sbar->setStatus(@"Connection error getting world list. ",2);
@@ -456,10 +456,9 @@ static float cursor_blink=0;
 	if(finished_preview_dl){
         finished_preview_dl=FALSE;
         if(previewScreenshot!=NULL){
-            [previewScreenshot release];
+            delete previewScreenshot;
         }
-        previewScreenshot=[[Texture2D alloc] 
-                         initWithImagePath:[NSString stringWithFormat:@"%@/temp",[World getWorld].fm->documents] sizeToFit:FALSE];
+        previewScreenshot=new Texture2D([NSString stringWithFormat:@"%@/temp",World::getWorld->fm->documents],FALSE);
         if(previewScreenshot==NULL){
             sbar->setStatus(@"Error: map not found",4);
         }else{
@@ -474,17 +473,17 @@ static float cursor_blink=0;
         finished_dl=FALSE;
         if(previewScreenshot!=NULL){
             
-            [previewScreenshot release];
+            delete previewScreenshot;
             previewScreenshot=NULL;
         }
         [self setSortStatus];
         
         previewScreenshot=NULL;
-        if(![World getWorld].menu->loadShared(&file_list[loading_world-1])){
+        if(!World::getWorld->menu->loadShared(&file_list[loading_world-1])){
             
             sbar->setStatus(@"Error: map not found",4);
         }else{
-            [World getWorld].menu->showlistscreen=FALSE;
+            World::getWorld->menu->showlistscreen=FALSE;
             [self clearWorldList];
             sbar->clear();
             num_files=0;
@@ -549,11 +548,11 @@ static float cursor_blink=0;
             
 			
             if(inbox2(touches[i].mx,touches[i].my,&rect_cancel)){					
-				[World getWorld].menu->showlistscreen=FALSE;
+				World::getWorld->menu->showlistscreen=FALSE;
                 [self searchAndHide:TRUE];
-                [[World getWorld].menu->shareutil canceldl];
+                [World::getWorld->menu->shareutil canceldl];
                 if(previewScreenshot!=NULL){
-                    [previewScreenshot release];
+                    delete previewScreenshot;
                     previewScreenshot=NULL;
                 }
 			}
@@ -590,7 +589,7 @@ static float cursor_blink=0;
                             loading_world=j+1;
                             sbar->setStatus(@"Downloading preview..." ,9999);
                             finished_preview_dl=false;
-                            [[World getWorld].menu->shareutil loadSharedPreview:file_list[loading_world-1].file_name];
+                            [World::getWorld->menu->shareutil loadSharedPreview:file_list[loading_world-1].file_name];
                             
                             
                         }else{
@@ -603,14 +602,14 @@ static float cursor_blink=0;
                 if(inbox2(touches[i].mx,touches[i].my,&rload_cancel)){
                     if(previewScreenshot!=NULL){
                         [self setSortStatus];
-                        [previewScreenshot release];
+                        delete previewScreenshot;
                         previewScreenshot=NULL;
                     }
                     // NSLog(@"hi");
                 }
                 if(inbox2(touches[i].mx,touches[i].my,&rload_go)){
                     finished_dl=false;
-                    [[World getWorld].menu->shareutil loadShared:file_list[loading_world-1].file_name];
+                    [World::getWorld->menu->shareutil loadShared:file_list[loading_world-1].file_name];
                     
                     
                     
@@ -658,7 +657,7 @@ int rwc_count=0;
             {
                 if(previewScreenshot!=NULL){
                     
-                    [previewScreenshot release];
+                    delete previewScreenshot;
                     previewScreenshot=NULL;
                     is_loading=2;
                 }
@@ -668,7 +667,7 @@ int rwc_count=0;
                 }else{
                     
                     sbar->setStatus(@"Report sent, thank you" ,5);
-                    [[World getWorld].menu->shareutil reportWorld:file_list[loading_world-1].file_name];
+                    [World::getWorld->menu->shareutil reportWorld:file_list[loading_world-1].file_name];
                     reportedWorlds[rwc_count]=[file_list[loading_world-1].file_name copy];
                     rwc_count++;
                     
@@ -691,10 +690,10 @@ int rwc_count=0;
 	
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
 	
-	[Resources::getResources->getMenuTex(MENU_SHARED_HEADER) drawText:rect_header];
+	Resources::getResources->getMenuTex(MENU_SHARED_HEADER)->drawText(rect_header);
 	
 	
-	[Resources::getResources->getMenuTex(MENU_BACK) drawButton:rect_cancel];
+	Resources::getResources->getMenuTex(MENU_BACK)->drawButton(rect_cancel);
 	
 	
 	
@@ -704,9 +703,9 @@ int rwc_count=0;
 	}
     if(previewScreenshot==NULL){
         if(IS_IPAD)
-        [Resources::getResources->getMenuTex(MENU_ARROW_UP) drawButton:rect_arrow_up];
+        Resources::getResources->getMenuTex(MENU_ARROW_UP)->drawButton(rect_arrow_up);
         else
-        [Resources::getResources->getMenuTex(MENU_ARROW_UP) drawButton2:rect_arrow_up];
+        Resources::getResources->getMenuTex(MENU_ARROW_UP)->drawButton2(rect_arrow_up);
     }
 	glColor4f(1.0, 1.0, 1.0, 0.5f);	
 	if(page_size*cur_page+page_size<num_files){		
@@ -715,9 +714,9 @@ int rwc_count=0;
      if(previewScreenshot==NULL)
          {
              if(IS_IPAD)
-                 [Resources::getResources->getMenuTex(MENU_ARROW_DOWN) drawButton:rect_arrow_down];
+                 Resources::getResources->getMenuTex(MENU_ARROW_DOWN)->drawButton(rect_arrow_down);
              else
-                 [Resources::getResources->getMenuTex(MENU_ARROW_DOWN) drawButton2:rect_arrow_down];
+                 Resources::getResources->getMenuTex(MENU_ARROW_DOWN)->drawButton2(rect_arrow_down);
          }
 	
 	glColor4f(1.0, 1.0, 1.0, 1.0f);
@@ -733,9 +732,9 @@ int rwc_count=0;
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	 if(previewScreenshot==NULL)
-	[Resources::getResources->getMenuTex(MENU_ARROW_LEFT) drawInRect:sort_left];
+	Resources::getResources->getMenuTex(MENU_ARROW_LEFT)->drawInRect(sort_left);
      if(previewScreenshot==NULL)
-	[Resources::getResources->getMenuTex(MENU_ARROW_RIGHT) drawInRect:sort_right];
+	Resources::getResources->getMenuTex(MENU_ARROW_RIGHT)->drawInRect(sort_right);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // if(previewScreenshot==NULL)
@@ -764,42 +763,42 @@ int rwc_count=0;
               if(file_list[i].nametex==NULL){
                   if(IS_IPAD){
                       
-                      file_list[i].nametex=[[Texture2D alloc] initWithString:file_list[i].name
-                                                                    dimensions:CGSizeMake(
+                      file_list[i].nametex=new Texture2D(file_list[i].name,CGSizeMake(
                                                                                           file_list[i].namerect.size.width*SCALE_WIDTH
                                                                                           , file_list[i].namerect.size.height*SCALE_HEIGHT)
-                                                                     alignment:UITextAlignmentLeft
-                                                                          font:[UIFont systemFontOfSize:17.0*2]];
+                                                                     ,UITextAlignmentLeft
+                                                                     ,[UIFont systemFontOfSize:17.0*2]);
                   }
                   else{
-                      file_list[i].nametex= [[Texture2D alloc] initWithString:file_list[i].name
-                                                                     dimensions:CGSizeMake(
+                      file_list[i].nametex= new Texture2D(file_list[i].name
+                                                                     ,CGSizeMake(
                                                                                            file_list[i].namerect.size.width
                                                                                            , file_list[i].namerect.size.height)
-                                                                      alignment:UITextAlignmentLeft
-                                                                           font:[UIFont systemFontOfSize:17.0]];                  }
+                                                                      ,UITextAlignmentLeft
+                                                                        ,[UIFont systemFontOfSize:17.0]);
+                  }
                   
-                    }
+                }
               if(file_list[i].datetex==NULL){
                   NSString* fdate;
                   NSDate *date = [NSDate dateWithTimeIntervalSince1970:file_list[i].date]; 
                   fdate=[dateFormat stringFromDate:date];
                   if(IS_IPAD){
                       
-                      file_list[i].datetex=[[Texture2D alloc] initWithString:fdate
-                                                                    dimensions:CGSizeMake(
+                      file_list[i].datetex=new Texture2D(fdate
+                                                                    ,CGSizeMake(
                                                                                           file_list[i].daterect.size.width*SCALE_WIDTH
                                                                                           , file_list[i].daterect.size.height*SCALE_HEIGHT)
-                                                                     alignment:UITextAlignmentRight
-                                                                          font:[UIFont systemFontOfSize:17.0*2]];
+                                                                    ,UITextAlignmentRight
+                                                                        ,[UIFont systemFontOfSize:17.0*2]);
                   }
                   else{
-                      file_list[i].datetex= [[Texture2D alloc] initWithString:fdate
-                                                                     dimensions:CGSizeMake(
+                      file_list[i].datetex= new Texture2D(fdate
+                                                                     ,CGSizeMake(
                                                                                            file_list[i].daterect.size.width
                                                                                            , file_list[i].daterect.size.height)
-                                                                      alignment:UITextAlignmentRight
-                                                                           font:[UIFont systemFontOfSize:17.0]];
+                                                                     ,UITextAlignmentRight
+                                                                          ,[UIFont systemFontOfSize:17.0]);
                   }
 
               }
@@ -816,11 +815,9 @@ int rwc_count=0;
               }
               glColor4f(1.0, 1.0, 1.0, alpha);		
               if(list_selection==i)
-                  [Resources::getResources->getMenuTex(MENU_SHARED_BLOCK_SELECTED)
-                   drawButton:file_list[i].blockrect];
+                  Resources::getResources->getMenuTex(MENU_SHARED_BLOCK_SELECTED)->drawButton(file_list[i].blockrect);
               else
-                  [Resources::getResources->getMenuTex(MENU_SHARED_BLOCK_UNSELECTED)
-                   drawButton:file_list[i].blockrect];
+                  Resources::getResources->getMenuTex(MENU_SHARED_BLOCK_UNSELECTED)->drawButton(file_list[i].blockrect);
               glColor4f(0.0, 0.0, 0.0, alpha);
               
               CGPoint p=CGPointMake(file_list[i].namerect.origin.x,file_list[i].namerect.origin.y);
@@ -830,11 +827,11 @@ int rwc_count=0;
                   p.y+=file_list[i].namerect.size.height;
               }else
                   p.y+=file_list[i].namerect.size.height/2;
-              [file_list[i].nametex drawAtPoint:p];       
+              file_list[i].nametex->drawAtPoint(p);
               p.x-=1;
               p.y+=1;
               glColor4f(1.0, 1.0, 1.0,alpha);
-              [file_list[i].nametex drawAtPoint:p];
+              file_list[i].nametex->drawAtPoint(p);
               
               glColor4f(0.0, 0.0, 0.0, alpha);
               
@@ -845,14 +842,14 @@ int rwc_count=0;
                   p.y+=file_list[i].daterect.size.height;
               }else
                   p.y+=file_list[i].daterect.size.height/2;
-              [file_list[i].datetex drawAtPoint:p];       
+              file_list[i].datetex->drawAtPoint(p);
               p.x-=1;
               p.y+=1;
               glColor4f(1.0, 1.0, 1.0, alpha);
-              [file_list[i].datetex drawAtPoint:p];
+              file_list[i].datetex->drawAtPoint(p);
           }else{
-              if(file_list[i].nametex)[file_list[i].nametex release];
-              if(file_list[i].datetex)[file_list[i].datetex release];
+              if(file_list[i].nametex)delete file_list[i].nametex;
+              if(file_list[i].datetex)delete file_list[i].datetex;
               file_list[i].nametex=file_list[i].datetex=NULL;
               
           }
@@ -871,22 +868,22 @@ int rwc_count=0;
     if(cur_sort==SORT_NAME){        
         
         glColor4f(1.0f, 1.0f, 1.0f,1.0f);        
-        [Resources::getResources->getMenuTex(MENU_TEXT_BOX) drawInRect:input_background];
+        Resources::getResources->getMenuTex(MENU_TEXT_BOX)->drawInRect(input_background);
         glColor4f(0.0f, 0.0f, 0.0f,1.0f);        
         name_bar->renderPlain();
     }
     
     if(previewScreenshot!=NULL){
         CGRect border=CGRectMake(preview_box.origin.x-2,preview_box.origin.y-7,preview_box.size.width+8,preview_box.size.height+8);
-        [Resources::getResources->getTex(ICO_COLOR_SELECT_BACKGROUND) drawInRect:border];
-        [previewScreenshot drawInRect:preview_box];
+        Resources::getResources->getTex(ICO_COLOR_SELECT_BACKGROUND)->drawInRect(border);
+        previewScreenshot->drawInRect(preview_box);
         glColor4f(1.0, 0.0, 0.0, 1.0f);
-        [Resources::getResources->getMenuTex(MENU_BACK_TEXT) drawButton:rload_cancel];
+        Resources::getResources->getMenuTex(MENU_BACK_TEXT)->drawButton(rload_cancel);
         glColor4f(0.0, 1.0, 0.0, 1.0f);
-        [Resources::getResources->getMenuTex(MENU_LOAD_TEXT) drawButton:rload_go];
+        Resources::getResources->getMenuTex(MENU_LOAD_TEXT)->drawButton(rload_go);
         
         glColor4f(1.0,1.0,1.0,1.0);
-        [Resources::getResources->getMenuTex(MENU_FLAG) drawButton:rect_flag];
+        Resources::getResources->getMenuTex(MENU_FLAG)->drawButton(rect_flag);
     }
     glColor4f(1.0, 1.0, 1.0, 1.0f);
     if(cur_sort==SORT_NAME&&previewScreenshot==NULL){

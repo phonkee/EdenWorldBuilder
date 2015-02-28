@@ -26,9 +26,9 @@ void fmh_init(FileManager* t_fm){
     if(JUST_TERRAIN_GEN)return;
     
     fm=t_fm;
-     //Terrain* ter=[[World getWorld] terrain];
+     //Terrain* ter=[World::getWorld->terrain];
     
-     //Player* player=[[World getWorld] player];
+     //Player* player=[World::getWorld->player];
     printg("fmh init...\n");
    
     indexes=hashmap_new();
@@ -78,7 +78,7 @@ static void fmh_read_directory(){
 void fmh_readColumnFromDefault(int cx,int cz){
     
     
-    Terrain* ter=[World getWorld].terrain;
+    Terrain* ter=World::getWorld->terrain;
     TerrainChunk* columns[CHUNKS_PER_COLUMN];
     ColumnIndex* colIndex=NULL;
 	int n= twoToOne(cx,cz);

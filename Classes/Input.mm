@@ -60,7 +60,7 @@ void Input::clearAll(){
 void Input::keyTyped(NSString* key){
 	char ch=[key characterAtIndex:0];
 	if(ch=='h'){
-		[World getWorld].hud->hideui=![World getWorld].hud->hideui;	
+		World::getWorld->hud->hideui=!World::getWorld->hud->hideui;	
 	}
 	
 }
@@ -86,7 +86,7 @@ void Input::touchesBegan(NSSet* mtouches, UIEvent* event){
 		CGPoint point=[touch locationInView:touch.view];
         point.y=scr_height-point.y;
         //printg("touch (%f,%f)\n",point.x,point.y);
-		/*if([World getWorld].FLIPPED){
+		/*if(World::getWorld->FLIPPED){
 			//point.x+=11;
 			point.x=scr_width-point.x;
 			point.y=scr_height-point.y;
@@ -129,7 +129,7 @@ void Input::touchesMoved(NSSet* mtouches, UIEvent* event){
 		}
 		CGPoint point=[touch locationInView:touch.view];
         point.y=scr_height-point.y;
-		/*if([World getWorld].FLIPPED){
+		/*if(World::getWorld->FLIPPED){
 			//point.x+=11;
 			point.x=scr_width-point.x;
 			point.y=scr_height-point.y;
@@ -162,7 +162,7 @@ void Input::touchesEnded(NSSet* mtouches, UIEvent* event){
         if(!touch)continue;
 		CGPoint point=[touch locationInView:touch.view];
         point.y=scr_height-point.y;
-		/*if([World getWorld].FLIPPED){
+		/*if(World::getWorld->FLIPPED){
 		//	point.x+=11;
 			point.x=scr_width-point.x;
 			point.y=scr_height-point.y;
