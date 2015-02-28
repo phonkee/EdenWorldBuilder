@@ -1,3 +1,6 @@
+#ifndef Eden_Texture2D_h
+#define Eden_Texture2D_h
+
 #import <UIKit/UIKit.h>
 #import <OpenGLES/ES1/gl.h>
 
@@ -112,3 +115,6 @@ Note that the generated textures are of type A8 - use the blending mode (GL_SRC_
 
 CGImageRef ManipulateImagePixelData(CGImageRef inImage,CGImageRef inMask,int color);
 CGImageRef ManipulateImagePixelData2(CGImageRef inImage,int tint,int mode);
+
+
+#endif

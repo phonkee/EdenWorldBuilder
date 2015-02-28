@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 10/24/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Menu_h
+#define Eden_Menu_h
 
 #import <Foundation/Foundation.h>
 #import "Texture2D.h"
@@ -89,4 +91,5 @@ public:
 @property(nonatomic,readonly) SharedList* shared_list;
 @property(nonatomic,readonly) ShareUtil* shareutil;*/
 
+#endif
 

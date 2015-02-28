@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 10/25/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_FileManager_h
+#define Eden_FileManager_h
 
 #import <Foundation/Foundation.h>
 #import "Terrain.h"
@@ -74,3 +76,5 @@ private:
     void LoadCreatures();
     void saveCreatures();
 };
+
+#endif

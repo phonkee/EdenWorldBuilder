@@ -5,6 +5,9 @@
 //  Created by Ari Ronen on 10/11/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Terrain_h
+#define Eden_Terrain_h
+
 
 #import <Foundation/Foundation.h>
 #import <OpenGLES/ES1/gl.h>
@@ -111,6 +114,6 @@ int getRampType(int x,int z,int y, int t);
 @property(nonatomic,readonly) Portal* portals;
 @property(nonatomic,readonly) Firework* fireworks;*/
 
-
+#endif
 
 

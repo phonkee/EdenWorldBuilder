@@ -5,6 +5,9 @@
 //  Created by Ari Ronen on 10/10/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_World_h
+#define Eden_World_h
+
 
 #import <Foundation/Foundation.h>
 #import <OpenGLES/ES1/gl.h>
@@ -57,3 +60,4 @@ public:
     
 };
 
+#endif

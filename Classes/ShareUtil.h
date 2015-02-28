@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 11/10/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_ShareUtil_h
+#define Eden_ShareUtil_h
 
 #import <Foundation/Foundation.h>
 #import "FileDownload.h"
@@ -31,3 +33,6 @@
 - (NSString*)searchSharedWorlds:(NSString*)query;
 @property(nonatomic,assign)   NSString* listresult;
 @end
+
+
+#endif

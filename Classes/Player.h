@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 10/14/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Player_h
+#define Eden_Player_h
 
 #import <Foundation/Foundation.h>
 #import <math.h>
@@ -64,4 +66,6 @@ public:
 
 
 Vector getFlowDirection(int x,int z,int y);
+
+#endif
 

@@ -5,6 +5,9 @@
 //  Created by Ari Ronen on 5/16/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Portal_h
+#define Eden_Portal_h
+
 
 #import <Foundation/Foundation.h>
 #import <math.h>
@@ -36,3 +39,4 @@ private:
     
 };
 
+#endif

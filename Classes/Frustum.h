@@ -6,6 +6,9 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#ifndef Eden_Frustum_h
+#define Eden_Frustum_h
+
 #import <Foundation/Foundation.h>
 
 
@@ -47,4 +50,4 @@ int ComputeExtreme(const float *bound,
 					const FrustumPlane* plane,int istate,int flag);
 
 
-
+#endif

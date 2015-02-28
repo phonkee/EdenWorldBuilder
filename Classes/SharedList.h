@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 11/12/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_ShareList_h
+#define Eden_ShareList_h
 
 #import <Foundation/Foundation.h>
 
@@ -75,3 +77,5 @@ typedef struct{
 -(void)clearWorldList;
 -(void)searchAndHide:(BOOL)nosearch;
 @end
+
+#endif

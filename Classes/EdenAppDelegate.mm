@@ -33,6 +33,8 @@
 	[Flurry startSession:@"LUWB9P4UZU1K1A4YUT9V"];
     
     [Appirater appLaunched:YES];
+    
+    [Appirater rateApp];
     return YES;
 }
 - (void)applicationWillResignActive:(UIApplication *)application

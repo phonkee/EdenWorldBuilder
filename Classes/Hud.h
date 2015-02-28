@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 10/16/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Hud_h
+#define Eden_Hud_h
 
 #import <Foundation/Foundation.h>
 #import "Input.h"
@@ -121,4 +123,4 @@ private:
 @property(nonatomic,assign) BOOL take_screenshot,inmenu;
 @property(nonatomic,assign) int holding_creature,goldencubes;*/
 
-
+#endif

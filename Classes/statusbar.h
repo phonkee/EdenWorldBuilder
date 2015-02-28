@@ -5,6 +5,9 @@
 //  Created by Ari Ronen on 11/9/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_statusbar_h
+#define Eden_statusbar_h
+
 
 #import <Foundation/Foundation.h>
 #import "Graphics.h"
@@ -28,3 +31,4 @@ private:
 	float font_size;
 };
 
+#endif

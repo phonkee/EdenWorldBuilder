@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 10/18/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_TerrainChunk_h
+#define Eden_TerrainChunk_h
 
 #import <Foundation/Foundation.h>
 #import <OpenGLES/ES1/gl.h>
@@ -130,5 +132,5 @@ typedef struct bnode{
 
 void tc_initGeometry();
 
-
+#endif
 

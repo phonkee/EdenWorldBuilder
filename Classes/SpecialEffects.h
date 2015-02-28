@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 11/2/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_SpecialEffects_h
+#define Eden_SpecialEffects_h
 
 #import <Foundation/Foundation.h>
 #import "BlockBreak.h"
@@ -41,3 +43,5 @@ private:
 
 void setParticle(Vector p,int pvbi);
 int getPVBI();
+
+#endif

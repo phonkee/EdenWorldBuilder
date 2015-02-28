@@ -33,6 +33,8 @@
  * http://arashpayan.com
  * Copyright 2010 Arash Payan. All rights reserved.
  */
+#ifndef Eden_Appirater_h
+#define Eden_Appirater_h
 
 #import <Foundation/Foundation.h>
 
@@ -197,3 +199,5 @@ extern NSString *const kAppiraterDeclinedToRate;
 + (void)rateApp;
 
 @end
+
+#endif

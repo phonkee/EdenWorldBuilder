@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 1/1/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Menu_background_h
+#define Eden_Menu_background_h
 
 #import <Foundation/Foundation.h>
 
@@ -19,3 +21,4 @@ private:
 CGRect clouds[3];
 };
 
+#endif

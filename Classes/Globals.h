@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 10/13/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Globals_h
+#define Eden_Globals_h
 
 #import <Foundation/Foundation.h>
 #import "Constants.h"
@@ -43,3 +45,5 @@ extern const int blockinfo[NUM_BLOCKS+1];
 
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
+#endif

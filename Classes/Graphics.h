@@ -5,6 +5,9 @@
 //  Created by Ari Ronen on 10/11/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Graphics_h
+#define Eden_Graphics_h
+
 
 #import <Foundation/Foundation.h>
 #import <OpenGLES/ES1/gl.h>
@@ -80,4 +83,4 @@ typedef struct _vertexpBreak
 	    
 } vertexpBreak;
 
-
+#endif

@@ -5,6 +5,9 @@
 //  Created by Ari Ronen on 10/25/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_hashmap_h
+#define Eden_hashmap_h
+
 
 #define MAP_MISSING -3  /* No such element */
 #define MAP_FULL -2 	/* Hashmap is full */
@@ -80,4 +83,6 @@ extern int hashmap_length(map_t in);
 extern int hashmap_remove_all(map_t in,BOOL shouldFree);
 
 extern int hashmap_iterate_range(map_t in, PFany f, any_t item,int start,int frac);
+
+#endif
 

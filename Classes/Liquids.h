@@ -5,6 +5,9 @@
 //  Created by Ari Ronen on 7/15/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Liquids_h
+#define Eden_Liquids_h
+
 
 #import <Foundation/Foundation.h>
 #import "hashmap.h"
@@ -55,4 +58,4 @@ int getLevel(int type);
 int getBaseType(int type);
 int genLevel(int type,int level);
 
-
+#endif

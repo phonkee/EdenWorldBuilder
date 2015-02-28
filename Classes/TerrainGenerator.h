@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 10/23/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_TerrainGenerator_h
+#define Eden_TerrainGenerator_h
 
 #import <Foundation/Foundation.h>
 #import "Terrain.h"
@@ -27,3 +29,4 @@ float noise2(float vec[2]);
 void tgenInit();
 
 
+#endif

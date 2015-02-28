@@ -5,6 +5,9 @@
 //  Created by Ari Ronen on 11/3/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Fire_h
+#define Eden_Fire_h
+
 
 #import <Foundation/Foundation.h>
 #import "Vector.h"
@@ -29,3 +32,4 @@ private:
 };
 
 
+#endif

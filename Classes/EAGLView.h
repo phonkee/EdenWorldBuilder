@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 10/3/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_EAGLView_h
+#define Eden_EAGLView_h
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
@@ -36,3 +38,5 @@
 - (void)deleteFramebuffer;
 
 @end
+
+#endif

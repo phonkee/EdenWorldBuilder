@@ -5,6 +5,9 @@
 //  Created by Ari Ronen on 10/13/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Input_h
+#define Eden_Input_h
+
 
 #import <Foundation/Foundation.h>
 #import "Util.h"
@@ -49,4 +52,6 @@ public:
    void touchesCancelled(NSSet* touches,UIEvent* event);
     
 };
+
+#endif
 

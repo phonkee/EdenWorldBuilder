@@ -5,6 +5,10 @@
 //  Created by Ari Ronen on 6/23/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_zpipe_h
+#define Eden_zpipe_h
+
+
 #include <stdio.h>
 #include <assert.h>
 #include "zlib.h"
@@ -31,4 +35,6 @@ void zerr(int ret);
 
     #ifdef __cplusplus
 }
+#endif
+
 #endif

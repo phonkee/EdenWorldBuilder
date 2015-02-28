@@ -4,7 +4,11 @@
 //
 //  Created by Ari Ronen on 5/22/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+
 //
+#ifndef Eden_Firework_h
+#define Eden_Firework_h
+
 #import <Foundation/Foundation.h>
 #import <math.h>
 #import "Util.h"
@@ -39,3 +43,4 @@ private:
     
 };
 
+#endif

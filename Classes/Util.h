@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 10/11/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Util_h
+#define Eden_Util_h
 
 #import <Foundation/Foundation.h>
 //#import <UIKit/UIKit.h>
@@ -115,4 +117,4 @@ void HSVtoRGB( float *r, float *g, float *b, float h, float s, float v );
 #define threeToOne(cx,cy,cz) (((cx+CHUNKS_PER_SIDE*50)%CHUNKS_PER_SIDE)*CHUNKS_PER_SIDE*CHUNKS_PER_COLUMN+\
 ((cz+CHUNKS_PER_SIDE*50)%CHUNKS_PER_SIDE)*CHUNKS_PER_COLUMN+cy)
 
-
+#endif

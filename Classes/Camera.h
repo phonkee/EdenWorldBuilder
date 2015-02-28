@@ -5,6 +5,9 @@
 //  Created by Ari Ronen on 10/11/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Camera_h
+#define Eden_Camera_h
+
 
 #import <Foundation/Foundation.h>
 #import <OpenGLES/ES1/gl.h>
@@ -28,3 +31,5 @@ public:
 	float speed;
 	int mode;
 };
+
+#endif

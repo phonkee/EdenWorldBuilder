@@ -5,6 +5,10 @@
 //  Created by Ari Ronen on 7/5/11.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_md5_h
+#define Eden_md5_h
+
+
 #include <CoreFoundation/CoreFoundation.h>
 #define FileHashDefaultChunkSizeForReadingData 4096
 
@@ -17,4 +21,7 @@ CFStringRef FileMD5HashCreateWithPath(CFStringRef filePath,
 
 #ifdef __cplusplus
     }
+#endif
+
+
 #endif

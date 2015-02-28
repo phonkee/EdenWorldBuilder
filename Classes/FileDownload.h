@@ -6,6 +6,9 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#ifndef Eden_FileDownload_h
+#define Eden_FileDownload_h
+
 #import <Foundation/Foundation.h>
 
 
@@ -33,3 +36,6 @@
 -(void)cancel;
 @property(nonatomic,assign)   NSData* result;
 @end
+
+
+#endif

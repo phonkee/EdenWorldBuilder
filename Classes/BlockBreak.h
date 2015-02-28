@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 11/2/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_BlockBreak_h
+#define Eden_BlockBreak_h
 
 #import <Foundation/Foundation.h>
 
@@ -25,3 +27,5 @@ public:
     
     
 };
+
+#endif

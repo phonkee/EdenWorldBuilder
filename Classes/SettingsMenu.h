@@ -5,6 +5,8 @@
 //  Created by Ari Ronen on 11/4/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_SettingsMenu_h
+#define Eden_SettingsMenu_h
 
 #import <Foundation/Foundation.h>
 
@@ -38,5 +40,8 @@ public:
 	int world_counter;
 	property properties[NUM_PROP];
 };
+
+
+#endif
 
 

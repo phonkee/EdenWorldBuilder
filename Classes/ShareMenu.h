@@ -6,6 +6,9 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
+#ifndef Eden_ShareMenu_h
+#define Eden_ShareMenu_h
+
 #import <Foundation/Foundation.h>
 #import "World.h"
 #import "Menu.h"
@@ -35,3 +38,6 @@
 -(void)update:(float)etime;
 -(void)render;
 @end
+
+
+#endif

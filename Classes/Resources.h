@@ -5,6 +5,9 @@
 //  Created by Ari Ronen on 10/13/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
+#ifndef Eden_Resources_h
+#define Eden_Resources_h
+
 
 #import <Foundation/Foundation.h>
 #import "Texture2D.h"
@@ -336,3 +339,5 @@ enum ICON_TYPES{
     //10 texs after this reserved for coloring
     
 };
+
+#endif
