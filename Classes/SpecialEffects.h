@@ -8,7 +8,7 @@
 #ifndef Eden_SpecialEffects_h
 #define Eden_SpecialEffects_h
 
-#import <Foundation/Foundation.h>
+
 #import "BlockBreak.h"
 #import "Fire.h"
 

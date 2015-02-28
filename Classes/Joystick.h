@@ -8,7 +8,7 @@
 #ifndef Eden_Joystick_h
 #define Eden_Joystick_h
 
-#import <Foundation/Foundation.h>
+
 
 
 class Joystick{

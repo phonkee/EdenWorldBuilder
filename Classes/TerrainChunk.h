@@ -8,7 +8,7 @@
 #ifndef Eden_TerrainChunk_h
 #define Eden_TerrainChunk_h
 
-#import <Foundation/Foundation.h>
+
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
 

@@ -9,10 +9,10 @@
 #define Eden_Portal_h
 
 
-#import <Foundation/Foundation.h>
+
 #import <math.h>
 #import "Util.h"
-#import "Terrain.h"
+
 #import "World.h"
 #import "Camera.h"
 #import "Input.h"

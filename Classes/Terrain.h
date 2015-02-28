@@ -9,7 +9,7 @@
 #define Eden_Terrain_h
 
 
-#import <Foundation/Foundation.h>
+
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
 #import "Texture2D.h"

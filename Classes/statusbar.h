@@ -9,7 +9,7 @@
 #define Eden_statusbar_h
 
 
-#import <Foundation/Foundation.h>
+
 #import "Graphics.h"
 
 class statusbar {

@@ -8,7 +8,7 @@
 #ifndef Eden_Util_h
 #define Eden_Util_h
 
-#import <Foundation/Foundation.h>
+
 //#import <UIKit/UIKit.h>
 #import "Texture2D.h"
 #import "Vector.h"

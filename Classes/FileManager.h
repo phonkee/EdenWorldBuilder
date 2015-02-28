@@ -8,7 +8,7 @@
 #ifndef Eden_FileManager_h
 #define Eden_FileManager_h
 
-#import <Foundation/Foundation.h>
+
 #import "Terrain.h"
 
 

@@ -8,7 +8,7 @@
 #ifndef Eden_TerrainGenerator_h
 #define Eden_TerrainGenerator_h
 
-#import <Foundation/Foundation.h>
+
 #import "Terrain.h"
 
 class TerrainGenerator{

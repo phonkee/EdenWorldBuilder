@@ -9,7 +9,7 @@
 #define Eden_FileManagerHelper_h
 
 
-#import <Foundation/Foundation.h>
+
 #import "FileManager.h"
 
 

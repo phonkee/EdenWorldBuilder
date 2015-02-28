@@ -9,7 +9,7 @@
 #define Eden_Resources_h
 
 
-#import <Foundation/Foundation.h>
+
 #import "Texture2D.h"
 #import <UIKit/UIKit.h>
 #import "Sound.h"

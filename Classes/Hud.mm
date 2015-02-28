@@ -10,7 +10,7 @@
 #import "Globals.h"
 #import "Frustum.h"
 #import "TerrainGen2.h"
-#import <Foundation/Foundation.h>
+
 
 #import "Alert.h"
 

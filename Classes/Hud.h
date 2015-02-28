@@ -8,7 +8,7 @@
 #ifndef Eden_Hud_h
 #define Eden_Hud_h
 
-#import <Foundation/Foundation.h>
+
 #import "Input.h"
 #import "Util.h"
 #import "glu.h"

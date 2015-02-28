@@ -8,7 +8,7 @@
 #ifndef Eden_Player_h
 #define Eden_Player_h
 
-#import <Foundation/Foundation.h>
+
 #import <math.h>
 #import "Util.h"
 #import "Terrain.h"

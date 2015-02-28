@@ -8,7 +8,7 @@
 #ifndef Eden_Globals_h
 #define Eden_Globals_h
 
-#import <Foundation/Foundation.h>
+
 #import "Constants.h"
 
 

@@ -9,14 +9,9 @@
 #ifndef Eden_Firework_h
 #define Eden_Firework_h
 
-#import <Foundation/Foundation.h>
-#import <math.h>
-#import "Util.h"
-#import "Terrain.h"
-#import "World.h"
-#import "Camera.h"
-#import "Input.h"
-#import "OpenGL_Internal.h"
+//#import <Foundation/Foundation.h>
+
+#import "Vector.h"
 
 #define MAX_FIREWORK 80
 typedef struct _firework{

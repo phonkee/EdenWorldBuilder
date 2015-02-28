@@ -9,7 +9,7 @@
 #ifndef Eden_Frustum_h
 #define Eden_Frustum_h
 
-#import <Foundation/Foundation.h>
+
 
 
 enum ViewTest

@@ -9,7 +9,7 @@
 #define Eden_Input_h
 
 
-#import <Foundation/Foundation.h>
+
 #import "Util.h"
 typedef struct{
 	int mx,my;

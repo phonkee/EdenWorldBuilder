@@ -8,6 +8,10 @@
 
 #import "Firework.h"
 
+#import <math.h>
+#import "Util.h"
+#import "World.h"
+#import "OpenGL_Internal.h"
 
 Firework::Firework(){
     n_firework=0;

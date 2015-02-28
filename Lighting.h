@@ -8,7 +8,7 @@
 #ifndef Eden_Lighting_h
 #define Eden_Lighting_h
 
-#import <Foundation/Foundation.h>
+
 #import "Vector.h"
 
 

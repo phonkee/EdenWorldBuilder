@@ -9,7 +9,7 @@
 #define Eden_Fire_h
 
 
-#import <Foundation/Foundation.h>
+
 #import "Vector.h"
 
 

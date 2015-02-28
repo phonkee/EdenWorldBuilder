@@ -8,7 +8,7 @@
 #ifndef Eden_SettingsMenu_h
 #define Eden_SettingsMenu_h
 
-#import <Foundation/Foundation.h>
+
 
 #import "Texture2D.h"
 #import "Input.h"
