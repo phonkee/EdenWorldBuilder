@@ -28,7 +28,7 @@ typedef struct{
 	
 }SharedListNode;
 
-@interface SharedList : NSObject <UITextFieldDelegate>{
+@interface SharedList : NSObject{
 	
 	CGRect rect_header;
 	
@@ -58,7 +58,7 @@ typedef struct{
 	int list_selection;
 	int num_files;
     NSMutableString* search_string;
-    UITextField* search_field;
+    
     statusbar* name_bar;
     NSMutableString* displays;
     Texture2D* previewScreenshot;
@@ -76,6 +76,7 @@ typedef struct{
 -(void)deactivate;
 -(void)clearWorldList;
 -(void)searchAndHide:(BOOL)nosearch;
+-(void)keyTyped:(char) c;
 @end
 
 #endif

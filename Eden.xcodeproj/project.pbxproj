@@ -166,6 +166,7 @@
 		19D546A51A3D43B500E61041 /* door close.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5466B1A3D43B500E61041 /* door close.mp3 */; };
 		19E52AE11A84418200C9CD48 /* libFlurry_6.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E52AE01A84418200C9CD48 /* libFlurry_6.0.0.a */; };
 		19E52AE21A84427D00C9CD48 /* libCocosDenshion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19DF68C51A842FD800E462A1 /* libCocosDenshion.a */; };
+		19F806B41AA260CC00ACD338 /* VKeyboard.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19F806B31AA260CC00ACD338 /* VKeyboard.mm */; };
 		1D13502E15C4AE2A0038CE4C /* uisave.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13502D15C4AE2A0038CE4C /* uisave.png */; };
 		1D13503615C58F000038CE4C /* uiexit.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13503315C58F000038CE4C /* uiexit.png */; };
 		1D13503715C58F000038CE4C /* uihome.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13503415C58F000038CE4C /* uihome.png */; };
@@ -1019,6 +1020,8 @@
 		19DF68D11A84302B00E462A1 /* CocosDenshion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CocosDenshion.h; sourceTree = "<group>"; };
 		19DF68D21A84302B00E462A1 /* SimpleAudioEngine_objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleAudioEngine_objc.h; sourceTree = "<group>"; };
 		19E52AE01A84418200C9CD48 /* libFlurry_6.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_6.0.0.a; sourceTree = "<group>"; };
+		19F806B21AA2605200ACD338 /* VKeyboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VKeyboard.h; sourceTree = "<group>"; };
+		19F806B31AA260CC00ACD338 /* VKeyboard.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VKeyboard.mm; sourceTree = "<group>"; };
 		1D13502D15C4AE2A0038CE4C /* uisave.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uisave.png; path = uitext/uisave.png; sourceTree = "<group>"; };
 		1D13503315C58F000038CE4C /* uiexit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uiexit.png; path = uitext/uiexit.png; sourceTree = "<group>"; };
 		1D13503415C58F000038CE4C /* uihome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uihome.png; path = uitext/uihome.png; sourceTree = "<group>"; };
@@ -2885,6 +2888,8 @@
 				C6A59032128E4B23007E6064 /* SharedList.mm */,
 				C6B673C513B09934005BF47C /* FileDownload.h */,
 				C6B673C613B09934005BF47C /* FileDownload.mm */,
+				19F806B21AA2605200ACD338 /* VKeyboard.h */,
+				19F806B31AA260CC00ACD338 /* VKeyboard.mm */,
 			);
 			name = Sharing;
 			sourceTree = "<group>";
@@ -3909,6 +3914,7 @@
 				C6B5A07B144797590065FBD4 /* PVRTMisc.cpp in Sources */,
 				1918F522191EA67D00DA261A /* FileArchive.mm in Sources */,
 				C6B5A07C144797590065FBD4 /* PVRTMatrixX.cpp in Sources */,
+				19F806B41AA260CC00ACD338 /* VKeyboard.mm in Sources */,
 				C6B5A07D144797590065FBD4 /* PVRTMatrixF.cpp in Sources */,
 				C6B5A07E144797590065FBD4 /* PVRTGeometry.cpp in Sources */,
 				C6B5A07F144797590065FBD4 /* PVRTFixedPoint.cpp in Sources */,

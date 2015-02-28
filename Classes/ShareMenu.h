@@ -14,8 +14,8 @@
 #import "Menu.h"
 #import "Util.h"
 
-@interface ShareMenu : NSObject <UITextFieldDelegate>{
-	UITextField* world_name_field;
+@interface ShareMenu : NSObject {
+	
 	WorldNode* node;
 	CGRect input_background;
 	Button rect_cancel;
@@ -37,6 +37,7 @@
 -(void)deactivate;
 -(void)update:(float)etime;
 -(void)render;
+-(void) keyTyped:(char)c;
 @end
 
 

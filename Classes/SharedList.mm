@@ -11,7 +11,7 @@
 #import "Globals.h"
 #import "World.h"
 #import "EAGLView.h"
-
+#import "VKeyboard.h"
 extern float SCREEN_WIDTH; 
 extern float SCREEN_HEIGHT;
 extern float P_ASPECT_RATIO;
@@ -32,15 +32,7 @@ static float bsize;
 -(id)init{
     search_string=[NSMutableString stringWithString:@""];
     [search_string retain];
-	search_field=[[UITextField alloc] initWithFrame: 
-					  CGRectMake(0, 0, 1, 1)];
-	search_field.keyboardType=UIKeyboardTypeAlphabet;
-	search_field.returnKeyType=UIReturnKeyDone;
-	search_field.hidden=TRUE;
-	search_field.borderStyle = UITextBorderStyleNone;
-	search_field.autocorrectionType = UITextAutocorrectionTypeNo;
-    [search_field setDelegate:self];	
-	[G_EAGL_VIEW insertSubview: search_field atIndex:0];
+	
     input_background=CGRectMake(SCREEN_WIDTH/2-100, SCREEN_HEIGHT-80, 200, 30);
     
     sbrrect=ButtonMake(SCREEN_WIDTH/2-230+95-19-85, SCREEN_HEIGHT-87, 500, 35);
@@ -159,45 +151,34 @@ static float bsize;
     
 }
 
-- (BOOL)textField:(UITextField *)textField 
-shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-	if([string length]>1)return FALSE;
-	if([string length]==0){
+-(void) keyTyped:(char) c{
+    if(c==-1){
 		if([search_string length]>0){
 			[search_string replaceCharactersInRange:NSMakeRange([search_string length]-1, 1) withString:@""];
 		}
 	}else if([search_string length]>35){
-		return FALSE;
+		return;
 	}else{
-        char c=[string characterAtIndex:0];
+      
 		NSLog(@"%d",(int)[search_string length]);
-		if(!isalnum(c)&&c!=' '&&c!='\'')return FALSE;
-		[search_string appendString:string];	   
+		if(!isalnum(c)&&c!=' '&&c!='\'')return;
+        [search_string appendFormat:@"%c",c];
+			   
 	}
     [displays release];
     displays=[NSMutableString stringWithString:search_string];
     [displays retain];
     [self trimDisplay];
 	name_bar->setStatus(displays,9999,UITextAlignmentLeft);
-	return FALSE;
-}
-- (void)textFieldDidEndEditing:(UITextField*)textField
-{
-	NSLog(@"sup2");
-	
-	
+	return ;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField*)texField
-{
-	NSLog(@"sup");
-	[self searchAndHide:FALSE];
-	
-	return YES;
-}
+
+
 
 -(void)searchAndHide:(BOOL)nosearch{
-	[search_field resignFirstResponder];
+    vkeyboard_end(1);
+	
 	if([search_string length]==0||nosearch){
 		return;
 	}
@@ -402,10 +383,7 @@ static float cursor_blink=0;
         
     }*/
     //  starto=World::getWorld->FLIPPED;
-    [search_field becomeFirstResponder];
-    
-    
-    search_field.text=@"a";
+    vkeyboard_begin(1);
     
 }
 -(void)update:(float)etime{

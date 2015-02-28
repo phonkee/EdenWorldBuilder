@@ -17,7 +17,7 @@
 #include <iostream>
 #include <pthread.h>
 
-
+#import "VKeyboard.h"
 
 //@synthesize cam, terrain, player, hud,fm/*,FLIPPED*/,effects,realtime,bestGraphics,doneLoading;
 //@synthesize game_mode,menu;
@@ -189,7 +189,7 @@ World::World(){
     Graphics::initGraphics();
     
     alert_init();
-    
+    vkeyboard_init();
     
     cam=new Camera();
     

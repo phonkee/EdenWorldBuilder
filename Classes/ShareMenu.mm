@@ -10,24 +10,20 @@
 #import "World.h"
 #import "Globals.h"
 #import "EAGLView.h"
+#import "Vkeyboard.h"
+
+
 
 @implementation ShareMenu
 
 extern float SCREEN_WIDTH; 
 extern float SCREEN_HEIGHT;
 extern float P_ASPECT_RATIO; 
-extern EAGLView* G_EAGL_VIEW;
+
 -(id)init{
-	world_name_field=[[UITextField alloc] initWithFrame: 
-					  CGRectMake(0, 0, 1, 1)];
-	world_name_field.keyboardType=UIKeyboardTypeAlphabet;
-	world_name_field.returnKeyType=UIReturnKeyDone;
-	world_name_field.hidden=TRUE;
-	world_name_field.borderStyle = UITextBorderStyleNone;
-	world_name_field.autocorrectionType = UITextAutocorrectionTypeNo;
-		[world_name_field setDelegate:self];	
 	
-	[G_EAGL_VIEW insertSubview: world_name_field atIndex:0];
+    
+	
 	CGRect sbrect=CGRectMake(SCREEN_WIDTH/2-230+95-19, SCREEN_HEIGHT-67, 500, 35);
 	label_bar=new statusbar(sbrect,17);
 	sbrect.origin.x=SCREEN_WIDTH/2-220+143+90-23;
@@ -70,6 +66,25 @@ extern EAGLView* G_EAGL_VIEW;
 	name_bar->clear();
     
 }
+-(void) keyTyped:(char)c{
+    
+    if(c==-1){
+        if([name length]>0){
+            [name replaceCharactersInRange:NSMakeRange([name length]-1, 1) withString:@""];
+        }
+    }else if([name length]>35){
+        return;
+    }else{
+       // char c=c;
+        NSLog(@"%d",(int)[name length]);
+        if(!isalnum(c)&&c!=' '&&c!='\'')return;
+        [name appendFormat:@"%c",c];
+    }
+    [displays release];
+    displays=[NSMutableString stringWithString:name];
+    [displays retain];
+    [self trimDisplay];
+}
 -(void)beginShare:(WorldNode*)world{
 	node=world;
 	/*if(!World::getWorld->FLIPPED){
@@ -80,10 +95,12 @@ extern EAGLView* G_EAGL_VIEW;
 		
 	}*/
 	//starto=World::getWorld->FLIPPED;
-	[world_name_field becomeFirstResponder];
+    vkeyboard_begin(0);
+    
+	
 	name=[NSMutableString stringWithString:world->display_name];
 	[name retain];
-	world_name_field.text=@"a";
+	
     displays=[NSMutableString stringWithString:name];
     [displays retain];
     [self trimDisplay];
@@ -102,48 +119,11 @@ extern EAGLView* G_EAGL_VIEW;
     
 }
 
-- (BOOL)textField:(UITextField *)textField 
-shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-	if([string length]>1)return FALSE;
-	if([string length]==0){
-		if([name length]>0){
-			[name replaceCharactersInRange:NSMakeRange([name length]-1, 1) withString:@""];
-		}
-	}else if([name length]>35){
-		return FALSE;
-	}else{
-				char c=[string characterAtIndex:0];
-		NSLog(@"%d",(int)[name length]);
-		if(!isalnum(c)&&c!=' '&&c!='\'')return FALSE;
-		[name appendFormat:@"%c",c];	   
-	}
-    [displays release];
-    displays=[NSMutableString stringWithString:name];
-     [displays retain];
-    [self trimDisplay];
-	return FALSE;
-}
-- (void)textFieldDidEndEditing:(UITextField*)textField
-{
-	NSLog(@"sup2");
-	
-	//NSLog(@"%@",[textField text]);
-	//[textField endEditing:YES];
-	//[textField removeFromSuperview];
-}
 
-- (BOOL)textFieldShouldReturn:(UITextField*)texField
-{
-	NSLog(@"sup");
-	[self endShare:FALSE];
-    
-	// end editing
-	//[texField resignFirstResponder];
-	return YES;
-}
 
 -(void)endShare:(BOOL)cancel{
-	[world_name_field resignFirstResponder];
+    vkeyboard_end(0);
+	
 	if(name==NULL||[name length]==0||cancel){
         if(name!=NULL)
 		[name release];

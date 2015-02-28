@@ -34,7 +34,7 @@
     
     [Appirater appLaunched:YES];
     
-    [Appirater rateApp];
+   // [Appirater rateApp];
     return YES;
 }
 - (void)applicationWillResignActive:(UIApplication *)application
