@@ -53,7 +53,7 @@ Menu::Menu(){
 	sbar=new statusbar(rect_loading);
 	rect_loading.origin.y=SCREEN_HEIGHT-233;
 	fnbar=new statusbar(rect_loading);
-	share_menu=[[ShareMenu alloc] init];
+    share_menu=new ShareMenu();
 	fnbar->clear();
 	
 	
@@ -136,7 +136,7 @@ Menu::Menu(){
     loading=FALSE;
 	loading_world_list=0;
 	
-	shared_list=[[SharedList alloc] init];
+    shared_list=new SharedList();
 	
     
    /*  WorldNode* new_world;
@@ -226,14 +226,14 @@ void Menu::activate(){
 	sbar->setStatus(@"Choose world to load" ,99999);
 	if(selected_world!=NULL)
 	fnbar->setStatus(selected_world->display_name ,9999);
-	[share_menu activate];
-	[shared_list activate];
+	share_menu->activate();
+	shared_list->activate();
 }
 void Menu::deactivate(){
     sbar->clear();
     fnbar->clear();
-    [share_menu deactivate];
-	[shared_list deactivate];
+    share_menu->deactivate();
+	shared_list->deactivate();
 	
 }
 void Menu::loadWorlds(){
@@ -364,7 +364,7 @@ static const int usage_id=7;
 void Menu::update(float etime){
 	menu_back->update(etime);
 	if(is_sharing){
-		[share_menu update:etime];
+		share_menu->update(etime);
 		return;
 	}
     if(loading){
@@ -374,7 +374,7 @@ void Menu::update(float etime){
     }
 	if(loading_world_list){
 		loading_world_list=0;
-        shared_list.finished_list_dl=FALSE;
+        shared_list->finished_list_dl=FALSE;
         
 		[shareutil getSharedWorldList];
 		showlistscreen=TRUE;
@@ -385,7 +385,7 @@ void Menu::update(float etime){
 		return;
 	}
 	if(showlistscreen){
-		[shared_list update:etime];
+		shared_list->update(etime);
 		
 	}
 	WorldNode* node=world_list;
@@ -501,7 +501,7 @@ void Menu::update(float etime){
 							if(World::getWorld->fm->worldExists(node->file_name,TRUE)){
 								sbar->setStatus(@"Sharing world..." ,2);
 								is_sharing=TRUE;
-								[share_menu beginShare:node];
+								share_menu->beginShare(node);
 							}else{
 								sbar->setStatus(@"World is empty" ,2);
 							}
@@ -672,13 +672,13 @@ void Menu::render(){
 		return;
 	}
 	if(showlistscreen){
-		[shared_list render];
+		shared_list->render();
         Graphics::endMenu();
 		
 		return;
 	}
 	if(is_sharing==1){
-		[share_menu render];
+		share_menu->render();
         Graphics::endMenu();
 		
 		return;

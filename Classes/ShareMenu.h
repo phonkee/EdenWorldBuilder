@@ -14,8 +14,9 @@
 #import "Menu.h"
 #import "Util.h"
 
-@interface ShareMenu : NSObject {
-	
+class ShareMenu{
+public:
+    ShareMenu();
 	WorldNode* node;
 	CGRect input_background;
 	Button rect_cancel;
@@ -29,16 +30,17 @@
 	NSMutableString* name;
  
 	//BOOL starto;
-}
-- (void) trimDisplay;
--(void)beginShare:(WorldNode*)world;
--(void)endShare:(BOOL)cancel;
--(void)activate;
--(void)deactivate;
--(void)update:(float)etime;
--(void)render;
--(void) keyTyped:(char)c;
-@end
+    
+    void trimDisplay();
+    void beginShare(WorldNode* world);
+    void endShare(BOOL cancel);
+    void activate();
+    void deactivate();
+    void update(float etime);
+    void render();
+    void keyTyped(char c);
+};
+
 
 
 #endif

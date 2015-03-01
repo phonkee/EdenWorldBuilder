@@ -12,12 +12,13 @@
 #import "World.h"
 #import "EAGLView.h"
 #import "VKeyboard.h"
+#import "Alert.h"
 extern float SCREEN_WIDTH; 
 extern float SCREEN_HEIGHT;
 extern float P_ASPECT_RATIO;
 
-@implementation SharedList
-@synthesize cur_sort,sbar,finished_dl,finished_preview_dl,sort_bar,finished_list_dl;
+
+//@synthesize cur_sort,sbar,finished_dl,finished_preview_dl,sort_bar,finished_list_dl;
 #define NUM_SORTS 3
 enum SORT_TYPES{
 	SORT_NAME=0,
@@ -26,10 +27,11 @@ enum SORT_TYPES{
 };
 
 extern EAGLView* G_EAGL_VIEW;
-static UIAlertView *alertReportContent;
-static UIAlertView *alertReportConfirm;
+
 static float bsize;
--(id)init{
+
+
+SharedList::SharedList(){
     search_string=[NSMutableString stringWithString:@""];
     [search_string retain];
 	
@@ -39,15 +41,7 @@ static float bsize;
 	sbrrect.origin.x=SCREEN_WIDTH/2-220+143+90-23-85;
 	sbrrect.origin.y-=3;
     
-    alertReportContent= [[UIAlertView alloc]
-                    initWithTitle:@"Flag Content"
-                    message:@"Report this world for offensive or innappropriate content?\n"                                                                              delegate:self
-                    cancelButtonTitle:@"Cancel"                                                                           otherButtonTitles:@"Report" , nil];
-    
-    alertReportConfirm= [[UIAlertView alloc]
-                         initWithTitle:@"Report sent, thanks\n"
-                         message:@""                                                                              delegate:self
-                         cancelButtonTitle:@"Ok"                                                                          otherButtonTitles:nil , nil];
+         
     
 	name_bar=new statusbar(RectFromButton(sbrrect),14);
     
@@ -129,7 +123,7 @@ static float bsize;
 	sort_right.origin.x=SCREEN_WIDTH/2+85;
 	cur_sort=SORT_BEST;
 	sort_bar=new statusbar(sbrect,20.0f);
-	[self setSortStatus];
+	setSortStatus();
 	
 	page_size=5;
 	list_selection=-1;
@@ -139,11 +133,11 @@ static float bsize;
     animation_offset=0;
     displays=[NSMutableString stringWithString:@""];
     [displays retain];
-	return self;
+	
 }
 
 
-- (void) trimDisplay{
+void SharedList::trimDisplay(){
     while([displays sizeWithFont:[UIFont systemFontOfSize:14]].width>input_background.size.width-10){
         [displays deleteCharactersInRange:NSMakeRange(0,1)];
     }
@@ -151,7 +145,7 @@ static float bsize;
     
 }
 
--(void) keyTyped:(char) c{
+void SharedList::keyTyped(char c){
     if(c==-1){
 		if([search_string length]>0){
 			[search_string replaceCharactersInRange:NSMakeRange([search_string length]-1, 1) withString:@""];
@@ -168,15 +162,14 @@ static float bsize;
     [displays release];
     displays=[NSMutableString stringWithString:search_string];
     [displays retain];
-    [self trimDisplay];
+    trimDisplay();
 	name_bar->setStatus(displays,9999,UITextAlignmentLeft);
 	return ;
 }
 
 
 
-
--(void)searchAndHide:(BOOL)nosearch{
+void SharedList::searchAndHide(BOOL nosearch){
     vkeyboard_end(1);
 	
 	if([search_string length]==0||nosearch){
@@ -188,7 +181,8 @@ static float bsize;
         sbar->setStatus(@"No Results Found. ",4);
     }else{
         sbar->clear();
-        [self setWorldList:list];
+        setWorldList(list);
+        
         
     }
 	    
@@ -196,18 +190,18 @@ static float bsize;
     
 }
 
--(void)activate{
-	[self setSortStatus];
+void SharedList::activate(){
+	setSortStatus();
     
 }
--(void)deactivate{
+void SharedList::deactivate(){
 	sort_bar->clear();
 	sbar->clear();
     name_bar->clear();
     
 }
 static const int usage_id=42;
--(void)setSortStatus{
+void SharedList::setSortStatus(){
 	if(cur_sort==SORT_NAME){
 		sort_bar->setStatus(@"Search" ,99999);
 	}else if(cur_sort==SORT_DATE){
@@ -216,7 +210,7 @@ static const int usage_id=42;
 		sort_bar->setStatus(@"Featured" ,99999);
 	}	
 }
--(void)clearWorldList{
+void SharedList::clearWorldList(){
     for(int i=0;i<num_files;i++){
 		[file_list[i].name release];
         [file_list[i].file_name release];
@@ -231,10 +225,12 @@ static const int usage_id=42;
     animation_offset=0;
 
 }
--(void)setWorldList:(NSString*)wlist{
+NSString* reportedWorlds[100];
+int rwc_count=0;
+void SharedList::setWorldList(NSString* wlist){
     animation_offset=0;
-    [self setSortStatus];
-	[self clearWorldList];
+    setSortStatus();
+	clearWorldList();
 		NSArray* list=[wlist componentsSeparatedByString:@"\n"];
 	cur_page=0;
 	int n=0;
@@ -372,8 +368,9 @@ static const int usage_id=42;
 static int is_loading=0;
 static int loading_world=0;
 static float cursor_blink=0;
--(void)activateKB{
-    [self clearWorldList];
+
+void SharedList::activateKB(){
+    clearWorldList();
     sbar->setStatus(@"" ,9999);
    /* if(!World::getWorld->FLIPPED){
         [UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
@@ -386,10 +383,10 @@ static float cursor_blink=0;
     vkeyboard_begin(1);
     
 }
--(void)update:(float)etime{
+void SharedList::update(float etime){
 	if(is_loading>0){
 		if(cur_sort==SORT_NAME){
-            [self searchAndHide:TRUE];
+            searchAndHide(TRUE);
         }
         if(previewScreenshot!=NULL){
             delete previewScreenshot;
@@ -397,9 +394,9 @@ static float cursor_blink=0;
         }
         if(is_loading!=2)
 		cur_sort=(cur_sort+1)%NUM_SORTS;
-		[self setSortStatus];
+		setSortStatus();
         if(cur_sort==SORT_NAME){
-            [self activateKB];
+            activateKB();
             
 
 
@@ -426,7 +423,7 @@ static float cursor_blink=0;
         }else{
             if(is_loading!=-1)//just don't clear report confirm if coming from there
             sbar->clear();
-            [self setWorldList:list];
+            setWorldList(list);
         }
         is_loading=0;
         return;
@@ -454,7 +451,7 @@ static float cursor_blink=0;
             delete previewScreenshot;
             previewScreenshot=NULL;
         }
-        [self setSortStatus];
+        setSortStatus();
         
         previewScreenshot=NULL;
         if(!World::getWorld->menu->loadShared(&file_list[loading_world-1])){
@@ -462,7 +459,7 @@ static float cursor_blink=0;
             sbar->setStatus(@"Error: map not found",4);
         }else{
             World::getWorld->menu->showlistscreen=FALSE;
-            [self clearWorldList];
+            clearWorldList();
             sbar->clear();
             num_files=0;
             loading_world=0;  
@@ -527,7 +524,7 @@ static float cursor_blink=0;
 			
             if(inbox2(touches[i].mx,touches[i].my,&rect_cancel)){					
 				World::getWorld->menu->showlistscreen=FALSE;
-                [self searchAndHide:TRUE];
+                searchAndHide(TRUE);
                 [World::getWorld->menu->shareutil canceldl];
                 if(previewScreenshot!=NULL){
                     delete previewScreenshot;
@@ -546,7 +543,7 @@ static float cursor_blink=0;
 					
                 }
                 if(cur_sort==SORT_NAME&&inbox2(touches[i].mx,touches[i].my,&sbrrect)){
-                    [self activateKB];
+                    activateKB();
                 }else
                     if(inbox(touches[i].mx,touches[i].my,sbrect)){
                         if(cur_sort==SORT_NAME)
@@ -579,7 +576,7 @@ static float cursor_blink=0;
                 
                 if(inbox2(touches[i].mx,touches[i].my,&rload_cancel)){
                     if(previewScreenshot!=NULL){
-                        [self setSortStatus];
+                        setSortStatus();
                         delete previewScreenshot;
                         previewScreenshot=NULL;
                     }
@@ -593,7 +590,8 @@ static float cursor_blink=0;
                     
                 }
                 if(inbox2(touches[i].mx,touches[i].my,&rect_flag)){
-                    [alertReportContent show];
+                    showAlertReport();
+                    
                     
 
                 }
@@ -619,48 +617,34 @@ static float cursor_blink=0;
     }
 	
 }
-NSString* reportedWorlds[100];
-int rwc_count=0;
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	//NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	if(alertView==alertReportContent){
-        switch (buttonIndex) {
-            case 0:
-            {
-               
-                break;
-            }
-            case 1:
-            {
-                if(previewScreenshot!=NULL){
-                    
-                    delete previewScreenshot;
-                    previewScreenshot=NULL;
-                    is_loading=2;
-                }
-               
-                if(rwc_count==100){
-                    sbar->setStatus(@"Report limit reached, try again later" ,5);
-                }else{
-                    
-                    sbar->setStatus(@"Report sent, thank you" ,5);
-                    [World::getWorld->menu->shareutil reportWorld:file_list[loading_world-1].file_name];
-                    reportedWorlds[rwc_count]=[file_list[loading_world-1].file_name copy];
-                    rwc_count++;
-                    
-                    [alertReportConfirm show];
-                
-                }
-                break;
-            }
-           
-            default:
-                break;
-        }
+
+void SharedList::alertCallback(){
+    if(previewScreenshot!=NULL){
+        
+        delete previewScreenshot;
+        previewScreenshot=NULL;
+        is_loading=2;
     }
+    
+    if(rwc_count==100){
+        sbar->setStatus(@"Report limit reached, try again later" ,5);
+    }else{
+        
+        sbar->setStatus(@"Report sent, thank you" ,5);
+        [World::getWorld->menu->shareutil reportWorld:file_list[loading_world-1].file_name];
+        reportedWorlds[rwc_count]=[file_list[loading_world-1].file_name copy];
+        rwc_count++;
+        
+        showAlertReportConfirm();
+       
+        
+    }
+   
+
 }
--(void)render{
+
+void SharedList::render(){
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	[dateFormat setDateFormat:@"MM/dd/yyyy"];
 	glColor4f(0.0, 0.0, 0.0, 1.0f);
@@ -894,4 +878,4 @@ int rwc_count=0;
  [dateFormat release];
     
 }
-@end
+

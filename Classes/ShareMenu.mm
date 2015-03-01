@@ -14,13 +14,13 @@
 
 
 
-@implementation ShareMenu
+
 
 extern float SCREEN_WIDTH; 
 extern float SCREEN_HEIGHT;
 extern float P_ASPECT_RATIO; 
 
--(id)init{
+ShareMenu::ShareMenu(){
 	
     
 	
@@ -52,21 +52,21 @@ extern float P_ASPECT_RATIO;
 	share_explain_lbl=new statusbar(share_explain_rect,15);
 	share_explain_lbl->setStatus(@"Note: Players will spawn where you last saved.  The last picture you took is used as a preview picture." ,9999);
 	//starto=FALSE;
-	return self;
+	
 }
--(void)activate{
+void ShareMenu::activate(){
 	share_explain_lbl->setStatus(@"Note: Players will spawn where you last saved.  The last picture you took is used as a preview picture." ,9999);
 	label_bar->setStatus(@"Name your world: ",9999,UITextAlignmentLeft);
     
 	
 }
--(void)deactivate{
+void ShareMenu::deactivate(){
 	share_explain_lbl->clear();
 	label_bar->clear();
 	name_bar->clear();
     
 }
--(void) keyTyped:(char)c{
+void ShareMenu::keyTyped(char c){
     
     if(c==-1){
         if([name length]>0){
@@ -83,9 +83,10 @@ extern float P_ASPECT_RATIO;
     [displays release];
     displays=[NSMutableString stringWithString:name];
     [displays retain];
-    [self trimDisplay];
+    trimDisplay();
+    
 }
--(void)beginShare:(WorldNode*)world{
+void ShareMenu::beginShare(WorldNode* world){
 	node=world;
 	/*if(!World::getWorld->FLIPPED){
 		[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
@@ -103,7 +104,7 @@ extern float P_ASPECT_RATIO;
 	
     displays=[NSMutableString stringWithString:name];
     [displays retain];
-    [self trimDisplay];
+    trimDisplay();
 	name_bar->setStatus(displays,9999,UITextAlignmentLeft);
   
 
@@ -111,7 +112,7 @@ extern float P_ASPECT_RATIO;
 	
 	
 }
-- (void) trimDisplay{
+void ShareMenu::trimDisplay(){
     while([displays sizeWithFont:[UIFont systemFontOfSize:14]].width>input_background.size.width-10){
         [displays deleteCharactersInRange:NSMakeRange(0,1)];
     }
@@ -120,8 +121,7 @@ extern float P_ASPECT_RATIO;
 }
 
 
-
--(void)endShare:(BOOL)cancel{
+void ShareMenu::endShare(BOOL cancel){
     vkeyboard_end(0);
 	
 	if(name==NULL||[name length]==0||cancel){
@@ -162,7 +162,8 @@ extern float P_ASPECT_RATIO;
 }
 static const int usage_id=9001;
 static float cursor_blink=0;
--(void)update:(float)etime{
+
+void ShareMenu::update(float etime){
     if(cursor_blink>=0&&cursor_blink-etime<0){
          name_bar->setStatus(displays,9999,UITextAlignmentLeft);
     }
@@ -199,10 +200,10 @@ static float cursor_blink=0;
 		if(touches[i].inuse==usage_id&&touches[i].down==M_RELEASE){
 			
 			if(inbox2(touches[i].mx,touches[i].my,&rect_cancel)){	
-				[self endShare:TRUE];
+				endShare(TRUE);
 			}
 			if(inbox2(touches[i].mx,touches[i].my,&rect_submit)){	
-				[self endShare:FALSE];
+				endShare(FALSE);
 			}
 			
 			touches[i].inuse=0;
@@ -211,7 +212,7 @@ static float cursor_blink=0;
 	}
 	
 }
--(void)render{
+void ShareMenu::render(){
 	glColor4f(1.0f, 0.0f, 0.0f,1.0f);
 	Resources::getResources->getMenuTex(MENU_CANCEL)->drawButton(rect_cancel);
 	glColor4f(0.0f, 1.0f, 0.0f,1.0f);
@@ -230,4 +231,4 @@ static float cursor_blink=0;
 	
 	
 }
-@end
+

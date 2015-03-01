@@ -34,9 +34,9 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
        c = [string characterAtIndex:0];
     }
     if(caller==0){
-        [World::getWorld->menu->share_menu keyTyped:c];
+        World::getWorld->menu->share_menu->keyTyped(c);
     }else if(caller==1){
-        [World::getWorld->menu->shared_list keyTyped:c];
+        World::getWorld->menu->shared_list->keyTyped(c);
     }
     
     return FALSE;
@@ -55,9 +55,9 @@ shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)strin
     NSLog(@"sup");
     
     if(caller==0){
-    [World::getWorld->menu->share_menu endShare:FALSE];
+    World::getWorld->menu->share_menu->endShare(FALSE);
     }else if(caller==1){
-        [World::getWorld->menu->shared_list searchAndHide:FALSE];
+        World::getWorld->menu->shared_list->searchAndHide(FALSE);
         }
     
     // end editing

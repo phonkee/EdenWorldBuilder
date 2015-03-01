@@ -11,6 +11,10 @@
 
 extern void alert_init();
 extern void showAlertWarpHome();
+
 extern void showAlertDeleteConfirm(NSString* name);
 extern void showAlertWorldType();
+
+extern void showAlertReport();
+extern void showAlertReportConfirm();
 #endif

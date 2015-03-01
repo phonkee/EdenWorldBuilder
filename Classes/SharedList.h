@@ -28,8 +28,9 @@ typedef struct{
 	
 }SharedListNode;
 
-@interface SharedList : NSObject{
-	
+class SharedList {
+public:
+    SharedList();
 	CGRect rect_header;
 	
 	statusbar* sort_bar;
@@ -63,20 +64,23 @@ typedef struct{
     NSMutableString* displays;
     Texture2D* previewScreenshot;
     float animation_offset;
-}
-@property(nonatomic,assign) BOOL finished_dl,finished_preview_dl,finished_list_dl;
+    void update(float etime);
+    void setWorldList(NSString* wlist);
+    void render();
+    void setSortStatus();
+    void activate();
+    void deactivate();
+    void clearWorldList();
+    void searchAndHide(BOOL nosearch);
+    void keyTyped(char c);
+    void trimDisplay();
+    void alertCallback();
+    void activateKB();
+};
+/*@property(nonatomic,assign) BOOL finished_dl,finished_preview_dl,finished_list_dl;
 @property(nonatomic,readonly) statusbar* sbar;
 @property(nonatomic,readonly) statusbar* sort_bar;
-@property(nonatomic,readonly) int cur_sort;
--(void)update:(float)etime;
--(void)setWorldList:(NSString*)wlist;
--(void)render;
--(void)setSortStatus;
--(void)activate;
--(void)deactivate;
--(void)clearWorldList;
--(void)searchAndHide:(BOOL)nosearch;
--(void)keyTyped:(char) c;
-@end
+@property(nonatomic,readonly) int cur_sort;*/
+
 
 #endif

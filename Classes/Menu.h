@@ -20,7 +20,7 @@
 #import "Menu_background.h"
 
 
-@class ShareMenu;
+class ShareMenu;
 
 
 

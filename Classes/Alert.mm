@@ -12,6 +12,9 @@
 static UIAlertView *alertWarpHome;
 UIAlertView *alertDeleteConfirm;
 UIAlertView *alertWorldType;
+static UIAlertView *alertReportContent;
+static UIAlertView *alertReportConfirm;
+
 @interface PAlert : NSObject <UIAlertViewDelegate> {
     
     
@@ -88,6 +91,22 @@ UIAlertView *alertWorldType;
      //   loading++;
         
         
+    }else if(alertView==alertReportContent){
+        switch (buttonIndex) {
+            case 0:
+            {
+                
+                break;
+            }
+            case 1:
+            {
+                World::getWorld->menu->shared_list->alertCallback();
+                break;
+            }
+                
+            default:
+                break;
+        }
     }
 
     
@@ -113,6 +132,18 @@ void alert_init(){
                      initWithTitle:@"Pick world type"
                      message:@"\n"                                                                              delegate:pa
                      cancelButtonTitle:nil                                                                          otherButtonTitles:@"Flat", @"Normal", nil];
+    
+    alertReportContent= [[UIAlertView alloc]
+                         initWithTitle:@"Flag Content"
+                         message:@"Report this world for offensive or innappropriate content?\n"                                                                              delegate:pa
+                         cancelButtonTitle:@"Cancel"                                                                           otherButtonTitles:@"Report" , nil];
+    
+    alertReportConfirm= [[UIAlertView alloc]
+                         initWithTitle:@"Report sent, thanks\n"
+                         message:@""                                                                              delegate:pa
+                         cancelButtonTitle:@"Ok"                                                                          otherButtonTitles:nil , nil];
+    
+
 }
 
 void showAlertWarpHome(){
@@ -125,4 +156,10 @@ void showAlertDeleteConfirm(NSString* name){
 }
 void showAlertWorldType(){
     [alertWorldType show];
+}
+void showAlertReport(){
+    [alertReportContent show];
+}
+void showAlertReportConfirm(){
+    [alertReportConfirm show];
 }
