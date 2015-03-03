@@ -185,7 +185,7 @@ public class UploadMap2 extends HttpServlet implements Runnable
 				try{
 					String real_hash=getMD5Checksum(outputFile2.getAbsolutePath());
 					
-					if(real_hash.trim().equals(hash.toString().trim())&&(version==4)){
+					if(real_hash.trim().equals(hash.toString().trim())&&(version==4)||version==3){
 						System.out.println("hash checks out '"+hash+"=="+real_hash+"'"); 
 						System.out.println("openhandle count:"+openc +" filesuploaded count: "+filesuploaded);
 						System.out.println("Active uploads: "+activeupload+"  Active searches and req:"+List2.singleton.activereq.get());
