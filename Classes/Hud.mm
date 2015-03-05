@@ -940,7 +940,7 @@ BOOL Hud::handlePickBlock(int x,int y){
 	for(int i=0;i<NUM_DISPLAY_BLOCKS;i++){
 		if(inbox(x,y,blockBounds[i])){
             if(hudBlocks[i]==TYPE_BLOCK_TNT){
-                sb->setStatus(@"Pick second block type",999);
+               // sb->setStatus(@"Pick second block type",999);
                 pickSecondBlock=TRUE;
                 handled=TRUE;
                // printf("no custom\n");
@@ -1539,7 +1539,7 @@ void Hud::renderBlockScreen(){
             alpha=0.5f;
              glColor4f(1.0f,1.0f,1.0f,alpha);
         }else{
-            alpha=1.0f;
+            alpha=at2;
              glColor4f(1.0f,1.0f,1.0f,alpha);
         }
         if(build_size==0){/*blockBounds[i].size.width-=10;
@@ -1551,11 +1551,15 @@ void Hud::renderBlockScreen(){
             blockBounds[i].size.height+=10;
         }
         if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
+            
+            
             if(blocktype_pressed==hudBlocks[i]){
                  if(build_size==0){
                       Resources::getResources->getTex(ICO_TRIANGLE_BORDER_PRESSED2)->drawText(blockBounds[i]);
                  }else{
+                     
                       Resources::getResources->getTex(ICO_TRIANGLE_BORDER_PRESSED)->drawText(blockBounds[i]);
+                     
                  }
             }
                
@@ -1563,7 +1567,27 @@ void Hud::renderBlockScreen(){
                 if(build_size==0){
                     Resources::getResources->getTex(ICO_TRIANGLE_BORDER2)->drawText(blockBounds[i]);
                 } else {
+                    if(pickSecondBlock&&hudBlocksMap[hudBlocks[i]]!=-1){
+                        if(IS_IPAD&&!SUPPORTS_RETINA){
+                            blockBounds[i].origin.x-=26/SCALE_WIDTH;
+                            blockBounds[i].origin.y-=26/SCALE_HEIGHT;
+                            
+                            Resources::getResources->getTex(ICO_TRIANGLE_BORDER_ACTIVE)->drawText(blockBounds[i]);
+                            blockBounds[i].origin.x+=26/SCALE_WIDTH;
+                            blockBounds[i].origin.y+=26/SCALE_HEIGHT;
+                            
+                        }else{
+                        blockBounds[i].origin.x-=13;
+                        blockBounds[i].origin.y-=13;
+                       
+                        Resources::getResources->getTex(ICO_TRIANGLE_BORDER_ACTIVE)->drawText(blockBounds[i]);
+                        blockBounds[i].origin.x+=13;
+                        blockBounds[i].origin.y+=13;
+                            
+                        }
+                    }else{
                      Resources::getResources->getTex(ICO_TRIANGLE_BORDER)->drawText(blockBounds[i]);
+                        }
                 }
             }
                
@@ -1609,7 +1633,25 @@ void Hud::renderBlockScreen(){
                 if(build_size==0){
                     Resources::getResources->getTex(ICO_BLOCK_BORDER2)->drawText(blockBounds[i]);
                 }else{
+                    if(pickSecondBlock&&hudBlocksMap[hudBlocks[i]]!=-1){
+                        if(IS_IPAD&&!SUPPORTS_RETINA){
+                            blockBounds[i].origin.x-=26/SCALE_WIDTH;
+                            blockBounds[i].origin.y-=26/SCALE_HEIGHT;
+                            
+                             Resources::getResources->getTex(ICO_BLOCK_BORDER_ACTIVE)->drawText(blockBounds[i]);
+                            blockBounds[i].origin.x+=26/SCALE_WIDTH;
+                            blockBounds[i].origin.y+=26/SCALE_HEIGHT;
+                            
+                        }else{
+                        blockBounds[i].origin.x-=13;
+                        blockBounds[i].origin.y-=13;
+                        Resources::getResources->getTex(ICO_BLOCK_BORDER_ACTIVE)->drawText(blockBounds[i]);
+                        blockBounds[i].origin.x+=13;
+                        blockBounds[i].origin.y+=13;
+                        }
+                    }else{
                     Resources::getResources->getTex(ICO_BLOCK_BORDER)->drawText(blockBounds[i]);
+                    }
                 }
             }
         }
@@ -1633,7 +1675,7 @@ void Hud::renderBlockScreen(){
         if(pickSecondBlock&&hudBlocksMap[hudBlocks[i]]==-1){
             alpha=0.5f;
              glColor4f(1.0f,1.0f,1.0f,alpha);
-        }else {alpha=1.0f;
+        }else {alpha=at2;
             
              glColor4f(1.0f,1.0f,1.0f,alpha);
         }

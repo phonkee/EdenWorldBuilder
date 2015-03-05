@@ -35,6 +35,8 @@
 		194EDC361A7722B300342AEB /* Flame_256.png in Resources */ = {isa = PBXBuildFile; fileRef = 194EDC351A7722B300342AEB /* Flame_256.png */; };
 		194EDC381A788E2300342AEB /* Flame_512.png in Resources */ = {isa = PBXBuildFile; fileRef = 194EDC371A788E2300342AEB /* Flame_512.png */; };
 		194EDC3E1A79CAA200342AEB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 194EDC3D1A79CAA200342AEB /* Security.framework */; };
+		195A1FA31AA81588002A59C3 /* ipad~triangle_border_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 195A1FA11AA81588002A59C3 /* ipad~triangle_border_active.png */; };
+		195A1FA41AA81588002A59C3 /* ipad~block_border_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 195A1FA21AA81588002A59C3 /* ipad~block_border_active.png */; };
 		1967D00A1639F26100C03DF0 /* Charger.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D0091639F26100C03DF0 /* Charger.pod */; };
 		1967D0101639F3A900C03DF0 /* Batty.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00B1639F3A900C03DF0 /* Batty.pod */; };
 		1967D0121639F3A900C03DF0 /* Moof.pod in Resources */ = {isa = PBXBuildFile; fileRef = 1967D00D1639F3A900C03DF0 /* Moof.pod */; };
@@ -878,6 +880,8 @@
 		194EDC3A1A79C9D700342AEB /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		194EDC3D1A79CAA200342AEB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		195A1F971AA68FDC002A59C3 /* libcocos2d iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libcocos2d iOS.a"; sourceTree = "<group>"; };
+		195A1FA11AA81588002A59C3 /* ipad~triangle_border_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~triangle_border_active.png"; sourceTree = "<group>"; };
+		195A1FA21AA81588002A59C3 /* ipad~block_border_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~block_border_active.png"; sourceTree = "<group>"; };
 		1967D0091639F26100C03DF0 /* Charger.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Charger.pod; path = models/Charger.pod; sourceTree = "<group>"; };
 		1967D00B1639F3A900C03DF0 /* Batty.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Batty.pod; path = models/Batty.pod; sourceTree = "<group>"; };
 		1967D00D1639F3A900C03DF0 /* Moof.pod */ = {isa = PBXFileReference; lastKnownFileType = file; name = Moof.pod; path = models/Moof.pod; sourceTree = "<group>"; };
@@ -2940,6 +2944,8 @@
 		C6FD455112905ECC005FC996 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				195A1FA11AA81588002A59C3 /* ipad~triangle_border_active.png */,
+				195A1FA21AA81588002A59C3 /* ipad~block_border_active.png */,
 				19B3B13816A5EF1400E86E8D /* uimasks */,
 				19B3B13616A4EC9200E86E8D /* ipad~paint_mask.png */,
 				19B3B13416A3B2C200E86E8D /* text_numbers.png */,
@@ -3295,6 +3301,7 @@
 				1D8CEA4E14AD757700A1861D /* Stumpy_Idle_2.caf in Resources */,
 				1D8CEA4F14AD757700A1861D /* Stumpy_Idle_1.caf in Resources */,
 				1D8CEA5014AD757700A1861D /* Stumpy_Hit_5.caf in Resources */,
+				195A1FA31AA81588002A59C3 /* ipad~triangle_border_active.png in Resources */,
 				1D8CEA5114AD757700A1861D /* Stumpy_Hit_4.caf in Resources */,
 				19D546A01A3D43B500E61041 /* grasslands_ambience.mp3 in Resources */,
 				1D8CEA5214AD757700A1861D /* Stumpy_Hit_3.caf in Resources */,
@@ -3617,6 +3624,7 @@
 				1D8CEC3914B092BC00A1861D /* block_break_lava_3_v2.caf in Resources */,
 				1D8CEC3A14B092BC00A1861D /* block_break_lava_2_v2.caf in Resources */,
 				194671541A8003BC00B0E5A3 /* Icon_144.png in Resources */,
+				195A1FA41AA81588002A59C3 /* ipad~block_border_active.png in Resources */,
 				1D8CEC3B14B092BC00A1861D /* block_break_lava_1_v2.caf in Resources */,
 				1D8CEC4314B092BC00A1861D /* attempt_fire_v2.caf in Resources */,
 				1D8CEC4414B092BC00A1861D /* water_splash_small_4.caf in Resources */,

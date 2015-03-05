@@ -1377,6 +1377,14 @@ void Resources::loadGameTextures(){
     textures.push_back(temp);
     temp=new Texture2D(@"portal_icon2_active.png",FALSE);
     textures.push_back(temp);
+    
+    temp=
+    new Texture2D(@"block_border_active.png",FALSE);
+    textures.push_back(temp);
+    
+    temp=
+    new Texture2D(@"triangle_border_active.png",FALSE);
+    textures.push_back(temp);
     //////////MASKS
     extern int storedMaskCounter;
     storedMaskCounter=0;
@@ -1402,6 +1410,8 @@ void Resources::loadGameTextures(){
     textures.push_back(temp);
     temp=new Texture2D(@"Stumpy_DefaultMASK.png",FALSE);
     textures.push_back(temp);
+    
+   
 }
 
 int Resources::startedBurn(float length){

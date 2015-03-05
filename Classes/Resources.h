@@ -335,6 +335,8 @@ enum ICON_TYPES{
     ICOICO_FLOWER_ACTIVE=95,
     ICOICO_DOOR_ACTIVE=96,
     ICOICO_PORTAL_ACTIVE=97,
+     ICO_BLOCK_BORDER_ACTIVE=98,
+     ICO_TRIANGLE_BORDER_ACTIVE=99,
     
     //10 texs after this reserved for coloring
     
