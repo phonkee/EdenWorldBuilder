@@ -613,6 +613,8 @@ void Texture2D::initFromPath(NSString* path, BOOL sizeToFit, Texture2DPixelForma
     BOOL isDoorico=FALSE;
     BOOL isPortalico=FALSE;
     BOOL storeImage=FALSE;
+    
+   
     if(storedSkinCounter>=0&&storedSkinCounter<15){
         if(storedSkinCounter%3!=1){
             
@@ -691,6 +693,13 @@ void Texture2D::initFromPath(NSString* path, BOOL sizeToFit, Texture2DPixelForma
 	path = [[NSBundle mainBundle] pathForResource:path ofType:nil];
 	
     
+    //cocos2d::Image* limage=new   cocos2d::Image();
+   /* char csta[100];
+    [path getCString:csta
+              maxLength:100
+               encoding:NSUTF8StringEncoding];
+    std::string mstring(csta);
+    limage->initWithImageFile(csta);*/
 	uiImage = [[UIImage alloc] initWithContentsOfFile:path];
    
      initFromImage([uiImage CGImage],[uiImage imageOrientation],sizeToFit,pixelFormat,genMips);

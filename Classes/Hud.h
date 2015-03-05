@@ -52,7 +52,7 @@ public:
 	float flash;
     float fade_out;
     Vector flashcolor;
-    int pressed;
+    int blocktype_pressed;
 	
     Button rburn,rmine,rbuild,rjumphit,rjumprender,rpaint;
     
@@ -94,6 +94,8 @@ private:
     void renderBlockAndBorder(CGRect recto);
     void renderMenuScreen();
     void renderBlockScreen();
+    
+    BOOL pickSecondBlock;
 };
 
 

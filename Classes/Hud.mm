@@ -56,9 +56,10 @@ static int hudBlocks[NUM_DISPLAY_BLOCKS]={
     TYPE_WOOD_RAMP1,
     TYPE_ICE_RAMP1,
     TYPE_SHINGLE_RAMP1,
-    
-    
     TYPE_WEAVE,
+    
+    
+    
     
    
     
@@ -66,7 +67,7 @@ static int hudBlocks[NUM_DISPLAY_BLOCKS]={
     TYPE_LAVA,
     
     TYPE_BLOCK_TNT,
-    TYPE_FIREWORK,
+     TYPE_FIREWORK,
     
     TYPE_DOOR_TOP,
     TYPE_GOLDEN_CUBE,
@@ -75,6 +76,58 @@ static int hudBlocks[NUM_DISPLAY_BLOCKS]={
     TYPE_PORTAL_TOP,
     
 };
+
+extern "C" const int hudBlocksMap[NUM_BLOCKS+1]={
+    [TYPE_GRASS]=TYPE_BTGRASS,
+    [TYPE_FLOWER]=-1,
+    [TYPE_DARK_STONE]=TYPE_BTDARKSTONE,
+    [TYPE_STONE]=TYPE_BTSTONE,
+    [TYPE_DIRT]=TYPE_BTDIRT,
+    [TYPE_SAND]=TYPE_BTSAND,
+    [TYPE_TNT]=TYPE_BTTNT,
+   
+    [TYPE_WOOD]=TYPE_BTWOOD,
+    [TYPE_SHINGLE]=TYPE_BTSHINGLE,
+    [TYPE_GLASS]=TYPE_BTGLASS,
+    [TYPE_GRADIENT]=TYPE_BTGRADIENT,
+    [TYPE_TREE]=TYPE_BTTREE,
+    [TYPE_LEAVES]=TYPE_BTLEAVES,
+    
+    
+    [TYPE_BRICK]=TYPE_BTBRICK,
+    [TYPE_COBBLESTONE]=TYPE_BTCOBBLESTONE,
+    [TYPE_VINE]=TYPE_BTVINES,
+    [TYPE_LADDER]=TYPE_BTLADDER,
+    [TYPE_ICE]=TYPE_BTSHINGLE,
+    
+    [TYPE_CRYSTAL]=TYPE_BTCRYSTAL,
+    
+    [TYPE_TRAMPOLINE]=TYPE_BTTRAMPOLINE,
+    [TYPE_CLOUD]=TYPE_BTCLOUD,
+    [TYPE_STONE_RAMP1]=TYPE_BTSTONESIDE,
+    [TYPE_WOOD_RAMP1]=TYPE_BTWOODSIDE,
+    [TYPE_ICE_RAMP1]=TYPE_BTICESIDE,
+    [TYPE_SHINGLE_RAMP1]=TYPE_BTSHINGLESIDE,
+    
+    
+    [TYPE_WEAVE]=TYPE_BTFENCE,
+    
+    
+    
+    [TYPE_WATER]=TYPE_BTWATER,
+    [TYPE_LAVA]=TYPE_BTLAVA,
+    
+    [TYPE_BLOCK_TNT]=-1,
+    [TYPE_FIREWORK]=TYPE_BTFIREWORK,
+    
+    [TYPE_DOOR_TOP]=-1,
+    [TYPE_GOLDEN_CUBE]=-1,
+    [TYPE_LIGHTBOX]=TYPE_BTLIGHTBOX,
+    [TYPE_STEEL]=TYPE_BTSTEEL,
+    [TYPE_PORTAL_TOP]=-1,
+    
+};
+
 static int marginVert=10;
 static int marginLeft=10;
 static int marginLeft2=10-6;
@@ -149,7 +202,7 @@ Hud::Hud(){
 	hideui=FALSE;
 	HUDR_X=SCREEN_WIDTH-HUD_BOX_SIZE-13;
 	ttime=0;
-    pressed=-1;
+    blocktype_pressed=-1;
     justLoaded=1;
     
 	rjumprender.origin.x=HUDR_X;
@@ -309,8 +362,9 @@ Hud::Hud(){
 }
 static float at1=0,at2=0,at3=0;
 void Hud::worldLoaded(){
-    pressed=-1;
+    blocktype_pressed=-1;
     inmenu=FALSE;
+    pickSecondBlock=FALSE;
     at1=0;
 	if(mode==MODE_PICK_BLOCK){
 		mode=MODE_BUILD;
@@ -339,6 +393,10 @@ BOOL Hud::update(float etime){
 	if(flash>0){
 		flash-=etime;
 	}
+    if(pickSecondBlock&&mode!=MODE_PICK_BLOCK){
+        pickSecondBlock=FALSE;
+        sb->clear();
+    }
     if(World::getWorld->player->flash>0){
        // World::getWorld->player.flash-=etime;
     }
@@ -504,7 +562,7 @@ BOOL Hud::update(float etime){
                     if(mode==MODE_CAMERA){
                         mode=lmode;
                     }
-                    pressed=-1;
+                    blocktype_pressed=-1;
                 }else{
                     
                     extern BOOL FLY_MODE;
@@ -625,11 +683,13 @@ BOOL Hud::update(float etime){
                 }else
                     if(mode!=MODE_PICK_BLOCK){
                         mode=MODE_PICK_BLOCK;
+                        pickSecondBlock=FALSE;
+                        sb->clear();
                         inmenu=FALSE;
                     }else 
                         mode=MODE_BUILD;
                 
-                pressed=-1;
+                blocktype_pressed=-1;
                 Input::getInput()->clearAll();
                 
                 break;
@@ -643,7 +703,7 @@ BOOL Hud::update(float etime){
                     inmenu=FALSE;
                 }else 
                     mode=MODE_PAINT;
-                pressed=-1;
+                blocktype_pressed=-1;
                 input->clearAll();
                 
                 break;
@@ -661,10 +721,13 @@ BOOL Hud::update(float etime){
                 inmenu=FALSE;
                 handled=TRUE;
 			}
-
+            
 			if(mode==MODE_PICK_BLOCK){
 				if(handlePickBlock(touches[i].mx,touches[i].my)){
+                    if(!pickSecondBlock){
                     inmenu=FALSE;
+                     sb->clear();
+                    }
 					handled=TRUE;
                     //printg("handled\n");
 				}				
@@ -681,6 +744,7 @@ BOOL Hud::update(float etime){
             
 			if(handled){
 				touches[i].inuse=usage_id;
+                touches[i].moved=false;
 				touches[i].down=M_NONE;	
 				break;
 			}						
@@ -689,14 +753,14 @@ BOOL Hud::update(float etime){
 	for(int i=0;i<MAX_TOUCHES;i++){
 		if(touches[i].inuse==usage_id&&touches[i].moved){
             if(mode==MODE_PICK_BLOCK){
-				if(handlePickBlock(touches[i].mx,touches[i].my)){
+				//if(handlePickBlock(touches[i].mx,touches[i].my)){
                     
                     
-                        touches[i].inuse=usage_id;
-                    touches[i].moved=FALSE;
+                //        touches[i].inuse=usage_id;
+                //    touches[i].moved=FALSE;
                     
 					
-				}				
+				//}
 			}else if(mode==MODE_PICK_COLOR){
 				if(handlePickColor(touches[i].mx,touches[i].my)){
                     touches[i].inuse=usage_id;
@@ -734,20 +798,20 @@ BOOL Hud::update(float etime){
 	for(int i=0;i<MAX_TOUCHES;i++){
 		
 		if(touches[i].inuse==usage_id&&touches[i].down==M_RELEASE){
-			if(pressed!=-1){
-                if(mode==MODE_PICK_BLOCK){
+			if(blocktype_pressed!=-1){
+                if(mode==MODE_PICK_BLOCK&&pickSecondBlock==FALSE){
                     
                     
-                    if(hudBlocks[pressed]==TYPE_GOLDEN_CUBE){
+                    if(blocktype_pressed==TYPE_GOLDEN_CUBE){
                         if(goldencubes>0){
                            
                             block_paintcolor=20;
                             mode=MODE_BUILD;
-                            blocktype=hudBlocks[pressed];
+                            blocktype=blocktype_pressed;
                             printg("set paintcolor %d \n",block_paintcolor);
                           
                         }
-                    }else if(hudBlocks[pressed]==TYPE_CUSTOM){
+                    }else if(blocktype_pressed==TYPE_CUSTOM){
                         /*
                         build_size++;
                         if(build_size==2){
@@ -755,27 +819,28 @@ BOOL Hud::update(float etime){
                         }
                         printg("Setting buildsize: %d\n",build_size);
                          */
-                    }else if(hudBlocks[pressed]==TYPE_DOOR_TOP){
+                    }else if(blocktype_pressed==TYPE_DOOR_TOP){
                       block_paintcolor=20;
                         mode=MODE_BUILD;
-                        blocktype=hudBlocks[pressed];
+                        blocktype=blocktype_pressed;
 
                         
                     }else{
                         block_paintcolor=0;
                     
                         mode=MODE_BUILD;
-                        blocktype=hudBlocks[pressed];
+                        blocktype=blocktype_pressed;
+                        printf("blocktype:%d\n",blocktype);
                     }
                     
                 }
                 if(mode==MODE_PICK_COLOR){
                     mode=MODE_PAINT;
-                    paintColor=pressed+1;
+                    paintColor=blocktype_pressed+1;
                     
                     printg("paint color-1:%d\n",paintColor-1);
                 }
-                pressed=-1;
+                blocktype_pressed=-1;
                 
             }
             touches[i].inuse=0;
@@ -800,7 +865,7 @@ BOOL Hud::handlePickColor(int x,int y){
    
     for(int i=0;i<NUM_COLORS;i++){
      if(inbox(x,y,colorBounds[i])){
-         pressed=i;
+         blocktype_pressed=i;
          
         // NSLog(@"picked color: %d",pressed);
    
@@ -874,14 +939,67 @@ BOOL Hud::handlePickBlock(int x,int y){
 	
 	for(int i=0;i<NUM_DISPLAY_BLOCKS;i++){
 		if(inbox(x,y,blockBounds[i])){
-            if(hudBlocks[pressed]==TYPE_CUSTOM){
-                printg("no custom\n");
+            if(hudBlocks[i]==TYPE_BLOCK_TNT){
+                sb->setStatus(@"Pick second block type",999);
+                pickSecondBlock=TRUE;
+                handled=TRUE;
+               // printf("no custom\n");
             }else{
-                pressed=i;
+                /*
+                 TYPE_BTGRASS=82,
+                 TYPE_BTDARKSTONE=83,
+                 TYPE_BTSTONE=84,
+                 TYPE_BTDIRT=85,
+                 TYPE_BTSAND=86,
+                 TYPE_BTTNT=87,
+                 TYPE_BTWOOD=88,
+                 TYPE_BTSHINGLE=89,
+                 TYPE_BTGLASS=90,
+                 TYPE_BTGRADIENT=91,
+                 TYPE_BTTREE=92,
+                 TYPE_BTLEAVES=93,
+                 TYPE_BTBRICK=94,
+                 TYPE_BTCOBBLESTONE=95,
+                 TYPE_BTVINES=96,
+                 TYPE_BTLADDER=97,
+                 TYPE_BTICE=98,
+                 TYPE_BTCRYSTAL=99,
+                 TYPE_BTTRAMPOLINE=100,
+                 TYPE_BTCLOUD=101,
+                 TYPE_BTSTONESIDE=102,
+                 TYPE_BTWOODSIDE=103,
+                 TYPE_BTICESIDE=104,
+                 TYPE_BTSHINGLESIDE=105,
+                 TYPE_BTFENCESIDE=106,
+                 TYPE_BTWATERSIDE=107,
+                 TYPE_BTLAVASIDE=108,
+                 TYPE_BTFIREWORKSIDE=109,
+                 TYPE_BTLIGHTBOX=110,
+                 TYPE_BTSTEEL=111,*/
+                if(pickSecondBlock){
+                    int nr=hudBlocksMap[hudBlocks[i]];
+                    
+                    
+                    if(nr==-1){
+                        blocktype_pressed=hudBlocks[i];
+                        printf("derp: %d\n",nr);
+                    }else{ blocktype_pressed=nr;
+                        printf("derp: %d\n",nr);
+                    }
+                    
+                    pickSecondBlock=FALSE;
+                        
+                    
+                    
+                }else{
+                    blocktype_pressed=hudBlocks[i];
+                    printf("derp: %d\n",blocktype_pressed);
+                }
                 // printg("set pressed: %d\n",i);
             }
            
 			 handled=TRUE;
+            break;
 		}
 	}
 		return handled;
@@ -893,7 +1011,7 @@ void Hud::renderColorPickScreen(){
     Resources::getResources->getTex( ICO_COLOR_SELECT_BACKGROUND)->drawInRect(rpaintframe);
    
     for(int i=0;i<NUM_COLORS;i++){
-        if(pressed==i)
+        if(blocktype_pressed==i)
            Resources::getResources->getTex(ICO_COLOR_BLOCK_BORDER_PRESSED)->drawInRect2(colorBounds[i]);
             else
 		Resources::getResources->getTex(ICO_COLOR_BLOCK_BORDER)->drawInRect2(colorBounds[i]);
@@ -913,7 +1031,7 @@ void Hud::renderColorPickScreen(){
 		};
         
         int bb=0;
-        if(pressed==i){
+        if(blocktype_pressed==i){
             bb=2;
         }
         int size=29;
@@ -1136,6 +1254,7 @@ void Hud::renderBlockAndBorder(CGRect recto){
         }else
             tp=Resources::getResources->getBlockTex(blockTypeFaces[type][3]);
     }else{
+        
         if (block_paintcolor==0){
           if(type==TYPE_BRICK)
                 tp=Resources::getResources->getBlockTex(TEX_BRICK_COLOR);
@@ -1143,6 +1262,9 @@ void Hud::renderBlockAndBorder(CGRect recto){
                 tp=Resources::getResources->getBlockTex(blockTypeFaces[type][5]);
         }else
             tp=Resources::getResources->getBlockTex(blockTypeFaces[type][5]);
+    }
+    if(blockinfo[type]&IS_BLOCKTNT){
+        tp=Resources::getResources->getBlockTex(TEX_BLOCKTNT);
     }
     GLfloat				coordinates[] = {
         0,			tp.y+tp.x,
@@ -1393,6 +1515,7 @@ void Hud::renderMenuScreen(){
 
 
 void Hud::renderBlockScreen(){
+    float alpha=at2;
 	//glDisable(GL_TEXTURE_2D);
 	//glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor4f(1.0, 1.0, 1.0, at2);	
@@ -1408,9 +1531,17 @@ void Hud::renderBlockScreen(){
 	
 	glColor4f(1.0, 1.0, 1.0, at2);	
 	//glEnable(GL_TEXTURE_2D);
+    
 	int golden_cubei;
 	for(int i=0;i<NUM_DISPLAY_BLOCKS;i++){
         int type=hudBlocks[i];
+        if(pickSecondBlock&&hudBlocksMap[hudBlocks[i]]==-1){
+            alpha=0.5f;
+             glColor4f(1.0f,1.0f,1.0f,alpha);
+        }else{
+            alpha=1.0f;
+             glColor4f(1.0f,1.0f,1.0f,alpha);
+        }
         if(build_size==0){/*blockBounds[i].size.width-=10;
             blockBounds[i].size.height-=10;
             blockBounds[i].origin.x+=0;
@@ -1420,7 +1551,7 @@ void Hud::renderBlockScreen(){
             blockBounds[i].size.height+=10;
         }
         if(type>=TYPE_STONE_RAMP1&&type<=TYPE_ICE_RAMP4){
-            if(pressed==i){
+            if(blocktype_pressed==hudBlocks[i]){
                  if(build_size==0){
                       Resources::getResources->getTex(ICO_TRIANGLE_BORDER_PRESSED2)->drawText(blockBounds[i]);
                  }else{
@@ -1439,7 +1570,7 @@ void Hud::renderBlockScreen(){
         }else if(type==TYPE_FLOWER||type==TYPE_GOLDEN_CUBE||type==TYPE_PORTAL_TOP||type==TYPE_DOOR_TOP){
             Button b=ButtonFromRect(blockBounds[i]);
             
-            if(pressed==i)
+            if(blocktype_pressed==hudBlocks[i])
                 b.pressed=TRUE;
             else {
                 b.pressed=FALSE;
@@ -1460,31 +1591,14 @@ void Hud::renderBlockScreen(){
             if(tid==ICO_GOLDCUBE&&goldencubes==0){
                 glColor4f(1.0f,1.0f,1.0f,.3f);
                 Resources::getResources->getTex(tid)->drawButton(b);
-                glColor4f(1.0f,1.0f,1.0f,1.0f);
+                glColor4f(1.0f,1.0f,1.0f,alpha);
             }else{
                 Resources::getResources->getTex(tid)->drawButton(b);
             }
         }else if(type==TYPE_CUSTOM){
            
-                Button b=ButtonFromRect(blockBounds[i]);
-            
-            
-            
-                if(pressed==i)
-                    b.pressed=TRUE;
-                else {
-                    b.pressed=FALSE;
-                } 
-                
-            
-             /*
-            if(build_size==0)
-                Resources::getResources->getTex:ICO_SIZETOGGLE2] drawButton:b);
-            else
-                Resources::getResources->getTex:ICO_SIZETOGGLE1] drawButton:b);
-            */
         }else{
-            if(pressed==i)
+            if(blocktype_pressed==hudBlocks[i])
                 if(build_size==0){
                     
                     Resources::getResources->getTex(ICO_BLOCK_BORDER_PRESSED2)->drawText(blockBounds[i]);
@@ -1501,7 +1615,7 @@ void Hud::renderBlockScreen(){
         }
         if(type==TYPE_PORTAL_TOP){
            
-            glColor4f(1.0,1.0,1.0f,at2);
+            glColor4f(1.0,1.0,1.0f,alpha);
         }
         if(build_size==0){/*blockBounds[i].size.width+=10;
             blockBounds[i].size.height+=10;
@@ -1516,6 +1630,14 @@ void Hud::renderBlockScreen(){
 	//glDisable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, Resources::getResources->atlas->name);
 	for(int i=0;i<NUM_DISPLAY_BLOCKS;i++){
+        if(pickSecondBlock&&hudBlocksMap[hudBlocks[i]]==-1){
+            alpha=0.5f;
+             glColor4f(1.0f,1.0f,1.0f,alpha);
+        }else {alpha=1.0f;
+            
+             glColor4f(1.0f,1.0f,1.0f,alpha);
+        }
+        
 		int type=hudBlocks[i];
         if(type==TYPE_FLOWER||type==TYPE_GOLDEN_CUBE||type==TYPE_DOOR_TOP||type==TYPE_PORTAL_TOP||type==TYPE_CUSTOM)continue;
             
@@ -1566,7 +1688,7 @@ void Hud::renderBlockScreen(){
 		};
         
         int bb=0;
-        if(pressed==i){
+        if(blocktype_pressed==hudBlocks[i]){
             bb=2;
         }
         int size=35;
@@ -1621,16 +1743,16 @@ void Hud::renderBlockScreen(){
 			rect.origin.x + off+bb,		rect.origin.y + size-bb,		0
 		};
 		 if(type==TYPE_FIREWORK||type==TYPE_GRASS2||type==TYPE_GRASS3||type==TYPE_TNT||type==TYPE_BLOCK_TNT||type==TYPE_BRICK||type==TYPE_VINE)
-             glColor4f(1.0f, 1.0f, 1.0f, at2);
+             glColor4f(1.0f, 1.0f, 1.0f, alpha);
         else
-		glColor4ub(blockColor[type][0], blockColor[type][1], blockColor[type][2], at2*255);
+		glColor4ub(blockColor[type][0], blockColor[type][1], blockColor[type][2], alpha*255);
         
         
 		if(type==TYPE_CLOUD&&holding_creature){
             glVertexPointer(3, GL_FLOAT, 0, vertices);
             glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-            glColor4f(1.0f, 1.0f, 1.0f, at2);
+            glColor4f(1.0f, 1.0f, 1.0f, alpha);
             
             Resources::getResources->getTex(ICO_MOOF)->drawTextNoScale(
             CGRectMake(rect.origin.x+off+bb, rect.origin.y+off-bb,32, 32));
