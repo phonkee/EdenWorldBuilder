@@ -523,6 +523,7 @@ Texture2D* Resources::getPaintedTex(int type,int color){
 
 Texture2D* Resources::getPaintTex(int color){
     if(color==0)return getTex(ICO_PAINT);
+    return getTex(ICO_PAINT);
     if(paint_cache!=NULL&&color==paint_cache_color)return paint_cache;
     
     if(paint_cache!=NULL){

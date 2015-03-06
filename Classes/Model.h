@@ -24,3 +24,8 @@ float wrapx(float x);
 float wrapz(float z);
 
 void CalcEnvMap(vertexObject* vert);
+
+class MMM{
+    public:
+   static void ExplodeModels(Vector pos,int color);
+};

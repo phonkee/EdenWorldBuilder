@@ -98,7 +98,7 @@ extern "C" const int hudBlocksMap[NUM_BLOCKS+1]={
     [TYPE_COBBLESTONE]=TYPE_BTCOBBLESTONE,
     [TYPE_VINE]=TYPE_BTVINES,
     [TYPE_LADDER]=TYPE_BTLADDER,
-    [TYPE_ICE]=TYPE_BTSHINGLE,
+    [TYPE_ICE]=TYPE_BTICE,
     
     [TYPE_CRYSTAL]=TYPE_BTCRYSTAL,
     
@@ -199,6 +199,8 @@ Hud::Hud(){
     fps=60;
 	flash=-1;
     build_size=1;
+    flashcolor=MakeVector(1.0,1.0,1.0);
+     printf("flashcolor memlocation1: %X",(unsigned int)(&flashcolor));
 	hideui=FALSE;
 	HUDR_X=SCREEN_WIDTH-HUD_BOX_SIZE-13;
 	ttime=0;
@@ -1443,9 +1445,68 @@ void Hud::renderBlockAndBorder(CGRect recto){
     }else{
         glVertexPointer(3, GL_FLOAT, 0, vertices);
         glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
+        if(blockinfo[type]&IS_BLOCKTNT){
+             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+                       glDrawArrays(GL_TRIANGLE_STRIP, 8, 4);
+            
+             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+            extern  int blockTntMap[NUM_BLOCKS+1];
+            int subtype=blockTntMap[type];
+            if (block_paintcolor!=0) {
+                Vector clr=colorTable[block_paintcolor];
+                glColor4f(clr.x,clr.y,clr.z,1.0f);
+            }
+           // else if(subtype==TYPE_GRASS2||subtype==TYPE_GRASS3||subtype==TYPE_TNT||subtype==TYPE_FIREWORK||subtype==TYPE_BRICK||subtype==TYPE_VINE)
+            //    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+            else{
+                glColor4ub(blockColor[subtype][0], blockColor[subtype][1], blockColor[subtype][2], 255);
+            }
+            if(subtype==TYPE_TNT||subtype==TYPE_FIREWORK||subtype==TYPE_LADDER){
+                 tp= Resources::getResources->getBlockTex(blockTypeFaces[subtype][3]);
+                if(subtype==TYPE_TNT){
+                     tp= Resources::getResources->getBlockTex(TEX_TNT_SIDE_COLOR);
+                }
+            }else
+           tp= Resources::getResources->getBlockTex(blockTypeFaces[subtype][5]);
+            if(subtype==TYPE_GLASS){
+                  tp= Resources::getResources->getBlockTex(TEX_CLOUD);
+            }else if(subtype==TYPE_WATER){
+                 tp= Resources::getResources->getBlockTex(TEX_DIRT);
+            }else if(subtype==TYPE_LAVA){
+                 tp= Resources::getResources->getBlockTex(TEX_DIRT);
+            }else if(subtype==TYPE_WEAVE){
+                 tp= Resources::getResources->getBlockTex(TEX_CLOUD);
+            }
+            GLfloat				coordinates3[] = {
+                0,			tp.y+tp.x,
+                1,			tp.y+tp.x,
+                0,				tp.x,
+                1,				tp.x,
+                
+                
+                1,			tp.y+tp.x,
+                 0,			tp.y+tp.x	,
+                1,			tp.x,
+               
+                0,				tp.x,
+                
+                
+                
+                0,			tp.y+tp.x,
+                1,			tp.y+tp.x,
+                0,				tp.x,
+                1,				tp.x,
+            };
+
+             glTexCoordPointer(2, GL_FLOAT, 0, coordinates3);
+            
+             glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
+        }else{
        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glDrawArrays(GL_TRIANGLE_STRIP, 4, 4);
         glDrawArrays(GL_TRIANGLE_STRIP, 8, 4);
+        }
     }
     
     glColor4f(1.0f,1.0f,1.0f,1.0f);
@@ -2014,6 +2075,12 @@ void Hud::render(){
     }else
 	tmine->drawButton( rmine);
 	
+    if(rmine.origin.x!=HUDR_X){
+        
+        printf("wtf: %f  chek1:%x  check2:%x\n",rmine.origin.x,(unsigned int)(&flashcolor),(unsigned int)&(World::getWorld->hud->flashcolor));
+        
+        printf("break here");
+    }
     
 	if(mode==MODE_BURN){
         glowbox=rburn;
@@ -2090,6 +2157,8 @@ void Hud::render(){
 
     }
 	if(flash>0||World::getWorld->player->flash>0){
+        printf("hello\n");
+        /*
 		//NSLog(@"%f",flash);
 		glDisable(GL_TEXTURE_2D);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -2111,7 +2180,7 @@ void Hud::render(){
             
         }else
             Graphics::drawRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);*/
         
 		
 	}

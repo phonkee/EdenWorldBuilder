@@ -11,11 +11,16 @@
 
 #include <OpenGLES/ES1/gl.h>
 
-typedef struct {
+extern "C" {
+struct Vector{
 	float    x;
 	float    y;
 	float    z;
-}Vector;
+};
+typedef struct Vector Vector;
+    
+}
+
 typedef struct {
 	GLubyte    x;
 	GLubyte    y;

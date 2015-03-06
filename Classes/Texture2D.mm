@@ -209,6 +209,9 @@ CGContextRef CreateARGBBitmapContext (CGImageRef inImage)
 
 CGImageRef ManipulateImagePixelData(CGImageRef inImage,CGImageRef inMask,int tint)
 {
+    
+    //CGDataProvider re
+    
     // Create the bitmap context
     CGContextRef cgctx = CreateARGBBitmapContext(inImage);
     CGContextRef cgctx2 = CreateARGBBitmapContext(inImage);

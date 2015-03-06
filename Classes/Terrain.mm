@@ -883,6 +883,10 @@ void Terrain::burnBlock(int x,int z,int y,BOOL causedByExplosion){
 		node->type=type;
 		if(type==TYPE_TNT||type==TYPE_FIREWORK||blockinfo[type]&IS_BLOCKTNT){
             if((type==TYPE_TNT||blockinfo[type]&IS_BLOCKTNT)&&causedByExplosion){
+                
+                if(blockinfo[type]&IS_BLOCKTNT){
+                    node->life=.5f;
+                }else
                 node->life=.5+randf(.3f);
             }
             else
@@ -955,6 +959,55 @@ int getRampType(int x,int z,int y, int t){
             type+=(TYPE_STONE_SIDE1-TYPE_STONE_RAMP1)+i;
            // NSLog(@"s:%d",i);
             return type;
+        }
+    }
+    int yaw=World::getWorld->player->yaw;
+    int r=0;
+    yaw+=360;
+    yaw%=360;
+    if(yaw>=45&&yaw<=90+45){
+        r=0;
+    }else if(yaw>=90+45&&yaw<=180+45){
+        r=1;
+    }else if(yaw>=180+45&&yaw<=270+45){
+        r=2;
+    }else if(yaw>=270||yaw<45){
+        r=3;
+    }
+    //NSLog(@"r:%d",r);
+    type+=r;
+    return type;
+}
+int getRampType2(int x,int z,int y, int t){
+    int type=t;
+    
+    bool sides[4];
+    int n=0;
+    for(int i=0;i<4;i++){
+        sides[i]=isFaceSolid(x,z,y,i);
+        if(sides[i])n++;
+    }
+    
+    if(n==2)
+        for(int i=0;i<4;i++){
+            
+            if(sides[i]&&sides[(i+1)%4]){
+                type+=(TYPE_STONE_SIDE1-TYPE_STONE_RAMP1)+i;
+                // NSLog(@"s:%d",i);
+                return type;
+            }
+        }
+    if(n>2){
+        if(t==TYPE_STONE_RAMP1){
+            return TYPE_STONE;
+            
+        }if(t==TYPE_ICE_RAMP1){
+            return TYPE_ICE;
+            
+        }if(t==TYPE_WOOD_RAMP1){
+            return TYPE_WOOD;
+        }if(t==TYPE_SHINGLE_RAMP1){
+            return TYPE_SHINGLE;
         }
     }
     int yaw=World::getWorld->player->yaw;
@@ -1601,6 +1654,7 @@ extern "C" const int blockTntMap[NUM_BLOCKS+1]={
   [  TYPE_BTSTEEL]=TYPE_STEEL,
 };
 void Terrain::blocktntexplode(int x,int z,int y,int btype){
+   
   // printf("type %d  btt %d\n",type,blockTntMap[btype]);
     
     int color=getColor(x,z,y);
@@ -1610,8 +1664,17 @@ void Terrain::blocktntexplode(int x,int z,int y,int btype){
         Resources::getResources->playSound(S_EXPLODE);
     
     Vector v=MakeVector(x+.5f,y+.5f,z+.5f);
-    ExplodeModels(v,color);
-    World::getWorld->effects->addCreatureVanish(x+.5f,z+.5f,y+.5f,color,TYPE_TNT);
+    
+    printf("define hit: %d, %d\n",(int)sizeof(BOOL), (int)sizeof(bool));
+
+    
+    
+    
+    
+    
+    MMM::ExplodeModels(v,color);
+    return;
+    World::getWorld->effects->addCreatureVanish(x+.5f,z+.5f,y+.5f,color,blockTntMap[btype]);
     
     BOOL painting=false;
     //BOOL building =true;
@@ -1629,8 +1692,9 @@ void Terrain::blocktntexplode(int x,int z,int y,int btype){
     if(getLand(x+1,z,y)>0) boundright=0;
     if(getLand(x,z-1,y)>0) boundforward=0;
     if(getLand(x,z+1,y)>0) boundbackward=0;
-    if(getLand(x,z,y+1)>0) boundtop=0;
-    if(getLand(x,z,y-1)>0) boundbot=0;
+    if(y+1==T_HEIGHT||getLand(x,z,y+1)>0) boundtop=0;
+    if(y-1<=0||getLand(x,z,y-1)>0) boundbot=0;
+    
    	for(int i=0;i<=er;i++){
         for(int j=x-boundleft;j<=x+boundright;j++){
             for(int k=z-boundforward;k<=z+boundbackward;k++){
@@ -1639,19 +1703,22 @@ void Terrain::blocktntexplode(int x,int z,int y,int btype){
               //  int ox=j-x;
               //  int oz=k-z;
               //  int oy=yy;
-                
-                if(yy<=boundbot){
+                if(abs(j-x)+abs(k-z)==er*2){
+                    if(btype==TYPE_BTICESIDE||btype==TYPE_BTSHINGLESIDE||btype==TYPE_BTWOODSIDE||btype==TYPE_BTSTONESIDE)
+                    continue;
+                }
+                if(y-yy>0&&yy<=boundbot){
                     int type=getLandc(j, k, y-yy);
                     if(type==0){
                         if(!World::getWorld->player->test(j ,y-yy ,k,1)){
                             updateChunks(j,k ,y-yy ,blockTntMap[btype]);
                              paintBlock(j ,k ,y-yy,color);
                         }
-                    }else if(blockinfo[type]&IS_BLOCKTNT){
+                    }else if(type>0&&blockinfo[type]&IS_BLOCKTNT){
                         burnBlock(j ,k ,y-yy ,TRUE);
                     }
                 }
-                if(yy<=boundtop){
+                if(y+yy<T_HEIGHT&&yy<=boundtop){
                     int type=getLandc(j, k, y+yy);
                     
                     if(type==0){
@@ -1659,7 +1726,7 @@ void Terrain::blocktntexplode(int x,int z,int y,int btype){
                             updateChunks(j ,k ,y+yy ,blockTntMap[btype]);
                             paintBlock(j ,k ,y+yy,color);
                         }
-                    }else if(blockinfo[type]&IS_BLOCKTNT){
+                    }else if(type>0&&blockinfo[type]&IS_BLOCKTNT){
                         burnBlock(j ,k ,y+yy ,TRUE);
                     }
                     
@@ -1668,6 +1735,55 @@ void Terrain::blocktntexplode(int x,int z,int y,int btype){
             }
         }
         
+    }
+    
+    if(btype==TYPE_BTICESIDE||btype==TYPE_BTSHINGLESIDE||btype==TYPE_BTWOODSIDE||btype==TYPE_BTSTONESIDE){
+        int bstype=0;
+        if(btype==TYPE_BTICESIDE)bstype=TYPE_ICE_RAMP1;
+        if(btype==TYPE_BTSHINGLESIDE)bstype=TYPE_SHINGLE_RAMP1;
+        if(btype==TYPE_BTWOODSIDE)bstype=TYPE_WOOD_RAMP1;
+        if(btype==TYPE_BTSTONESIDE)bstype=TYPE_STONE_RAMP1;
+    for(int i=0;i<=er;i++){
+        
+        for(int j=x-boundleft;j<=x+boundright;j++){
+            for(int k=z-boundforward;k<=z+boundbackward;k++){
+                if(abs(j-x)+abs(k-z)!=er*2)continue;
+                 
+                int yy=er-i;
+                
+                //  int ox=j-x;
+                //  int oz=k-z;
+                //  int oy=yy;
+                
+                if(y-yy>0&&yy<=boundbot){
+                    int type=getLandc(j, k, y-yy);
+                    if(type==0){
+                        if(!World::getWorld->player->test(j ,y-yy ,k,1)){
+                            updateChunks(j,k ,y-yy ,getRampType2(j,k,y-yy,bstype));
+                            paintBlock(j ,k ,y-yy,color);
+                        }
+                    }else if(type>0&&blockinfo[type]&IS_BLOCKTNT){
+                        burnBlock(j ,k ,y-yy ,TRUE);
+                    }
+                }
+                if(y+yy<T_HEIGHT&&yy<=boundtop){
+                    int type=getLandc(j, k, y+yy);
+                    
+                    if(type==0){
+                        if(!World::getWorld->player->test(j ,y+yy,k,1)){
+                            updateChunks(j ,k ,y+yy ,getRampType2(j,k,y+yy,bstype));
+                            paintBlock(j ,k ,y+yy,color);
+                        }
+                    }else if(type>0&&blockinfo[type]&IS_BLOCKTNT){
+                        burnBlock(j ,k ,y+yy ,TRUE);
+                    }
+                    
+                }
+                
+            }
+        }
+        
+    }
     }
    
      boundleft=er;
@@ -1686,13 +1802,13 @@ void Terrain::blocktntexplode(int x,int z,int y,int btype){
                 //  int oz=k-z;
                 //  int oy=yy;
                 
-                if(yy<=boundbot){
+                if(y-yy>0&&yy<=boundbot){
                     int type=getLandc(j, k, y-yy);
                     if(type>0&&blockinfo[type]&IS_BLOCKTNT){
                         burnBlock(j ,k ,y-yy ,TRUE);
                     }
                 }
-                if(yy<=boundtop){
+                if(y+yy<T_HEIGHT&&yy<=boundtop){
                     int type=getLandc(j, k, y+yy);
                     
                     if(type>0&&blockinfo[type]&IS_BLOCKTNT){
@@ -1717,7 +1833,9 @@ void Terrain::explode(int x,int z,int y){
         Resources::getResources->playSound(S_EXPLODE);
     
     Vector v=MakeVector(x+.5f,y+.5f,z+.5f);
-    ExplodeModels(v,color);
+    
+    
+    MMM::ExplodeModels(v,color);
     World::getWorld->effects->addCreatureVanish(x+.5f,z+.5f,y+.5f,color,TYPE_TNT);
     
     BOOL painting=false;
@@ -1744,7 +1862,7 @@ void Terrain::explode(int x,int z,int y){
                         
                     type=getLandc(j, k, y+yy);
                     
-                     if(type!=TYPE_TNT||getColor(j,k,y-yy)==0)
+                     if(y+yy<T_HEIGHT&&(type!=TYPE_TNT||getColor(j,k,y-yy)==0))
                          paintBlock(j ,k ,y+yy,color);
                     
                 }else{
@@ -1762,6 +1880,7 @@ void Terrain::explode(int x,int z,int y){
                             }
                         }
                     }
+                    if(y+yy<T_HEIGHT){
                     type=getLandc(j, k, y+yy);
                     
                     if(blockinfo[type]&IS_FLAMMABLE){
@@ -1771,6 +1890,7 @@ void Terrain::explode(int x,int z,int y){
                     }else{
                         if(type!=TYPE_BEDROCK&&type!=TYPE_STEEL)
                             explodeBlock(j ,k ,y+yy);
+                    }
                     }
                 }
 				

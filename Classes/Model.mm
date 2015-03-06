@@ -885,7 +885,13 @@ int PointTestModels(float x,float y,float z){
     }
     return -1;
 }
-void ExplodeModels(Vector p,int color){
+void MMM::ExplodeModels(Vector p,int color){
+  
+
+    printf("define hit: %d, %d\n",(int)sizeof(BOOL), (int)sizeof(bool));
+
+    
+    /*
     for(int i=0;i<nguys;i++){
         if(!guys[i].alive||!guys[i].update)continue;
         Entity* e=&guys[i];
@@ -916,7 +922,7 @@ void ExplodeModels(Vector p,int color){
            
         }
         
-    }
+    }*/
     Player* e=World::getWorld->player;
     PVRTVec3 player_pos=MakePVR(World::getWorld->player->pos);
    // player_pos.x=wrapx(player_pos.x);
@@ -929,9 +935,14 @@ void ExplodeModels(Vector p,int color){
     extern Vector colorTable[256];
     if(pos.lenSqr()<EXPLOSION_RADIUS*EXPLOSION_RADIUS){
         if(color!=0){
-            World::getWorld->hud->flash=.9f;
-             World::getWorld->hud->flashcolor=colorTable[color];
+           // World::getWorld->hud->flash=.9f;
+           // World::getWorld->hud->flashcolor=MakeVector(.5f,.5f,.5f);//colorTable[color];
             
+          //  printf("flashcolor memlocation2: %X",(unsigned int)(&(World::getWorld->hud->flashcolor)));
+            World::getWorld->hud->flashcolor.x=.3f;
+            
+            World::getWorld->hud->flashcolor.y=.4f;
+            World::getWorld->hud->flashcolor.z=.6f;
         }else{
             
         

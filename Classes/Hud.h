@@ -37,11 +37,12 @@ public:
 	int fpsc;
 	int mode;
 	float test_a;
-	BOOL hideui, take_screenshot;
-    BOOL underLiquid;
-    BOOL inmenu;
-    BOOL heartbeat;
-    BOOL m_jump;
+    bool hideui;
+    bool take_screenshot;
+    bool underLiquid;
+    bool inmenu;
+    bool heartbeat;
+    bool m_jump;
     int justLoaded;
 	int blocktype;
     int block_paintcolor;
@@ -51,10 +52,11 @@ public:
     int build_size;
 	float flash;
     float fade_out;
+    
     Vector flashcolor;
-    int blocktype_pressed;
-	
-    Button rburn,rmine,rbuild,rjumphit,rjumprender,rpaint;
+   
+	 int blocktype_pressed;
+    Button rmine,rburn,rbuild,rjumphit,rjumprender,rpaint;
     
     Button rcam,rexit,rsave,rhome,rmenu;
     
@@ -68,7 +70,7 @@ public:
     
     float var1,var2,var3;
 	CGRect blockBounds[NUM_DISPLAY_BLOCKS];
-	Texture2D* blockIcons[NUM_DISPLAY_BLOCKS];
+	//Texture2D* blockIcons[NUM_DISPLAY_BLOCKS];
     CGRect colorBounds[NUM_COLORS];
     //Vector hudColor[NUM_COLORS];
     color8 paintColor;

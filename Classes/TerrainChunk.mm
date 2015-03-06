@@ -1106,11 +1106,17 @@ int TerrainChunk::rebuild2(){   //here be dragons//
         }
         
         if(clr==0){
-            if(type==TYPE_GRASS||type==TYPE_GRASS2||type==TYPE_GRASS3||type==TYPE_TNT||type==TYPE_FIREWORK||type==TYPE_BRICK||type==TYPE_VINE||type==TYPE_TRAMPOLINE){
+            if(type==TYPE_GRASS||type==TYPE_GRASS2||type==TYPE_GRASS3||type==TYPE_TNT||type==TYPE_FIREWORK||type==TYPE_BRICK||type==TYPE_VINE||type==TYPE_TRAMPOLINE||blockinfo[type]&IS_BLOCKTNT){
                 coloring=TRUE;
             }
+            if(blockinfo[type]&IS_BLOCKTNT){
+                 extern  int blockTntMap[NUM_BLOCKS+1];
+                for(int i=0;i<3;i++)
+                    paint[i]=(float)blockColor[blockTntMap[type]][i]/255;
+            }else{
             for(int i=0;i<3;i++)
                 paint[i]=(float)blockColor[type][i]/255;
+            }
         }
         const GLshort* cubeVertices=cubeShortVertices;
         const GLshort* cubeTextureCustom=cubeTexture;
@@ -1270,6 +1276,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
             int sf=f*6*3;
             
             int bf=blockTypeFaces[type][f];
+            BOOL nosidecolor=FALSE;
             if(coloring){
                 for(int i=0;i<3;i++)
                     paint[i]=1.0f;
@@ -1279,9 +1286,11 @@ int TerrainChunk::rebuild2(){   //here be dragons//
                     
                     
                     for(int i=0;i<3;i++){
-                        paint[i]=(float)(blockColor[type][i])/255;
+                        paint[i]=(float)(blockColor[TYPE_GRASS][i])/255;
                         if(paint[i]<0)paint[i]=0;
                     }
+                }else if(bf==TEX_BLOCKTNT){
+                    bf=TEX_BLOCKTNT;
                 }
                 else if(bf==TEX_GRASS_SIDE)
                     bf=TEX_GRASS_SIDE_COLOR;
@@ -1289,16 +1298,28 @@ int TerrainChunk::rebuild2(){   //here be dragons//
                     bf=TEX_TNT_SIDE_COLOR;
                 else if(bf==TEX_TNT_TOP)
                     bf=TEX_TNT_TOP_COLOR;
-                else if(bf==TEX_BRICK)
+                else if(bf==TEX_BRICK){
                     bf=TEX_BRICK_COLOR;
-                else if(bf==TEX_DIRT){
+                }else if(blockinfo[type]&IS_BLOCKTNT){
+                    extern  int blockTntMap[NUM_BLOCKS+1];
+                    for(int i=0;i<3;i++){
+                        paint[i]=(float)blockColor[ blockTntMap[type]][i]/255;
+                    }
+                } else if(bf==TEX_DIRT){
                     for(int i=0;i<3;i++)
                         paint[i]=(float)blockColor[TEX_DIRT][i]/255;
-                }else if(!(blockinfo[type]&IS_LIQUID)&&type!=TYPE_VINE){
-                    for(int i=0;i<3;i++)
+                } else if(!(blockinfo[type]&IS_LIQUID)&&type!=TYPE_VINE){
+                    
+                    
+                    for(int i=0;i<3;i++){
                         paint[i]=(float)blockColor[type][i]/255;
+                    }
                 }
-                
+            }else{
+                if(blockinfo[type]&IS_BLOCKTNT||type==TYPE_FIREWORK){
+                    nosidecolor=TRUE;
+                    
+                }
             }
                        CGPoint tp;
             tp=res->getBlockTexShort(bf);
@@ -1333,8 +1354,8 @@ int TerrainChunk::rebuild2(){   //here be dragons//
                     }else if(type>=TYPE_STONE_SIDE1&&type<=TYPE_ICE_SIDE4&&sideface==f){
                         color=light[coord]*paint[coord]*wshadow;
                     }
-                    else if(type==TYPE_FIREWORK){
-                        color=255*light[coord];
+                    else if(nosidecolor){
+                        color=light[coord]*(float)cubeColors[f*3+coord];
                     }else
                         color=light[coord]*paint[coord]*(float)cubeColors[f*3+coord];
                     
@@ -1345,7 +1366,7 @@ int TerrainChunk::rebuild2(){   //here be dragons//
                     if(type==TYPE_LIGHTBOX||getBaseType(type)==TYPE_LAVA){
                         color=paint[coord]*255;
                     }
-                    if( color>paint[coord]*255) vert_array[vert_c].colors[coord]=paint[coord]*255;
+                    if(!nosidecolor&& color>paint[coord]*255) vert_array[vert_c].colors[coord]=paint[coord]*255;
                     else vert_array[vert_c].colors[coord]=color;
                 }
                 

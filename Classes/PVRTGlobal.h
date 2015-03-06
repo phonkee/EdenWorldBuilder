@@ -93,7 +93,7 @@
 	BYTE    rgbRed;
 	BYTE    rgbReserved;
 	} RGBQUAD;
-	#define BOOL int
+	//#define BOOL bool
 	#define TRUE 1
 	#define FALSE 0
 #else
