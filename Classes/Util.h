@@ -12,7 +12,7 @@
 //#import <UIKit/UIKit.h>
 #import "Texture2D.h"
 #import "Vector.h"
-
+#import <string>
 
 typedef struct _worldnode{
 	NSString* display_name;
@@ -111,6 +111,9 @@ float randf(float max);
 int randi(int max);
 NSString* genhash();
 void takeScreenshot();
+std::string cpstring(NSString * str);
+NSString* nsstring(std::string s);
+
 void RGBtoHSV( float r, float g, float b, float *h, float *s, float *v );
 void HSVtoRGB( float *r, float *g, float *b, float h, float s, float v );
 

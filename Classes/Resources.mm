@@ -10,7 +10,7 @@
 #import "glu.h"
 #import "Vector.h"
 #import "CDAudioManager.h"
-#import "SimpleAudioEngine_objc.h"
+#import "SimpleAudioEngine.h"
 #import "World.h"
 
 
@@ -23,35 +23,35 @@
 
 #define NUM_SONGS 6
 Resources* Resources::getResources=NULL;
-static NSString* songFiles[NUM_SONGS]={
-    @"Eden_1.mp3",
-    @"Eden_2.mp3",
-    @"Eden_3.mp3",
-    @"Eden_4.mp3",
-    @"Eden_5.mp3",
-    @"Eden_6.mp3",
+static const char* songFiles[NUM_SONGS]={
+    "Eden_1.mp3",
+    "Eden_2.mp3",
+    "Eden_3.mp3",
+    "Eden_4.mp3",
+    "Eden_5.mp3",
+    "Eden_6.mp3",
        
 };
 
-static NSString* ambientFiles[NUM_AMBIENT]={	
+static const char* ambientFiles[NUM_AMBIENT]={
 
-[AMBIENT_UNDERWATER]=@"ambience_underwater.wav",
-[AMBIENT_RIVER]=@"ambience_river.wav",
-[AMBIENT_LAVA]=@"ambience_lava.wav",
-[AMBIENT_SKYHIGH]=@"ambience_skyhigh.wav",
-[AMBIENT_CAVE]=@"ambience_cave.wav",
-[AMBIENT_OPEN]=@"ambience_open.wav",
-[AMBIENT_GRASSLANDS]=@"ambience_open.mp3",
-[AMBIENT_BEACH]=@"beach_ambience.mp3",
-[AMBIENT_GRASSBADLANDS]=@"mountain_grass_badlands_ambience.mp3",
-[AMBIENT_MARSHBADLANDS]=@"river_marsh_badlands_ambience.mp3",
-[AMBIENT_RIVERLANDS]=@"riverlands_ambience.mp3",
-[AMBIENT_PYRAMID]=@"pyramid_ambience.mp3",
-[AMBIENT_OASIS]=@"oasis_ambience.mp3",
-[AMBIENT_NIGHT]=@"night_time_ambience.mp3",
-[AMBIENT_MOUNTAIN]=@"mountain_ambience.mp3",
-[AMBIENT_LAVABADLANDS] =@"lava_marsh_badlands_ambience.mp3",
-[AMBIENT_SNOWMOUNTAIN]=@"snow_mountain_ambience.mp3",
+[AMBIENT_UNDERWATER]="ambience_underwater.wav",
+[AMBIENT_RIVER]="ambience_river.wav",
+[AMBIENT_LAVA]="ambience_lava.wav",
+[AMBIENT_SKYHIGH]="ambience_skyhigh.wav",
+[AMBIENT_CAVE]="ambience_cave.wav",
+[AMBIENT_OPEN]="ambience_open.wav",
+[AMBIENT_GRASSLANDS]="ambience_open.mp3",
+[AMBIENT_BEACH]="beach_ambience.mp3",
+[AMBIENT_GRASSBADLANDS]="mountain_grass_badlands_ambience.mp3",
+[AMBIENT_MARSHBADLANDS]="river_marsh_badlands_ambience.mp3",
+[AMBIENT_RIVERLANDS]="riverlands_ambience.mp3",
+[AMBIENT_PYRAMID]="pyramid_ambience.mp3",
+[AMBIENT_OASIS]="oasis_ambience.mp3",
+[AMBIENT_NIGHT]="night_time_ambience.mp3",
+[AMBIENT_MOUNTAIN]="mountain_ambience.mp3",
+[AMBIENT_LAVABADLANDS] ="lava_marsh_badlands_ambience.mp3",
+[AMBIENT_SNOWMOUNTAIN]="snow_mountain_ambience.mp3",
     
 };
 /*S_LADDER=0,
@@ -92,6 +92,8 @@ S_CAMERA=34,
 S_JUMP=35,*/
 
 #define MAX_VARIATIONS2 6
+
+int lasteffectplayed=-1;;
 static int sfxNumVariations[NUM_SOUNDS]={  
     [S_LADDER]=4,
     [S_VINE]=4,
@@ -150,61 +152,61 @@ static int sfxNumVariations[NUM_SOUNDS]={
     [S_METAL_DESTROY]=1,
     
 };
-static NSString* soundFiles[NUM_SOUNDS][MAX_VARIATIONS2]={	
-	[S_LADDER]={@"wood_ladder_1_v2.caf",@"wood_ladder_2_v2.caf",@"wood_ladder_3_v2.caf",@"wood_ladder_4_v2.caf"},
-    [S_VINE]={@"vine_ladder_1_v2.caf",@"vine_ladder_2_v2.caf",@"vine_ladder_3_v2.caf",@"vine_ladder_4_v2.caf"},
-    [S_BOUNCE]={@"trampoline_block_bounce_sound.mp3"},
-    [S_LAND_SOFT]={@"player_land_soft_1_v2.caf",@"player_land_soft_2_v2.caf",@"player_land_soft_3_v2.caf",@"land_soft_4_v2.caf"},
-    [S_LAND_HARD]={@"player_land_hard_1.caf",@"player_land_hard_2_v2.caf",@"player_land_hard_3_v2.caf",@"land_hard_4_v2.caf"},
-    [S_PAINT_BLOCK]={@"paint_block_1.caf",@"paint_block_2_v2.caf",@"paint_block_3.caf",@"paint_block_4.caf"},
-     [S_LAVA_BURN]={@"lava_burn_1_v2.caf",@"lava_burn_2_v2.caf",@"lava_burn_3_v2.caf",@"lava_burn_4_v2.caf"},
-    [S_EXPLODE]={@"explosion.caf",@"explosion_2.caf",@"explosion_3.caf",@"explosion_4.caf"},
-    [S_BREAK_WOOD]={@"block_break_wood_1_v2.caf",@"block_break_wood_2_v2.caf",@"block_break_wood_3_v2.caf",@"block_break_wood_4_v2.caf"},
-    [S_BREAK_WATER]={@"block_break_water_1_v2.caf",@"block_break_water_2_v2.caf",@"block_break_water_3_v2.caf",@"block_break_water_4_v2.caf"},
-    [S_BREAK_STONE]={@"block_break_stone_1.caf",@"block_break_stone_2.caf",@"block_break_stone_3.caf",@"block_break_stone_4.caf"},
-    [S_BREAK_LEAVES]={@"block break_leaves_1.caf",@"block break_leaves_2.caf",@"block break_leaves_3.caf",@"block break_leaves_4.caf"},
-    [S_BREAK_LAVA]={@"block_break_lava_1_v2.caf",@"block_break_lava_2_v2.caf",@"block_break_lava_3_v2.caf",@"block_break_lava_4_v2.caf"},
-    [S_BREAK_DIRT]={@"block_break_dirt_1.caf",@"block_break_dirt_2.caf",@"block_break_dirt_3.caf",@"block_break_dirt_4.caf"},
-    [S_BREAK_GLASS]={@"block_break_glass_1.caf",@"block_break_glass_2.caf",@"block_break_glass_3.caf",@"block_break_glass_4.caf"},
-    [S_BREAK_GENERIC]={@"block_break_generic_1_v2.caf",@"block_break_generic_2_v2.caf",@"block_break_generic_3_v2.caf",@"block_break_generic_4_v2.caf"},
-    [S_BUILD_WOOD]={@"block_build_wood_1.caf",@"block_build_wood_2.caf",@"block_build_wood_3.caf",@"block_build_wood_4.caf"},
-    [S_BUILD_WATER]={@"block_build_water_1.caf",@"block_build_water_2.caf",@"block_build_water_3.caf",@"block_build_water_4.caf"},
-    [S_BUILD_STONE]={@"block_build_stone_1.caf",@"block_build_stone_2.caf",@"block_build_stone_3.caf",@"block_build_stone_4.caf"},
-    [S_BUILD_LEAVES]={@"block_build_leaves_1.caf",@"block_build_leaves_2.caf",@"block_build_leaves_3.caf",@"block_build_leaves_4.caf"},
-    [S_BUILD_LAVA]={@"block_build_lava_1.caf",@"block_build_lava_2.caf",@"block_build_lava_3.caf",@"block_build_lava_4.caf"},
-    [S_BUILD_GLASS]={@"block_build_glass_1.caf",@"block_build_glass_2.caf",@"block_build_glass_3.caf",@"block_build_glass_4.caf"},
-    [S_BUILD_DIRT]={@"block_build_dirt_1.caf",@"block_build_dirt_2.caf",@"block_build_dirt_3.caf",@"block_build_dirt_4.caf"},
-    [S_BUILD_GENERIC]={@"block_build_generic_1.caf",@"block_build_generic_2.caf",@"block_build_generic_3.caf",@"block_build_generic_4.caf"},
-    [S_ATTEMPT_FIRE]={@"matchlight.caf",@"attempt_fire_2.caf",@"attempt_fire_3.caf",@"attempt_fire_4.caf"},
-    [S_SPLASH_SMALL]={@"water_splash_small_1.caf",@"water_splash_small_2.caf",@"water_splash_small_3.caf",@"water_splash_small_4.caf"},
-    [S_SPLASH_BIG]={@"water_splash_big_1.caf",@"water_splash_big_2.caf",@"water_splash_big_3.caf",@"water_splash_big_4.caf"},
-    [S_FOOTSTEPS_HARD]={@"player_footsteps_hard_1.caf",@"player_footsteps_hard_2.caf",@"player_footsteps_hard_3.caf",@"player_footsteps_hard_4.caf",@"player_footsteps_hard_5.caf",@"player_footsteps_hard_6.caf"},
-    [S_FOOTSTEPS_SOFT]={@"player_footsteps_grass_1.caf",@"player_footsteps_grass_2.caf",@"player_footsteps_grass_3.caf",@"player_footsteps_grass_4.caf",@"player_footsteps_grass_5.caf",@"player_footsteps_grass_6.caf"},
-    [S_SWOOSH]={@"menu_transition_1.caf",@"menu_transition_2.caf",@"menu_transition_3.caf",@"menu_transition_4.caf"},
-    [S_FIRE_SUCCEED]={@"fire_succeed_1.caf",@"fire_succeed_2.caf",@"fire_succeed_3.caf",@"menu_transition_4.caf"},
-    [S_CREATURE_VANISH]={@"creature_destruction_01.mp3",@"creature_destruction_02.mp3",@"creature_destruction_03.mp3",@"creature_destruction_04.mp3",@"creature_destruction_05.mp3"},
-    [S_CREATURE_PICKEDUP]={@"creature_pickedup.caf",@"creature_pickedup_2.caf",@"creature_pickedup_3.caf",@"creature_pickedup_4.caf"},
-    [S_FLAMELOOP]={@"fire_loop.caf",@"x_2.caf",@"x_3.caf",@"x_4.caf"},
-    [S_ICE_LOOP]={@"ice_slide.wav",@"x_2.caf",@"x_3.caf",@"x_4.caf"},
+static const char* soundFiles[NUM_SOUNDS][MAX_VARIATIONS2]={
+	[S_LADDER]={"wood_ladder_1_v2.caf","wood_ladder_2_v2.caf","wood_ladder_3_v2.caf","wood_ladder_4_v2.caf"},
+    [S_VINE]={"vine_ladder_1_v2.caf","vine_ladder_2_v2.caf","vine_ladder_3_v2.caf","vine_ladder_4_v2.caf"},
+    [S_BOUNCE]={"trampoline_block_bounce_sound.mp3"},
+    [S_LAND_SOFT]={"player_land_soft_1_v2.caf","player_land_soft_2_v2.caf","player_land_soft_3_v2.caf","land_soft_4_v2.caf"},
+    [S_LAND_HARD]={"player_land_hard_1.caf","player_land_hard_2_v2.caf","player_land_hard_3_v2.caf","land_hard_4_v2.caf"},
+    [S_PAINT_BLOCK]={"paint_block_1.caf","paint_block_2_v2.caf","paint_block_3.caf","paint_block_4.caf"},
+     [S_LAVA_BURN]={"lava_burn_1_v2.caf","lava_burn_2_v2.caf","lava_burn_3_v2.caf","lava_burn_4_v2.caf"},
+    [S_EXPLODE]={"explosion.caf","explosion_2.caf","explosion_3.caf","explosion_4.caf"},
+    [S_BREAK_WOOD]={"block_break_wood_1_v2.caf","block_break_wood_2_v2.caf","block_break_wood_3_v2.caf","block_break_wood_4_v2.caf"},
+    [S_BREAK_WATER]={"block_break_water_1_v2.caf","block_break_water_2_v2.caf","block_break_water_3_v2.caf","block_break_water_4_v2.caf"},
+    [S_BREAK_STONE]={"block_break_stone_1.caf","block_break_stone_2.caf","block_break_stone_3.caf","block_break_stone_4.caf"},
+    [S_BREAK_LEAVES]={"block break_leaves_1.caf","block break_leaves_2.caf","block break_leaves_3.caf","block break_leaves_4.caf"},
+    [S_BREAK_LAVA]={"block_break_lava_1_v2.caf","block_break_lava_2_v2.caf","block_break_lava_3_v2.caf","block_break_lava_4_v2.caf"},
+    [S_BREAK_DIRT]={"block_break_dirt_1.caf","block_break_dirt_2.caf","block_break_dirt_3.caf","block_break_dirt_4.caf"},
+    [S_BREAK_GLASS]={"block_break_glass_1.caf","block_break_glass_2.caf","block_break_glass_3.caf","block_break_glass_4.caf"},
+    [S_BREAK_GENERIC]={"block_break_generic_1_v2.caf","block_break_generic_2_v2.caf","block_break_generic_3_v2.caf","block_break_generic_4_v2.caf"},
+    [S_BUILD_WOOD]={"block_build_wood_1.caf","block_build_wood_2.caf","block_build_wood_3.caf","block_build_wood_4.caf"},
+    [S_BUILD_WATER]={"block_build_water_1.caf","block_build_water_2.caf","block_build_water_3.caf","block_build_water_4.caf"},
+    [S_BUILD_STONE]={"block_build_stone_1.caf","block_build_stone_2.caf","block_build_stone_3.caf","block_build_stone_4.caf"},
+    [S_BUILD_LEAVES]={"block_build_leaves_1.caf","block_build_leaves_2.caf","block_build_leaves_3.caf","block_build_leaves_4.caf"},
+    [S_BUILD_LAVA]={"block_build_lava_1.caf","block_build_lava_2.caf","block_build_lava_3.caf","block_build_lava_4.caf"},
+    [S_BUILD_GLASS]={"block_build_glass_1.caf","block_build_glass_2.caf","block_build_glass_3.caf","block_build_glass_4.caf"},
+    [S_BUILD_DIRT]={"block_build_dirt_1.caf","block_build_dirt_2.caf","block_build_dirt_3.caf","block_build_dirt_4.caf"},
+    [S_BUILD_GENERIC]={"block_build_generic_1.caf","block_build_generic_2.caf","block_build_generic_3.caf","block_build_generic_4.caf"},
+    [S_ATTEMPT_FIRE]={"matchlight.caf","attempt_fire_2.caf","attempt_fire_3.caf","attempt_fire_4.caf"},
+    [S_SPLASH_SMALL]={"water_splash_small_1.caf","water_splash_small_2.caf","water_splash_small_3.caf","water_splash_small_4.caf"},
+    [S_SPLASH_BIG]={"water_splash_big_1.caf","water_splash_big_2.caf","water_splash_big_3.caf","water_splash_big_4.caf"},
+    [S_FOOTSTEPS_HARD]={"player_footsteps_hard_1.caf","player_footsteps_hard_2.caf","player_footsteps_hard_3.caf","player_footsteps_hard_4.caf","player_footsteps_hard_5.caf","player_footsteps_hard_6.caf"},
+    [S_FOOTSTEPS_SOFT]={"player_footsteps_grass_1.caf","player_footsteps_grass_2.caf","player_footsteps_grass_3.caf","player_footsteps_grass_4.caf","player_footsteps_grass_5.caf","player_footsteps_grass_6.caf"},
+    [S_SWOOSH]={"menu_transition_1.caf","menu_transition_2.caf","menu_transition_3.caf","menu_transition_4.caf"},
+    [S_FIRE_SUCCEED]={"fire_succeed_1.caf","fire_succeed_2.caf","fire_succeed_3.caf","menu_transition_4.caf"},
+    [S_CREATURE_VANISH]={"creature_destruction_01.mp3","creature_destruction_02.mp3","creature_destruction_03.mp3","creature_destruction_04.mp3","creature_destruction_05.mp3"},
+    [S_CREATURE_PICKEDUP]={"creature_pickedup.caf","creature_pickedup_2.caf","creature_pickedup_3.caf","creature_pickedup_4.caf"},
+    [S_FLAMELOOP]={"fire_loop.caf","x_2.caf","x_3.caf","x_4.caf"},
+    [S_ICE_LOOP]={"ice_slide.wav","x_2.caf","x_3.caf","x_4.caf"},
 
-    [S_CAMERA]={@"Grab.aif",@"x_2.caf",@"x_3.caf",@"x_4.caf"},
-    [S_HIT]={@"player_hit_1.caf",@"player_hit_2.caf",@"player_hit_3.caf"},
-    [S_DOOR_OPEN]={@"door_open.mp3"},
-    [S_DOOR_CLOSED]={@"door_close.mp3"},
-    [S_FIREWORK_EXPLODE]={@"firework_explode.mp3",@"firework_explode_02.mp3",@"firework_explode_03.mp3",@"firework_explode_04.mp3",@"firework_explode_05.mp3"},
-    [S_FIREWORK_FUSE]={@"firework_fuse.mp3"},
-    [S_FIREWORK_LIFTOFF]={@"firework_liftoff.mp3",@"firework_liftoff_02.mp3",@"firework_liftoff_03.mp3"},
-    [S_TREASURE_PICKUP]={@"treasure_cube_pickup.mp3"},
-    [S_TREASURE_PLACE]={@"treasure_cube_place.mp3"},
-    [S_DEATH_BY_CREATURE]={@"death_by_creature_01.mp3",@"death_by_creature_02.mp3",@"death_by_creature_03.mp3"},
-    [S_DEATH_BY_LAVA]={@"death_by_lava_01.mp3",@"death_by_lava_02.mp3",@"death_by_lava_03.mp3"},
-    [S_DEATH_BY_TNT]={@"death_by_tnt_01.mp3",@"death_by_tnt_02.mp3",@"death_by_tnt_03.mp3"},
-    [S_BUILD_METAL]={@"metal_block_place.mp3"},
-    [S_BUILD_LIGHT]={@"place_electric_light.mp3"},
-    [S_CHANGE_LIGHT]={@"change_electric_light_color.mp3"},
-    [S_ENTER_PORTAL]={@"go_through_portal_01.mp3",@"go_through_portal_02.mp3",@"go_through_portal_03.mp3",@"go_through_portal_04.mp3"},
-    [S_GOOP_EXPLODE]={@"tnt_paint_bomb_explode.mp3"},
-    [S_METAL_DESTROY]={@"metal_block_destroy.mp3"},
+    [S_CAMERA]={"Grab.aif","x_2.caf","x_3.caf","x_4.caf"},
+    [S_HIT]={"player_hit_1.caf","player_hit_2.caf","player_hit_3.caf"},
+    [S_DOOR_OPEN]={"door_open.mp3"},
+    [S_DOOR_CLOSED]={"door_close.mp3"},
+    [S_FIREWORK_EXPLODE]={"firework_explode.mp3","firework_explode_02.mp3","firework_explode_03.mp3","firework_explode_04.mp3","firework_explode_05.mp3"},
+    [S_FIREWORK_FUSE]={"firework_fuse.mp3"},
+    [S_FIREWORK_LIFTOFF]={"firework_liftoff.mp3","firework_liftoff_02.mp3","firework_liftoff_03.mp3"},
+    [S_TREASURE_PICKUP]={"treasure_cube_pickup.mp3"},
+    [S_TREASURE_PLACE]={"treasure_cube_place.mp3"},
+    [S_DEATH_BY_CREATURE]={"death_by_creature_01.mp3","death_by_creature_02.mp3","death_by_creature_03.mp3"},
+    [S_DEATH_BY_LAVA]={"death_by_lava_01.mp3","death_by_lava_02.mp3","death_by_lava_03.mp3"},
+    [S_DEATH_BY_TNT]={"death_by_tnt_01.mp3","death_by_tnt_02.mp3","death_by_tnt_03.mp3"},
+    [S_BUILD_METAL]={"metal_block_place.mp3"},
+    [S_BUILD_LIGHT]={"place_electric_light.mp3"},
+    [S_CHANGE_LIGHT]={"change_electric_light_color.mp3"},
+    [S_ENTER_PORTAL]={"go_through_portal_01.mp3","go_through_portal_02.mp3","go_through_portal_03.mp3","go_through_portal_04.mp3"},
+    [S_GOOP_EXPLODE]={"tnt_paint_bomb_explode.mp3"},
+    [S_METAL_DESTROY]={"metal_block_destroy.mp3"},
     
 };
 
@@ -223,85 +225,85 @@ static NSString* soundFiles[NUM_SOUNDS][MAX_VARIATIONS2]={
 #define VO_ANGRY 0
 
 #define MAX_VARIATIONS 5
-static NSString* voFiles[NUM_CREATURES][NUM_VO_ACTIONS][MAX_VARIATIONS]={	
-	[M_STUMPY][VO_WALKING]={@"Stumpy_Walking_1.caf",@"Stumpy_Walking_2.caf",@"Stumpy_Walking_3.caf",@"Stumpy_Walking_4.caf",@"Stumpy_Walking_5.caf"},
-    [M_STUMPY][VO_STRETCHING]={@"Stumpy_Stretching_1.caf",@"Stumpy_Stretching_2.caf",@"Stumpy_Stretching_3.caf",@"Stumpy_Stretching_4.caf",@"Stumpy_Stretching_5.caf"},
-    [M_STUMPY][VO_SCARED]={@"Stumpy_Scared_1.caf",@"Stumpy_Scared_2.caf",@"Stumpy_Scared_3.caf",@"Stumpy_Scared_4.caf",@"Stumpy_Scared_5.caf"},
-    [M_STUMPY][VO_RELIEVED]={@"Stumpy_Relieved_1.caf",@"Stumpy_Relieved_2.caf",@"Stumpy_Relieved_3.caf",@"Stumpy_Relieved_4.caf",@"Stumpy_Relieved_5.caf"},
-    [M_STUMPY][VO_APPROACH]={@"Stumpy_PlayerApproaches_1.caf",@"Stumpy_PlayerApproaches_2.caf",@"Stumpy_PlayerApproaches_3.caf",@"Stumpy_PlayerApproaches_4.caf",@"Stumpy_PlayerApproaches_5.caf"},
-    [M_STUMPY][VO_ONFIRE]={@"Stumpy_OnFire_1.caf",@"Stumpy_OnFire_2.caf",@"Stumpy_OnFire_3.caf",@"Stumpy_OnFire_4.caf",@"Stumpy_OnFire_5.caf"},
-    [M_STUMPY][VO_IDLE]={@"Stumpy_Idle_1.caf",@"Stumpy_Idle_2.caf",@"Stumpy_Idle_3.caf",@"Stumpy_Idle_4.caf",@"Stumpy_Idle_5.caf"},
-    [M_STUMPY][VO_HIT]={@"Stumpy_Hit_1.caf",@"Stumpy_Hit_2.caf",@"Stumpy_Hit_3.caf",@"Stumpy_Hit_4.caf",@"Stumpy_Hit_5.caf"},
-    [M_STUMPY][VO_EXCITED]={@"Stumpy_Excited_1.caf",@"Stumpy_Excited_2.caf",@"Stumpy_Excited_3.caf",@"Stumpy_Excited_4.caf",@"Stumpy_Excited_5.caf"},
-    [M_STUMPY][VO_ANGRY]={@"Stumpy_Angry_1.caf",@"Stumpy_Angry_2.caf",@"Stumpy_Angry_3.caf",@"Stumpy_Angry_4.caf",@"Stumpy_Angry_5.caf"},    
+static const char* voFiles[NUM_CREATURES][NUM_VO_ACTIONS][MAX_VARIATIONS]={
+	[M_STUMPY][VO_WALKING]={"Stumpy_Walking_1.caf","Stumpy_Walking_2.caf","Stumpy_Walking_3.caf","Stumpy_Walking_4.caf","Stumpy_Walking_5.caf"},
+    [M_STUMPY][VO_STRETCHING]={"Stumpy_Stretching_1.caf","Stumpy_Stretching_2.caf","Stumpy_Stretching_3.caf","Stumpy_Stretching_4.caf","Stumpy_Stretching_5.caf"},
+    [M_STUMPY][VO_SCARED]={"Stumpy_Scared_1.caf","Stumpy_Scared_2.caf","Stumpy_Scared_3.caf","Stumpy_Scared_4.caf","Stumpy_Scared_5.caf"},
+    [M_STUMPY][VO_RELIEVED]={"Stumpy_Relieved_1.caf","Stumpy_Relieved_2.caf","Stumpy_Relieved_3.caf","Stumpy_Relieved_4.caf","Stumpy_Relieved_5.caf"},
+    [M_STUMPY][VO_APPROACH]={"Stumpy_PlayerApproaches_1.caf","Stumpy_PlayerApproaches_2.caf","Stumpy_PlayerApproaches_3.caf","Stumpy_PlayerApproaches_4.caf","Stumpy_PlayerApproaches_5.caf"},
+    [M_STUMPY][VO_ONFIRE]={"Stumpy_OnFire_1.caf","Stumpy_OnFire_2.caf","Stumpy_OnFire_3.caf","Stumpy_OnFire_4.caf","Stumpy_OnFire_5.caf"},
+    [M_STUMPY][VO_IDLE]={"Stumpy_Idle_1.caf","Stumpy_Idle_2.caf","Stumpy_Idle_3.caf","Stumpy_Idle_4.caf","Stumpy_Idle_5.caf"},
+    [M_STUMPY][VO_HIT]={"Stumpy_Hit_1.caf","Stumpy_Hit_2.caf","Stumpy_Hit_3.caf","Stumpy_Hit_4.caf","Stumpy_Hit_5.caf"},
+    [M_STUMPY][VO_EXCITED]={"Stumpy_Excited_1.caf","Stumpy_Excited_2.caf","Stumpy_Excited_3.caf","Stumpy_Excited_4.caf","Stumpy_Excited_5.caf"},
+    [M_STUMPY][VO_ANGRY]={"Stumpy_Angry_1.caf","Stumpy_Angry_2.caf","Stumpy_Angry_3.caf","Stumpy_Angry_4.caf","Stumpy_Angry_5.caf"},    
     
-    [M_MOOF][VO_WALKING]={@"Moof_Walking_1.caf",@"Moof_Walking_2.caf",@"Moof_Walking_3.caf",@"Moof_Walking_4.caf",@"Moof_Walking_5.caf"},
-    [M_MOOF][VO_STRETCHING]={@"Moof_Stretching_1.caf",@"Moof_Stretching_2.caf",@"Moof_Stretching_3.caf",@"Moof_Stretching_4.caf",@"Moof_Stretching_5.caf"},
-    [M_MOOF][VO_SCARED]={@"Moof_Scared_1.caf",@"Moof_Scared_2.caf",@"Moof_Scared_3.caf",@"Moof_Scared_4.caf",@"Moof_Scared_5.caf"},
-    [M_MOOF][VO_RELIEVED]={@"Moof_Relieved_1.caf",@"Moof_Relieved_2.caf",@"Moof_Relieved_3.caf",@"Moof_Relieved_4.caf",@"Moof_Relieved_5.caf"},
-    [M_MOOF][VO_APPROACH]={@"Moof_PlayerApproaches_1.caf",@"Moof_PlayerApproaches_2.caf",@"Moof_PlayerApproaches_3.caf",@"Moof_PlayerApproaches_4.caf",@"Moof_PlayerApproaches_5.caf"},
-    [M_MOOF][VO_ONFIRE]={@"Moof_OnFire_1.caf",@"Moof_OnFire_2.caf",@"Moof_OnFire_3.caf",@"Moof_OnFire_4.caf",@"Moof_OnFire_5.caf"},
-    [M_MOOF][VO_IDLE]={@"Moof_Idle_1.caf",@"Moof_Idle_2.caf",@"Moof_Idle_3.caf",@"Moof_Idle_4.caf",@"Moof_Idle_5.caf"},
-    [M_MOOF][VO_HIT]={@"Moof_Hit_1.caf",@"Moof_Hit_2.caf",@"Moof_Hit_3.caf",@"Moof_Hit_4.caf",@"Moof_Hit_5.caf"},
-    [M_MOOF][VO_EXCITED]={@"Moof_Excited_1.caf",@"Moof_Excited_2.caf",@"Moof_Excited_3.caf",@"Moof_Excited_4.caf",@"Moof_Excited_5.caf"},
-    [M_MOOF][VO_ANGRY]={@"Moof_Angry_1.caf",@"Moof_Angry_2.caf",@"Moof_Angry_3.caf",@"Moof_Angry_4.caf",@"Moof_Angry_5.caf"},   
+    [M_MOOF][VO_WALKING]={"Moof_Walking_1.caf","Moof_Walking_2.caf","Moof_Walking_3.caf","Moof_Walking_4.caf","Moof_Walking_5.caf"},
+    [M_MOOF][VO_STRETCHING]={"Moof_Stretching_1.caf","Moof_Stretching_2.caf","Moof_Stretching_3.caf","Moof_Stretching_4.caf","Moof_Stretching_5.caf"},
+    [M_MOOF][VO_SCARED]={"Moof_Scared_1.caf","Moof_Scared_2.caf","Moof_Scared_3.caf","Moof_Scared_4.caf","Moof_Scared_5.caf"},
+    [M_MOOF][VO_RELIEVED]={"Moof_Relieved_1.caf","Moof_Relieved_2.caf","Moof_Relieved_3.caf","Moof_Relieved_4.caf","Moof_Relieved_5.caf"},
+    [M_MOOF][VO_APPROACH]={"Moof_PlayerApproaches_1.caf","Moof_PlayerApproaches_2.caf","Moof_PlayerApproaches_3.caf","Moof_PlayerApproaches_4.caf","Moof_PlayerApproaches_5.caf"},
+    [M_MOOF][VO_ONFIRE]={"Moof_OnFire_1.caf","Moof_OnFire_2.caf","Moof_OnFire_3.caf","Moof_OnFire_4.caf","Moof_OnFire_5.caf"},
+    [M_MOOF][VO_IDLE]={"Moof_Idle_1.caf","Moof_Idle_2.caf","Moof_Idle_3.caf","Moof_Idle_4.caf","Moof_Idle_5.caf"},
+    [M_MOOF][VO_HIT]={"Moof_Hit_1.caf","Moof_Hit_2.caf","Moof_Hit_3.caf","Moof_Hit_4.caf","Moof_Hit_5.caf"},
+    [M_MOOF][VO_EXCITED]={"Moof_Excited_1.caf","Moof_Excited_2.caf","Moof_Excited_3.caf","Moof_Excited_4.caf","Moof_Excited_5.caf"},
+    [M_MOOF][VO_ANGRY]={"Moof_Angry_1.caf","Moof_Angry_2.caf","Moof_Angry_3.caf","Moof_Angry_4.caf","Moof_Angry_5.caf"},   
     
-    [M_NERGLE][VO_WALKING]={@"Nergle_Walking_1.caf",@"Nergle_Walking_2.caf",@"Nergle_Walking_3.caf",@"Nergle_Walking_4.caf",@"Nergle_Walking_5.caf"},
-    [M_NERGLE][VO_STRETCHING]={@"Nergle_Stretching_1.caf",@"Nergle_Stretching_2.caf",@"Nergle_Stretching_3.caf",@"Nergle_Stretching_4.caf",@"Nergle_Stretching_5.caf"},
-    [M_NERGLE][VO_SCARED]={@"Nergle_Scared_1.caf",@"Nergle_Scared_2.caf",@"Nergle_Scared_3.caf",@"Nergle_Scared_4.caf",@"Nergle_Scared_5.caf"},
-    [M_NERGLE][VO_RELIEVED]={@"Nergle_Relieved_1.caf",@"Nergle_Relieved_2.caf",@"Nergle_Relieved_3.caf",@"Nergle_Relieved_4.caf",@"Nergle_Relieved_5.caf"},
-    [M_NERGLE][VO_APPROACH]={@"Nergle_PlayerApproaches_1.caf",@"Nergle_PlayerApproaches_2.caf",@"Nergle_PlayerApproaches_3.caf",@"Nergle_PlayerApproaches_4.caf",@"Nergle_PlayerApproaches_5.caf"},
-    [M_NERGLE][VO_ONFIRE]={@"Nergle_OnFire_1.caf",@"Nergle_OnFire_2.caf",@"Nergle_OnFire_3.caf",@"Nergle_OnFire_4.caf",@"Nergle_OnFire_5.caf"},
-    [M_NERGLE][VO_IDLE]={@"Nergle_Idle_1.caf",@"Nergle_Idle_2.caf",@"Nergle_Idle_3.caf",@"Nergle_Idle_4.caf",@"Nergle_Idle_5.caf"},
-    [M_NERGLE][VO_HIT]={@"Nergle_Hit_1.caf",@"Nergle_Hit_2.caf",@"Nergle_Hit_3.caf",@"Nergle_Hit_4.caf",@"Nergle_Hit_5.caf"},
-    [M_NERGLE][VO_EXCITED]={@"Nergle_Excited_1.caf",@"Nergle_Excited_2.caf",@"Nergle_Excited_3.caf",@"Nergle_Excited_4.caf",@"Nergle_Excited_5.caf"},
-    [M_NERGLE][VO_ANGRY]={@"Nergle_Angry_1.caf",@"Nergle_Angry_2.caf",@"Nergle_Angry_3.caf",@"Nergle_Angry_4.caf",@"Nergle_Angry_5.caf"},   
+    [M_NERGLE][VO_WALKING]={"Nergle_Walking_1.caf","Nergle_Walking_2.caf","Nergle_Walking_3.caf","Nergle_Walking_4.caf","Nergle_Walking_5.caf"},
+    [M_NERGLE][VO_STRETCHING]={"Nergle_Stretching_1.caf","Nergle_Stretching_2.caf","Nergle_Stretching_3.caf","Nergle_Stretching_4.caf","Nergle_Stretching_5.caf"},
+    [M_NERGLE][VO_SCARED]={"Nergle_Scared_1.caf","Nergle_Scared_2.caf","Nergle_Scared_3.caf","Nergle_Scared_4.caf","Nergle_Scared_5.caf"},
+    [M_NERGLE][VO_RELIEVED]={"Nergle_Relieved_1.caf","Nergle_Relieved_2.caf","Nergle_Relieved_3.caf","Nergle_Relieved_4.caf","Nergle_Relieved_5.caf"},
+    [M_NERGLE][VO_APPROACH]={"Nergle_PlayerApproaches_1.caf","Nergle_PlayerApproaches_2.caf","Nergle_PlayerApproaches_3.caf","Nergle_PlayerApproaches_4.caf","Nergle_PlayerApproaches_5.caf"},
+    [M_NERGLE][VO_ONFIRE]={"Nergle_OnFire_1.caf","Nergle_OnFire_2.caf","Nergle_OnFire_3.caf","Nergle_OnFire_4.caf","Nergle_OnFire_5.caf"},
+    [M_NERGLE][VO_IDLE]={"Nergle_Idle_1.caf","Nergle_Idle_2.caf","Nergle_Idle_3.caf","Nergle_Idle_4.caf","Nergle_Idle_5.caf"},
+    [M_NERGLE][VO_HIT]={"Nergle_Hit_1.caf","Nergle_Hit_2.caf","Nergle_Hit_3.caf","Nergle_Hit_4.caf","Nergle_Hit_5.caf"},
+    [M_NERGLE][VO_EXCITED]={"Nergle_Excited_1.caf","Nergle_Excited_2.caf","Nergle_Excited_3.caf","Nergle_Excited_4.caf","Nergle_Excited_5.caf"},
+    [M_NERGLE][VO_ANGRY]={"Nergle_Angry_1.caf","Nergle_Angry_2.caf","Nergle_Angry_3.caf","Nergle_Angry_4.caf","Nergle_Angry_5.caf"},   
     
-    [M_GREEN][VO_WALKING]={@"Green_Walking_1.caf",@"Green_Walking_2.caf",@"Green_Walking_3.caf",@"Green_Walking_4.caf",@"Green_Walking_5.caf"},
-    [M_GREEN][VO_STRETCHING]={@"Green_Stretching_1.caf",@"Green_Stretching_2.caf",@"Green_Stretching_3.caf",@"Green_Stretching_4.caf",@"Green_Stretching_5.caf"},
-    [M_GREEN][VO_SCARED]={@"Green_Scared_1.caf",@"Green_Scared_2.caf",@"Green_Scared_3.caf",@"Green_Scared_4.caf",@"Green_Scared_5.caf"},
-    [M_GREEN][VO_RELIEVED]={@"Green_Relieved_1.caf",@"Green_Relieved_2.caf",@"Green_Relieved_3.caf",@"Green_Relieved_4.caf",@"Green_Relieved_5.caf"},
-    [M_GREEN][VO_APPROACH]={@"Green_PlayerApproaches_1.caf",@"Green_PlayerApproaches_2.caf",@"Green_PlayerApproaches_3.caf",@"Green_PlayerApproaches_4.caf",@"Green_PlayerApproaches_5.caf"},
-    [M_GREEN][VO_ONFIRE]={@"Green_OnFire_1.caf",@"Green_OnFire_2.caf",@"Green_OnFire_3.caf",@"Green_OnFire_4.caf",@"Green_OnFire_5.caf"},
-    [M_GREEN][VO_IDLE]={@"Green_Idle_1.caf",@"Green_Idle_2.caf",@"Green_Idle_3.caf",@"Green_Idle_4.caf",@"Green_Idle_5.caf"},
-    [M_GREEN][VO_HIT]={@"Green_Hit_1.caf",@"Green_Hit_2.caf",@"Green_Hit_3.caf",@"Green_Hit_4.caf",@"Green_Hit_5.caf"},
-    [M_GREEN][VO_EXCITED]={@"Green_Excited_1.caf",@"Green_Excited_2.caf",@"Green_Excited_3.caf",@"Green_Excited_4.caf",@"Green_Excited_5.caf"},
-    [M_GREEN][VO_ANGRY]={@"Green_Angry_1.caf",@"Green_Angry_2.caf",@"Green_Angry_3.caf",@"Green_Angry_4.caf",@"Green_Angry_5.caf"},   
+    [M_GREEN][VO_WALKING]={"Green_Walking_1.caf","Green_Walking_2.caf","Green_Walking_3.caf","Green_Walking_4.caf","Green_Walking_5.caf"},
+    [M_GREEN][VO_STRETCHING]={"Green_Stretching_1.caf","Green_Stretching_2.caf","Green_Stretching_3.caf","Green_Stretching_4.caf","Green_Stretching_5.caf"},
+    [M_GREEN][VO_SCARED]={"Green_Scared_1.caf","Green_Scared_2.caf","Green_Scared_3.caf","Green_Scared_4.caf","Green_Scared_5.caf"},
+    [M_GREEN][VO_RELIEVED]={"Green_Relieved_1.caf","Green_Relieved_2.caf","Green_Relieved_3.caf","Green_Relieved_4.caf","Green_Relieved_5.caf"},
+    [M_GREEN][VO_APPROACH]={"Green_PlayerApproaches_1.caf","Green_PlayerApproaches_2.caf","Green_PlayerApproaches_3.caf","Green_PlayerApproaches_4.caf","Green_PlayerApproaches_5.caf"},
+    [M_GREEN][VO_ONFIRE]={"Green_OnFire_1.caf","Green_OnFire_2.caf","Green_OnFire_3.caf","Green_OnFire_4.caf","Green_OnFire_5.caf"},
+    [M_GREEN][VO_IDLE]={"Green_Idle_1.caf","Green_Idle_2.caf","Green_Idle_3.caf","Green_Idle_4.caf","Green_Idle_5.caf"},
+    [M_GREEN][VO_HIT]={"Green_Hit_1.caf","Green_Hit_2.caf","Green_Hit_3.caf","Green_Hit_4.caf","Green_Hit_5.caf"},
+    [M_GREEN][VO_EXCITED]={"Green_Excited_1.caf","Green_Excited_2.caf","Green_Excited_3.caf","Green_Excited_4.caf","Green_Excited_5.caf"},
+    [M_GREEN][VO_ANGRY]={"Green_Angry_1.caf","Green_Angry_2.caf","Green_Angry_3.caf","Green_Angry_4.caf","Green_Angry_5.caf"},   
     
-    [M_BATTY][VO_WALKING]={@"Batty_Walking_1.caf",@"Batty_Walking_2.caf",@"Batty_Walking_3.caf",@"Batty_Walking_4.caf",@"Batty_Walking_5.caf"},
-    [M_BATTY][VO_STRETCHING]={@"Batty_Stretching_1.caf",@"Batty_Stretching_2.caf",@"Batty_Stretching_3.caf",@"Batty_Stretching_4.caf",@"Batty_Stretching_5.caf"},
-    [M_BATTY][VO_SCARED]={@"Batty_Scared_1.caf",@"Batty_Scared_2.caf",@"Batty_Scared_3.caf",@"Batty_Scared_4.caf",@"Batty_Scared_5.caf"},
-    [M_BATTY][VO_RELIEVED]={@"Batty_Relieved_1.caf",@"Batty_Relieved_2.caf",@"Batty_Relieved_3.caf",@"Batty_Relieved_4.caf",@"Batty_Relieved_5.caf"},
-    [M_BATTY][VO_APPROACH]={@"Batty_PlayerApproaches_1.caf",@"Batty_PlayerApproaches_2.caf",@"Batty_PlayerApproaches_3.caf",@"Batty_PlayerApproaches_4.caf",@"Batty_PlayerApproaches_5.caf"},
-    [M_BATTY][VO_ONFIRE]={@"Batty_OnFire_1.caf",@"Batty_OnFire_2.caf",@"Batty_OnFire_3.caf",@"Batty_OnFire_4.caf",@"Batty_OnFire_5.caf"},
-    [M_BATTY][VO_IDLE]={@"Batty_Idle_1.caf",@"Batty_Idle_2.caf",@"Batty_Idle_3.caf",@"Batty_Idle_4.caf",@"Batty_Idle_5.caf"},
-    [M_BATTY][VO_HIT]={@"Batty_Hit_1.caf",@"Batty_Hit_2.caf",@"Batty_Hit_3.caf",@"Batty_Hit_4.caf",@"Batty_Hit_5.caf"},
-    [M_BATTY][VO_EXCITED]={@"Batty_Excited_1.caf",@"Batty_Excited_2.caf",@"Batty_Excited_3.caf",@"Batty_Excited_4.caf",@"Batty_Excited_5.caf"},
-    [M_BATTY][VO_ANGRY]={@"Batty_Angry_1.caf",@"Batty_Angry_2.caf",@"Batty_Angry_3.caf",@"Batty_Angry_4.caf",@"Batty_Angry_5.caf"},
-    
-    
-    [M_STALKER][VO_WALKING]={@"Moof_Walking_1.caf",@"Moof_Walking_2.caf",@"Moof_Walking_3.caf",@"Moof_Walking_4.caf",@"Moof_Walking_5.caf"},
-   [M_STALKER][VO_STRETCHING]={@"Moof_Stretching_1.caf",@"Moof_Stretching_2.caf",@"Moof_Stretching_3.caf",@"Moof_Stretching_4.caf",@"Moof_Stretching_5.caf"},
-    [M_STALKER][VO_SCARED]={@"Moof_Scared_1.caf",@"Moof_Scared_2.caf",@"Moof_Scared_3.caf",@"Moof_Scared_4.caf",@"Moof_Scared_5.caf"},
-   [M_STALKER][VO_RELIEVED]={@"Moof_Relieved_1.caf",@"Moof_Relieved_2.caf",@"Moof_Relieved_3.caf",@"Moof_Relieved_4.caf",@"Moof_Relieved_5.caf"},
-    [M_STALKER][VO_APPROACH]={@"Moof_PlayerApproaches_1.caf",@"Moof_PlayerApproaches_2.caf",@"Moof_PlayerApproaches_3.caf",@"Moof_PlayerApproaches_4.caf",@"Moof_PlayerApproaches_5.caf"},
-    [M_STALKER][VO_ONFIRE]={@"creature_lit_on_fire_01.mp3",@"creature_lit_on_fire_02.mp3",@"creature_lit_on_fire_03.mp3"},
-    [M_STALKER][VO_IDLE]={@"creature_idle_01.mp3",@"creature_idle_02.mp3",@"creature_idle_03.mp3"},
-    [M_STALKER][VO_HIT]={@"creature_angry_hit_01.mp3",@"creature_angry_hit_02.mp3",@"creature_angry_hit_03.mp3"},
-    [M_STALKER][VO_EXCITED]={@"creature_aggro_01.mp3",@"creature_aggro_02.mp3",@"creature_aggro_03.mp3"},
-    [M_STALKER][VO_ANGRY]={@"creature_angry_charge_01.mp3",@"creature_angry_charge_02.mp3",@"creature_angry_charge_03.mp3"},
+    [M_BATTY][VO_WALKING]={"Batty_Walking_1.caf","Batty_Walking_2.caf","Batty_Walking_3.caf","Batty_Walking_4.caf","Batty_Walking_5.caf"},
+    [M_BATTY][VO_STRETCHING]={"Batty_Stretching_1.caf","Batty_Stretching_2.caf","Batty_Stretching_3.caf","Batty_Stretching_4.caf","Batty_Stretching_5.caf"},
+    [M_BATTY][VO_SCARED]={"Batty_Scared_1.caf","Batty_Scared_2.caf","Batty_Scared_3.caf","Batty_Scared_4.caf","Batty_Scared_5.caf"},
+    [M_BATTY][VO_RELIEVED]={"Batty_Relieved_1.caf","Batty_Relieved_2.caf","Batty_Relieved_3.caf","Batty_Relieved_4.caf","Batty_Relieved_5.caf"},
+    [M_BATTY][VO_APPROACH]={"Batty_PlayerApproaches_1.caf","Batty_PlayerApproaches_2.caf","Batty_PlayerApproaches_3.caf","Batty_PlayerApproaches_4.caf","Batty_PlayerApproaches_5.caf"},
+    [M_BATTY][VO_ONFIRE]={"Batty_OnFire_1.caf","Batty_OnFire_2.caf","Batty_OnFire_3.caf","Batty_OnFire_4.caf","Batty_OnFire_5.caf"},
+    [M_BATTY][VO_IDLE]={"Batty_Idle_1.caf","Batty_Idle_2.caf","Batty_Idle_3.caf","Batty_Idle_4.caf","Batty_Idle_5.caf"},
+    [M_BATTY][VO_HIT]={"Batty_Hit_1.caf","Batty_Hit_2.caf","Batty_Hit_3.caf","Batty_Hit_4.caf","Batty_Hit_5.caf"},
+    [M_BATTY][VO_EXCITED]={"Batty_Excited_1.caf","Batty_Excited_2.caf","Batty_Excited_3.caf","Batty_Excited_4.caf","Batty_Excited_5.caf"},
+    [M_BATTY][VO_ANGRY]={"Batty_Angry_1.caf","Batty_Angry_2.caf","Batty_Angry_3.caf","Batty_Angry_4.caf","Batty_Angry_5.caf"},
     
     
-    [M_CHARGER][VO_WALKING]={@"Moof_Walking_1.caf",@"Moof_Walking_2.caf",@"Moof_Walking_3.caf",@"Moof_Walking_4.caf",@"Moof_Walking_5.caf"},
-    [M_CHARGER][VO_STRETCHING]={@"Moof_Stretching_1.caf",@"Moof_Stretching_2.caf",@"Moof_Stretching_3.caf",@"Moof_Stretching_4.caf",@"Moof_Stretching_5.caf"},
-    [M_CHARGER][VO_SCARED]={@"Moof_Scared_1.caf",@"Moof_Scared_2.caf",@"Moof_Scared_3.caf",@"Moof_Scared_4.caf",@"Moof_Scared_5.caf"},
-    [M_CHARGER][VO_RELIEVED]={@"Moof_Relieved_1.caf",@"Moof_Relieved_2.caf",@"Moof_Relieved_3.caf",@"Moof_Relieved_4.caf",@"Moof_Relieved_5.caf"},
-    [M_CHARGER][VO_APPROACH]={@"Moof_PlayerApproaches_1.caf",@"Moof_PlayerApproaches_2.caf",@"Moof_PlayerApproaches_3.caf",@"Moof_PlayerApproaches_4.caf",@"Moof_PlayerApproaches_5.caf"},
-    [M_CHARGER][VO_ONFIRE]={@"creature_lit_on_fire_01.mp3",@"creature_lit_on_fire_02.mp3",@"creature_lit_on_fire_03.mp3"},
-    [M_CHARGER][VO_IDLE]={@"creature_idle_01.mp3",@"creature_idle_02.mp3",@"creature_idle_03.mp3"},
-    [M_CHARGER][VO_HIT]={@"creature_angry_hit_01.mp3",@"creature_angry_hit_02.mp3",@"creature_angry_hit_03.mp3"},
-    [M_CHARGER][VO_EXCITED]={@"creature_aggro_01.mp3",@"creature_aggro_02.mp3",@"creature_aggro_03.mp3"},
-    [M_CHARGER][VO_ANGRY]={@"creature_angry_charge_01.mp3",@"creature_angry_charge_02.mp3",@"creature_angry_charge_03.mp3"},
+    [M_STALKER][VO_WALKING]={"Moof_Walking_1.caf","Moof_Walking_2.caf","Moof_Walking_3.caf","Moof_Walking_4.caf","Moof_Walking_5.caf"},
+   [M_STALKER][VO_STRETCHING]={"Moof_Stretching_1.caf","Moof_Stretching_2.caf","Moof_Stretching_3.caf","Moof_Stretching_4.caf","Moof_Stretching_5.caf"},
+    [M_STALKER][VO_SCARED]={"Moof_Scared_1.caf","Moof_Scared_2.caf","Moof_Scared_3.caf","Moof_Scared_4.caf","Moof_Scared_5.caf"},
+   [M_STALKER][VO_RELIEVED]={"Moof_Relieved_1.caf","Moof_Relieved_2.caf","Moof_Relieved_3.caf","Moof_Relieved_4.caf","Moof_Relieved_5.caf"},
+    [M_STALKER][VO_APPROACH]={"Moof_PlayerApproaches_1.caf","Moof_PlayerApproaches_2.caf","Moof_PlayerApproaches_3.caf","Moof_PlayerApproaches_4.caf","Moof_PlayerApproaches_5.caf"},
+    [M_STALKER][VO_ONFIRE]={"creature_lit_on_fire_01.mp3","creature_lit_on_fire_02.mp3","creature_lit_on_fire_03.mp3"},
+    [M_STALKER][VO_IDLE]={"creature_idle_01.mp3","creature_idle_02.mp3","creature_idle_03.mp3"},
+    [M_STALKER][VO_HIT]={"creature_angry_hit_01.mp3","creature_angry_hit_02.mp3","creature_angry_hit_03.mp3"},
+    [M_STALKER][VO_EXCITED]={"creature_aggro_01.mp3","creature_aggro_02.mp3","creature_aggro_03.mp3"},
+    [M_STALKER][VO_ANGRY]={"creature_angry_charge_01.mp3","creature_angry_charge_02.mp3","creature_angry_charge_03.mp3"},
+    
+    
+    [M_CHARGER][VO_WALKING]={"Moof_Walking_1.caf","Moof_Walking_2.caf","Moof_Walking_3.caf","Moof_Walking_4.caf","Moof_Walking_5.caf"},
+    [M_CHARGER][VO_STRETCHING]={"Moof_Stretching_1.caf","Moof_Stretching_2.caf","Moof_Stretching_3.caf","Moof_Stretching_4.caf","Moof_Stretching_5.caf"},
+    [M_CHARGER][VO_SCARED]={"Moof_Scared_1.caf","Moof_Scared_2.caf","Moof_Scared_3.caf","Moof_Scared_4.caf","Moof_Scared_5.caf"},
+    [M_CHARGER][VO_RELIEVED]={"Moof_Relieved_1.caf","Moof_Relieved_2.caf","Moof_Relieved_3.caf","Moof_Relieved_4.caf","Moof_Relieved_5.caf"},
+    [M_CHARGER][VO_APPROACH]={"Moof_PlayerApproaches_1.caf","Moof_PlayerApproaches_2.caf","Moof_PlayerApproaches_3.caf","Moof_PlayerApproaches_4.caf","Moof_PlayerApproaches_5.caf"},
+    [M_CHARGER][VO_ONFIRE]={"creature_lit_on_fire_01.mp3","creature_lit_on_fire_02.mp3","creature_lit_on_fire_03.mp3"},
+    [M_CHARGER][VO_IDLE]={"creature_idle_01.mp3","creature_idle_02.mp3","creature_idle_03.mp3"},
+    [M_CHARGER][VO_HIT]={"creature_angry_hit_01.mp3","creature_angry_hit_02.mp3","creature_angry_hit_03.mp3"},
+    [M_CHARGER][VO_EXCITED]={"creature_aggro_01.mp3","creature_aggro_02.mp3","creature_aggro_03.mp3"},
+    [M_CHARGER][VO_ANGRY]={"creature_angry_charge_01.mp3","creature_angry_charge_02.mp3","creature_angry_charge_03.mp3"},
     
     
     };
@@ -408,7 +410,7 @@ UIImage* storedDoorico;
 UIImage* storedDooricoMask;
 UIImage* storedPortalico;
 UIImage* storedPortalicoMask;
-
+CocosDenshion::SimpleAudioEngine*  audio;
 
 #define SKIN_CACHE_SIZE 200
 CTexture skin_cache[SKIN_CACHE_SIZE];
@@ -521,9 +523,11 @@ Texture2D* Resources::getPaintedTex(int type,int color){
     return build_cache;
 }
 
+
 Texture2D* Resources::getPaintTex(int color){
     if(color==0)return getTex(ICO_PAINT);
-    return getTex(ICO_PAINT);
+    
+    
     if(paint_cache!=NULL&&color==paint_cache_color)return paint_cache;
     
     if(paint_cache!=NULL){
@@ -629,9 +633,9 @@ void Resources::voSound(int action,int type,Vector location){
             variation=(voLastVariation[type][action]+1)%voNumVariations[type][action];
         voLastVariation[type][action]=variation;
         distance_fade=sqrtf(distance_fade);
-        float vol=(distance_fade-sqrtf(sqrtf(distance)))/(distance_fade);
-        
-        [[SimpleAudioEngine sharedEngine] playEffect:voFiles[type][action][variation] loop:FALSE pitch:1.0f pan:0.0f gain:vol*1.4f];
+        //float vol=(distance_fade-sqrtf(sqrtf(distance)))/(distance_fade);
+        //audio->playEffect(voFiles[type][action][variation],FALSE,1.0f,0.0f,vol*1.4f);
+        audio->playEffect(voFiles[type][action][variation]);
     }
  
     
@@ -641,12 +645,12 @@ void Resources::loadGameAssets(){
     if(LOW_MEM_DEVICE){
         loadGameTextures();
     }
-  
-   /*for(int i=0;i<NUM_SOUNDS;i++){
+  /*
+   for(int i=0;i<NUM_SOUNDS;i++){
         for(int j=0;j<sfxNumVariations[i];j++)
         [[SimpleAudioEngine sharedEngine] preloadEffect:soundFiles[i][j]];
-    }
-    
+    }*/
+    /*
     if(CREATURES_ON)
     for(int i=0;i<NUM_CREATURES;i++){
         for(int j=0;j<NUM_VO_ACTIONS;j++){
@@ -665,14 +669,14 @@ void Resources::unloadGameAssets(){
    // [World::getWorld->terrain deallocateMemory];
     for(int i=0;i<NUM_SOUNDS;i++)
          for(int j=0;j<sfxNumVariations[i];j++)
-        [[SimpleAudioEngine sharedEngine] unloadEffect:soundFiles[i][j]];
+        audio->unloadEffect(soundFiles[i][j]);
     
     if(CREATURES_ON)
     for(int i=0;i<NUM_CREATURES;i++){
         for(int j=0;j<NUM_VO_ACTIONS;j++){
             for(int k=0;k<voNumVariations[i][j];k++){
               
-                    [[SimpleAudioEngine sharedEngine] unloadEffect:voFiles[i][j][k]];
+                    audio->unloadEffect(voFiles[i][j][k]);
                
             }
         }
@@ -682,8 +686,9 @@ void Resources::unloadGameAssets(){
 
 bool firstframe=FALSE;
 int Resources::playSound(int soundid){
-	if(playsound&&!firstframe){
-		
+    
+	if(playsound&&!firstframe&&soundid!=lasteffectplayed){
+		lasteffectplayed=soundid;
 		if(soundid==S_LAND_SOFT||soundid==S_LAND_HARD||soundid==S_BOUNCE||soundid==S_LAVA_BURN){
 			if(landingEffectTimer>0)
 				return 0;
@@ -700,8 +705,11 @@ int Resources::playSound(int soundid){
             variation=(sfxLastVariation[soundid]+1)%sfxNumVariations[soundid];
         }
         sfxLastVariation[soundid]=variation;
-            
-        return [[SimpleAudioEngine sharedEngine] playEffect:soundFiles[soundid][variation] loop:FALSE];
+        
+        
+        
+        return audio->playEffect(soundFiles[soundid][variation], FALSE);
+       // return [[SimpleAudioEngine sharedEngine] playEffect:soundFiles[soundid][variation] loop:FALSE];
 	}
     
 	
@@ -741,10 +749,9 @@ void Resources::soundEvent(int actionid,Vector location){
             bkgtargetvolume*=2;
         //printg("ambient triggered:%d\n",target_ambient);
         current_ambient=target_ambient;
-        [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+        audio->stopBackgroundMusic();
         if(target_ambient!=AMBIENT_NONE)
-    [[SimpleAudioEngine sharedEngine] playBackgroundMusic:ambientFiles[target_ambient]
-                                                     loop:-1];
+    audio->playBackgroundMusic(ambientFiles[target_ambient],TRUE);
     }else if(target_ambient==current_ambient){
         float distance=sqrtf(v_length2(v_sub(location,World::getWorld->player->pos)));
         float distance_fade=12.0f;
@@ -762,12 +769,14 @@ void Resources::soundEvent(int actionid,Vector location){
     }
     
 }
-#define NS_BURN 300
+#define NS_BURN 1000
 static float burnin[NS_BURN]={};
 static int sidx=0;
 extern BOOL SUPPORTS_OGL2;
 
+
 Resources::Resources(){
+    audio=CocosDenshion::SimpleAudioEngine::sharedEngine();
    	landingEffectTimer=0;
 	//textures=[[NSMutableArray alloc] init];
 	//menutextures=[[NSMutableArray alloc] init];
@@ -810,9 +819,10 @@ Resources::Resources(){
     
 	
 	burnSoundTimer=playing=-1;
-	[[CDAudioManager sharedManager] setMode:kAMM_FxPlusMusicIfNoOtherAudio];
+   
+	//[[CDAudioManager sharedManager] setMode:kAMM_FxPlusMusicIfNoOtherAudio];
 	
-	[[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:1.0];
+	audio->setBackgroundMusicVolume(1.0);
 	
 	
 	
@@ -820,9 +830,9 @@ Resources::Resources(){
 }
 void Resources::playMenuTune(){
 	if(playmusic){
-		[[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
-		[[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"Eden_title.mp3"
-												   loop:-1];
+		 audio->stopBackgroundMusic();
+        audio->playBackgroundMusic("Eden_title.mp3",true);
+        
         bkgvolume=1.0f;
         bkgtargetvolume=1.0f;
 	}
@@ -831,7 +841,8 @@ void Resources::playMenuTune(){
 
 void Resources::stopMenuTune(){
      bkgtargetvolume=0.0f;
-	[[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
+    audio->stopBackgroundMusic();
+	
      current_ambient=target_ambient=AMBIENT_NONE;
 	
 }
@@ -1416,6 +1427,7 @@ void Resources::loadGameTextures(){
 }
 
 int Resources::startedBurn(float length){
+   
 	if(burnSoundTimer<length){
 		burnSoundTimer=length;
 	}
@@ -1441,10 +1453,10 @@ void Resources::endBurnId(int idx){
 	
 }
 void Resources::stopSound(int soundId){
-    [[SimpleAudioEngine sharedEngine] stopEffect:soundId];	
+    audio->stopEffect(soundId);
 }
 void Resources::endBurn(){
-	[[SimpleAudioEngine sharedEngine] stopEffect:burn_id];	
+	audio->stopEffect(burn_id);
 	playing=burnSoundTimer=0;
 }
 
@@ -1454,6 +1466,7 @@ static int lastsongplayed=-1;
 
 
 void Resources::update(float etime){
+    lasteffectplayed=-1;
     if(playmusic){
         
            
@@ -1470,7 +1483,7 @@ void Resources::update(float etime){
             
         }
         if(songisplaying){
-            if(![[SimpleAudioEngine sharedEngine] isBackgroundMusicPlaying]){
+            if(!audio->isBackgroundMusicPlaying()){
                 songisplaying=FALSE;
                 cuetimer=0;
                 current_ambient=target_ambient=AMBIENT_NONE;
@@ -1482,16 +1495,16 @@ void Resources::update(float etime){
                 int song=arc4random()%NUM_SONGS;
                 if(song==lastsongplayed)song=(song+1)%NUM_SONGS;
                 lastsongplayed=song;
-                [[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
-                [[SimpleAudioEngine sharedEngine] playBackgroundMusic:songFiles[song]                
-                                                                 loop:0];
+                audio->stopBackgroundMusic();
+                audio->playBackgroundMusic(songFiles[song]);
+                
                 bkgvolume=1.0f;
                 bkgtargetvolume=1.0f;
                 songisplaying=TRUE;
             }
         }
-        if([[SimpleAudioEngine sharedEngine] backgroundMusicVolume]!=bkgvolume)  //crash tally: 1
-          [[SimpleAudioEngine sharedEngine] setBackgroundMusicVolume:bkgvolume];
+        if(audio->getBackgroundMusicVolume()!=bkgvolume)  //crash tally: 1
+          audio->setBackgroundMusicVolume(bkgvolume);
         
     }
     // printg("volume:%f\n",[[SimpleAudioEngine sharedEngine] backgroundMusicVolume]);
@@ -1507,7 +1520,8 @@ void Resources::update(float etime){
 		burnSoundTimer-=etime;
 		
 		if(burnSoundTimer<0){
-			[[SimpleAudioEngine sharedEngine] stopEffect:burn_id];
+           
+			audio->stopEffect(burn_id);
 		}else{
 				if(playing<0)
 				{

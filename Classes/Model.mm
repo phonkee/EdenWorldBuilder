@@ -386,7 +386,7 @@ void CalcEnvMap(vertexObject* vert){
     
    /* lolcounter++;
     if(lolcounter>500000){
-        printg("transformedVec:(%f,%f,%f)\n",reflectedVec.x,reflectedVec.y,reflectedVec.z);
+        printf("transformedVec:(%f,%f,%f)\n",reflectedVec.x,reflectedVec.y,reflectedVec.z);
         lolcounter=0;
     }*/
      
@@ -397,6 +397,8 @@ void CalcEnvMap(vertexObject* vert){
                                 (reflectedVec.z+1) * (reflectedVec.z+1) ) * .5f;
     vert->texs[0]= .5f + reflectedVec.x * p;
     vert->texs[1]= (.5f + reflectedVec.y * p)*32;
+    
+   
     
         
     
@@ -888,10 +890,10 @@ int PointTestModels(float x,float y,float z){
 void MMM::ExplodeModels(Vector p,int color){
   
 
-    printf("define hit: %d, %d\n",(int)sizeof(BOOL), (int)sizeof(bool));
+    //printf("define hit: %d, %d\n",(int)sizeof(BOOL), (int)sizeof(bool));
 
     
-    /*
+    
     for(int i=0;i<nguys;i++){
         if(!guys[i].alive||!guys[i].update)continue;
         Entity* e=&guys[i];
@@ -922,7 +924,7 @@ void MMM::ExplodeModels(Vector p,int color){
            
         }
         
-    }*/
+    }
     Player* e=World::getWorld->player;
     PVRTVec3 player_pos=MakePVR(World::getWorld->player->pos);
    // player_pos.x=wrapx(player_pos.x);
@@ -935,27 +937,26 @@ void MMM::ExplodeModels(Vector p,int color){
     extern Vector colorTable[256];
     if(pos.lenSqr()<EXPLOSION_RADIUS*EXPLOSION_RADIUS){
         if(color!=0){
-           // World::getWorld->hud->flash=.9f;
-           // World::getWorld->hud->flashcolor=MakeVector(.5f,.5f,.5f);//colorTable[color];
+            World::getWorld->hud->flash=.3f;
+            World::getWorld->hud->flashcolor=colorTable[color];
             
-          //  printf("flashcolor memlocation2: %X",(unsigned int)(&(World::getWorld->hud->flashcolor)));
-            World::getWorld->hud->flashcolor.x=.3f;
-            
-            World::getWorld->hud->flashcolor.y=.4f;
-            World::getWorld->hud->flashcolor.z=.6f;
+         
         }else{
             
-        
-        float hit_force=((EXPLOSION_RADIUS*EXPLOSION_RADIUS)-pos.lenSqr())*.75f;
-        pos=pos.normalize();
-        
-        pos*=hit_force;
-        Vector vel=e->vel;
-        vel.x+=pos.x;
-        vel.y+=pos.y+6;
-        vel.z+=pos.z;
-        e->vel=vel;
-         Resources::getResources->playSound(S_HIT);
+            
+            float hit_force=((EXPLOSION_RADIUS*EXPLOSION_RADIUS)-pos.lenSqr())*.85f;
+            if(blockinfo[getLandc(p.x,p.z,p.y)]&IS_BLOCKTNT){
+                hit_force/=3.0f;
+            }
+            pos=pos.normalize();
+            
+            pos*=hit_force;
+            Vector vel=e->vel;
+            vel.x+=pos.x;
+            vel.y+=pos.y+6;
+            vel.z+=pos.z;
+            e->vel=vel;
+            Resources::getResources->playSound(S_HIT);
             if(World::getWorld->player->life>.5f)
                 World::getWorld->player->takeDamage(.38f);
             else

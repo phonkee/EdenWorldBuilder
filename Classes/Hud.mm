@@ -122,7 +122,7 @@ extern "C" const int hudBlocksMap[NUM_BLOCKS+1]={
     
     [TYPE_DOOR_TOP]=-1,
     [TYPE_GOLDEN_CUBE]=-1,
-    [TYPE_LIGHTBOX]=TYPE_BTLIGHTBOX,
+    [TYPE_LIGHTBOX]=-1,
     [TYPE_STEEL]=TYPE_BTSTEEL,
     [TYPE_PORTAL_TOP]=-1,
     
@@ -200,7 +200,7 @@ Hud::Hud(){
 	flash=-1;
     build_size=1;
     flashcolor=MakeVector(1.0,1.0,1.0);
-     printf("flashcolor memlocation1: %X",(unsigned int)(&flashcolor));
+   //  printf("flashcolor memlocation1: %X",(unsigned int)(&flashcolor));
 	hideui=FALSE;
 	HUDR_X=SCREEN_WIDTH-HUD_BOX_SIZE-13;
 	ttime=0;
@@ -2077,7 +2077,7 @@ void Hud::render(){
 	
     if(rmine.origin.x!=HUDR_X){
         
-        printf("wtf: %f  chek1:%x  check2:%x\n",rmine.origin.x,(unsigned int)(&flashcolor),(unsigned int)&(World::getWorld->hud->flashcolor));
+     //   printf("wtf: %f  chek1:%x  check2:%x\n",rmine.origin.x,(unsigned int)(&flashcolor),(unsigned int)&(World::getWorld->hud->flashcolor));
         
         printf("break here");
     }
@@ -2157,8 +2157,8 @@ void Hud::render(){
 
     }
 	if(flash>0||World::getWorld->player->flash>0){
-        printf("hello\n");
-        /*
+       /// printf("hello\n");
+        
 		//NSLog(@"%f",flash);
 		glDisable(GL_TEXTURE_2D);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -2180,7 +2180,7 @@ void Hud::render(){
             
         }else
             Graphics::drawRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-		glEnable(GL_TEXTURE_2D);*/
+		glEnable(GL_TEXTURE_2D);
         
 		
 	}

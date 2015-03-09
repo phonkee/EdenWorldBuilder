@@ -138,7 +138,7 @@ void ShareMenu::endShare(BOOL cancel){
 	[node->display_name retain];
 	[name release];
     name=NULL;
-    World::getWorld->fm->setName(node->file_name,node->display_name);
+    World::getWorld->fm->setName(cpstring(node->file_name),cpstring(node->display_name));
     NSString* file_name=[NSString stringWithFormat:@"%@/%@",
                          World::getWorld->fm->documents,node->file_name];
     NSString* image_file_name=[NSString stringWithFormat:@"%@/%@.png",

@@ -72,6 +72,8 @@
 		19A07C931A291048008CAED0 /* firework_liftoff.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19A07C761A291048008CAED0 /* firework_liftoff.mp3 */; };
 		19A07C941A291048008CAED0 /* firework_fuse.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19A07C771A291048008CAED0 /* firework_fuse.mp3 */; };
 		19A07C961A29116B008CAED0 /* door_close.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19A07C951A29116B008CAED0 /* door_close.mp3 */; };
+		19A5B4271AAD283400605D8B /* libCocosDenshion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19DF68C51A842FD800E462A1 /* libCocosDenshion.a */; };
+		19A5B4291AAD289D00605D8B /* SimpleAudioEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19A5B4281AAD289D00605D8B /* SimpleAudioEngine.mm */; };
 		19AECD11192C0CFC00F8DD91 /* FileManagerHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19AECD10192C0CFC00F8DD91 /* FileManagerHelper.mm */; };
 		19AECD15192EA99F00F8DD91 /* Eden.eden in Resources */ = {isa = PBXBuildFile; fileRef = 19AECD14192EA99F00F8DD91 /* Eden.eden */; };
 		19AECD17192EDAD900F8DD91 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19AECD16192EDAD900F8DD91 /* Images.xcassets */; };
@@ -167,7 +169,6 @@
 		19D546A41A3D43B500E61041 /* jump_button_release.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5466A1A3D43B500E61041 /* jump_button_release.mp3 */; };
 		19D546A51A3D43B500E61041 /* door close.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 19D5466B1A3D43B500E61041 /* door close.mp3 */; };
 		19E52AE11A84418200C9CD48 /* libFlurry_6.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E52AE01A84418200C9CD48 /* libFlurry_6.0.0.a */; };
-		19E52AE21A84427D00C9CD48 /* libCocosDenshion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19DF68C51A842FD800E462A1 /* libCocosDenshion.a */; };
 		19F806B41AA260CC00ACD338 /* VKeyboard.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19F806B31AA260CC00ACD338 /* VKeyboard.mm */; };
 		1D13502E15C4AE2A0038CE4C /* uisave.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13502D15C4AE2A0038CE4C /* uisave.png */; };
 		1D13503615C58F000038CE4C /* uiexit.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D13503315C58F000038CE4C /* uiexit.png */; };
@@ -636,7 +637,7 @@
 		1D94B58215865E7100A42722 /* ipad~buildplus.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D94B58115865E7000A42722 /* ipad~buildplus.png */; };
 		1D94B58415879F4800A42722 /* ipad~destroy_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D94B58315879F4800A42722 /* ipad~destroy_active.png */; };
 		1D9D039F15485B4600E975AC /* Geometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D9D039E15485B4600E975AC /* Geometry.mm */; };
-		1D9D03A3154B28B000E975AC /* sphere_map.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D9D03A2154B28B000E975AC /* sphere_map.png */; };
+		1D9D03A3154B28B000E975AC /* ipad~sphere_map.png in Resources */ = {isa = PBXBuildFile; fileRef = 1D9D03A2154B28B000E975AC /* ipad~sphere_map.png */; };
 		1DA0EDA415D75283007A9E9B /* ipad~block_border2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DA0EDA315D75283007A9E9B /* ipad~block_border2.png */; };
 		1DA0EDA715D757F9007A9E9B /* ipad~block_border_pressed2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DA0EDA615D757F9007A9E9B /* ipad~block_border_pressed2.png */; };
 		1DA0EDA915D75B62007A9E9B /* ipad~triangle_border2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DA0EDA815D75B62007A9E9B /* ipad~triangle_border2.png */; };
@@ -918,6 +919,7 @@
 		19A07C761A291048008CAED0 /* firework_liftoff.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = firework_liftoff.mp3; path = new_sound/firework_liftoff.mp3; sourceTree = "<group>"; };
 		19A07C771A291048008CAED0 /* firework_fuse.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = firework_fuse.mp3; path = new_sound/firework_fuse.mp3; sourceTree = "<group>"; };
 		19A07C951A29116B008CAED0 /* door_close.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = door_close.mp3; path = new_sound/door_close.mp3; sourceTree = "<group>"; };
+		19A5B4281AAD289D00605D8B /* SimpleAudioEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SimpleAudioEngine.mm; sourceTree = "<group>"; };
 		19AECD0F192C0CFC00F8DD91 /* FileManagerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManagerHelper.h; sourceTree = "<group>"; };
 		19AECD10192C0CFC00F8DD91 /* FileManagerHelper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FileManagerHelper.mm; sourceTree = "<group>"; };
 		19AECD14192EA99F00F8DD91 /* Eden.eden */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eden.eden; sourceTree = "<group>"; };
@@ -1497,7 +1499,7 @@
 		1D94B58315879F4800A42722 /* ipad~destroy_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~destroy_active.png"; sourceTree = "<group>"; };
 		1D9D039E15485B4600E975AC /* Geometry.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Geometry.mm; sourceTree = "<group>"; };
 		1D9D03A115485B5F00E975AC /* Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
-		1D9D03A2154B28B000E975AC /* sphere_map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sphere_map.png; path = media/textures/sphere_map.png; sourceTree = SOURCE_ROOT; };
+		1D9D03A2154B28B000E975AC /* ipad~sphere_map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ipad~sphere_map.png"; path = "media/textures/ipad~sphere_map.png"; sourceTree = SOURCE_ROOT; };
 		1DA0EDA315D75283007A9E9B /* ipad~block_border2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~block_border2.png"; sourceTree = "<group>"; };
 		1DA0EDA615D757F9007A9E9B /* ipad~block_border_pressed2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~block_border_pressed2.png"; sourceTree = "<group>"; };
 		1DA0EDA815D75B62007A9E9B /* ipad~triangle_border2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~triangle_border2.png"; sourceTree = "<group>"; };
@@ -1798,7 +1800,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19E52AE21A84427D00C9CD48 /* libCocosDenshion.a in Frameworks */,
+				19A5B4271AAD283400605D8B /* libCocosDenshion.a in Frameworks */,
 				194EDC3E1A79CAA200342AEB /* Security.framework in Frameworks */,
 				C6AE407713C3919E0068685C /* CFNetwork.framework in Frameworks */,
 				C6AE407513C3917D0068685C /* SystemConfiguration.framework in Frameworks */,
@@ -2047,6 +2049,7 @@
 		19DF68C71A842FFE00E462A1 /* sound */ = {
 			isa = PBXGroup;
 			children = (
+				19A5B4281AAD289D00605D8B /* SimpleAudioEngine.mm */,
 				19DF68C91A84302B00E462A1 /* SimpleAudioEngine.h */,
 				19DF68CA1A84302B00E462A1 /* Export.h */,
 				19DF68CC1A84302B00E462A1 /* CDAudioManager.h */,
@@ -3032,7 +3035,7 @@
 				1D2712461516F46500C7059F /* portal.png */,
 				1D14D5EF1476BB3C003599CB /* quit.png */,
 				C6FD455F12905ECC005FC996 /* save.png */,
-				1D9D03A2154B28B000E975AC /* sphere_map.png */,
+				1D9D03A2154B28B000E975AC /* ipad~sphere_map.png */,
 				C60A86941405BBC6000B386F /* triangle_border.png */,
 				C60A86931405BBC6000B386F /* triangle_border_pressed.png */,
 			);
@@ -3757,7 +3760,7 @@
 				1D27124215166F5200C7059F /* flowers_blue.png in Resources */,
 				1D271245151680ED00C7059F /* grass_04.png in Resources */,
 				1D2712471516F46500C7059F /* portal.png in Resources */,
-				1D9D03A3154B28B000E975AC /* sphere_map.png in Resources */,
+				1D9D03A3154B28B000E975AC /* ipad~sphere_map.png in Resources */,
 				1D184D93157A5DD500CA3B89 /* pinwheel.png in Resources */,
 				1D184D94157A5DD500CA3B89 /* cloud_SM.png in Resources */,
 				1D184D95157A5DD500CA3B89 /* cloud_MD.png in Resources */,
@@ -3930,6 +3933,7 @@
 				C6B5A07F144797590065FBD4 /* PVRTFixedPoint.cpp in Sources */,
 				C6B5A080144797590065FBD4 /* PVRTError.cpp in Sources */,
 				C6B5A081144797590065FBD4 /* PVRTDecompress.cpp in Sources */,
+				19A5B4291AAD289D00605D8B /* SimpleAudioEngine.mm in Sources */,
 				C6B5A082144797590065FBD4 /* PVRTBoneBatch.cpp in Sources */,
 				C6B5A08F144797C50065FBD4 /* PVRTTextureAPI.cpp in Sources */,
 				C6B5A090144797C50065FBD4 /* PVRTPrint3DAPI.cpp in Sources */,
@@ -3972,7 +3976,7 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				LIBRARY_SEARCH_PATHS = (
 					testflight/,
 					"$(PROJECT_DIR)/flurry",
@@ -4010,7 +4014,7 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				LIBRARY_SEARCH_PATHS = (
 					testflight/,
 					"$(PROJECT_DIR)/flurry",
@@ -4124,7 +4128,7 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				LIBRARY_SEARCH_PATHS = (
 					testflight/,
 					"$(PROJECT_DIR)/flurry",
@@ -4189,7 +4193,7 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				LIBRARY_SEARCH_PATHS = (
 					testflight/,
 					"$(PROJECT_DIR)/flurry",

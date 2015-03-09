@@ -51,7 +51,7 @@ public:
     BOOL convertingWorld;
     BOOL genflat;
     FileManager();
-    BOOL worldExists(NSString* name,BOOL appendArchive);
+    BOOL worldExists(std::string name,BOOL appendArchive);
     void saveColumn(int cx,int cz);
     void saveGenColumn(int cx,int cz,int origin);
     void readColumn(int cx,int cz,NSFileHandle* nsfh);
@@ -65,7 +65,7 @@ public:
     void compressLastPlayed();
     void convertFile(NSString* file_name);
     NSString* getName(NSString* file_name);
-    void setName(NSString* file_name,NSString* display_name);
+    void setName(std::string fn,std::string dn);
     void setImageHash(NSString* hash);
     void loadWorld(NSString* name,BOOL fromArchive);
     BOOL deleteWorld(NSString* name);
@@ -76,5 +76,5 @@ private:
     void LoadCreatures();
     void saveCreatures();
 };
-
+std::string fullPathForFilename(const char* fn);
 #endif

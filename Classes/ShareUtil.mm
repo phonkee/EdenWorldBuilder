@@ -282,6 +282,7 @@ FileDownload* reportmanager=NULL;
             listresult=NULL;
         }
         listresult=[[NSString alloc] initWithData:dlmanager.result encoding:NSUTF8StringEncoding];
+        //NSLog(listresult);
         [listresult retain];
     }else
     if(!isPreview)

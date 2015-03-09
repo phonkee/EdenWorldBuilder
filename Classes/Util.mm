@@ -15,7 +15,18 @@
 #import "md5.h"
 #import "Model.h"
 
-
+std::string cpstring(NSString * str){
+    char buf[1000];
+    [str getCString:buf maxLength:1000 encoding:NSUTF8StringEncoding];
+    
+    return std::string(buf);
+    
+}
+NSString* nsstring(std::string s){
+    
+    return [NSString stringWithCString:s.c_str() encoding:NSUTF8StringEncoding];;
+    
+}
 float dotProduct(Vector A,Vector B){
     
     return A.x*B.x + A.y*B.y + A.z*B.z;

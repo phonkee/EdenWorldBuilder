@@ -28,7 +28,7 @@ THE SOFTWARE.
 
 #include <stddef.h>
 #include "Export.h"
-//#include <typeinfo>
+#include <typeinfo>
 #include <ctype.h>
 #include <string.h>
 
@@ -42,7 +42,7 @@ public:
 
 static inline unsigned int getHashCodeByString(const char *key)
 {
-	unsigned int len = strlen(key);
+	unsigned int len = (int)strlen(key);
 	const char *end=key+len;
 	unsigned int hash;
 
@@ -73,7 +73,7 @@ public:
      *  @lua NA
      */
     virtual long getClassTypeInfo() {
-        return 123;//getHashCodeByString(typeid(CocosDenshion::SimpleAudioEngine).name());
+        return getHashCodeByString(typeid(CocosDenshion::SimpleAudioEngine).name());
     }
 
     /**

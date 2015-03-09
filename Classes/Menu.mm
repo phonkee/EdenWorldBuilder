@@ -498,7 +498,7 @@ void Menu::update(float etime){
 							share_mode=FALSE;
 							
 							
-							if(World::getWorld->fm->worldExists(node->file_name,TRUE)){
+							if(World::getWorld->fm->worldExists(cpstring(node->file_name),TRUE)){
 								sbar->setStatus(@"Sharing world..." ,2);
 								is_sharing=TRUE;
 								share_menu->beginShare(node);
@@ -784,7 +784,7 @@ void Menu::render(){
 			if(selected_world!=NULL){
 				
 				//NSString* wname=selected_world->file_name;
-                if(World::getWorld->fm->worldExists(selected_world->file_name,TRUE)){
+                if(World::getWorld->fm->worldExists(cpstring(selected_world->file_name),TRUE)){
 				//[[World getWorld] loadWorld:wname];
                     loading=4;
                 }

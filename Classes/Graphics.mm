@@ -322,7 +322,8 @@ void Graphics::endHud(){
 	glMatrixMode(GL_MODELVIEW);		
 	glPopMatrix();
     glMatrixMode(GL_PROJECTION);			
-	glPopMatrix();	
+	glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);	
 	//glEnableClientState(GL_NORMAL_ARRAY);
 	
 }
@@ -366,10 +367,11 @@ void Graphics::prepareScene(){
 	//glClear();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+    gluPerspective(80,P_ASPECT_RATIO,P_ZNEAR,P_ZFAR-25);
 	//static int c=0;
     //if(c==0){c++;
        // printg("ar: %f, fovy:%f\n",P_ASPECT_RATIO,P_FOVY);}
-	gluPerspective(P_FOVY,P_ASPECT_RATIO,P_ZNEAR,P_ZFAR-25);
+	
 	glMatrixMode(GL_MODELVIEW);		
 	glLoadIdentity();
 /*	if(World::getWorld->FLIPPED)

@@ -26,7 +26,7 @@ static map_t indexes;
 static unsigned long long cur_dir_offset;
 static map_t indexes_hmm;
 static FileManager* single;
-
+static std::string docs;
 static NSFileHandle* saveFile;
 static WorldFileHeader* sfh;
 static BOOL writeDirectory;
@@ -53,6 +53,7 @@ FileManager::FileManager(){
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	documents = [paths objectAtIndex:0];
 	[documents retain];
+    docs=cpstring(documents);
     printg("!!!!!! %s\n",[documents cStringUsingEncoding:NSUTF8StringEncoding]);
 	oldOffsetX=oldOffsetZ=chunkOffsetX=chunkOffsetZ=-1;
 	indexes=hashmap_new();
@@ -62,16 +63,27 @@ FileManager::FileManager(){
 	
 	
 }
-BOOL FileManager::worldExists(NSString* name,BOOL appendArchive){
-	NSString* file_name=appendArchive?[NSString stringWithFormat:@"%@/%@",documents,name]:[NSString stringWithFormat:@"%@/%@",documents,name];
-	NSFileManager* fm=[NSFileManager defaultManager];
-	if(![fm fileExistsAtPath:file_name]){
+BOOL FileManager::worldExists(std::string na,BOOL appendArchive){
+    
+   
+    
+    std::string file_name=docs + "/" +na;
+    
+    FILE* f;
+    if((f=fopen(file_name.c_str(),"r"))){
+        fclose(f);
+        return TRUE;
+    }
+    return FALSE;
+
+	//NSFileManager* fm=[NSFileManager defaultManager];
+	//if(![fm fileExistsAtPath:file_name]){
 	//	NSLog(@"%@ doesn't exist",file_name);
-		return FALSE;	
-	}else{	
+	//	return FALSE;
+	//}else{
 	//	NSLog(@"%@ exists",file_name);
-		return TRUE;
-	}
+	//	return TRUE;
+	//}
 }
 static int count=0;
 
@@ -998,19 +1010,39 @@ void FileManager::readColumn(int cx,int cz,NSFileHandle* rcfile){
     
 	
 }
-void FileManager::setName(NSString* file_name,NSString* display_name){
+std::string fullPathForFilename(const char* fn){
+    return cpstring([[NSBundle mainBundle] pathForResource:nsstring(fn) ofType:nil]);
+    //return docs+"/"+std::string(fn);
+}
+void FileManager::setName(std::string fn,std::string dn){
+    
+   
    //file_name=[file_name stringByDeletingPathExtension];
-    NSLog(@"set name request on:%@",file_name);
+   // NSLog(@"set name request on:%@",file_name);
    // NSString* nofp=file_name;
-    file_name=[NSString stringWithFormat:@"%@/%@",documents,file_name];
+    
+    fn=docs+"/"+fn;
+    FILE* f;
+    if(!(f=fopen(fn.c_str(),"rw"))){
+        NSLog(@"file to rename not found\n");
+        return;
+    }
+    WorldFileHeader* fh2=(WorldFileHeader*)malloc(sizeof(WorldFileHeader));
+    fread(fh2,sizeof(WorldFileHeader),1,f);
+    fseek(f,0,SEEK_SET);
+    strncpy(fh2->name,dn.c_str(),49);
+    fwrite(fh2,sizeof(WorldFileHeader),1,f);
+    
+    free(fh2);
+    fclose(f);
+   // file_name=[NSString stringWithFormat:@"%@/%@",documents,file_name];
    // DecompressWorld([file_name cStringUsingEncoding:NSUTF8StringEncoding]);
   
 	
 	
-	saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];
+/*	saveFile=[NSFileHandle fileHandleForUpdatingAtPath:file_name];
     if(saveFile==NULL){
-        NSLog(@"file to rename not found\n");
-        return;
+        
     }
 	WorldFileHeader* fh=(WorldFileHeader*)[[saveFile readDataOfLength:sizeof(WorldFileHeader)] bytes];
 	WorldFileHeader* fh2=(WorldFileHeader*)malloc(sizeof(WorldFileHeader));
@@ -1024,7 +1056,7 @@ void FileManager::setName(NSString* file_name,NSString* display_name){
 	
 	[saveFile closeFile];
 	 
-    
+    */
    // CompressWorld([nofp cStringUsingEncoding:NSUTF8StringEncoding]);
 	
 }
@@ -1072,8 +1104,36 @@ void FileManager::setImageHash(NSString* hash){
 }*/
 
 NSString* FileManager::getName(NSString* name){
-	if(!this->worldExists(name,FALSE)) return @"error~";
-	NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];	
+    std::string n=cpstring(name);
+	if(!worldExists(n,FALSE)) return @"error~";
+    std::string fn=docs+"/"+n;
+    FILE* sf;
+    sf=fopen(fn.c_str(),"r");
+    WorldFileHeader* fh=(WorldFileHeader*)malloc(sizeof(WorldFileHeader));
+    if(fread(fh,sizeof(WorldFileHeader),1,sf)!=1){
+        
+      //  printf("help");
+        fclose(sf);
+         free(fh);
+        return @"error~";
+    }
+    fh->name[49]=NULL;
+    std::string res_name(fh->name);
+    
+    if(res_name.length()==0){
+        fclose(sf);
+         free(fh);
+        return @"error";
+    }
+    
+    
+    fclose(sf);
+    free(fh);
+    NSString * nss=nsstring(res_name);
+    //printf("file_name: %s",res_name.c_str());
+    return nss;
+    
+	/*NSString* file_name=[NSString stringWithFormat:@"%@/%@",documents,name];
 	
 	saveFile=[NSFileHandle fileHandleForReadingAtPath:file_name];		
     NSData* data=[saveFile readDataOfLength:sizeof(WorldFileHeader)];
@@ -1086,17 +1146,15 @@ NSString* FileManager::getName(NSString* name){
 	WorldFileHeader* fh=(WorldFileHeader*)[data bytes];
   
    
-	//NSLog(@"fn:%s",fh->name);
+	
 	NSString* fname=[NSString stringWithCString:fh->name encoding:NSUTF8StringEncoding];
 	if([fname length]==0){
         fname=@"error~";
-       // [saveFile closeFile];
-        //[World::getWorld->sf_lock unlock];
-        //return @"error3~";
+       
     }
-	[saveFile closeFile];
-    
-	return fname;
+	
+   
+	return @"";*/
 	
 	
 }
@@ -1286,6 +1344,9 @@ extern float P_ZFAR;
   static int last_spawn_location=-1;
 
 void FileManager::loadWorld(NSString* name,BOOL fromArchive){
+   
+    
+    
     
 	Terrain* ter=World::getWorld->terrain;
 		ter->clearBlocks();
@@ -1295,7 +1356,7 @@ void FileManager::loadWorld(NSString* name,BOOL fromArchive){
         imgHash=NULL;
     }
     World::getWorld->player->reset();
-	if(!this->worldExists(name,fromArchive)){
+	if(!worldExists(cpstring(name),fromArchive)){
      
         
         extern int g_terrain_type;

@@ -602,6 +602,11 @@ void BlockBreak::addCreatureVanish2(float x,float z,float y,int color,int type){
                     
                 }
                 
+            }else if(color==-1){
+                pbuffer2[pvbi+j].colors[0]=(int)(blockColor[type][0])%256;
+                pbuffer2[pvbi+j].colors[1]=(int)(blockColor[type][1])%256;
+                pbuffer2[pvbi+j].colors[2]=(int)(blockColor[type][2])%256;
+                
             }else{
                 Vector clr=colorTable[color];
                 pbuffer2[pvbi+j].colors[0]=(int)(clr.x*255)%256;

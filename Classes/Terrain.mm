@@ -885,7 +885,7 @@ void Terrain::burnBlock(int x,int z,int y,BOOL causedByExplosion){
             if((type==TYPE_TNT||blockinfo[type]&IS_BLOCKTNT)&&causedByExplosion){
                 
                 if(blockinfo[type]&IS_BLOCKTNT){
-                    node->life=.5f;
+                    node->life=.5f+randf(.3f);
                 }else
                 node->life=.5+randf(.3f);
             }
@@ -1673,7 +1673,10 @@ void Terrain::blocktntexplode(int x,int z,int y,int btype){
     
     
     MMM::ExplodeModels(v,color);
-    return;
+  
+    if(color==0){
+         World::getWorld->effects->addCreatureVanish(x+.5f,z+.5f,y+.5f,-1,blockTntMap[btype]);
+    }else
     World::getWorld->effects->addCreatureVanish(x+.5f,z+.5f,y+.5f,color,blockTntMap[btype]);
     
     BOOL painting=false;
@@ -1694,7 +1697,7 @@ void Terrain::blocktntexplode(int x,int z,int y,int btype){
     if(getLand(x,z+1,y)>0) boundbackward=0;
     if(y+1==T_HEIGHT||getLand(x,z,y+1)>0) boundtop=0;
     if(y-1<=0||getLand(x,z,y-1)>0) boundbot=0;
-    
+    paintBlock(x ,z ,y,color);
    	for(int i=0;i<=er;i++){
         for(int j=x-boundleft;j<=x+boundright;j++){
             for(int k=z-boundforward;k<=z+boundbackward;k++){
@@ -1711,6 +1714,8 @@ void Terrain::blocktntexplode(int x,int z,int y,int btype){
                     int type=getLandc(j, k, y-yy);
                     if(type==0){
                         if(!World::getWorld->player->test(j ,y-yy ,k,1)){
+                            if(btype==TYPE_BTWATER||btype==TYPE_BTLAVA)
+                                liquids->addSource(j,k ,y-yy );
                             updateChunks(j,k ,y-yy ,blockTntMap[btype]);
                              paintBlock(j ,k ,y-yy,color);
                         }
@@ -1723,6 +1728,8 @@ void Terrain::blocktntexplode(int x,int z,int y,int btype){
                     
                     if(type==0){
                         if(!World::getWorld->player->test(j ,y+yy,k,1)){
+                            if(btype==TYPE_BTWATER||btype==TYPE_BTLAVA)
+                                liquids->addSource(j,k ,y+yy );
                             updateChunks(j ,k ,y+yy ,blockTntMap[btype]);
                             paintBlock(j ,k ,y+yy,color);
                         }
@@ -2894,6 +2901,9 @@ void Terrain::render(){
                             objVertices[vert].position[1]=4*renderList[i]->rtobjects[j].pos.y+1+2.3*vc.y;
                             objVertices[vert].position[2]=4*(renderList[i]->rtobjects[j].pos.z-World::getWorld->fm->chunkOffsetZ*CHUNK_SIZE)+1+2.3*vc.z;
                             
+                            //objVertices[vert].texs[0]=xoff;
+                            //objVertices[vert].texs[1]=yoff;
+                          
                             CalcEnvMap(&objVertices[vert]);
                             
                             

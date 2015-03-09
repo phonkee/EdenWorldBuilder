@@ -80,7 +80,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Adhoc Distribution"
+      buildConfiguration = "Appstore Distribution"
       customArchiveName = "Eden"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>

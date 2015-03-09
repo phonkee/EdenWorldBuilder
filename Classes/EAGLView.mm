@@ -137,7 +137,9 @@ extern EAGLView* G_EAGL_VIEW;
 	G_EAGL_VIEW=self;	
 	P_ASPECT_RATIO=( (float)IPAD_WIDTH/(float)IPAD_HEIGHT);
     if(IS_WIDESCREEN){
+        P_ASPECT_RATIO=(float)SCREEN_WIDTH/SCREEN_HEIGHT;
         
+        printf("SW:%f SH:%f  AR:%f  FOV_Y: %f\n",SCREEN_WIDTH,SCREEN_HEIGHT,P_ASPECT_RATIO, P_FOVY);
     }
     
 	
