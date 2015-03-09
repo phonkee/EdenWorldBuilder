@@ -1343,7 +1343,10 @@ void Texture2D::drawButton(Button button){
 void Texture2D::drawNumbers(CGRect rect,int num){
     if(num<0||num>10){
         printg("num out of bounds/n");
+        if(num<0)
         num=0;
+        if(num>10)
+            num=10;
     }
     CGFloat depth=0.0;
     float xoff=num*1/16.0f;
