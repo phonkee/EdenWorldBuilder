@@ -2010,12 +2010,23 @@ BOOL Terrain::update(float etime){
             }else if(blockinfo[node->type]&IS_BLOCKTNT){
                 blocktntexplode(node->x ,node->z ,node->y ,node->type);
             }
-			nburn--;
-			Resources::getResources->endBurnId(node->sid);
-			World::getWorld->effects->removeFire(node->pid);
-			if(tz!=TYPE_NONE)
-			updateChunks(node->x ,node->z ,node->y ,TYPE_NONE);
-			free(node);			
+            nburn--;
+            Resources::getResources->endBurnId(node->sid);
+            World::getWorld->effects->removeFire(node->pid);
+            if(tz!=TYPE_NONE) {
+                // If burning block is vine, replace it with dark stone.
+                if (node->type==TYPE_VINE) {
+                    updateChunks(node->x ,node->z ,node->y ,TYPE_DARK_STONE);
+                    // If burning block is ice or ice ramp, replace it with water.
+                } else if (node->type==TYPE_ICE_RAMP1 || node->type==TYPE_ICE_RAMP2 || node->type==TYPE_ICE_RAMP3 || node->type==TYPE_ICE_RAMP4 || node->type==TYPE_ICE) {
+                    updateChunks(node->x ,node->z ,node->y ,TYPE_WATER);
+                } else
+                    // Set other burning block to air.
+                    updateChunks(node->x ,node->z ,node->y ,TYPE_NONE);
+            }
+			
+            
+            free(node);
 			node=NULL;
 			if(prev!=NULL)
 			node=prev->next;

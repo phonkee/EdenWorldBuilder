@@ -215,8 +215,8 @@ Hud::Hud(){
         rjumprender.origin.y+=23;
         rjumprender.origin.x-=17;
     
-    rmenu.origin.x=0;
-    rmenu.origin.y=SCREEN_HEIGHT-45;
+    rmenu.origin.x=10;
+    rmenu.origin.y=SCREEN_HEIGHT-60;
     rmenu.size.width=45;
     rmenu.size.height=45;
     inmenu=FALSE;

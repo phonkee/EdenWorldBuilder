@@ -1335,7 +1335,7 @@ void Move(Entity* e,float etime){
         //if(!onground)NSLog(@"wtf");
         float EXCITE_SPEED=5.0f;
                if(!e->excited&&e->vel.lenSqr()>=EXCITE_SPEED){
-                   if(!e->onfire&&&e->ragetimer<=0)
+                   if(!e->onfire&&e->ragetimer<=0)
               PlaySound(e->idx,VO_EXCITED);
             e->excited=TRUE;
         }

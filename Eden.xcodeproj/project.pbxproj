@@ -674,6 +674,7 @@
 		28FD14FE0DC6FC130079059D /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FD14FD0DC6FC130079059D /* EAGLView.mm */; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
+		BF78A2D12084F0B1007EBBDF /* libcocos2d iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF78A2D02084F0B0007EBBDF /* libcocos2d iOS.a */; };
 		C600A0F113D4BC350050E5FD /* ipad~jump_depressed.png in Resources */ = {isa = PBXBuildFile; fileRef = C600A0EC13D4BC350050E5FD /* ipad~jump_depressed.png */; };
 		C600A0F213D4BC350050E5FD /* ipad~camera.png in Resources */ = {isa = PBXBuildFile; fileRef = C600A0ED13D4BC350050E5FD /* ipad~camera.png */; };
 		C600A0F313D4BC350050E5FD /* ipad~home.png in Resources */ = {isa = PBXBuildFile; fileRef = C600A0EE13D4BC350050E5FD /* ipad~home.png */; };
@@ -1544,6 +1545,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Eden_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Eden_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Eden-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Eden-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		BF78A2D02084F0B0007EBBDF /* libcocos2d iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libcocos2d iOS.a"; sourceTree = "<group>"; };
 		C600A0EC13D4BC350050E5FD /* ipad~jump_depressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~jump_depressed.png"; sourceTree = "<group>"; };
 		C600A0ED13D4BC350050E5FD /* ipad~camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~camera.png"; sourceTree = "<group>"; };
 		C600A0EE13D4BC350050E5FD /* ipad~home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~home.png"; sourceTree = "<group>"; };
@@ -1811,6 +1813,7 @@
 				19E52AE11A84418200C9CD48 /* libFlurry_6.0.0.a in Frameworks */,
 				C68DD0F712637D470072CBF0 /* CoreGraphics.framework in Frameworks */,
 				C6E46669127E210800D509D1 /* OpenAL.framework in Frameworks */,
+				BF78A2D12084F0B1007EBBDF /* libcocos2d iOS.a in Frameworks */,
 				C6E46680127E22AE00D509D1 /* CoreAudio.framework in Frameworks */,
 				C6E46688127E22C600D509D1 /* AudioToolbox.framework in Frameworks */,
 				C6E4671E127E4BB800D509D1 /* AVFoundation.framework in Frameworks */,
@@ -1905,6 +1908,7 @@
 			isa = PBXGroup;
 			children = (
 				19E52AE01A84418200C9CD48 /* libFlurry_6.0.0.a */,
+				BF78A2D02084F0B0007EBBDF /* libcocos2d iOS.a */,
 				19DF68C51A842FD800E462A1 /* libCocosDenshion.a */,
 				194EDC3A1A79C9D700342AEB /* Flurry.h */,
 			);
@@ -3072,7 +3076,8 @@
 				LastUpgradeCheck = 0610;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
-						DevelopmentTeam = 4398E7EDE7;
+						DevelopmentTeam = 5AMFX8X5ZN;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -3962,8 +3967,11 @@
 				CODE_SIGN_ENTITLEMENTS = "~/Documents/Eden/Entitlements.plist";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 2.0;
+				DEVELOPMENT_TEAM = 5AMFX8X5ZN;
+				ENABLE_BITCODE = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3976,15 +3984,16 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
-					testflight/,
+					"$(inherited)",
 					"$(PROJECT_DIR)/flurry",
-					"$(PROJECT_DIR)",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = EdenDevBuild;
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4001,8 +4010,11 @@
 				CODE_SIGN_ENTITLEMENTS = "~/Documents/Eden/Entitlements.plist";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 2.0;
+				DEVELOPMENT_TEAM = 5AMFX8X5ZN;
+				ENABLE_BITCODE = NO;
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -4014,15 +4026,16 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
-					testflight/,
+					"$(inherited)",
 					"$(PROJECT_DIR)/flurry",
-					"$(PROJECT_DIR)",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = EdenDevBuild;
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4115,8 +4128,11 @@
 				CODE_SIGN_ENTITLEMENTS = "~/Documents/Eden/Entitlements.plist";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 2.0;
+				DEVELOPMENT_TEAM = 5AMFX8X5ZN;
+				ENABLE_BITCODE = NO;
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -4128,15 +4144,16 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
-					testflight/,
+					"$(inherited)",
 					"$(PROJECT_DIR)/flurry",
-					"$(PROJECT_DIR)",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = EdenDevBuild;
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "82e12cd3-a9e2-48a9-bd4e-e44898a5392e";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4180,8 +4197,11 @@
 				CODE_SIGN_ENTITLEMENTS = "~/Documents/Eden/Entitlements.plist";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Kingly Software Inc";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 2.0;
+				DEVELOPMENT_TEAM = 5AMFX8X5ZN;
+				ENABLE_BITCODE = NO;
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -4193,15 +4213,16 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				INFOPLIST_FILE = "Eden-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
-					testflight/,
+					"$(inherited)",
 					"$(PROJECT_DIR)/flurry",
-					"$(PROJECT_DIR)",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = EdenDevBuild;
 				PRODUCT_NAME = Eden;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "64f8257d-17c1-4418-a2ca-be1cf3cc2739";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -1,33 +1,77 @@
 {
   "images" : [
     {
+      "extent" : "full-screen",
+      "idiom" : "iphone",
+      "subtype" : "736h",
+      "filename" : "splash_2208x1242_2-1.png",
+      "minimum-system-version" : "8.0",
+      "orientation" : "portrait",
+      "scale" : "3x"
+    },
+    {
+      "extent" : "full-screen",
+      "idiom" : "iphone",
+      "subtype" : "736h",
+      "filename" : "splash_2208x1242_2.png",
+      "minimum-system-version" : "8.0",
+      "orientation" : "landscape",
+      "scale" : "3x"
+    },
+    {
+      "extent" : "full-screen",
+      "idiom" : "iphone",
+      "subtype" : "667h",
+      "filename" : "splash_1334x750.png",
+      "minimum-system-version" : "8.0",
+      "orientation" : "portrait",
+      "scale" : "2x"
+    },
+    {
       "orientation" : "portrait",
       "idiom" : "iphone",
+      "filename" : "splash_960x640.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
-      "filename" : "launch960x640.png",
       "scale" : "2x"
     },
     {
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "retina4",
-      "filename" : "render1136x640.png",
+      "filename" : "splash_1136x640-1.png",
       "minimum-system-version" : "7.0",
       "orientation" : "portrait",
       "scale" : "2x"
     },
     {
-      "orientation" : "landscape",
+      "orientation" : "portrait",
       "idiom" : "ipad",
+      "filename" : "splash_1024x768.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
-      "filename" : "launch_image1024x768-1.png",
       "scale" : "1x"
     },
     {
       "orientation" : "landscape",
       "idiom" : "ipad",
+      "filename" : "splash_1024x768-1.png",
+      "extent" : "full-screen",
+      "minimum-system-version" : "7.0",
+      "scale" : "1x"
+    },
+    {
+      "orientation" : "portrait",
+      "idiom" : "ipad",
+      "filename" : "splash_2048x1536_2-3.png",
+      "extent" : "full-screen",
+      "minimum-system-version" : "7.0",
+      "scale" : "2x"
+    },
+    {
+      "orientation" : "landscape",
+      "idiom" : "ipad",
+      "filename" : "splash_2048x1536_2.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "2x"
@@ -35,37 +79,49 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
+      "filename" : "splash_1024x768-2.png",
       "extent" : "full-screen",
-      "filename" : "Default~iphone.png",
       "scale" : "1x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
+      "filename" : "splash_960x640-1.png",
       "extent" : "full-screen",
-      "filename" : "Default@2x~iphone.png",
       "scale" : "2x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
+      "filename" : "splash_1136x640.png",
       "extent" : "full-screen",
-      "filename" : "Default-568h@2x~iphone.png",
       "subtype" : "retina4",
       "scale" : "2x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "ipad",
+      "extent" : "to-status-bar",
+      "scale" : "1x"
+    },
+    {
+      "orientation" : "portrait",
+      "idiom" : "ipad",
+      "filename" : "splash_1024x768-3.png",
       "extent" : "full-screen",
-      "filename" : "launch_image1024x768-4.png",
       "scale" : "1x"
     },
     {
       "orientation" : "landscape",
       "idiom" : "ipad",
+      "extent" : "to-status-bar",
+      "scale" : "1x"
+    },
+    {
+      "orientation" : "landscape",
+      "idiom" : "ipad",
+      "filename" : "splash_1024x768-4.png",
       "extent" : "full-screen",
-      "filename" : "launch_image1024x768_landscape.png",
       "scale" : "1x"
     },
     {
@@ -75,6 +131,13 @@
       "scale" : "2x"
     },
     {
+      "orientation" : "portrait",
+      "idiom" : "ipad",
+      "filename" : "splash_2048x1536_2-1.png",
+      "extent" : "full-screen",
+      "scale" : "2x"
+    },
+    {
       "orientation" : "landscape",
       "idiom" : "ipad",
       "extent" : "to-status-bar",
@@ -83,6 +146,7 @@
     {
       "orientation" : "landscape",
       "idiom" : "ipad",
+      "filename" : "splash_2048x1536_2-2.png",
       "extent" : "full-screen",
       "scale" : "2x"
     }
