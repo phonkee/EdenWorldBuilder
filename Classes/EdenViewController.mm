@@ -21,6 +21,12 @@
 
 @synthesize animating, context;
 
+- (UIRectEdge)preferredScreenEdgesDeferringSystemGestures{ // Tells iOS to prefer app gestures over system ones.
+    return UIRectEdgeAll;
+}
+
+
+
 - (void)awakeFromNib
 {
 	//[UIApplication sharedApplication].statusBarOrientation = UIInterfaceOrientationLandscapeRight;
