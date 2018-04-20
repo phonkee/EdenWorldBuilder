@@ -11,7 +11,6 @@
 #import "Frustum.h"
 #import "TerrainGen2.h"
 
-
 #import "Alert.h"
 
 extern float SCREEN_WIDTH; 
@@ -366,7 +365,7 @@ static float at1=0,at2=0,at3=0;
 void Hud::worldLoaded(){
     blocktype_pressed=-1;
     inmenu=FALSE;
-    pickSecondBlock=FALSE;
+    pickSecondBlock=TRUE; // yee
     at1=0;
 	if(mode==MODE_PICK_BLOCK){
 		mode=MODE_BUILD;
@@ -2241,6 +2240,8 @@ void Hud::awarpHome(){
     
     
     sb->setStatus(@"Saving and warping home.." ,999);
+    
 }
+
 
 //@end

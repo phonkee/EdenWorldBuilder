@@ -23,6 +23,7 @@
 #import "FileManager.h"
 #import "SpecialEffects.h"
 
+void saveWorld();
 
 class FileManager;
 class Player;

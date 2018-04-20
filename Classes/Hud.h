@@ -31,6 +31,8 @@
 
 #define NUM_DISPLAY_BLOCKS 35
 #define NUM_COLORS (6*9)
+
+
 class Hud {
 public:
 	int fps;

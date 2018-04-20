@@ -674,6 +674,7 @@
 		28FD14FE0DC6FC130079059D /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FD14FD0DC6FC130079059D /* EAGLView.mm */; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
+		BF2630CB20898A3E00E0F4B2 /* Autosave.mm in Sources */ = {isa = PBXBuildFile; fileRef = BF2630CA20898A3D00E0F4B2 /* Autosave.mm */; };
 		BF78A2D12084F0B1007EBBDF /* libcocos2d iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF78A2D02084F0B0007EBBDF /* libcocos2d iOS.a */; };
 		C600A0F113D4BC350050E5FD /* ipad~jump_depressed.png in Resources */ = {isa = PBXBuildFile; fileRef = C600A0EC13D4BC350050E5FD /* ipad~jump_depressed.png */; };
 		C600A0F213D4BC350050E5FD /* ipad~camera.png in Resources */ = {isa = PBXBuildFile; fileRef = C600A0ED13D4BC350050E5FD /* ipad~camera.png */; };
@@ -1545,6 +1546,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Eden_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Eden_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Eden-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Eden-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		BF2630C9208988D700E0F4B2 /* Autosave.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Autosave.h; sourceTree = "<group>"; };
+		BF2630CA20898A3D00E0F4B2 /* Autosave.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Autosave.mm; sourceTree = "<group>"; usesTabs = 0; };
 		BF78A2D02084F0B0007EBBDF /* libcocos2d iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libcocos2d iOS.a"; sourceTree = "<group>"; };
 		C600A0EC13D4BC350050E5FD /* ipad~jump_depressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~jump_depressed.png"; sourceTree = "<group>"; };
 		C600A0ED13D4BC350050E5FD /* ipad~camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad~camera.png"; sourceTree = "<group>"; };
@@ -1833,6 +1836,8 @@
 				C6B8A597146272C80016449C /* Constants.h */,
 				C6B192361283232400A48E22 /* Effects */,
 				C6F1B797127561D10080BD97 /* FileManager.h */,
+				BF2630C9208988D700E0F4B2 /* Autosave.h */,
+				BF2630CA20898A3D00E0F4B2 /* Autosave.mm */,
 				C6F1B798127561D10080BD97 /* FileManager.mm */,
 				19AECD0F192C0CFC00F8DD91 /* FileManagerHelper.h */,
 				19AECD10192C0CFC00F8DD91 /* FileManagerHelper.mm */,
@@ -3912,6 +3917,7 @@
 				C6AE407A13C3DF250068685C /* md5.c in Sources */,
 				C62923D613C581ED007BB907 /* registry.c in Sources */,
 				C62923D713C581ED007BB907 /* project.c in Sources */,
+				BF2630CB20898A3E00E0F4B2 /* Autosave.mm in Sources */,
 				C62923D813C581ED007BB907 /* glue.c in Sources */,
 				C62923D913C581ED007BB907 /* error.c in Sources */,
 				C624DBF613D0108D00B46513 /* Liquids.mm in Sources */,

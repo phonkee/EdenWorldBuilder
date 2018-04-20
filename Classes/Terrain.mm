@@ -11,7 +11,7 @@
 #import "Globals.h"
 #import "Model.h"
 #import "VectorUtil.h"
-
+#import "Autosave.h"
 #import "Lighting.h"
 
 //@implementation Terrain
@@ -383,7 +383,6 @@ void Terrain::loadTerrain(NSString* name,BOOL fromArchive){
     
 	loaded=1;
     World::getWorld->hud->justLoaded=1;
-    
 	//NSLog(@"dict entries: %d",hashmap_length(chunkMap));
 	//NSLog(@"%f",[NSThread threadPriority]);
     

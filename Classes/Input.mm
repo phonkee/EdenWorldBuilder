@@ -10,12 +10,23 @@
 #import "Globals.h"
 #import "World.h"
 #import "Hud.h"
+#import "Autosave.h"
+
+int touchcount;
+int delaycount = 0;
+
 static Input* singleton=NULL;
 
 extern float SCREEN_WIDTH; 
 extern float SCREEN_HEIGHT;
 extern float P_ASPECT_RATIO;
 extern BOOL IS_WIDESCREEN;
+
+
+
+void delayAutoSave(int delayfortouches){
+    delaycount=delayfortouches;
+}
 
 Input* Input::getInput(){
     if(!singleton){
@@ -148,7 +159,8 @@ void Input::touchesMoved(NSSet* mtouches, UIEvent* event){
 }
 void Input::touchesEnded(NSSet* mtouches, UIEvent* event){
 	for(UITouch* touch in mtouches){
-		//
+
+        autosavetrigger();
 		int idx=-1;
 		for(int i=0;i<MAX_TOUCHES;i++){
 			if(touches[i].touch_id==touch){
@@ -185,9 +197,9 @@ void Input::touchesEnded(NSSet* mtouches, UIEvent* event){
 
 	}
 }
-void Input::touchesCancelled(NSSet* mtouches, UIEvent* event){
+
+    void Input::touchesCancelled(NSSet* mtouches, UIEvent* event){
     this->clearAll();
-	
 }
 
 

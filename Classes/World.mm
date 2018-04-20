@@ -12,17 +12,22 @@
 #import "EAGLView.h"
 #import "Globals.h"
 #import "TerrainGen2.h"
-
 #import "Alert.h"
 #include <iostream>
 #include <pthread.h>
-
 #import "VKeyboard.h"
+#include <iostream>
+#include <thread>
 
 //@synthesize cam, terrain, player, hud,fm/*,FLIPPED*/,effects,realtime,bestGraphics,doneLoading;
 //@synthesize game_mode,menu;
 extern EAGLView* G_EAGL_VIEW;
  BOOL exit_to_menu=FALSE;
+
+void saveWorld(){
+    World::getWorld->fm->saveWorld();
+    NSLog(@"World saved");
+}
 
 void RLETEST(){
     
@@ -355,7 +360,9 @@ void World::loadWorld(NSString* name){
                // [menu.sbar setStatus:[NSString stringWithFormat:@"Reticulating Splines... "]:20];
            // }else{
                 menu->sbar->setStatus([NSString stringWithFormat:@"Loading World... %d%%",pct],20);
+            
            // }
+            
         }
         
         
@@ -381,9 +388,20 @@ void World::loadWorld(NSString* name){
             menu->loading=0;
             menu->sbar->clear();
             
+            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+            dispatch_async(queue, ^{
+                
+            
+                
+                
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    // Update UI
+                    // Example:
+                });
+            });
             
             
-             
+        
             if(CREATURES_ON){
                
                 LoadModels([[NSString stringWithFormat:@"%@/",[[NSBundle mainBundle] resourcePath]] cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -509,7 +527,6 @@ BOOL World::update(float etime){
 	return FALSE;
 }
 
-
 void World::render(){
     if(JUST_TERRAIN_GEN){
         glClearColor(.39f, .25f, .39f, 1.0f);
@@ -574,6 +591,8 @@ void World::render(){
         player->render();
 				
          glPopMatrix();
+        
+        
 		hud->render(); //render hud last
 		
 	}

@@ -18,6 +18,7 @@
 #import "ShareMenu.h"
 #import "Util.h"
 #import "Menu_background.h"
+#import "Autosave.h"
 
 
 class ShareMenu;

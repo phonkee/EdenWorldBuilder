@@ -222,6 +222,8 @@ Menu::Menu(){
 	
 }
 void Menu::activate(){
+    NSLog(@"entering menu");
+    autosavetracktouches(false);
     fade_out=0;
 	sbar->setStatus(@"Choose world to load" ,99999);
 	if(selected_world!=NULL)
@@ -230,6 +232,8 @@ void Menu::activate(){
 	shared_list->activate();
 }
 void Menu::deactivate(){
+    NSLog(@"exiting menu");
+    autosavetracktouches(true);
     sbar->clear();
     fnbar->clear();
     share_menu->deactivate();

@@ -11,6 +11,10 @@
 
 
 #import "Util.h"
+#import "Autosave.h"
+
+
+
 typedef struct{
 	int mx,my;
 	int pmx,pmy;
@@ -49,7 +53,7 @@ public:
     void touchesEnded(NSSet* touches,UIEvent* event);
     void keyTyped(NSString* key);
     void clearAll();
-   void touchesCancelled(NSSet* touches,UIEvent* event);
+    void touchesCancelled(NSSet* touches,UIEvent* event);
     
 };
 

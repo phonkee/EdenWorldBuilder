@@ -10,7 +10,7 @@
 #import "Globals.h"
 #import "Terrain.h"
 #import "SpecialEffects.h"
-
+#import "Autosave.h"
 
 extern "C" {
 #define n_particles 7
@@ -54,7 +54,7 @@ Fire::Fire(void){
 	
 }
 void Fire::removeNode( int idx){
-    
+    printg("nodeend");
     updateIndexes=TRUE;
     num_particles-=n_particles;   
     
@@ -189,6 +189,7 @@ const GLubyte colors[4][3]={
 	
 };
 void Fire::removeFire(int ppid){
+    delayAutoSave(); // A fire is ending so delay autosave.
     for(int k=0;k<list_size;k++)
 		if(list[k].pid==ppid){
 			list[k].life=.2f;
@@ -210,6 +211,7 @@ void Fire::updateFire(int idx,Vector pos){
 
 static int pid=0;
 int Fire::addFire(float x,float z,float y,int type,float life){
+    printg("addfire");
    // if(type==1)
     //printg("fire added to model %f,%f,%f,\n",x,z,y);
 	if(list_size>=max_bb){
