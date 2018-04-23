@@ -1935,7 +1935,7 @@ void Terrain::reloadIfNeeded(){
 	if(player->pos.x/BLOCK_SIZE-radius<0||player->pos.x/BLOCK_SIZE+radius>T_SIZE||
 	   player->pos.z/BLOCK_SIZE-radius<0||player->pos.z/BLOCK_SIZE+radius>T_SIZE){
 		do_reload=1;
-		World::getWorld->hud->sb->setStatus(@"Loading ",999);
+		// World::getWorld->hud->sb->setStatus(@"Loading ",999);
        
             
 		
@@ -1957,8 +1957,8 @@ BOOL Terrain::update(float etime){
         
         if(pct>100)pct=100;
         
-            World::getWorld->hud->sb->setStatus([NSString stringWithFormat:@"Loading World  %d%%",pct],20);
-        
+            // World::getWorld->hud->sb->setStatus([NSString stringWithFormat:@"Loading World  %d%%",pct],20);
+            World::getWorld->hud->sb->setStatus([NSString stringWithFormat:@"Loading World..."],20);
         
         return FALSE;
     }
@@ -2180,7 +2180,7 @@ void Terrain::prepareAndLoadGeometry(){
         if(count>140) {
             hit_load_counter++;
             if(hit_load_counter==1){
-                World::getWorld->hud->sb->setStatus(@"Loading",999);
+               //  World::getWorld->hud->sb->setStatus(@"Loading",999);
                 if(count>300){
                     hit_load_counter++;
                 }

@@ -10,6 +10,8 @@
 #define Eden_Autosave_h
 #import "statusbar.h"
 
+extern bool AUTOSAVE_ON;
+
 void autosavetrigger(); // Responds to touch events and decides to save or not.
 void autoSave(); //  Does the save.
 void delayAutoSave(); // Calling this will set the touches required to autosave to 25 if it is currently less than that.

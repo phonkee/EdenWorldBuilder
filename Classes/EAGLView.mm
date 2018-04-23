@@ -69,7 +69,8 @@ extern EAGLView* G_EAGL_VIEW;
         SCALE_WIDTH=2;
         SCALE_HEIGHT=2;
         }else{
-            SUPPORTS_RETINA=FALSE;
+            SUPPORTS_RETINA=TRUE;
+            IS_WIDESCREEN=TRUE;
 
         IS_IPAD=FALSE;
         IS_RETINA=FALSE;
@@ -126,12 +127,15 @@ extern EAGLView* G_EAGL_VIEW;
     }
     printg("is widescreen:%d   check_valeu:%f\n",IS_WIDESCREEN, [[ UIScreen mainScreen ] bounds ].size.width);
     
+    
+    IS_WIDESCREEN=TRUE;
+    
     if(IS_WIDESCREEN)
         SCREEN_WIDTH=IPHONE5_WIDTH;
     else
         SCREEN_WIDTH=IPHONE_WIDTH;
     
-    SCREEN_HEIGHT=IPHONE_HEIGHT;
+        SCREEN_HEIGHT=IPHONE_HEIGHT;
 	/*}*/
 	
 	G_EAGL_VIEW=self;	

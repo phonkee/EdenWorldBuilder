@@ -4135,7 +4135,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 2.0;
 				DEVELOPMENT_TEAM = 5AMFX8X5ZN;
 				ENABLE_BITCODE = NO;
@@ -4204,7 +4204,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Kingly Software Inc";
 				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 2.0;
 				DEVELOPMENT_TEAM = 5AMFX8X5ZN;
 				ENABLE_BITCODE = NO;

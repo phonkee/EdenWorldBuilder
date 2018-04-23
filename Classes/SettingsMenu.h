@@ -18,7 +18,7 @@ typedef struct{
 	CGRect box;
 	Texture2D* tex;
 }property;
-#define NUM_PROP 5
+#define NUM_PROP 6
 class SettingsMenu{
 public:
     SettingsMenu();

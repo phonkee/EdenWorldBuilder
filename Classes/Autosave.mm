@@ -11,11 +11,10 @@
 #import "World.h"
 #import "Hud.h"
 
-/* Touch input serves as the trigger for autosaving in Eden. Whenever there is a touch, "autosavetrigger" will run, keeping count of how many touches there have been since the last autosave (with the touchcounter variable). Each time touchcounter reaches the number of touches defined in constants.h as "AUTOSAVE_TOUCHES", an autosave occurs and touchcount is reset. If "delayAutoSave" is run,
- */
 
 int touchcounter=AUTOSAVE_TOUCHES;
 bool tracktouches=false;
+bool AUTOSAVE_ON;
 
 void autosavetracktouches(bool inworld){
     tracktouches=inworld;
@@ -24,17 +23,20 @@ void autosavetracktouches(bool inworld){
 }
 
 void autosavetrigger() {
-    if (tracktouches==false) {
-    } else {
-        printg("touchcount: %d\n",touchcounter);
-        touchcounter--;
-        if(touchcounter==0){
-            touchcounter=AUTOSAVE_TOUCHES;
-            saveWorld();
-        }
-    }
     
+    if(AUTOSAVE_ON==true){
+        return;
     }
+        NSLog(@"Autosave is triggered and on");
+        if (tracktouches==true) {
+            printg("touchcount: %d\n",touchcounter);
+            touchcounter--;
+            if(touchcounter==0){
+                touchcounter=AUTOSAVE_TOUCHES;
+                saveWorld();
+            }
+        }
+}
 
 void delayAutoSave(){
     
@@ -47,10 +49,4 @@ void delayAutoSave(){
     } else {
         NSLog(@"Delay not needed");
     }
-    
-
-    
 }
-
-
-

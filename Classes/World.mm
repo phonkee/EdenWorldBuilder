@@ -359,8 +359,8 @@ void World::loadWorld(NSString* name){
             //if(pct==100){
                // [menu.sbar setStatus:[NSString stringWithFormat:@"Reticulating Splines... "]:20];
            // }else{
-                menu->sbar->setStatus([NSString stringWithFormat:@"Loading World... %d%%",pct],20);
-            
+               // menu->sbar->setStatus([NSString stringWithFormat:@"Loading World... %d%%",pct],20);
+                menu->sbar->setStatus([NSString stringWithFormat:@"Loading World..."],20);
            // }
             
         }

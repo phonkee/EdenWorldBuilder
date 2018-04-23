@@ -11,11 +11,12 @@
 #import "Globals.h"
 #import "Util.h"
 #import "World.h"
+#import "Autosave.h"
 
 
 enum  {
 	
-	//S_LEFTY_MODE=1,	
+	S_AUTOSAVE=5,
 	S_PLAY_MUSIC=4,
 	S_PLAY_SOUND=3,
     S_HEALTH=2,
@@ -24,7 +25,7 @@ enum  {
 };
 static NSString* pnames[NUM_PROP]={
 	[S_HEALTH]=@"Health",
-//	[S_LEFTY_MODE]=@"Lefty Controls",
+    [S_AUTOSAVE]=@"Autosave",
 	[S_PLAY_MUSIC]=@"Music",
 	[S_PLAY_SOUND]=@"Sound Effects",
 	[S_AUTOJUMP]=@"Autojump",
@@ -32,11 +33,11 @@ static NSString* pnames[NUM_PROP]={
 };
 static const int pdefaults[NUM_PROP]={
 	[S_HEALTH]=TRUE,
-//	[S_LEFTY_MODE]=FALSE,
+    [S_AUTOSAVE]=TRUE,
 	[S_PLAY_MUSIC]=TRUE,
 	[S_PLAY_SOUND]=TRUE,
 	[S_AUTOJUMP]=TRUE,
-    [S_CREATURES]=TRUE,
+    [S_CREATURES]=FALSE,
 };
 extern float SCREEN_WIDTH; 
 extern float SCREEN_HEIGHT;
@@ -56,6 +57,9 @@ SettingsMenu::SettingsMenu(){
 		if(i==S_HEALTH){
 			properties[i].box.size.width=200;
 			properties[i].tex=Resources::getResources->getMenuTex(MENU_HEALTH);
+        }else if(i==S_AUTOSAVE){
+            properties[i].box.size.width=105;
+            properties[i].tex=Resources::getResources->getMenuTex(MENU_MUSIC);
 		}else if(i==S_PLAY_MUSIC){
 			properties[i].box.size.width=105;
 			properties[i].tex=Resources::getResources->getMenuTex(MENU_MUSIC);
@@ -113,6 +117,8 @@ SettingsMenu::SettingsMenu(){
 	rect_off.origin.x=305;
 	rect_off.origin.y=0;
 	
+    properties[S_CREATURES].value=false;
+    
     if(LOW_MEM_DEVICE){
         //properties[S_GRAPHICS].value=false;
         properties[S_CREATURES].value=false;
@@ -156,7 +162,14 @@ void SettingsMenu::update(float etime){
                             Resources::getResources->stopMenuTune();
 
                         }
-					}
+					}else if (j==S_AUTOSAVE){
+                        if(properties[j].value){
+                            NSLog(@"AS On");
+                        }else{
+                            NSLog(@"AS Off");
+                            
+                        }
+                    }
 				}
 				
 				
@@ -190,15 +203,10 @@ void SettingsMenu::load(){
     World::getWorld->terrain->tgen->genCaves=FALSE;
     World::getWorld->bestGraphics=properties[S_AUTOJUMP].value;
     CREATURES_ON=properties[S_CREATURES].value;
+    AUTOSAVE_ON=properties[S_AUTOSAVE].value;
     
     World::getWorld->bestGraphics=TRUE;
-    if(LOW_MEM_DEVICE||LOW_GRAPHICS){
-        World::getWorld->bestGraphics=FALSE;
-    }
-    extern BOOL IS_WIDESCREEN;
-    if(IS_WIDESCREEN){
-        World::getWorld->bestGraphics=TRUE;
-    }
+    
 }
 void SettingsMenu::save(){
 	NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];

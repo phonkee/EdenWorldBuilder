@@ -49,7 +49,7 @@
 #define CHUNKS_PER_COLUMN (T_HEIGHT/CHUNK_SIZE)
 #define CHUNKS_PER_SIDE (T_SIZE/CHUNK_SIZE)
 #define BLOCK_SIZE 1.0f
-#define LIGHT_RADIUS 7.0f // Was 5.0f, increasing will making loading worlds and new chunks very slow, be cafeful
+#define LIGHT_RADIUS 5.0f // Was 5.0f, increasing will making loading worlds and new chunks very slow, be cafeful
 
 enum BLOCK_TYPES{
 	TYPE_NONE=0,
